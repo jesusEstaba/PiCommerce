@@ -1,6 +1,6 @@
 @extends('sections.main')
 
-@section('title', 'Category')
+@section('title', 'Cart')
 @section('content')
 <div class="container space">
 	<div class="row list-cart">
