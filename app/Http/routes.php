@@ -10,7 +10,26 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
 Route::get('/', function () {
-    return view('welcome');
+    return view('selection');
+});
+
+Route::get('/login', function () {
+    return view('login');
+});
+
+Route::get('/choose', function () {
+    return view('choose');
+});
+
+Route::get('/category', function () {
+    return view('category');
+});
+
+Route::get('/product', function () {
+    return view('product');
+});
+
+Route::get('/cart', function () {
+    return view('cart');
 });

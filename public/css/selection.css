@@ -1,0 +1,78 @@
+body {
+  background: url("../images/backgrounds/5.jpg") center center no-repeat fixed;
+  background-size: cover;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+footer {
+  color: #fff;
+  background: rgba(110,40,37,0.56);
+  width: 100%;
+  height: 60px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.4);
+}
+footer p {
+  text-align: center;
+}
+.selections {
+  margin-top: 15%;
+}
+.orange-box {
+  background: #ffa500;
+}
+.blue-box {
+  background: #2e7bdc;
+}
+.logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.selection {
+  position: relative;
+  border-radius: 5px;
+  color: #fff;
+  text-shadow: 0 0 2px rgba(0,0,0,0.26);
+  transition: 0.8s box-shadow;
+}
+.selection:hover {
+  box-shadow: 0 0 15px rgba(0,0,0,0.9);
+  z-index: 2;
+}
+.separator-fix-footer {
+  flex: 1 0 auto;
+}
+.logo-login {
+  z-index: 5;
+  display: block;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  top: -50px;
+}
+.login-box {
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  padding-top: 9em;
+  padding-bottom: 2em;
+  border-radius: 5px;
+  background: rgba(0,0,0,0.6);
+}
+.login-box .row {
+  margin: 0;
+}
+.input-group {
+  margin-bottom: 10px;
+}
+.selections .row {
+  margin-bottom: 50px;
+}
+.selections .row .btn {
+  display: block;
+  margin-bottom: 10px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
