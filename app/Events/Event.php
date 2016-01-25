@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace Pizza\Events;
 
 abstract class Event
 {
