@@ -2,28 +2,39 @@
 
 @section('title', 'Category')
 @section('content')
+
+@if($banner)
+<style type="text/css">
+	.image-category{
+		background:url("{{asset('images/banners/'.$banner)}}") center center fixed no-repeat;
+		background-size:cover; 
+	}
+</style>
+@endif
+
+
 	<section class="image-category">
-		
+		<h2 class="title">{{$name_category}}</h2>
 	</section>
 	
 	<section class="name-category">
 		<div class="container">
 			<ul>
-				<li><a href="#">PIZZAS</a></li>
-				<li><a href="#">APPETIZ</a></li>
-				<li><a href="#">PASTAS</a></li>
-				<li><a href="#">PARM SUBS</a></li>
-				<li><a href="#">WINGS</a></li>
-				<li><a href="#">DRINKS</a></li>
-				<li><a href="#">CALZON</a></li>
-				<li><a href="#">HOT SUBS</a></li>
-				<li><a href="#">DESSERTS</a></li>
-				<li><a href="#">ROLLS</a></li>
-				<li><a href="#">SALADS</a></li>
-				<li><a href="#">COLD SUBS</a></li>
-				<li><a href="#">STROMB</a></li>
-				<li><a href="#">GYRO BURGER WRAPS</a></li>
-				<li><a href="#">SIDE ORDER</a></li>
+				<li><a href="{{url('category/PIZZAS')}}">Pizzas</a></li>
+				<li><a href="{{url('category/APPETIZ')}}">Appetiz</a></li>
+				<li><a href="{{url('category/PASTAS')}}">Pastas</a></li>
+				<li><a href="{{url('category/PARM_SUBS')}}">Parm Subs</a></li>
+				<li><a href="{{url('category/WINGS')}}">Wings</a></li>
+				<li><a href="{{url('category/DRINKS')}}">Drinks</a></li>
+				<li><a href="{{url('category/CALZON')}}">Calzon</a></li>
+				<li><a href="{{url('category/HOT_SUBS')}}">Hot Subs</a></li>
+				<li><a href="{{url('category/DESSERTS')}}">Desserts</a></li>
+				<li><a href="{{url('category/ROLLS')}}">Rolls</a></li>
+				<li><a href="{{url('category/SALADS')}}">Salads</a></li>
+				<li><a href="{{url('category/COLD_SUBS')}}">Cold Subs</a></li>
+				<li><a href="{{url('category/STROMB')}}">Stromb</a></li>
+				<li><a href="{{url('category/GYRO_BURGER_WRAPS')}}">Gyro Burger Wraps</a></li>
+				<li><a href="{{url('category/SIDE_ORDER')}}">Side Order</a></li>
 			</ul>
 		</div>
 	</section>
@@ -34,7 +45,7 @@
 				<div class="type col-md-6">
 					<div class="row">
 						<div class="col-xs-4">
-							<img src="images/items/nopicture.jpg" class="item" alt="item-type">
+							<img src="{{asset('images/items/nopicture.jpg')}}" class="item" alt="item-type">
 						</div>
 						<div class="col-xs-8">
 							<h3>CHIKEN PESTO</h3>
@@ -49,7 +60,7 @@
 			<div class="type col-md-6">
 				<div class="row">
 					<div class="col-xs-4">
-						<img src="images/items/nopicture.jpg" class="item" alt="item-type">
+						<img src="{{asset('images/items/nopicture.jpg')}}" class="item" alt="item-type">
 					</div>
 					<div class="col-xs-8">
 						<h3>BIANCA</h3>
@@ -62,7 +73,7 @@
 			<div class="type col-md-6">
 				<div class="row">
 					<div class="col-xs-4">
-						<img src="images/items/nopicture.jpg" class="item" alt="item-type">
+						<img src="{{asset('images/items/nopicture.jpg')}}" class="item" alt="item-type">
 					</div>
 					<div class="col-xs-8">
 						<h3>DELUX</h3>
@@ -74,7 +85,7 @@
 			<div class="type col-md-6">
 				<div class="row">
 					<div class="col-xs-4">
-						<img src="images/items/nopicture.jpg" class="item" alt="item-type">
+						<img src="{{asset('images/items/nopicture.jpg')}}" class="item" alt="item-type">
 					</div>
 					<div class="col-xs-8">
 						<h3>GREEK</h3>
@@ -86,7 +97,7 @@
 			<div class="type col-md-6">
 				<div class="row">
 					<div class="col-xs-4">
-						<img src="images/items/nopicture.jpg" class="item" alt="item-type">
+						<img src="{{asset('images/items/nopicture.jpg')}}" class="item" alt="item-type">
 					</div>
 					<div class="col-xs-8">
 						<h3>GRILL CKN</h3>

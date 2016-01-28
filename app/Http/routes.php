@@ -10,6 +10,11 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+Route::get('/pass', function () {
+    return bcrypt('pass');
+});
+
+
 Route::get('/', function () {
     return view('selection');
 });
@@ -17,19 +22,29 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return view('login');
 });
+Route::post('/login', 'LoginCTRL@login');
+
+Route::get('/logout', 'LoginCTRL@logout');
+
+Route::get('/register', function () {
+    return view('register');
+});
+Route::post('/register', 'RegisterCTRL@register');
 
 Route::get('/choose', function () {
     return view('choose');
 });
 
-Route::get('/category', function () {
-    return view('category');
-});
+Route::get('/category/{name_category}', 'CategoryCTRL@category');
 
 Route::get('/product', function () {
     return view('product');
 });
 
-Route::get('/cart', function () {
-    return view('cart');
+Route::group(['middleware'=>'auth'], function(){
+	
+	Route::get('/cart', function () {
+    	return view('cart');
+	});
 });
+
