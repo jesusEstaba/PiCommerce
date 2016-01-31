@@ -1,5 +1,5 @@
 body {
-  background: url("../images/backgrounds/5.jpg") center center no-repeat fixed;
+  background: url("../images/backgrounds/wood.jpg") center center no-repeat fixed;
   background-size: cover;
   display: flex;
   min-height: 100vh;
@@ -28,47 +28,37 @@ footer img {
   display: inline-block;
   position: absolute;
   width: 100%;
-  height: 200px;
+  height: 100px;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   margin: auto;
 }
-.center-center .box {
-  margin: 0 !important;
-}
-.orange-box {
-  background: #ffa500;
-}
-.blue-box {
-  background: #2e7bdc;
+.login-box {
+  position: relative;
+  background: rgba(0,0,0,0.6);
+  border-radius: 5px;
+  padding: 2em;
+  padding-top: 3em;
 }
 .logo {
+  position: absolute;
   display: block;
   margin-left: auto;
   margin-right: auto;
+  left: 0;
+  right: 0;
+  top: -100px;
+  z-index: 3;
 }
-.box-type {
-  margin-bottom: 1em;
-  padding: 0.5em;
-  position: relative;
-  border-radius: 5px;
-  color: #fff;
-  text-shadow: 0 0 2px rgba(0,0,0,0.26);
-  transition: 0.8s box-shadow;
+.btn {
+  display: block !important;
+  width: 100% !important;
+  margin-top: 1em;
 }
-.box-type:hover {
-  box-shadow: 0 0 15px rgba(0,0,0,0.9);
-  z-index: 2;
-}
-.box-type img {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-.box-type h2 {
-  text-align: center;
+.input-group {
+  margin-bottom: 0.5em;
 }
 .separator-fix-footer {
   flex: 1 0 auto;
@@ -78,5 +68,13 @@ footer img {
     display: block !important;
     position: initial !important;
     height: initial !important;
+  }
+  .logo {
+    position: relative;
+    top: 0;
+    margin-bottom: 1em;
+  }
+  .login-box {
+    background: none;
   }
 }

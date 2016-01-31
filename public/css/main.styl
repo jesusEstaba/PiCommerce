@@ -1,3 +1,8 @@
+sombra = 0 0 5px rgba(black, .26)
+
+
+
+
 nav
 	background white
 	position relative
@@ -14,11 +19,20 @@ footer
 	color white
 	background #17733A
 	width 100%
-	height 60px
+	min-height 60px
 	box-shadow 0 0 15px rgba(black, .4)
 	
 	p
 		text-align center
+	
+	a
+		color #FFD914 !important
+	img
+		display block
+		margin-left auto
+		margin-right auto
+		margin-top .5em
+		margin-bottom .5em
 
 .separator-fix-footer
 	flex 1 0 auto
@@ -51,15 +65,17 @@ footer
 	
 	ul
 		li
+			color white
 			border-radius 5px
 			margin 5px
 			padding 10px
 			display inline-block
 			background darken(#AB2134, 30%)
-			transition .8s box-shadow 
+			transition .8s box-shadow, .8s background 
 
 			&:hover
-				box-shadow 0 0 15px rgba(black, .26)
+				box-shadow 0 0 15px rgba(black, .36)
+				background lighten(#AB2134, 20%)
 			a
 				color white
 				
@@ -67,19 +83,25 @@ footer
 					text-decoration none
 					
 .elements
-	background white
-	padding 2em
+	div
+		margin 0 !important
+		padding-bottom .5em
+		padding-top .5em
 	
-
-.type
-	border solid #b2b2b2 1px
-	margin-bottom 1em
-	/*max-height 130px*/
-	
-.item
-	display block
-	width 100%
-
+	.type
+		background white
+		margin-bottom 1em
+		border-radius 5px
+		transition 1s box-shadow ease
+		
+		&:hover
+			box-shadow 0 0 15px rgba(black, .3)
+	/*
+	.item
+		display block
+		width 100%
+	*/
+		
 .choose
 	margin-left auto
 	margin-right auto
@@ -136,3 +158,7 @@ footer
 
 .btn-infosite
 	margin-top 1em
+	
+.title
+	color #fff
+	text-shadow 0 0 5px rgba(black, .5)
