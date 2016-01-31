@@ -5,15 +5,9 @@
 	<title>Login</title>
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 
-	<link rel="stylesheet" type="text/css" href="assets/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="css/selection.css">
+	{!!Html::style('assets/bootstrap/css/bootstrap.min.css')!!}
+	{!!Html::style('css/login.css')!!}
 	
-	<style type="text/css">
-		body{
-			background: url('images/backgrounds/wood.jpg') center center no-repeat fixed;
-			background-size: cover;
-		}
-	</style>
 </head>
 <body>
 
@@ -25,11 +19,15 @@
 @endif
 
 
-
-	<div class="container selections">
+<div class="center-center">
+	<div class="container">
 		<div class="row">
+			
 			<div class="col-md-offset-4 col-md-4 login-box">
-				<img src="images/logos/one.png" alt="logo" class="logo-login">
+				<a href="{{url('/')}}">
+					<img src="{{asset('images/logos/one.png')}}" alt="logo" class="logo">
+				</a>
+				
 				
 				{!!Form::open(['url'=>'login'])!!}
 					<div class="row">
@@ -39,25 +37,23 @@
 						<div class="input-group col-xs-12">
 							<input name="password" type="password" class="form-control" placeholder="Password">
 						</div>
+
+						<a href="#">Forgot your password?</a>
 					</div>
 
 					<div class="row">
-						{!!Form::submit('Login', ['class'=>'btn btn-primary'])!!}
-
-						{{-- <a class="btn btn-primary">Login</a> --}}
-						<a href="/register" class="btn btn-success">Register</a>
-						<a href="/choose" class="btn btn-warning">Skip</a>
+						<input class="btn btn-primary" type="submit" value="Login">
+						<a href="{{url('register')}}" class="btn btn-success">Register</a>
+						<a href="{{url('choose')}}" class="btn btn-warning">Skip</a>
 					</div>
 					{!!Form::token()!!}
 				{!!Form::close()!!}
 			</div>
+
 		</div>
 	</div>
-	<div class="separator-fix-footer"></div>
-	<footer>
-		<p>
-			3895 Lake Emma Rd #151, Lake Mary, FL 32746 Phone: (407) 333-2733 Fax: (407) 333-2733
-		</p>
-	</footer>
+</div>
+
+	@include('sections.footer')
 </body>
 </html>
