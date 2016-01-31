@@ -19,7 +19,7 @@
 				<a class="btn btn-default btn-infosite visible-xs-inline-block">
 					<span class="glyphicon glyphicon-menu-hamburger"></span>
 				</a>
-			<a href="/choose">
+			<a href="{{url('choose')}}">
 				<img src="{{asset('images/logos/one.png')}}" alt="logo" class="logo">
 			</a>
 			
@@ -37,11 +37,7 @@
 		</div>
 	</nav>
 	@yield('content')
-	<div class="separator-fix-footer"></div>
-	<footer>
-		<p>
-			3895 Lake Emma Rd #151, Lake Mary, FL 32746 Phone: (407) 333-2733 Fax: (407) 333-2733
-		</p>
-	</footer>
+	
+	@include('sections.footer')
 </body>
 </html>

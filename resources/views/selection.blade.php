@@ -3,39 +3,57 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Selection</title>
-	<link rel="stylesheet" type="text/css" href="assets/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="css/selection.css">
+
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+	{!!Html::style('assets/bootstrap/css/bootstrap.min.css')!!}
+	{!!Html::style('css/selection.css')!!}
+
 </head>
 <body>
 	<nav>
 		<div class="container">
-			<img src="images/logos/one.png" alt="logo" class="logo">
+			<img src="{{asset('images/logos/one.png')}}" alt="logo" class="logo">
 		</div>
 	</nav>
-	<div class="container selections">
-		<div class="row">
-			<div class="col-xs-offset-3 col-xs-6">
+
+
+
+		<div class="center-center">
+			<div class="container">
+				
 				<div class="row">
-					<a href="/login">
-						<div class="col-md-6 col-xs-12 selection orange-box">
-							<h2>Delivery</h2>
+					<div class="col-md-offset-3 col-md-6 ">
+						<div class="row box">
+							<a href="{{url('login')}}">
+								<div class="col-md-6">
+									<div class="orange-box box-type">
+										<h2>Delivery</h2>
+										<img src="{{asset('images/logos/pizza_delivery_man.png')}}" height="100">
+									</div>
+									
+								</div>	
+							</a>
+							
+							<a href="{{url('choose')}}">
+								<div class="col-md-6">
+									<div class="blue-box box-type">
+										<h2>Pick Up</h2>
+										<img src="{{asset('images/logos/horno.png')}}" height="100">
+									</div>
+								</div>
+							</a>
+							
 						</div>
-					</a>
-					<a href="/choose">
-						<div class="col-md-6 col-xs-12 selection blue-box">
-							<h2>Pick Up</h2>
-						</div>
-					</a>
-					
-				</div>
-			</div>
+					</div>
+				</div>	
+				
 		</div>
-	</div>
-	<div class="separator-fix-footer"></div>
-	<footer>
-		<p>
-			3895 Lake Emma Rd #151, Lake Mary, FL 32746 Phone: (407) 333-2733 Fax: (407) 333-2733
-		</p>
-	</footer>
+
+			
+		</div>
+
+	@include('sections.footer')
+	
 </body>
 </html>
