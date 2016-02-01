@@ -117,7 +117,11 @@ footer img {
 .counter-price {
   background: #fff;
   border-radius: 5px;
-  border: #333 solid 1px;
+  box-shadow: 0 0 2px rgba(0,0,0,0.26);
+/*
+	&:hover
+		box-shadow 0 0 15px rgba(black, .36)
+	*/
 }
 .list-cart {
   background: #fff;

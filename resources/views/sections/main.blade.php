@@ -7,6 +7,9 @@
 
 	{!!Html::style('assets/bootstrap/css/bootstrap.min.css')!!}
 	{!!Html::style('css/main.css')!!}
+	
+
+
 
 </head>
 <body>
@@ -39,5 +42,6 @@
 	@yield('content')
 	
 	@include('sections.footer')
+
 </body>
 </html>
