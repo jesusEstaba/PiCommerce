@@ -10,10 +10,13 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+
+
+//Delete this route in production
 Route::get('/pass', function () {
     return bcrypt('pass');
 });
-
+/////////////////////////////////
 
 Route::get('/', function () {
     return view('selection');
@@ -22,13 +25,11 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return view('login');
 });
-Route::post('/login', 'LoginCTRL@login');
 
+Route::post('/login', 'LoginCTRL@login');
 Route::get('/logout', 'LoginCTRL@logout');
 
-Route::get('/register', function () {
-    return view('register');
-});
+Route::get('/register', 'RegisterCTRL@index');
 Route::post('/register', 'RegisterCTRL@register');
 
 Route::get('/choose', function () {
@@ -39,8 +40,8 @@ Route::get('/category/{name_category}', 'CategoryCTRL@category');
 
 Route::get('/product/{cat}/{id}', 'ProductCTRL@index');
 
-Route::group(['middleware'=>'auth'], function(){
-	
+Route::group(['middleware'=>'auth'], function()
+{
 	Route::get('/cart', function () {
     	return view('cart');
 	});
