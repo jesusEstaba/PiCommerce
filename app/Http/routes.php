@@ -37,9 +37,7 @@ Route::get('/choose', function () {
 
 Route::get('/category/{name_category}', 'CategoryCTRL@category');
 
-Route::get('/product', function () {
-    return view('product');
-});
+Route::get('/product/{cat}/{id}', 'ProductCTRL@index');
 
 Route::group(['middleware'=>'auth'], function(){
 	
