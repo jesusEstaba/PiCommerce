@@ -13,16 +13,19 @@
 					</div>
 					<div class="col-md-6">
 						<div class="row">
-							<h2>Delux</h2>
+							<h2>{{$name}}</h2>
 							<p>Pepperoni, Sausage, Onions, Green Peppers, Mushrooms, Black Olives</p>
 						</div>
 						<div class="row">
-							<ul class="size-pizza nav nav-pills">
-							  <li class="active"><a href="#">12"</a></li>
-							  <li><a href="#">15"</a></li>
-							  <li><a href="#">18"</a></li>
-							  <li><a href="#">20"</a></li>
-							</ul>
+							<div class="sizes">
+								@if($size)
+									@foreach($size as $table => $val)
+										<a class="btn btn-default size" price="{{$val->Sz_Price}}" top-price="{{$val->Sz_Topprice}}">{{$val->Sz_Abrev}}</a>
+									@endforeach
+								@else
+									<p>No Hay Tamaños</p>
+								@endif
+							</div>
 						</div>
 					</div>
 				</div>
@@ -85,12 +88,12 @@
 
 		<div class="col-md-4 bottom-space">
 			<div class="counter-price" id="droppable">
-				<h3>Delux 12"</h3>
+				<h3 class="pizza_size">Pizza Size</h3>
 				<ul class="items-toppings">
-					<li>Pepperoni</li>
-					<li>Double Cheese</li>
-					<li>Onios</li>
-					<li>Corn</li>
+					<li class="def-top">Pepperoni</li>
+					<li class="def-top">Double Cheese</li>
+					<li class="def-top">Onios</li>
+					<li class="def-top">Corn</li>
 				</ul>
 
 				<h2 class="text-success price-all"><span class="total-price">14.99</span>$</h2>
@@ -107,8 +110,20 @@
 	<link rel="stylesheet" type="text/css" href="{{asset('assets/jquery-ui/jquery-ui.min.css')}}">
 <style type="text/css">
 	.drag{
+		border-radius: 3px;
 		z-index: 6;
+		background: #eee;
+		padding: .5em;
+		transition:.8s background;
 	}
+	.drag:hover{
+		background: #ccc;
+	}
+	.drag:active{
+		border:dashed #333 1px;
+		padding: .5em;
+	}
+
 	.bottom-space{
 		margin-bottom: 2em;
 	}
@@ -142,18 +157,66 @@
 		padding-bottom: 1em;
 	}
 
+	.helper-pizza{
+		background: #5cb85c;
+		padding: .5em;
+		border-radius: 3px;
+		color:white;
+		transform:skewY(3.2rad);
+		box-shadow: 0 0 5px rgba(0,0,0,.3);
+	}
+
 </style>
 
 <script type="text/javascript">
+$.fn.hasAncestor = function(a) {
+    return this.filter(function() {
+        return !!$(this).closest(a).length;
+    });
+};
+
+
+
 $(function() {
-    $( "#catalog" ).accordion();
+	$(".pizza_size").html( $(".sizes a:first-child").html() );
+	$('.total-price').html( $(".sizes a:first-child").attr('price') );
+	var topprice_origin = parseFloat( $(".sizes a:first-child").attr('top-price') );
+
+	$('.size').click(function(){
+		$('.pizza_size').html( $(this).html() );
+		
+
+		var topping_price = $(this).attr("top-price");
+
+		var total_topping_price = $(".items-toppings").children().not(".def-top").length * topping_price;
+
+		$('.total-price').html( ( parseFloat( $(this).attr('price') )+ total_topping_price ).toFixed(2) );
+
+
+
+		//$(".total-price").html( ( parseFloat( $(".total-price").html() ) + 1 ).toFixed(2) );
+
+	});
+
+
+   // $( "#catalog" ).accordion();
+
+
+
+/*    $( ".add-topping" ).draggable({
+    	drag:function(){
+    		console.log("move");
+    	}
+    });
+*/
+
 
     $( ".drag" ).draggable({
       appendTo: "body",
       helper: "clone",
-      drag:function(){
-
-      }
+      drag:function(event, ui) {
+    	ui.helper.addClass('helper-pizza');
+	}
     });
     
     $( "#droppable ul" ).droppable({
@@ -162,7 +225,7 @@ $(function() {
       accept: ":not(.ui-sortable-helper)",
       drop: function( event, ui ) {
         $( this ).find( ".placeholder" ).remove();
-        $( "<li></li>" ).text( ui.draggable.text() ).appendTo( this );
+        $( "<li class='add-topping'></li>" ).text( ui.draggable.text() ).appendTo( this );
 		
 
 		/*
@@ -173,7 +236,7 @@ $(function() {
         alert(cuenta);
 		*/
 
-        $(".total-price").html( ( parseFloat( $(".total-price").html() ) + 1 ).toFixed(2) );
+        $(".total-price").html( ( parseFloat( $(".total-price").html() ) + topprice_origin ).toFixed(2) );
 
       }
     }).sortable({
@@ -182,7 +245,20 @@ $(function() {
         // gets added unintentionally by droppable interacting with sortable
         // using connectWithSortable fixes this, but doesn't allow you to customize active/hoverClass options
         $( this ).removeClass( "ui-state-default" );
-      }
+      },
+
+out: function (event, ui) {
+        console.log(ui);
+
+        /*i.helper.remove();*/
+        if(ui.helper)
+        ui.helper.fadeOut(1000, function () {
+            $(this).remove();
+        });
+    }
+
+
+
     });
   });
 </script>

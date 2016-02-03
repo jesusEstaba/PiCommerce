@@ -53,8 +53,7 @@
 											{{$valor->It_Descrip}}
 										@endif
 									</h3>
-									<p>Grilled Chicken, Plum Tomatoes, Pesto Sauce, Onions, Cheese</p>
-									<a href="{{url('product')}}" class="btn btn-success">2,99$</a>
+									<a href="{{url('product/'.$name_cat_url.'/'.$valor->Sz_item)}}" class="btn btn-success">{{$valor->Sz_Price}}$</a>
 								</div>
 							</div>
 						</div>
