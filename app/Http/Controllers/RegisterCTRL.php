@@ -13,6 +13,10 @@ use DB;
 
 class RegisterCTRL extends Controller
 {
+    public function index(){
+        return view('register');
+    }
+    
     public function register(Request $request){
 
     	if(

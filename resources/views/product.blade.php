@@ -20,7 +20,7 @@
 							<div class="sizes">
 								@if($size)
 									@foreach($size as $table => $val)
-										<a class="btn btn-default size" price="{{$val->Sz_Price}}" top-price="{{$val->Sz_Topprice}}">{{$val->Sz_Abrev}}</a>
+										<a class="btn btn-default size" id-size="{{$val->Sz_Id}}" price="{{$val->Sz_Price}}" top-price="{{$val->Sz_Topprice}}">{{$val->Sz_Abrev}}</a>
 									@endforeach
 								@else
 									<p>No Hay Tamaños</p>
@@ -37,42 +37,42 @@
 
 					<div class="row">
 						<div class="col-md-3 col-sm-6">
-							<p class="drag">EXTRA_CHEESE</p>
-							<p class="drag">FETA_CHEESE</p>
-							<p class="drag">RICOTTA_CHEESE</p>
+							<p id-top="2" class="drag">EXTRA_CHEESE</p>
+							<p id-top="2" class="drag">FETA_CHEESE</p>
+							<p id-top="2" class="drag">RICOTTA_CHEESE</p>
 						</div>
 						<div class="col-md-3 col-sm-6">
-							<p class="drag">PEPRONI</p>
-							<p class="drag">SAUSAGE</p>
-							<p class="drag">HAM</p>
-							<p class="drag">BACON</p>
-							<p class="drag">GROUND_BEEF</p>
-							<p class="drag">MEATBALLS</p>
-							<p class="drag">SALAMI</p>
+							<p id-top="2" class="drag">PEPRONI</p>
+							<p id-top="2" class="drag">SAUSAGE</p>
+							<p id-top="2" class="drag">HAM</p>
+							<p id-top="2" class="drag">BACON</p>
+							<p id-top="2" class="drag">GROUND_BEEF</p>
+							<p id-top="2" class="drag">MEATBALLS</p>
+							<p id-top="2" class="drag">SALAMI</p>
 						</div>
 						<div class="col-md-3 col-sm-6">
-							<p class="drag">CHICKEN</p>
-							<p class="drag">ANCHOVIES</p>
+							<p id-top="2" class="drag">CHICKEN</p>
+							<p id-top="2" class="drag">ANCHOVIES</p>
 						</div>
 						<div class="col-md-3 col-sm-6">
-							<p class="drag">ONIONS</p>
-							<p class="drag">GREEN_PEPPERS</p>
-							<p class="drag">MUSHR</p>
-							<p class="drag">SPINACH</p>
-							<p class="drag">GARLIC</p>
-							<p class="drag">BROCOLLI</p>	
-							<p class="drag">FRESH_BASIL</p>
-							<p class="drag">EGGPLANT</p>
+							<p id-top="2" class="drag">ONIONS</p>
+							<p id-top="2" class="drag">GREEN_PEPPERS</p>
+							<p id-top="2" class="drag">MUSHR</p>
+							<p id-top="2" class="drag">SPINACH</p>
+							<p id-top="2" class="drag">GARLIC</p>
+							<p id-top="2" class="drag">BROCOLLI</p>	
+							<p id-top="2" class="drag">FRESH_BASIL</p>
+							<p id-top="2" class="drag">EGGPLANT</p>
 						</div>
 						<div class="col-md-3 col-sm-6">
-							<p class="drag">BLACK_OLIVES</p>
-							<p class="drag">GREEN_OLIVES</p>
-							<p class="drag">PINEAPPLE</p>
-							<p class="drag">TOMATO</p>
+							<p id-top="2" class="drag">BLACK_OLIVES</p>
+							<p id-top="2" class="drag">GREEN_OLIVES</p>
+							<p id-top="2" class="drag">PINEAPPLE</p>
+							<p id-top="2" class="drag">TOMATO</p>
 						</div>
 						<div class="col-md-3 col-sm-6">
-							<p class="drag">JALAPENO</p>
-							<p class="drag" id="draggable">BANNANA_PEPPERS</p>
+							<p id-top="2" class="drag">JALAPENO</p>
+							<p id-top="2" class="drag" id="draggable">BANNANA_PEPPERS</p>
 						</div>
 
 						<div class="col-xs-12">
@@ -88,8 +88,8 @@
 
 		<div class="col-md-4 bottom-space">
 			<div class="counter-price" id="droppable">
-				<h3 class="pizza_size">Pizza Size</h3>
-				<ul class="items-toppings">
+				<h3 class="pizza_size" price="0">Pizza Size</h3>
+				<ul topprice='0' class="items-toppings">
 					<li class="def-top">Pepperoni</li>
 					<li class="def-top">Double Cheese</li>
 					<li class="def-top">Onios</li>
@@ -105,9 +105,15 @@
 	
 </div>
 
+<form action="{{url('')}}" method="post" class="add-to-cart hide">
+	
+	<input type="submit" />
+</form>
+
 	<script src="{{asset('assets/jquery/jquery.min.js')}}"></script>
 	<script src="{{asset('assets/jquery-ui/jquery-ui.min.js')}}"></script>
 	<link rel="stylesheet" type="text/css" href="{{asset('assets/jquery-ui/jquery-ui.min.css')}}">
+
 <style type="text/css">
 	.drag{
 		border-radius: 3px;
@@ -169,96 +175,125 @@
 </style>
 
 <script type="text/javascript">
-$.fn.hasAncestor = function(a) {
-    return this.filter(function() {
-        return !!$(this).closest(a).length;
-    });
-};
+function addToCart(){
+		var selected=[];
 
+		$(".add-topping").each(function(index){
+	        selected.push( parseInt( $(this).not(".def-top").attr('id-top') ) );
+        });
+		
+		var input = $("<input>").attr({"type":"hidden","name":"selected"}).val(selected);
+		
+		$('.add-to-cart').append(input);
 
+		console.log(selected);
+		//console();
+	}
 
 $(function() {
-	$(".pizza_size").html( $(".sizes a:first-child").html() );
-	$('.total-price').html( $(".sizes a:first-child").attr('price') );
-	var topprice_origin = parseFloat( $(".sizes a:first-child").attr('top-price') );
 
-	$('.size').click(function(){
+	function total_mas_toppings()
+	{
+		var topping_price= parseFloat( $('.items-toppings').attr('topprice') );
+
+		var total_topping_price = $(".items-toppings").children().not(".def-top").length * topping_price;
+
+		$('.total-price').html( ( parseFloat( $(".pizza_size").attr('price') )+ total_topping_price ).toFixed(2) );
+	}
+
+
+	//Add to cart
+	
+
+	
+
+
+	//
+
+
+
+	$(".pizza_size")
+		.html( $(".sizes a:first-child").html() )
+		.attr('price', $(".sizes a:first-child").attr('price'));
+	
+	$('.total-price').html( $(".sizes a:first-child").attr('price') );
+	
+	//var topprice_origin = parseFloat(  );
+
+	$('.items-toppings').attr('topprice', $(".sizes a:first-child").attr('top-price'));
+	
+
+
+	$('.size').click(function()
+	{
 		$('.pizza_size').html( $(this).html() );
 		
 
 		var topping_price = $(this).attr("top-price");
+
+		$('.items-toppings').attr('topprice',topping_price);
 
 		var total_topping_price = $(".items-toppings").children().not(".def-top").length * topping_price;
 
 		$('.total-price').html( ( parseFloat( $(this).attr('price') )+ total_topping_price ).toFixed(2) );
 
 
-
-		//$(".total-price").html( ( parseFloat( $(".total-price").html() ) + 1 ).toFixed(2) );
+		$(".pizza_size").attr('price', $(this).attr('price'));
 
 	});
 
-
-   // $( "#catalog" ).accordion();
-
-
-
-/*    $( ".add-topping" ).draggable({
-    	drag:function(){
-    		console.log("move");
-    	}
-    });
-*/
-
-
-    $( ".drag" ).draggable({
-      appendTo: "body",
-      helper: "clone",
-      drag:function(event, ui) {
-    	ui.helper.addClass('helper-pizza');
-	}
+    $( ".drag" ).draggable(
+    {
+    	appendTo: "body",
+    	helper: "clone",
+    	drag:function(event, ui)
+    	{
+    		ui.helper.addClass('helper-pizza');
+		}
     });
     
-    $( "#droppable ul" ).droppable({
-      activeClass: "ui-state-default",
-      hoverClass: "ui-state-hover",
-      accept: ":not(.ui-sortable-helper)",
-      drop: function( event, ui ) {
-        $( this ).find( ".placeholder" ).remove();
-        $( "<li class='add-topping'></li>" ).text( ui.draggable.text() ).appendTo( this );
+    $( "#droppable ul" ).droppable(
+    {
+    	activeClass: "ui-state-default",
+    	hoverClass: "ui-state-hover",
+    	accept: ":not(.ui-sortable-helper)",
+    	drop: function( event, ui )
+    	{
+        	$( this ).find( ".placeholder" ).remove();
+        
+        	$(".add-topping").each(function(index){
+	        	if($(this).text()==ui.draggable.text())
+	        	{
+	        		$(this).fadeOut(1000, function(){
+	        			$(this).remove();
+	        			total_mas_toppings();
+	        		});
+	        	}
+        	
+        	});
+
+        	$( "<li class='add-topping'></li>" ).text( ui.draggable.text() ).attr('id-top', ui.draggable.attr('id-top')).appendTo( this );
 		
-
-		/*
-		var cuenta = 0;
-        $(".items-toppings li").each(function(index, el) {
-        	cuenta++;
-        });
-        alert(cuenta);
-		*/
-
-        $(".total-price").html( ( parseFloat( $(".total-price").html() ) + topprice_origin ).toFixed(2) );
+        	$(".total-price").html( ( parseFloat( $(".total-price").html() ) +  parseFloat( $('.items-toppings').attr('topprice') ) ).toFixed(2) );
 
       }
-    }).sortable({
-      items: "li:not(.placeholder)",
-      sort: function() {
-        // gets added unintentionally by droppable interacting with sortable
-        // using connectWithSortable fixes this, but doesn't allow you to customize active/hoverClass options
-        $( this ).removeClass( "ui-state-default" );
-      },
+    }).sortable(
+    {
+    	items: "li:not(.placeholder)",
+    	sort: function()
+    	{
+        	$( this ).removeClass( "ui-state-default" );
+    	},
+		out: function (event, ui)
+		{
+	    	//console.log(ui);
 
-out: function (event, ui) {
-        console.log(ui);
-
-        /*i.helper.remove();*/
-        if(ui.helper)
-        ui.helper.fadeOut(1000, function () {
-            $(this).remove();
-        });
-    }
-
-
-
+	        if(ui.helper)
+	        ui.helper.fadeOut(1000, function () {
+	            $(this).remove();
+	            total_mas_toppings();
+	        });
+    	}
     });
   });
 </script>
