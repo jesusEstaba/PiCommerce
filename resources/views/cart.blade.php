@@ -4,33 +4,23 @@
 @section('content')
 <div class="container space">
 	<div class="row list-cart">
-		<div class="item-pay col-md-6 col-xs-12">
-			<h3>Delux 12"</h3>
-			<ul>
-				<li>Pepperoni</li>
-				<li>Double Cheese</li>
-				<li>Onios</li>
-				<li>Corn</li>
-			</ul>
-			<p class="text-success">14,99$</p>
-		</div>
-		<div class="item-pay col-md-6 col-xs-12">
-			<h3>Delux 15"</h3>
-			<ul>
-				<li>Pepperoni</li>
-				<li>Double Cheese</li>
-				<li>Corn</li>
-			</ul>
-			<p class="text-success">14,51$</p>
-		</div>
-		<div class="item-pay col-md-6 col-xs-12">
-			<h3>Delux 20"</h3>
-			<ul>
-				<li>Pepperoni</li>
-				<li>Corn</li>
-			</ul>
-			<p class="text-success">20,99$</p>
-		</div>
+
+		@if($cart)
+			@foreach($cart as $table => $campo)
+				<div class="item-pay col-md-6 col-xs-12">
+				<h3>{{$campo->Sz_Abrev}}</h3>
+				{{-- <ul>
+					<li>Pepperoni</li>
+					<li>Double Cheese</li>
+					<li>Onios</li>
+					<li>Corn</li>
+				</ul> --}}
+				<p class="text-success">{{$campo->Sz_Price}}</p>
+			</div>
+			@endforeach
+		@else
+			<h2>Cart Empty</h2>
+		@endif
 	</div>
 	<div class="row actions-cart">
 		<div class="col-md-4">

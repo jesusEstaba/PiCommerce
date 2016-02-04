@@ -88,7 +88,7 @@
 
 		<div class="col-md-4 bottom-space">
 			<div class="counter-price" id="droppable">
-				<h3 class="pizza_size" price="0">Pizza Size</h3>
+				<h3 class="pizza_size" id-size="0"  price="0">Pizza Size</h3>
 				<ul topprice='0' class="items-toppings">
 					<li class="def-top">Pepperoni</li>
 					<li class="def-top">Double Cheese</li>
@@ -97,7 +97,8 @@
 				</ul>
 
 				<h2 class="text-success price-all"><span class="total-price">14.99</span>$</h2>
-				<a href="{{url('cart')}}" class="btn btn-success go-checkout-cart">Add to Car</a>
+{{-- 				href="{{url('cart')}}"  --}}
+				<a class="btn btn-success go-checkout-cart">Add to Car</a>
 			</div>	
 		</div>
 
@@ -105,9 +106,10 @@
 	
 </div>
 
-<form action="{{url('')}}" method="post" class="add-to-cart hide">
-	
-	<input type="submit" />
+<form action="{{url('/add_to_cart')}}" method="post" class="add-to-cart hide">
+	{{-- <input type="hidden" name="" value="" /> --}}
+	<input type="submit" class="send-to-cart" />
+	<input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
 </form>
 
 	<script src="{{asset('assets/jquery/jquery.min.js')}}"></script>
@@ -183,11 +185,19 @@ function addToCart(){
         });
 		
 		var input = $("<input>").attr({"type":"hidden","name":"selected"}).val(selected);
-		
-		$('.add-to-cart').append(input);
+		console.log("toppings "+selected);
 
-		console.log(selected);
-		//console();
+
+		var id_size = $("<input>").attr({"type":"hidden","name":"id_size"}).val( $(".pizza_size").attr('id-size') );
+		console.log("id_size "+ id_size);
+		
+		$('.add-to-cart')
+			.append(input)
+			.append(id_size);
+
+		
+		
+		//
 	}
 
 $(function() {
@@ -205,7 +215,10 @@ $(function() {
 	//Add to cart
 	
 
-	
+	$('.go-checkout-cart').click(function(){
+		addToCart();
+		$('.send-to-cart').click();
+	});
 
 
 	//
@@ -214,7 +227,8 @@ $(function() {
 
 	$(".pizza_size")
 		.html( $(".sizes a:first-child").html() )
-		.attr('price', $(".sizes a:first-child").attr('price'));
+		.attr('price', $(".sizes a:first-child").attr('price'))
+		.attr('id-size', $(".sizes a:first-child").attr('id-size'));
 	
 	$('.total-price').html( $(".sizes a:first-child").attr('price') );
 	
@@ -238,7 +252,9 @@ $(function() {
 		$('.total-price').html( ( parseFloat( $(this).attr('price') )+ total_topping_price ).toFixed(2) );
 
 
-		$(".pizza_size").attr('price', $(this).attr('price'));
+		$(".pizza_size")
+			.attr('price', $(this).attr('price'))
+			.attr('id-size', $(this).attr('id-size'));
 
 	});
 
