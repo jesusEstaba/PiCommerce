@@ -28,7 +28,7 @@
 							$size_topping = "";
 						?>
 
-						<li>{{$val->Tp_Descrip.$size_topping}}: {{$val->price}}$</li>
+						<li>{{strtolower($val->Tp_Descrip).$size_topping}}: {{$val->price}}$</li>
 						<?php $total_price_top += $val->price;?>
 					@endforeach
 				</ul>
