@@ -38,41 +38,41 @@
 					<div class="row">
 						<div class="col-md-3 col-sm-6">
 							<p id-top="2" class="drag">EXTRA_CHEESE</p>
-							<p id-top="2" class="drag">FETA_CHEESE</p>
-							<p id-top="2" class="drag">RICOTTA_CHEESE</p>
+							<p id-top="0" class="drag">FETA_CHEESE</p>
+							<p id-top="0" class="drag">RICOTTA_CHEESE</p>
 						</div>
 						<div class="col-md-3 col-sm-6">
-							<p id-top="2" class="drag">PEPRONI</p>
-							<p id-top="2" class="drag">SAUSAGE</p>
-							<p id-top="2" class="drag">HAM</p>
-							<p id-top="2" class="drag">BACON</p>
-							<p id-top="2" class="drag">GROUND_BEEF</p>
-							<p id-top="2" class="drag">MEATBALLS</p>
-							<p id-top="2" class="drag">SALAMI</p>
+							<p id-top="0" class="drag">PEPRONI</p>
+							<p id-top="0" class="drag">SAUSAGE</p>
+							<p id-top="0" class="drag">HAM</p>
+							<p id-top="9" class="drag">BACON</p>
+							<p id-top="0" class="drag">GROUND_BEEF</p>
+							<p id-top="0" class="drag">MEATBALLS</p>
+							<p id-top="0" class="drag">SALAMI</p>
 						</div>
 						<div class="col-md-3 col-sm-6">
-							<p id-top="2" class="drag">CHICKEN</p>
-							<p id-top="2" class="drag">ANCHOVIES</p>
+							<p id-top="0" class="drag">CHICKEN</p>
+							<p id-top="0" class="drag">ANCHOVIES</p>
 						</div>
 						<div class="col-md-3 col-sm-6">
-							<p id-top="2" class="drag">ONIONS</p>
-							<p id-top="2" class="drag">GREEN_PEPPERS</p>
-							<p id-top="2" class="drag">MUSHR</p>
-							<p id-top="2" class="drag">SPINACH</p>
-							<p id-top="2" class="drag">GARLIC</p>
-							<p id-top="2" class="drag">BROCOLLI</p>	
-							<p id-top="2" class="drag">FRESH_BASIL</p>
-							<p id-top="2" class="drag">EGGPLANT</p>
+							<p id-top="0" class="drag">ONIONS</p>
+							<p id-top="0" class="drag">GREEN_PEPPERS</p>
+							<p id-top="0" class="drag">MUSHR</p>
+							<p id-top="0" class="drag">SPINACH</p>
+							<p id-top="0" class="drag">GARLIC</p>
+							<p id-top="0" class="drag">BROCOLLI</p>	
+							<p id-top="0" class="drag">FRESH_BASIL</p>
+							<p id-top="0" class="drag">EGGPLANT</p>
 						</div>
 						<div class="col-md-3 col-sm-6">
-							<p id-top="2" class="drag">BLACK_OLIVES</p>
-							<p id-top="2" class="drag">GREEN_OLIVES</p>
-							<p id-top="2" class="drag">PINEAPPLE</p>
-							<p id-top="2" class="drag">TOMATO</p>
+							<p id-top="0" class="drag">BLACK_OLIVES</p>
+							<p id-top="0" class="drag">GREEN_OLIVES</p>
+							<p id-top="0" class="drag">PINEAPPLE</p>
+							<p id-top="0" class="drag">TOMATO</p>
 						</div>
 						<div class="col-md-3 col-sm-6">
-							<p id-top="2" class="drag">JALAPENO</p>
-							<p id-top="2" class="drag" id="draggable">BANNANA_PEPPERS</p>
+							<p id-top="0" class="drag">JALAPENO</p>
+							<p id-top="0" class="drag" id="draggable">BANNANA_PEPPERS</p>
 						</div>
 
 						<div class="col-xs-12">

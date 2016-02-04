@@ -9,12 +9,11 @@
 			@foreach($cart as $table => $campo)
 				<div class="item-pay col-md-6 col-xs-12">
 				<h3>{{$campo->Sz_Abrev}}</h3>
-				{{-- <ul>
-					<li>Pepperoni</li>
-					<li>Double Cheese</li>
-					<li>Onios</li>
-					<li>Corn</li>
-				</ul> --}}
+				<ul>
+					@foreach($campo->toppings_list as $tab => $val)
+						<li>{{$val->Tp_Descrip}}</li>
+					@endforeach
+				</ul>
 				<p class="text-success">{{$campo->Sz_Price}}</p>
 			</div>
 			@endforeach
