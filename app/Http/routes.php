@@ -12,6 +12,13 @@
 */
 
 
+Route::get('/test', function () {
+    if( Session::has('size') )
+        return Session::get('size');
+    return "empty";
+});
+
+
 //Delete this route in production
 Route::get('/pass', function () {
     return bcrypt('pass');
@@ -40,10 +47,10 @@ Route::get('/category/{name_category}', 'CategoryCTRL@category');
 
 Route::get('/product/{cat}/{id}', 'ProductCTRL@index');
 
+Route::post('/add_to_cart', 'CartCTRL@add');
+
 Route::group(['middleware'=>'auth'], function()
 {
-	Route::get('/cart', function () {
-    	return view('cart');
-	});
+	Route::get('/cart', 'CartCTRL@index');
 });
 
