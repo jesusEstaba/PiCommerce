@@ -128,4 +128,45 @@ class CartCTRL extends Controller
     	
     	return view('cart')->with(['cart'=>$cart]);
     }
+
+
+    public function total_price(){
+    	
+    	$total_cart = DB::select('SELECT sum(cart_top.price) as toppings
+    		from cart 
+    		
+    		inner join cart_top 
+    		on cart.id=cart_top.id_cart
+
+    		where cart.id_user=?
+			order by cart_top.id_cart
+    		',[Auth::user()->id]
+    	);
+
+    	if($total_cart)
+    	{
+    		$total_cart2 = DB::select('SELECT sum(size.Sz_Price) as pizza
+	    		from cart 
+	    		inner join size
+	    		on cart.product_id=size.Sz_Id
+	    		where cart.id_user=?
+				order by cart.id
+	    		',[Auth::user()->id]
+    		);
+
+    		if($total_cart2)
+    			$total_cart2 = $total_cart2[0]->pizza;
+    		else
+				$total_cart2 = 0;
+
+    		$total = $total_cart[0]->toppings + $total_cart2;
+    	}
+    	else
+    	{
+    		$total = 0.00;
+    	}
+    	
+
+    	return $total;
+    }
 }
