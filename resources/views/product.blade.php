@@ -5,6 +5,8 @@
 
 <div class="container space bottom-space">
 	<div class="row">
+
+	@if($item)
 		<div class="col-md-8">
 			<div class="head-product">
 				<div class="row">
@@ -32,9 +34,35 @@
 			</div>
 
 			<div class="row">	
+				
 				<div class="toppings">
-					<h2>Add Toping</h2>
+					<div class="row">
+						<div class="col-xs-4">
+							<h2>Add Toping</h2>
+						</div>
+						<div class="col-xs-8">
+							<a class="btn btn-primary topping-size" size-top="1" >Complete</a>
+							<a class="btn btn-primary topping-size" size-top="2" >Left Half</a>
+							<a class="btn btn-primary topping-size" size-top="3" >Right Half</a>
+							<a class="btn btn-primary topping-size" size-top="4" >Double</a>
+							<a class="btn btn-primary topping-size" size-top="5" >Lite</a>
+						</div>
+					</div>
+					
+					<br>
 
+					<div class="row">
+						<div class="col-md-12 col-sm-6">
+							@if($toppings)
+								@foreach($toppings as $data => $table)
+									<a id-top="{{$table->Tp_Id}}" class="btn drag">{{strtolower($table->TP_Descrip)}}</a>
+								@endforeach
+							@else
+								<h2>No Toppings for now</h2>
+							@endif
+						</div>
+					
+					{{--
 					<div class="row">
 						<div class="col-md-3 col-sm-6">
 							<p id-top="2" class="drag">EXTRA_CHEESE</p>
@@ -75,6 +103,8 @@
 							<p id-top="0" class="drag" id="draggable">BANNANA_PEPPERS</p>
 						</div>
 
+						--}}
+
 						<div class="col-xs-12">
 							<div class="input-control">
 								<textarea placeholder="cooking instructions" class="form-control"></textarea>
@@ -82,6 +112,7 @@
 						</div>
 					</div>
 				</div>
+
 			</div>
 		</div>
 
@@ -101,7 +132,11 @@
 				<a class="btn btn-success go-checkout-cart">Add to Car</a>
 			</div>	
 		</div>
-
+@else
+	<div class="row">
+		<h3>This item no exist</h3>
+	</div>
+@endif
 	</div>
 	
 </div>
@@ -130,6 +165,10 @@
 	.drag:active{
 		border:dashed #333 1px;
 		padding: .5em;
+	}
+
+	.btn.drag{
+		margin-bottom: .5em;
 	}
 
 	.bottom-space{
@@ -179,26 +218,27 @@
 <script type="text/javascript">
 function addToCart(){
 		var selected=[];
-
+		var topings_selected = [];
 		$(".add-topping").each(function(index){
 	        selected.push( parseInt( $(this).not(".def-top").attr('id-top') ) );
+	        topings_selected.push( $(this).not(".def-top").attr('size-top') );
         });
 		
 		var input = $("<input>").attr({"type":"hidden","name":"selected"}).val(selected);
-		console.log("toppings "+selected);
 
+		var toping_size = $("<input>").attr({"type":"hidden","name":"sizes"}).val(topings_selected);
 
 		var id_size = $("<input>").attr({"type":"hidden","name":"id_size"}).val( $(".pizza_size").attr('id-size') );
-		console.log("id_size "+ id_size);
 		
 		$('.add-to-cart')
 			.append(input)
+			.append(toping_size)
 			.append(id_size);
 
-		
-		
 		//
 	}
+var size_topping = '';
+var num_size_top = 1;
 
 $(function() {
 
@@ -222,6 +262,26 @@ $(function() {
 
 
 	//
+
+
+	$('.topping-size').click(function(event) {
+		$('.topping-size').removeClass('active');
+		$(this).addClass('active');
+
+		//size_topping
+		if($(this).attr('size-top')=="1")
+			size_topping = "";
+		else if($(this).attr('size-top')=="2")
+			size_topping = "[left]";
+		else if($(this).attr('size-top')=="3")
+			size_topping = "[rigth]";
+		else if($(this).attr('size-top')=="4")
+			size_topping = "[double]";
+		else if($(this).attr('size-top')=="5")
+			size_topping = "[lite]";
+
+		num_size_top = parseInt( $(this).attr('size-top') );
+	});
 
 
 
@@ -278,7 +338,7 @@ $(function() {
         	$( this ).find( ".placeholder" ).remove();
         
         	$(".add-topping").each(function(index){
-	        	if($(this).text()==ui.draggable.text())
+	        	if($(this).text()==ui.draggable.text()+" "+size_topping)
 	        	{
 	        		$(this).fadeOut(1000, function(){
 	        			$(this).remove();
@@ -288,7 +348,7 @@ $(function() {
         	
         	});
 
-        	$( "<li class='add-topping'></li>" ).text( ui.draggable.text() ).attr('id-top', ui.draggable.attr('id-top')).appendTo( this );
+        	$( "<li class='add-topping'></li>" ).text( ui.draggable.text()+" "+size_topping ).attr('id-top', ui.draggable.attr('id-top')).attr('size-top', num_size_top).appendTo( this );
 		
         	$(".total-price").html( ( parseFloat( $(".total-price").html() ) +  parseFloat( $('.items-toppings').attr('topprice') ) ).toFixed(2) );
 

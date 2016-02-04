@@ -10,11 +10,29 @@
 				<div class="item-pay col-md-6 col-xs-12">
 				<h3>{{$campo->Sz_Abrev}}</h3>
 				<ul>
+					<?php $total_price_top = 0;?>
 					@foreach($campo->toppings_list as $tab => $val)
-						<li>{{$val->Tp_Descrip}}</li>
+						
+						<?php
+						if($val->size==1)
+							$size_topping = "";
+						elseif($val->size==2)
+							$size_topping = " [left]";
+						elseif($val->size==3)
+							$size_topping = " [rigth]";
+						elseif($val->size==4)
+							$size_topping = " [double]";
+						elseif($val->size==5)
+							$size_topping = " [lite]";
+						else
+							$size_topping = "";
+						?>
+
+						<li>{{$val->Tp_Descrip.$size_topping}}: {{$val->price}}$</li>
+						<?php $total_price_top += $val->price;?>
 					@endforeach
 				</ul>
-				<p class="text-success">{{$campo->Sz_Price}}</p>
+				<h4 class="text-success">{{$campo->Sz_Price+$total_price_top}}$</h4>
 			</div>
 			@endforeach
 		@else
