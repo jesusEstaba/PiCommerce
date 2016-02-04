@@ -7,7 +7,7 @@
 
 	{!!Html::style('assets/bootstrap/css/bootstrap.min.css')!!}
 	{!!Html::style('css/main.css')!!}
-	
+	{!!Html::script('assets/jquery/jquery.min.js')!!}
 
 
 
@@ -29,7 +29,7 @@
 			@if( Auth::check() )	
 				<a class="btn btn-warning btn-cart" href="{{url('cart')}}">
 					<span class="glyphicon glyphicon-shopping-cart"></span>
-					58,15$
+					<span class="total-in_cart">0.00$</span>
 				</a>
 				<a class="btn btn-cart" href="{{url('logout')}}">
 					Logout
@@ -42,6 +42,13 @@
 	@yield('content')
 	
 	@include('sections.footer')
-
+	<script type="text/javascript">
+	$(document).ready(function(){
+		
+		$.get('{{url("total_price_cart")}}', function(data) {
+			$('.total-in_cart').html(data.total+"$");
+		});
+	});
+	</script>
 </body>
 </html>

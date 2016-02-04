@@ -21,9 +21,7 @@ Route::get('/', function () {
     return view('selection');
 });
 
-Route::get('/login', function () {
-    return view('login');
-});
+Route::get('/login', 'LoginCTRL@index');
 
 Route::post('/login', 'LoginCTRL@login');
 Route::get('/logout', 'LoginCTRL@logout');

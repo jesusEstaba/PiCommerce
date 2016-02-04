@@ -130,7 +130,7 @@ class CartCTRL extends Controller
     }
 
 
-    public function total_price(){
+    	public static function total_price(){
     	
     	$total_cart = DB::select('SELECT sum(cart_top.price) as toppings
     		from cart 
@@ -166,7 +166,8 @@ class CartCTRL extends Controller
     		$total = 0.00;
     	}
     	
-
-    	return $total;
+    	return response()->json([
+        	'total' => $total
+        ]);
     }
 }

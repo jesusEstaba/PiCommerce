@@ -15,7 +15,25 @@ use Redirect;
 
 class LoginCTRL extends Controller
 {
-    public function login(LoginRequest $request){
+    /**
+     * [index description]
+     * @return [type] [description]
+     */
+    public function index()
+    {
+        if( !Auth::check() )
+            return view('login');
+
+        return Redirect::to('cart');
+    }
+
+    /**
+     * [login description]
+     * @param  LoginRequest $request [description]
+     * @return [type]                [description]
+     */
+    public function login(LoginRequest $request)
+    {
     	if( Auth::attempt(['email'=>$request['email'], 'password'=>$request['password'] ]) )
     	{
 			return Redirect::to('choose');	
@@ -24,7 +42,13 @@ class LoginCTRL extends Controller
     	Session::flash('message-error', 'Bad Login');
     	return Redirect::to('login');
     }
-    public function logout(){
+    
+    /**
+     * [logout description]
+     * @return [type] [description]
+     */
+    public function logout()
+    {
     	Auth::logout();
         return Redirect::to('login');
     }
