@@ -19,32 +19,46 @@
 		</div>
 	@endif
 
-	<div class="row">
+	<div class="row bg-white">
 		<div class="col-xs-12">
 			<h2>Register</h2>
 			{!!Form::open(['url'=>'register'])!!}
 				<div class="row">
+					
 					<div class="col-md-6">
-						<div class="input-group">
-							<input type="text" class="form-control" name="name" placeholder="name" />
+						<div class="input-form">
+							<label>Name:</label>
+							<input type="text" class="form-control" name="name" placeholder="Name" />
 						</div>
-						<div class="input-group">	
-							<input type="text" class="form-control" name="email" placeholder="email" />
+						<div class="input-form">
+							<label>Email:</label>	
+							<input type="text" class="form-control" name="email" placeholder="Email" />
 						</div>
-						<div class="input-group">	
-							<input type="password" class="form-control" name="password" placeholder="password" />
+						<div class="input-form">
+							<label>Password:</label>	
+							<input type="password" class="form-control" name="password" placeholder="Password" />
 						</div>
-						<div class="input-group">	
-							<input type="password" class="form-control" name="confirm" placeholder="confirm password" />
-						</div>
-						
-						<div class="input-group">	
-							<input type="submit" class="form-control" />
+						<div class="input-form">
+							<label>Repeat Password:</label>	
+							<input type="password" class="form-control" name="confirm" placeholder="Confirm Password" />
 						</div>
 					</div>
+					
 					<div class="col-md-6">
-						<div class="input-group">	
-							<input type="text" placeholder="direccion" class="form-control" id="tags" />
+
+						<div class="input-form">
+							<label>Phone:</label>
+							<input type="text" name="phone" placeholder="Phone" class="form-control" />	
+						</div>
+						<div class="input-form">
+							<label>Address Name:</label>
+							<input type="text" name="address" placeholder="Address" class="form-control" id="tags" />
+						</div>
+					</div>
+					
+					<div class="col-xs-offset-4 col-xs-4">
+						<div class="input-form">
+							<input type="submit" class="form-control btn btn-primary" value="Register" />
 						</div>
 					</div>
 				</div>
@@ -58,8 +72,15 @@
 
 
 <style type="text/css">
-	.input-group{
+	.input-form{
 		margin-bottom: .5em;
+	}
+	.input-group input{
+		max-width: 100% !important;
+		border-radius: 3px !important;
+	}
+	.bg-white{
+		background: white;
 	}
 </style>
 
@@ -73,7 +94,7 @@
 	$(document).ready(function() {
 		var availableTags = [
 		@foreach($codes as $tab => $table)
-			"{{$table->St_Name}}",
+			"{{strtolower($table->St_Name)}}",
 		@endforeach
 	    ];
 
