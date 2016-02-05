@@ -32,7 +32,9 @@ class RegisterCTRL extends Controller
     			User::create([
 		    		'name' => $request['name'], 
 		    		'email' => $request['email'], 
-		    		'password' => bcrypt($request['password'])
+		    		'password' => bcrypt($request['password']),
+                    'phone'=> $request['phone'],
+                    'address' => $request['address'],
 	    		]);
 	    		Session::flash('message', 'User Registered');
     		}
