@@ -14,7 +14,8 @@ use DB;
 class RegisterCTRL extends Controller
 {
     public function index(){
-        return view('register');
+        $codes = DB::select('SELECT * from street where St_City = ?', ['Orlando']);
+        return view('register')->with(['codes'=>$codes]);
     }
     
     public function register(Request $request){
