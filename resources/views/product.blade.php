@@ -37,15 +37,17 @@
 				
 				<div class="toppings">
 					<div class="row">
-						<div class="col-xs-4">
+						<div class="col-md-4">
 							<h2>Add Toping</h2>
 						</div>
-						<div class="col-xs-8">
-							<a class="btn btn-primary topping-size" size-top="1" >Complete</a>
-							<a class="btn btn-primary topping-size" size-top="2" >Left Half</a>
-							<a class="btn btn-primary topping-size" size-top="3" >Right Half</a>
-							<a class="btn btn-primary topping-size" size-top="4" >Double</a>
-							<a class="btn btn-primary topping-size" size-top="5" >Lite</a>
+						<div class="col-md-8">
+							<div class="btn-sizes">
+								<div class="btn-complete-size topping-size" size-top="1" title="Complete"></div>
+								<div class="btn-semi-left-size topping-size" size-top="2" title="Left Half"></div>
+								<div class="btn-semi-right-size topping-size" size-top="3" title="Right Half"></div>
+								<div class="btn-double-size topping-size" size-top="4" title="Double"></div>
+								<div class="btn-lite-size topping-size" size-top="5" title="Lite"></div>
+							</div>
 						</div>
 					</div>
 					
@@ -61,50 +63,6 @@
 								<h2>No Toppings for now</h2>
 							@endif
 						</div>
-					
-					{{--
-					<div class="row">
-						<div class="col-md-3 col-sm-6">
-							<p id-top="2" class="drag">EXTRA_CHEESE</p>
-							<p id-top="0" class="drag">FETA_CHEESE</p>
-							<p id-top="0" class="drag">RICOTTA_CHEESE</p>
-						</div>
-						<div class="col-md-3 col-sm-6">
-							<p id-top="0" class="drag">PEPRONI</p>
-							<p id-top="0" class="drag">SAUSAGE</p>
-							<p id-top="0" class="drag">HAM</p>
-							<p id-top="9" class="drag">BACON</p>
-							<p id-top="0" class="drag">GROUND_BEEF</p>
-							<p id-top="0" class="drag">MEATBALLS</p>
-							<p id-top="0" class="drag">SALAMI</p>
-						</div>
-						<div class="col-md-3 col-sm-6">
-							<p id-top="0" class="drag">CHICKEN</p>
-							<p id-top="0" class="drag">ANCHOVIES</p>
-						</div>
-						<div class="col-md-3 col-sm-6">
-							<p id-top="0" class="drag">ONIONS</p>
-							<p id-top="0" class="drag">GREEN_PEPPERS</p>
-							<p id-top="0" class="drag">MUSHR</p>
-							<p id-top="0" class="drag">SPINACH</p>
-							<p id-top="0" class="drag">GARLIC</p>
-							<p id-top="0" class="drag">BROCOLLI</p>	
-							<p id-top="0" class="drag">FRESH_BASIL</p>
-							<p id-top="0" class="drag">EGGPLANT</p>
-						</div>
-						<div class="col-md-3 col-sm-6">
-							<p id-top="0" class="drag">BLACK_OLIVES</p>
-							<p id-top="0" class="drag">GREEN_OLIVES</p>
-							<p id-top="0" class="drag">PINEAPPLE</p>
-							<p id-top="0" class="drag">TOMATO</p>
-						</div>
-						<div class="col-md-3 col-sm-6">
-							<p id-top="0" class="drag">JALAPENO</p>
-							<p id-top="0" class="drag" id="draggable">BANNANA_PEPPERS</p>
-						</div>
-
-						--}}
-
 						<div class="col-xs-12">
 							<div class="input-control">
 								<textarea placeholder="cooking instructions" class="form-control"></textarea>
@@ -212,7 +170,47 @@
 		transform:skewY(3.2rad);
 		box-shadow: 0 0 5px rgba(0,0,0,.3);
 	}
-
+	.btn-complete-size{
+		width: 100px;
+		height: 100px;
+		border-radius: 50%;
+		border:1px #333 solid;
+	}
+	.btn-semi-left-size{
+		width: 50px;
+		height: 100px;
+		border-radius: 50px 0 0 50px;
+		border:1px #333 solid;
+	}
+	.btn-semi-right-size{
+		width: 50px;
+		height: 100px;
+		border-radius: 0 50px 50px 0;
+		border:1px #333 solid;
+	}
+	.btn-double-size{
+		width: 100px;
+		height: 100px;
+		border:3px #333 solid;
+		border-radius:50%;
+	}
+	.btn-lite-size{
+		width: 100px;
+		height: 100px;
+		border:1px #333 dashed;
+		border-radius:50%;
+	}
+	.btn-sizes div{
+		display: inline-block;
+	}
+	.btn-sizes div:hover{
+		background: #eee;
+		border-color: gray;
+	}
+	.btn-sizes div.active{
+		background: #FDF4A7;
+		border-color: #F58F19;
+	}
 </style>
 
 <script type="text/javascript">

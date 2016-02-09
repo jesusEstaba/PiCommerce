@@ -26,14 +26,28 @@
 				<div class="row">
 					
 					<div class="col-md-6">
+						<h3 class="title-register">Your Personal or Business Contact Information</h3>
+
 						<div class="input-form">
-							<label>Name:</label>
-							<input type="text" class="form-control" name="name" placeholder="Name" />
+							<label>Fisrt Name:</label>
+							<input type="text" class="form-control" name="first_name" placeholder="First Name" />
 						</div>
+
+						<div class="input-form">
+							<label>Last Name:</label>
+							<input type="text" class="form-control" name="last_name" placeholder="Last Name" />
+						</div>
+
 						<div class="input-form">
 							<label>Email:</label>	
 							<input type="text" class="form-control" name="email" placeholder="Email" />
 						</div>
+						<div class="input-form">
+							<label>Phone:</label>
+							<input type="text" name="phone" placeholder="Phone" class="form-control" />	
+						</div>
+
+						<h3 class="title-register">Your Password</h3>
 						<div class="input-form">
 							<label>Password:</label>	
 							<input type="password" class="form-control" name="password" placeholder="Password" />
@@ -42,17 +56,82 @@
 							<label>Repeat Password:</label>	
 							<input type="password" class="form-control" name="confirm" placeholder="Confirm Password" />
 						</div>
+
+						<h3 class="title-register">
+							Company Information (Office Delivery Only)
+						</h3>
+						<div class="input-form">
+							<label>Company:</label>
+							<input type="text" name="company" placeholder="Company" class="form-control" />	
+						</div>
 					</div>
 					
 					<div class="col-md-6">
+						
 
+						<h3 class="title-register">Your Address</h3>
 						<div class="input-form">
-							<label>Phone:</label>
-							<input type="text" name="phone" placeholder="Phone" class="form-control" />	
+							<label>Street Number:</label>
+							<input type="text" name="street_number" placeholder="eg. 2400" class="form-control"/>
 						</div>
 						<div class="input-form">
-							<label>Address Name:</label>
-							<input type="text" name="address" placeholder="Address" class="form-control" id="tags" />
+							<label>Street Name:</label>
+							<input type="text" name="street_name" placeholder="eg. Forsyth Rd" class="form-control" id="tags" />
+						</div>
+						<div class="input-form">
+							<label>Aparment/Suite #:</label>
+							<input type="text" name="aparment" placeholder="Aparment or Suite Number" class="form-control"/>
+						</div>
+						<div class="input-form">
+							<label>Aparment Complex:</label>
+							<input type="text" name="aparment_complex" placeholder="Aparment Complex" class="form-control"/>
+						</div>
+						<div class="input-form">
+							<label>Complex Name:</label>
+							<input type="text" name="complex_name" placeholder="Complex Name" class="form-control"/>
+						</div>
+						<div class="input-form">
+							<label>Zip Code:</label>
+							<input type="text" name="zip_code" placeholder="Zipe Code" class="form-control"/>
+						</div>
+						<div class="input-form">
+							<label>City:</label>
+							<input type="text" name="city" placeholder="City" class="form-control"/>
+						</div>
+						<div class="input-form">
+							<label>State:</label>
+							<input type="text" name="state" placeholder="State" class="form-control"/>
+						</div>
+						<div class="input-form">
+							<label>Country:</label>
+							<input type="text" name="country" placeholder="Country" class="form-control"/>
+						</div>
+
+						<div class="input-form">
+							<label>Special Directions:</label>
+							<input type="text" name="special_directions" placeholder="eg. Enter gate code 555" class="form-control"/>
+						</div>
+						
+					</div>
+					<div class="reg-data-check">
+						<div class="row">
+							<div class="col-xs-12">
+								<p>
+									Receive special offers & coupons by email:
+									<input name="newsletter" type="checkbox">
+								</p>
+							</div>
+
+							<div class="col-xs-12">
+								<p>
+									<b>
+										I have read the terms and conditions notice and I agree to it:
+									</b>
+									<input name="terms" type="checkbox">
+								</p>
+								<a href="#">Terms and Conditions.</a>
+								
+							</div>
 						</div>
 					</div>
 					
@@ -81,6 +160,16 @@
 	}
 	.bg-white{
 		background: white;
+	}
+	h3.title-register{
+		background: #10713B;
+		color: white;
+		padding: .2em;
+		border-radius: 3px;
+		box-shadow: 0 0 3px rgba(0,0,0,.26);
+	}
+	.reg-data-check{
+		padding: 1em;
 	}
 </style>
 

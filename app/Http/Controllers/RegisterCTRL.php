@@ -21,22 +21,38 @@ class RegisterCTRL extends Controller
     public function register(Request $request){
 
     	if(
-    		!empty($request['name']) &&
-			!empty($request['email']) &&
-			!empty($request['password'])
+    		empty('password') &&
+            empty('email') &&
+            empty('phone') &&
+            empty('first_name') &&
+            empty('last_name') &&
+            empty('street_number') &&
+            empty('street_name')
     		)
     	{
     		$datos = DB::select('select id from users where email = ?', [$request['email']]);
     		if(!$datos)
     		{
     			User::create([
-		    		'name' => $request['name'], 
-		    		'email' => $request['email'], 
-		    		'password' => bcrypt($request['password']),
+                    'password' => bcrypt($request['password']),
+                    'email' => $request['email'], 
                     'phone'=> $request['phone'],
-                    'address' => $request['address'],
+                    'first_name' => $request['first_name'], 
+                    'last_name' => $request['last_name'], 
+                    'company' => $request['company'], 
+                    'street_number' => $request['street_number'], 
+                    'street_name' => $request['street_name'], 
+                    'aparment' => $request['aparment'], 
+                    'aparment_complex' => $request['aparment_complex'], 
+                    'complex_name' => $request['complex_name'], 
+                    'zip_code' => $request['zip_code'], 
+                    'city' => $request['city'], 
+                    'state' => $request['state'], 
+                    'country' => $request['country'], 
+                    'special_directions' => $request['special_directions'], 
+
 	    		]);
-	    		Session::flash('message', 'User Registered');
+	    		Session::flash('message', 'User Registered [active your account in the mail send]');
     		}
     		else
     		{
