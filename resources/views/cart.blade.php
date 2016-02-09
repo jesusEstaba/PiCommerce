@@ -36,7 +36,8 @@
 			</div>
 			@endforeach
 		@else
-			<h2>Cart Empty</h2>
+			<h2 class="cart-empty-text">Cart Empty</h2>
+			<img src="{{asset('images/items/cart-empty.png')}}" class="cart-empty-img">
 		@endif
 	</div>
 	<div class="row actions-cart">
@@ -51,4 +52,15 @@
 		</div>
 	</div>
 </div>
+<style type="text/css">
+	.cart-empty-img{
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.cart-empty-text{
+		text-align: center;
+		color: #666;
+	}
+</style>
 @stop
