@@ -57,7 +57,10 @@
 						<div class="col-md-12 col-sm-6">
 							@if($toppings)
 								@foreach($toppings as $data => $table)
-									<a id-top="{{$table->Tp_Id}}" class="btn drag">{{strtolower($table->TP_Descrip)}}</a>
+									<div class="box-drag">
+										<a id-top="{{$table->Tp_Id}}" class="btn drag">{{strtolower($table->TP_Descrip)}}</a>
+									</div>
+									
 								@endforeach
 							@else
 								<h2>No Toppings for now</h2>
@@ -65,7 +68,7 @@
 						</div>
 						<div class="col-xs-12">
 							<div class="input-control">
-								<textarea placeholder="cooking instructions" class="form-control"></textarea>
+								<textarea name="cooking_instructions" placeholder="cooking instructions" class="form-control"></textarea>
 							</div>
 						</div>
 					</div>
@@ -171,37 +174,38 @@
 		box-shadow: 0 0 5px rgba(0,0,0,.3);
 	}
 	.btn-complete-size{
-		width: 100px;
-		height: 100px;
+		width: 80px;
+		height: 80px;
 		border-radius: 50%;
 		border:1px #333 solid;
 	}
 	.btn-semi-left-size{
-		width: 50px;
-		height: 100px;
-		border-radius: 50px 0 0 50px;
+		width: 40px;
+		height: 80px;
+		border-radius: 40px 0 0 40px;
 		border:1px #333 solid;
 	}
 	.btn-semi-right-size{
-		width: 50px;
-		height: 100px;
-		border-radius: 0 50px 50px 0;
+		width: 40px;
+		height: 80px;
+		border-radius: 0 40px 40px 0;
 		border:1px #333 solid;
 	}
 	.btn-double-size{
-		width: 100px;
-		height: 100px;
+		width: 80px;
+		height: 80px;
 		border:3px #333 solid;
 		border-radius:50%;
 	}
 	.btn-lite-size{
-		width: 100px;
-		height: 100px;
+		width: 80px;
+		height: 80px;
 		border:1px #333 dashed;
 		border-radius:50%;
 	}
 	.btn-sizes div{
 		display: inline-block;
+		transition: .6s background, .6s border-color;
 	}
 	.btn-sizes div:hover{
 		background: #eee;
@@ -211,58 +215,124 @@
 		background: #FDF4A7;
 		border-color: #F58F19;
 	}
+	.box-drag{
+		/*background: orange;*/
+		display: inline-block;
+	}
+	.box-drag .glyphicon-plus{
+		padding: .3em;
+		border-radius: 50%;
+		/*border:solid white 1px;*/
+		color:white;
+		background: green;
+	}
 </style>
 
 <script type="text/javascript">
-function addToCart(){
-		var selected=[];
-		var topings_selected = [];
-		$(".add-topping").each(function(index){
-	        selected.push( parseInt( $(this).not(".def-top").attr('id-top') ) );
-	        topings_selected.push( $(this).not(".def-top").attr('size-top') );
-        });
+function addToCart()
+{
+	var selected=[];
+	var topings_selected = [];
+	$(".add-topping").each(function(index){
+		selected.push( parseInt( $(this).not(".def-top").attr('id-top') ) );
+		topings_selected.push( $(this).not(".def-top").attr('size-top') );
+	});
+	
+	var input = $("<input>").attr({"type":"hidden","name":"selected"}).val(selected);
+
+	var toping_size = $("<input>").attr({"type":"hidden","name":"sizes"}).val(topings_selected);
+
+	var id_size = $("<input>").attr({"type":"hidden","name":"id_size"}).val( $(".pizza_size").attr('id-size') );
+	
+	$('.add-to-cart')
+		.append(input)
+		.append(toping_size)
+		.append(id_size)
+		.append($("[name=cooking_instructions]").clone());
+}
+
+function add_toping_to_list(object, parent)
+{
+	$(".add-topping").each(function(index){
+		//acá es por donde se puede eliminar el caso de que existan dos toppings iguales,
+		//pero con diferente proporcion
 		
-		var input = $("<input>").attr({"type":"hidden","name":"selected"}).val(selected);
+		if($(this).text()==object.text()+" "+size_topping)
+		{
+			$(this).fadeOut(500, function(){
+				$(this).remove();
+			});
+		}
+	});
 
-		var toping_size = $("<input>").attr({"type":"hidden","name":"sizes"}).val(topings_selected);
+	$( "<li class='add-topping'></li>" )
+		.text(object.text()+" "+size_topping )
+		.attr('id-top',object.attr('id-top'))
+		.attr('size-top', num_size_top)
+		.appendTo( parent );
+    
+    calcular_cuenta();
+}
 
-		var id_size = $("<input>").attr({"type":"hidden","name":"id_size"}).val( $(".pizza_size").attr('id-size') );
-		
-		$('.add-to-cart')
-			.append(input)
-			.append(toping_size)
-			.append(id_size);
+function calcular_cuenta()
+{
+	var cuenta = 0;
+	var topping_price = parseFloat( $('.items-toppings').attr('topprice') );
+	var pizza_price = parseFloat( $(".pizza_size").attr('price') );
 
-		//
-	}
+	$(".add-topping").not(".def-top").each(function(index, val)
+	{
+		if($(this).attr('size-top')=="1")
+			cuenta += topping_price;
+		else if($(this).attr('size-top')=="2")
+			cuenta += topping_price * 1/2;
+		else if($(this).attr('size-top')=="3")
+			cuenta += topping_price * 1/2;
+		else if($(this).attr('size-top')=="4")
+			cuenta += topping_price * 2;
+		else if($(this).attr('size-top')=="5")
+			cuenta += topping_price;
+	});
+	cuenta_total = pizza_price + cuenta;
+	$('.total-price').html(cuenta_total.toFixed(2));
+}
+
+var cuenta_total = 0;
 var size_topping = '';
 var num_size_top = 1;
 
-$(function() {
-
-	function total_mas_toppings()
-	{
-		var topping_price= parseFloat( $('.items-toppings').attr('topprice') );
-
-		var total_topping_price = $(".items-toppings").children().not(".def-top").length * topping_price;
-
-		$('.total-price').html( ( parseFloat( $(".pizza_size").attr('price') )+ total_topping_price ).toFixed(2) );
-	}
+$(function()
+{
+	/*
+	$('.add-topping').hover(function() {
+		$(this).append('<span class="glyphicon glyphicon-minus"></span>');
+	}, function() {
+	});
+	*/
 
 
-	//Add to cart
+	$('.box-drag')
+		.hover(function(){
+			$(this).prepend('<span class="glyphicon glyphicon-plus"></span>');
+		},
+		function(){
+			$(this).children('.glyphicon-plus').remove();
+		})
+		.on('click', '.glyphicon-plus', function(){
+			add_toping_to_list($(this).siblings(), $( "#droppable ul" ));
+			$(this).remove();
+		});
 	
+	$('.drag').dblclick(function() {
+		add_toping_to_list($(this), $( "#droppable ul" ));
+	});
 
 	$('.go-checkout-cart').click(function(){
 		addToCart();
 		$('.send-to-cart').click();
 	});
 
-
-	//
-
-
-	$('.topping-size').click(function(event) {
+	$('.topping-size').click(function() {
 		$('.topping-size').removeClass('active');
 		$(this).addClass('active');
 
@@ -281,43 +351,30 @@ $(function() {
 		num_size_top = parseInt( $(this).attr('size-top') );
 	});
 
-
-
 	$(".pizza_size")
 		.html( $(".sizes a:first-child").html() )
 		.attr('price', $(".sizes a:first-child").attr('price'))
 		.attr('id-size', $(".sizes a:first-child").attr('id-size'));
 	
 	$('.total-price').html( $(".sizes a:first-child").attr('price') );
-	
-	//var topprice_origin = parseFloat(  );
 
 	$('.items-toppings').attr('topprice', $(".sizes a:first-child").attr('top-price'));
 	
 
-
 	$('.size').click(function()
 	{
 		$('.pizza_size').html( $(this).html() );
-		
-
 		var topping_price = $(this).attr("top-price");
-
 		$('.items-toppings').attr('topprice',topping_price);
-
 		var total_topping_price = $(".items-toppings").children().not(".def-top").length * topping_price;
-
 		$('.total-price').html( ( parseFloat( $(this).attr('price') )+ total_topping_price ).toFixed(2) );
-
-
 		$(".pizza_size")
 			.attr('price', $(this).attr('price'))
 			.attr('id-size', $(this).attr('id-size'));
-
 	});
 
-    $( ".drag" ).draggable(
-    {
+    $( ".drag" ).draggable
+    ({
     	appendTo: "body",
     	helper: "clone",
     	drag:function(event, ui)
@@ -326,49 +383,35 @@ $(function() {
 		}
     });
     
-    $( "#droppable ul" ).droppable(
-    {
-    	activeClass: "ui-state-default",
-    	hoverClass: "ui-state-hover",
-    	accept: ":not(.ui-sortable-helper)",
-    	drop: function( event, ui )
-    	{
-        	$( this ).find( ".placeholder" ).remove();
-        
-        	$(".add-topping").each(function(index){
-	        	if($(this).text()==ui.draggable.text()+" "+size_topping)
-	        	{
-	        		$(this).fadeOut(1000, function(){
-	        			$(this).remove();
-	        			total_mas_toppings();
-	        		});
-	        	}
-        	
-        	});
-
-        	$( "<li class='add-topping'></li>" ).text( ui.draggable.text()+" "+size_topping ).attr('id-top', ui.draggable.attr('id-top')).attr('size-top', num_size_top).appendTo( this );
-		
-        	$(".total-price").html( ( parseFloat( $(".total-price").html() ) +  parseFloat( $('.items-toppings').attr('topprice') ) ).toFixed(2) );
-
-      }
-    }).sortable(
-    {
-    	items: "li:not(.placeholder)",
-    	sort: function()
-    	{
-        	$( this ).removeClass( "ui-state-default" );
-    	},
-		out: function (event, ui)
-		{
-	    	//console.log(ui);
-
-	        if(ui.helper)
-	        ui.helper.fadeOut(1000, function () {
-	            $(this).remove();
-	            total_mas_toppings();
-	        });
-    	}
-    });
+    $( "#droppable ul" )
+	    .droppable
+	    ({
+	    	activeClass: "ui-state-default",
+	    	hoverClass: "ui-state-hover",
+	    	accept: ":not(.ui-sortable-helper)",
+	    	drop: function( event, ui )
+	    	{
+	        	$( this ).find( ".placeholder" ).remove();
+	        	
+	        	add_toping_to_list(ui.draggable, this);
+	    	}
+	    })
+	    .sortable
+	    ({
+	    	items: "li:not(.placeholder)",
+	    	sort: function()
+	    	{
+	        	$( this ).removeClass( "ui-state-default" );
+	    	},
+			out: function (event, ui)
+			{
+		        if(ui.helper)
+			        ui.helper.fadeOut(1000, function () {
+			            $(this).remove();
+			            calcular_cuenta();
+			        });
+	    	}
+	    });
   });
 </script>
 

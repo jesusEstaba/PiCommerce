@@ -44,10 +44,12 @@
 	@include('sections.footer')
 	<script type="text/javascript">
 	$(document).ready(function(){
-		
-		$.get('{{url("total_price_cart")}}', function(data) {
-			$('.total-in_cart').html(data.total+"$");
-		});
+		if( $(".btn-cart").text()!="Login" )
+		{
+			$.get('{{url("total_price_cart")}}', function(data) {
+				$('.total-in_cart').html(data.total+"$");
+			});
+		}
 	});
 	</script>
 </body>
