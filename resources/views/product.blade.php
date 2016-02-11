@@ -404,10 +404,11 @@ $(function()
 	$('.size').click(function()
 	{
 		$('.pizza_size').html( $(this).html() );
-		var topping_price = $(this).attr("top-price");
-		$('.items-toppings').attr('topprice',topping_price);
-		var total_topping_price = $(".items-toppings").children().not(".def-top").length * topping_price;
-		$('.total-price').html( ( parseFloat( $(this).attr('price') )+ total_topping_price ).toFixed(2) );
+		
+		$('.items-toppings').attr('topprice', $(this).attr("top-price"));
+		
+		calcular_cuenta();
+		
 		$(".pizza_size")
 			.attr('price', $(this).attr('price'))
 			.attr('id-size', $(this).attr('id-size'));
