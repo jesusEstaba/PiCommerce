@@ -114,11 +114,11 @@
 
 <style type="text/css">
 	.drag{
-		border-radius: 3px;
-		z-index: 6;
 		background: #eee;
+		border-radius: 3px;
 		padding: .5em;
 		transition:.8s background;
+		z-index: 6;
 	}
 	.drag:hover{
 		background: #ccc;
@@ -146,11 +146,11 @@
 		display: block;
 	}
 	.img-build{
-		box-shadow: 0 0 2px rgba(0,0,0, .26);
 		border-radius: 3px;
+		box-shadow: 0 0 2px rgba(0,0,0, .26);
+		display: block;
 		margin-left: auto;
 		margin-right: auto;
-		display: block;
 	}
 	.size-pizza{
 		width: auto;
@@ -161,47 +161,47 @@
 		padding: 1em;
 	}
 	.head-product{
-		padding-top: 1em;
 		padding-bottom: 1em;
+		padding-top: 1em;
 	}
 
 	.helper-pizza{
 		background: #5cb85c;
-		padding: .5em;
 		border-radius: 3px;
-		color:white;
-		transform:skewY(3.2rad);
 		box-shadow: 0 0 5px rgba(0,0,0,.3);
+		color:white;
+		padding: .5em;
+		transform:skewY(3.2rad);
 	}
 	.btn-complete-size{
-		width: 80px;
-		height: 80px;
 		border-radius: 50%;
 		border:1px #333 solid;
+		height: 80px;
+		width: 80px;
 	}
 	.btn-semi-left-size{
-		width: 40px;
-		height: 80px;
 		border-radius: 40px 0 0 40px;
 		border:1px #333 solid;
+		height: 80px;
+		width: 40px;
 	}
 	.btn-semi-right-size{
-		width: 40px;
-		height: 80px;
 		border-radius: 0 40px 40px 0;
 		border:1px #333 solid;
+		height: 80px;
+		width: 40px;
 	}
 	.btn-double-size{
-		width: 80px;
-		height: 80px;
-		border:3px #333 solid;
 		border-radius:50%;
+		border:3px #333 solid;
+		height: 80px;
+		width: 80px;
 	}
 	.btn-lite-size{
-		width: 80px;
-		height: 80px;
-		border:1px #333 dashed;
 		border-radius:50%;
+		border:1px #333 dashed;
+		height: 80px;
+		width: 80px;
 	}
 	.btn-sizes div{
 		display: inline-block;
@@ -220,11 +220,23 @@
 		display: inline-block;
 	}
 	.box-drag .glyphicon-plus{
-		padding: .3em;
-		border-radius: 50%;
 		/*border:solid white 1px;*/
-		color:white;
 		background: green;
+		border-radius: 50%;
+		color:white;
+		padding: .3em;
+	}
+	.items-toppings li .glyphicon-minus{
+		/*border:solid white 1px;*/
+		background: red;
+		border-radius: 50%;
+		color: white;
+		padding: .3em;
+		font-size: .5em;
+		margin-left: .8em;
+	}
+	.items-toppings li{
+		font-size: 1.3em;
 	}
 </style>
 
@@ -272,7 +284,39 @@ function add_toping_to_list(object, parent)
 		.appendTo( parent );
     
     calcular_cuenta();
+	
+	hover_click_topping();
+
 }
+
+
+function hover_click_topping()
+{
+	$('.items-toppings li').off();
+
+    $('.items-toppings li').hover(function()
+	{
+		$(this).append('<span class="glyphicon glyphicon-minus"></span>');
+	},
+	function()
+	{
+		$(this).children('.glyphicon-minus').remove();
+	});
+
+
+	$('.items-toppings li ').on('click', '.glyphicon-minus', function(){	
+		if($(this).parent().hasClass('def-top'))
+			if(menos_toppings.length)
+				menos_toppings +=  ', ' + $(this).parent().text();
+			else
+				menos_toppings = $(this).parent().text();
+
+		$(this).parent().remove();
+		calcular_cuenta();
+	});
+
+}
+
 
 function calcular_cuenta()
 {
@@ -300,16 +344,12 @@ function calcular_cuenta()
 var cuenta_total = 0;
 var size_topping = '';
 var num_size_top = 1;
+var menos_toppings = "";
 
 $(function()
 {
-	/*
-	$('.add-topping').hover(function() {
-		$(this).append('<span class="glyphicon glyphicon-minus"></span>');
-	}, function() {
-	});
-	*/
 
+	hover_click_topping();
 
 	$('.box-drag')
 		.hover(function(){
