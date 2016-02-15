@@ -42,5 +42,6 @@ Route::post('/add_to_cart', 'CartCTRL@add');
 Route::group(['middleware'=>'auth'], function(){
 	Route::get('/cart', 'CartCTRL@index');
     Route::get('/total_price_cart', 'CartCTRL@total_price');
+    Route::get('/pay', 'PayCTRL@index');
 });
 

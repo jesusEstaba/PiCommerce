@@ -1,0 +1,334 @@
+
+/*  Pure CSS Icons by Tech & All / Rubayath R.-- DOWNLOAD IT @ http://www.techandall.com for free */
+/*  Pure CSS Icons by Tech & All / Rubayath R.-- DOWNLOAD IT @ http://www.techandall.com for free */
+/*  Pure CSS Icons by Tech & All / Rubayath R.-- DOWNLOAD IT @ http://www.techandall.com for free */
+/*  Pure CSS Icons by Tech & All / Rubayath R.-- DOWNLOAD IT @ http://www.techandall.com for free */
+
+
+
+
+
+/* Style #1 for social icons starts here*/
+#social ul {
+	margin: 0;
+	padding: 0;
+	text-align:center;
+}
+
+#social li {
+	display: inline-block;
+	list-style-type: none;
+}
+
+#social a {
+	display: block;
+	width: 50px;
+	height: 50px;
+	margin: 0 5px 5px 0;
+	padding: 8px 0;
+	font-size: 30px;
+	line-height: 0px;
+	text-decoration:none;
+	text-align: center;
+	background: transparent;
+	vertical-align: bottom;
+	color: #6b7076;
+	border: 2px solid #6b7076;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	    -ms-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+
+
+
+#social .behance     a:hover { color: #2b9ad2; border-color: #2b9ad2; }
+#social .blogger     a:hover { color: #ff6500; border-color: #ff6500; }
+#social .deviantart  a:hover { color: #536659; border-color: #536659; }
+#social .dribbble    a:hover { color: #f973a4; border-color: #f973a4; }
+#social .facebook    a:hover { color: #3b5a9b; border-color: #3b5a9b; }
+#social .flickr      a:hover { color: #ff0084; border-color: #ff0084; }
+#social .forrst      a:hover { color: #2f713d; border-color: #2f713d; }
+#social .googleplus  a:hover { color: #f63d26; border-color: #f63d26; }
+#social .instagram   a:hover { color: #507ea4; border-color: #507ea4; }
+#social .lastfm      a:hover { color: #da0019; border-color: #da0019; }
+#social .linkedin    a:hover { color: #0072b2; border-color: #0072b2; }
+#social .paypal      a:hover { color: #165c82; border-color: #165c82; }
+#social .picasa      a:hover { color: #8a65a3; border-color: #8a65a3; }
+#social .pinterest   a:hover { color: #cb2027; border-color: #cb2027; }
+#social .skype       a:hover { color: #00aaf1; border-color: #00aaf1; }
+#social .soundcloud  a:hover { color: #ff6900; border-color: #ff6900; }
+#social .stumbleupon a:hover { color: #eb4823; border-color: #eb4823; }
+#social .twitter     a:hover { color: #2baae1; border-color: #2baae1; }
+#social .vimeo       a:hover { color: #40b2dc; border-color: #40b2dc; }
+#social .youtube     a:hover { color: #ff3330; border-color: #ff3330; }
+/* Style #1 ends here*/
+
+
+
+/* Style #2 for social icons starts here*/
+#social2 ul {
+	margin: 0;
+	padding: 0;
+	text-align:center;
+}
+
+#social2 li {
+	display: inline-block;
+	list-style-type: none;
+}
+
+#social2 a {
+	display: block;
+	width: 50px;
+	height: 50px;
+	margin: 0 5px 5px 0;
+	padding: 8px 0;
+	font-size: 30px;
+	line-height: 0px;
+	text-decoration:none;
+	text-align: center;
+	background: transparent;
+	vertical-align: bottom;
+	color: #6b7076;
+	border: 0px solid #6b7076;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	    -ms-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+
+#social2 a:hover {
+	border-width: 0px;
+	padding: 0px 0px;
+}
+
+#social2 .behance     a:hover { color: #2b9ad2; border-color: #2b9ad2; }
+#social2 .blogger     a:hover { color: #ff6500; border-color: #ff6500; }
+#social2 .deviantart  a:hover { color: #536659; border-color: #536659; }
+#social2 .dribbble    a:hover { color: #f973a4; border-color: #f973a4; }
+#social2 .facebook    a:hover { color: #3b5a9b; border-color: #3b5a9b; }
+#social2 .flickr      a:hover { color: #ff0084; border-color: #ff0084; }
+#social2 .forrst      a:hover { color: #2f713d; border-color: #2f713d; }
+#social2 .googleplus  a:hover { color: #f63d26; border-color: #f63d26; }
+#social2 .instagram   a:hover { color: #507ea4; border-color: #507ea4; }
+#social2 .lastfm      a:hover { color: #da0019; border-color: #da0019; }
+#social2 .linkedin    a:hover { color: #0072b2; border-color: #0072b2; }
+#social2 .paypal      a:hover { color: #165c82; border-color: #165c82; }
+#social2 .picasa      a:hover { color: #8a65a3; border-color: #8a65a3; }
+#social2 .pinterest   a:hover { color: #cb2027; border-color: #cb2027; }
+#social2 .skype       a:hover { color: #00aaf1; border-color: #00aaf1; }
+#social2 .soundcloud  a:hover { color: #ff6900; border-color: #ff6900; }
+#social2 .stumbleupon a:hover { color: #eb4823; border-color: #eb4823; }
+#social2 .twitter     a:hover { color: #2baae1; border-color: #2baae1; }
+#social2 .vimeo       a:hover { color: #40b2dc; border-color: #40b2dc; }
+#social2 .youtube     a:hover { color: #ff3330; border-color: #ff3330; }
+/* Style #2 ends here*/
+
+
+
+
+/* Style #3 for social icons starts here*/
+#social3 ul {
+	margin: 0;
+	padding: 0;
+	text-align:center;
+	
+}
+
+#social3 li {
+	display: inline-block;
+	list-style-type: none;
+	
+}
+
+#social3 a {
+	display: block;
+	width: 50px;
+	height: 50px;
+	margin: 0 5px 5px 0;
+	padding: 8px 0;
+	font-size: 30px;
+	line-height: 0px;
+	text-decoration:none;
+	text-align: center;
+	background: transparent;
+	vertical-align: bottom;
+	color: #6b7076;
+	border: 2px solid #6b7076;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	 box-sizing: border-box;
+	-webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+     border-radius: 10px;
+}
+
+#social3 a:hover {
+	border-width: 5px;
+	padding: 5px 0;
+	-webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
+#social3 .behance     a:hover { color: #fff; background-color: #2b9ad2; border-color: #2b9ad2;}
+#social3 .blogger     a:hover { color: #fff; background-color: #ff6500; border-color: #ff6500;}
+#social3 .deviantart  a:hover { color: #fff; background-color: #536659; border-color: #536659;}
+#social3 .dribbble    a:hover { color: #fff; background-color: #f973a4; border-color: #f973a4;}
+#social3 .facebook    a:hover { color: #fff; background-color: #3b5a9b; border-color: #3b5a9b;}
+#social3 .flickr      a:hover { color: #fff; background-color: #ff0084; border-color: #ff0084;}
+#social3 .forrst      a:hover { color: #fff; background-color: #2f713d; border-color: #2f713d;}
+#social3 .googleplus  a:hover { color: #fff; background-color: #f63d26; border-color: #f63d26;}
+#social3 .instagram   a:hover { color: #fff; background-color: #507ea4; border-color: #507ea4;}
+#social3 .lastfm      a:hover { color: #fff; background-color: #da0019; border-color: #da0019;}
+#social3 .linkedin    a:hover { color: #fff; background-color: #0072b2; border-color: #0072b2;}
+#social3 .paypal      a:hover { color: #fff; background-color: #165c82; border-color: #165c82;}
+#social3 .picasa      a:hover { color: #fff; background-color: #cb2027; border-color: #cb2027;}
+#social3 .pinterest   a:hover { color: #fff; background-color: #cb2027; border-color: #cb2027;}
+#social3 .skype       a:hover { color: #fff; background-color: #00aaf1; border-color: #00aaf1;}
+#social3 .soundcloud  a:hover { color: #fff; background-color: #ff6900; border-color: #ff6900;}
+#social3 .stumbleupon a:hover { color: #fff; background-color: #eb4823; border-color: #eb4823;}
+#social3 .twitter     a:hover { color: #fff; background-color: #2baae1; border-color: #2baae1;}
+#social3 .vimeo       a:hover { color: #fff; background-color: #40b2dc; border-color: #40b2dc;}
+#social3 .youtube     a:hover { color: #fff; background-color: #ff3330; border-color: #ff3330;}
+/* Style #3 ends here*/
+
+
+
+/* Style #4 for social icons starts here*/
+#social4 ul {
+	margin: 0;
+	padding: 0;
+	text-align:center;
+	
+	
+}
+
+#social4 li {
+	display: inline-block;
+	list-style-type: none; 	
+	-webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+     border-radius: 10px;
+	 margin: 4px 0px 0px 8px;
+	 
+	
+	
+}
+
+#social4 a {
+	display: block;
+	width: 50px;
+	height: 50px;
+	margin: 0px 0px 0px 0px;
+	padding: 10px 0;
+	font-size: 30px;
+	line-height: 0px;
+	text-decoration:none;
+	text-align: center;
+	background: transparent;
+	vertical-align: bottom;
+	color: #fff;
+	border: 0px solid #fff;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	 box-sizing: border-box;
+	-webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+     border-radius: 10px;
+}
+
+#social4 a:hover {
+	border-width: 5px;
+	padding: 5px 0;
+	-webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
+#social4 .icon1     { color: #fff; background-color: #2b9ad2; border-color: #2b9ad2;}
+#social4 .icon2     { color: #fff; background-color: #ff6500; border-color: #ff6500;}
+#social4 .icon3  { color: #fff; background-color: #536659; border-color: #536659;}
+#social4 .dribbble    { color: #fff; background-color: #f973a4; border-color: #f973a4;}
+#social4 .facebook    { color: #fff; background-color: #3b5a9b; border-color: #3b5a9b;}
+#social4 .flickr      { color: #fff; background-color: #ff0084; border-color: #ff0084;}
+#social4 .forrst      { color: #fff; background-color: #2f713d; border-color: #2f713d;}
+#social4 .googleplus  { color: #fff; background-color: #f63d26; border-color: #f63d26;}
+#social4 .instagram   { color: #fff; background-color: #507ea4; border-color: #507ea4;}
+#social4 .lastfm      { color: #fff; background-color: #da0019; border-color: #da0019;}
+#social4 .linkedin    { color: #fff; background-color: #0072b2; border-color: #0072b2;}
+#social4 .paypal      { color: #fff; background-color: #165c82; border-color: #165c82;}
+#social4 .picasa      { color: #fff; background-color: #cb2027; border-color: #cb2027;}
+#social4 .pinterest   { color: #fff; background-color: #cb2027; border-color: #cb2027;}
+#social4 .skype       { color: #fff; background-color: #00aaf1; border-color: #00aaf1;}
+#social4 .soundcloud  { color: #fff; background-color: #ff6900; border-color: #ff6900;}
+#social4 .stumbleupon { color: #fff; background-color: #eb4823; border-color: #eb4823;}
+#social4 .twitter     { color: #fff; background-color: #2baae1; border-color: #2baae1;}
+#social4 .vimeo       { color: #fff; background-color: #40b2dc; border-color: #40b2dc;}
+#social4 .youtube     { color: #fff; background-color: #ff3330; border-color: #ff3330;}
+/* Style #4 ends here*/
+
+
+/* Icons for social icons starts here*/
+#icons ul {
+	margin: 0;
+	padding: 0;
+	text-align:center;
+	
+	
+}
+
+#icons li {
+	display: inline-block;
+	list-style-type: none; 	
+	-webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+     border-radius: 10px;
+	 margin: 4px 0px 0px 8px;
+	 
+	
+	
+}
+
+#icons a {
+	display: block;
+	width: 50px;
+	height: 50px;
+	margin: 0px 0px 0px 0px;
+	padding: 10px 0;
+	font-size: 30px;
+	line-height: 0px;
+	text-decoration:none;
+	text-align: center;
+	background: transparent;
+	vertical-align: bottom;
+	color: #fff;
+	border: 0px solid #fff;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	 box-sizing: border-box;
+	-webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+     border-radius: 10px;
+}
+
+#icons a:hover {
+	border-width: 5px;
+	padding: 5px 0;
+	-webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
+#icons .icon1    { color: #fff; background-color: #1bbc9d; border-color: #1bbc9d;}
+#icons .icon2    { color: #fff; background-color: #2fcc71; border-color: #2b9ad2;}
+#icons .icon3    { color: #fff; background-color: #3598dc; border-color: #2b9ad2;}
+#icons .icon4    { color: #fff; background-color: #9c59b8; border-color: #2b9ad2;}
+#icons .icon5    { color: #fff; background-color: #34495e; border-color: #2b9ad2;}
+#icons .icon6    { color: #fff; background-color: #f49c14; border-color: #2b9ad2;}
+#icons .icon7    { color: #fff; background-color: #e77e23; border-color: #2b9ad2;}
+#icons .icon8    { color: #fff; background-color: #808b8d; border-color: #2b9ad2;}

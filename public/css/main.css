@@ -124,7 +124,6 @@ footer img {
 	*/
 }
 .list-cart {
-  background: #fff;
   border-radius: 5px;
   margin-bottom: 50px;
 }
@@ -136,12 +135,6 @@ footer img {
 }
 .actions-cart div {
   margin-bottom: 1em;
-}
-.item-pay {
-  border-bottom: 1px #b2b2b2 solid;
-}
-.item-pay:last-child {
-  border-bottom: none;
 }
 .btn-cart {
   float: right;
