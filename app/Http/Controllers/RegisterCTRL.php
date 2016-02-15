@@ -21,13 +21,13 @@ class RegisterCTRL extends Controller
     public function register(Request $request){
 
     	if(
-    		empty('password') &&
-            empty('email') &&
-            empty('phone') &&
-            empty('first_name') &&
-            empty('last_name') &&
-            empty('street_number') &&
-            empty('street_name')
+    	   !empty($request['password']) &&
+            !empty($request['email']) &&
+            !empty($request['phone']) &&
+            !empty($request['first_name']) &&
+            !empty($request['last_name']) &&
+            !empty($request['street_number']) &&
+            !empty($request['street_name'])
     		)
     	{
     		$datos = DB::select('select id from users where email = ?', [$request['email']]);
