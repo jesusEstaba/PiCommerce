@@ -24,7 +24,7 @@ class ProductCTRL extends Controller
 
 
             $type_categoty = 1;
-            $toppings = DB::select('SELECT Tp_Id, TP_Descrip from toppings where Tp_Kind = ? and Tp_Abrev!=? and Tp_Cat > 0 group by Tp_Special', [$type_categoty, '.']);
+            $toppings = DB::select('SELECT Tp_Id, TP_Descrip,Tp_Cat from toppings where Tp_Kind = ? and Tp_Abrev!=? and Tp_Cat > 0', [$type_categoty, '.']);
     	}
     	
 
