@@ -13,7 +13,7 @@ class AddColumnToppings extends Migration
     public function up()
     {
         Schema::table('toppings', function (Blueprint $table) {
-            //
+            $table->integer('Tp_Cat');
         });
     }
 

@@ -52,24 +52,26 @@
 					</div>
 					
 					<br>
-
+					
+					<style type="text/css">
+					.box-drag{
+						display: block !important;
+					}
+					</style>
 					<div class="row">
 						<div class="col-md-12 col-sm-6">
 							@if($toppings)
 								@foreach($toppings as $data => $table)
 									<div class="box-drag">
-										<a id-top="{{$table->Tp_Id}}" class="btn drag">{{strtolower($table->TP_Descrip)}}</a>
+										<a id-top="{{$table->Tp_Id}}" class="btn drag">
+											{{ucwords( strtolower($table->TP_Descrip) )}}
+										</a>
 									</div>
 									
 								@endforeach
 							@else
 								<h2>No Toppings for now</h2>
 							@endif
-						</div>
-						<div class="col-xs-12">
-							<div class="input-control">
-								<textarea name="cooking_instructions" placeholder="cooking instructions" class="form-control"></textarea>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -87,9 +89,14 @@
 					<li class="def-top">Onios</li>
 					<li class="def-top">Corn</li>
 				</ul>
-
-				<h2 class="text-success price-all"><span class="total-price">14.99</span>$</h2>
-{{-- 				href="{{url('cart')}}"  --}}
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="input-control">
+							<textarea name="cooking_instructions" placeholder="cooking instructions" class="form-control"></textarea>
+						</div>
+					</div>
+				</div>
+				<h2 class="text-success price-all"><span class="total-price"></span>$</h2>
 				<a class="btn btn-success go-checkout-cart">Add to Car</a>
 			</div>	
 		</div>
@@ -226,6 +233,10 @@
 		color:white;
 		padding: .3em;
 	}
+	.items-toppings{
+		list-style: none;
+		min-height: 50px;
+	}
 	.items-toppings li .glyphicon-minus{
 		/*border:solid white 1px;*/
 		background: red;
@@ -265,15 +276,16 @@ function addToCart()
 
 function add_toping_to_list(object, parent)
 {
+	//cambiar selector para que sean todos los elemntos del ul, esto en caso de que el topping ya lo traiga
+	//la pizza
 	$(".add-topping").each(function(index){
 		//acá es por donde se puede eliminar el caso de que existan dos toppings iguales,
 		//pero con diferente proporcion
 		
 		if($(this).text()==object.text()+" "+size_topping)
 		{
-			$(this).fadeOut(500, function(){
-				$(this).remove();
-			});
+			$(this).remove();
+			calcular_cuenta();
 		}
 	});
 
@@ -282,10 +294,11 @@ function add_toping_to_list(object, parent)
 		.attr('id-top',object.attr('id-top'))
 		.attr('size-top', num_size_top)
 		.appendTo( parent );
+
     
-    calcular_cuenta();
-	
 	hover_click_topping();
+	calcular_cuenta();
+
 
 }
 
@@ -400,18 +413,19 @@ $(function()
 
 	$('.items-toppings').attr('topprice', $(".sizes a:first-child").attr('top-price'));
 	
-
 	$('.size').click(function()
 	{
-		$('.pizza_size').html( $(this).html() );
-		
 		$('.items-toppings').attr('topprice', $(this).attr("top-price"));
-		
-		calcular_cuenta();
 		
 		$(".pizza_size")
 			.attr('price', $(this).attr('price'))
-			.attr('id-size', $(this).attr('id-size'));
+			.attr('id-size', $(this).attr('id-size'))
+			.html( $(this).html() );
+
+		$('.size.active').removeClass('active');
+		$(this).addClass('active');
+
+		calcular_cuenta();
 	});
 
     $( ".drag" ).draggable
@@ -447,12 +461,18 @@ $(function()
 			out: function (event, ui)
 			{
 		        if(ui.helper)
-			        ui.helper.fadeOut(1000, function () {
-			            $(this).remove();
-			            calcular_cuenta();
+		        {
+		        	ui.helper.fadeOut(1000, function () {
+			            $(this).remove(function(){
+			            	calcular_cuenta();
+			            });
 			        });
+		        }
 	    	}
 	    });
+
+	    $(".sizes a:first-child").click();
+	    $('.btn-complete-size').click();
   });
 </script>
 

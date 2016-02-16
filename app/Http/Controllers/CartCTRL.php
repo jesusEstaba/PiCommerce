@@ -106,7 +106,8 @@ class CartCTRL extends Controller
     		from cart 
     		inner join size 
     		on cart.product_id = size.Sz_Id 
-    		where cart.id_user = ?', [Auth::user()->id]
+    		where cart.id_user = ?
+    		order by cart.id desc', [Auth::user()->id]
     	);
     	
     	if( !isset($size) )
