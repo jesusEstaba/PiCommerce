@@ -52,12 +52,7 @@
 					</div>
 					
 					<br>
-					
-					<style type="text/css">
-					.box-drag{
-						display: block !important;
-					}
-					</style>
+
 					<div class="row">
 						<div class="col-md-12 col-sm-6">
 							@if($toppings)
