@@ -6,10 +6,6 @@
 	<div class="acctions-elements">
 		<div class="row">
 			<div class="col-xs-12">
-				<a class="btn btn-danger delete-element-to-cart">
-					<spam class="glyphicon glyphicon-trash"></spam>
-					Delete
-				</a>
 				<a class="btn btn-info select-item">
 					<spam class="glyphicon glyphicon-check"></spam>
 					Select
@@ -21,34 +17,37 @@
 
 		@if($cart)
 			@foreach($cart as $table => $campo)
-				<div id-cart="{{$campo->id}}" class="item-pay">
-					<div class="row">
-						<div class="col-xs-12">
-							<h3>{{$campo->Sz_Abrev}}</h3>
-							<ul>
-								<?php $total_price_top = 0;?>
-								@foreach($campo->toppings_list as $tab => $val)
-									
-									<?php
-									if($val->size==1)
-										$size_topping = "";
-									elseif($val->size==2)
-										$size_topping = " [left]";
-									elseif($val->size==3)
-										$size_topping = " [rigth]";
-									elseif($val->size==4)
-										$size_topping = " [double]";
-									elseif($val->size==5)
-										$size_topping = " [lite]";
-									else
-										$size_topping = "";
-									?>
+				<div class="col-md-6">
+					<div id-cart="{{$campo->id}}" class="item-pay">
+						<div class="row">
+							<div class="col-xs-12">
+								<spam class="glyphicon glyphicon-remove pull-right delete-element"></spam>
+								<h3>{{$campo->Sz_Abrev}}</h3>
+								<ul>
+									<?php $total_price_top = 0;?>
+									@foreach($campo->toppings_list as $tab => $val)
+										
+										<?php
+										if($val->size==1)
+											$size_topping = "";
+										elseif($val->size==2)
+											$size_topping = " [left]";
+										elseif($val->size==3)
+											$size_topping = " [rigth]";
+										elseif($val->size==4)
+											$size_topping = " [double]";
+										elseif($val->size==5)
+											$size_topping = " [lite]";
+										else
+											$size_topping = "";
+										?>
 
-									<li>{{strtolower($val->Tp_Descrip).$size_topping}}: {{$val->price}}$</li>
-									<?php $total_price_top += $val->price;?>
-								@endforeach
-							</ul>
-							<h4 class="text-success">{{$campo->Sz_Price+$total_price_top}}$</h4>
+										<li>{{strtolower($val->Tp_Descrip).$size_topping}}: {{$val->price}}$</li>
+										<?php $total_price_top += $val->price;?>
+									@endforeach
+								</ul>
+								<h4 class="text-success">{{$campo->Sz_Price+$total_price_top}}$</h4>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -106,21 +105,25 @@
 	.acctions-elements{
 		margin-bottom: 1em;
 	}
+	.delete-element{
+		margin-right: .5em;
+		margin-top: .5em;
+	}
 </style>
 <script type="text/javascript">
-	var delete_items = true;
 	var select_items = true;
 
 	$(document).ready(function() {
-
 		
+		$('.delete-element').click(function(event) {
+			$(this).parents('.item-pay').parent().remove();
+		});
 
 		$('.select-item').click(function()
 		{
 			if(select_items)
 			{
 				select_items = false;
-				
 				$(".item-pay").click(function()
 				{
 					if( $(this).hasClass('element-cart') )
@@ -139,10 +142,7 @@
 					else
 						$('.pay-btn').addClass("hide");
 				});
-				
 				$(this).addClass('active');
-				
-				
 			}
 			else
 			{
@@ -156,36 +156,8 @@
 			}
 		});
 
-		$('.delete-element-to-cart').click(function()
-		{
-			$(".item-pay").click(function()
-			{
-				if(!delete_items)
-				{
-					if( $(this).hasClass('element-cart') )
-					{
-						$(this).fadeOut(function() {
-							$(this).remove();
-						});
-					}
-				}
-			});
-
-			if(delete_items)
-			{
-				delete_items = false;
-				$(this).addClass('active');
-			}
-			else
-			{
-				delete_items = true;
-				$(this).removeClass('active');
-			}
-		});
-
-		$('.pay-btn').click(function(event) {
-			/* Act on the event */
-			$(".item-pay.element-cart").each(function(index, el) {
+		$('.pay-btn').click(function(){
+			$(".item-pay.element-cart").each(function() {
 				$('#pay').append('<input type="hidden" name="select_cart[]" value="'+$(this).attr('id-cart')+'">');
 			});
 			$('.send').click();
