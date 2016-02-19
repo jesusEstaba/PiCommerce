@@ -102,7 +102,7 @@ class CartCTRL extends Controller
     	}
 
 
-    	$cart = DB::select('SELECT cart.id, size.Sz_Abrev, size.Sz_Price 
+    	$cart = DB::select('SELECT cart.id, size.Sz_Abrev, size.Sz_FArea, size.Sz_Price 
     		from cart 
     		inner join size 
     		on cart.product_id = size.Sz_Id 
