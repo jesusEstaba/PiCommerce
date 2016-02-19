@@ -408,9 +408,11 @@
 		padding: .3em;
 		font-size: .5em;
 		margin-left: .8em;
+		cursor: pointer;
 	}
 	.items-toppings li{
 		font-size: 1.3em;
+		cursor: default;
 	}
 	.topping-size{
 		position: relative;
@@ -438,6 +440,7 @@
 		left: 100%;
 		top: 5px;
 		z-index: 6;
+		cursor:pointer;
 	}
 </style>
 
