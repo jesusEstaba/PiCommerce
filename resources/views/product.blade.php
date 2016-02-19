@@ -5,75 +5,246 @@
 
 <div class="container space bottom-space">
 	<div class="row">
-
-	@if($item)
-		<div class="col-md-8">
-			<div class="head-product">
-				<div class="row">
-					<div class="col-md-6">
-						<img src="{{asset('images/category/healthy-honey-vegetable-pizza-561561.jpg')}}" class="img-build">
-					</div>
-					<div class="col-md-6">
-						<div class="row">
-							<h2>{{$name}}</h2>
-							<p>Pepperoni, Sausage, Onions, Green Peppers, Mushrooms, Black Olives</p>
-						</div>
-						<div class="row">
-							<div class="sizes">
-								@if($size)
-									@foreach($size as $table => $val)
-										<a class="btn btn-default size" id-size="{{$val->Sz_Id}}" price="{{$val->Sz_Price}}" top-price="{{$val->Sz_Topprice}}">{{$val->Sz_Abrev}}</a>
-									@endforeach
-								@else
-									<p>No Hay Tamaños</p>
-								@endif
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="row">	
-				
-				<div class="toppings">
+		@if($item)
+			<div class="col-md-8 bottom-space">
+				<div class="head-product">
 					<div class="row">
-						<div class="col-md-4">
-							<h2>Add Toping</h2>
+						<div class="col-md-6">
+							<img src="{{asset('images/category/healthy-honey-vegetable-pizza-561561.jpg')}}" class="img-build">
 						</div>
-						<div class="col-md-8">
-							<div class="btn-sizes">
-								<div class="btn-complete-size topping-size" size-top="1" title="Complete"></div>
-								<div class="btn-semi-left-size topping-size" size-top="2" title="Left Half"></div>
-								<div class="btn-semi-right-size topping-size" size-top="3" title="Right Half"></div>
-								<div class="btn-double-size topping-size" size-top="4" title="Double"></div>
-								<div class="btn-lite-size topping-size" size-top="5" title="Lite"></div>
+						<div class="col-md-6">
+							<div class="row">
+								<h2>{{$name}}</h2>
+								<p>Pepperoni, Sausage, Onions, Green Peppers, Mushrooms, Black Olives</p>
 							</div>
-						</div>
-					</div>
-					
-					<br>
-
-					<div class="row">
-						<div class="col-md-12 col-sm-6">
-							@if($toppings)
-								@foreach($toppings as $data => $table)
-									<div class="box-drag">
-										<a id-top="{{$table->Tp_Id}}" class="btn drag">
-											{{ucwords( strtolower($table->TP_Descrip) )}}
+							<div class="row">
+								<div class="sizes">
+									@if($size)
+										@foreach($size as $table => $val)
+										<a class="btn btn-default size" id-size="{{$val->Sz_Id}}" price="{{$val->Sz_Price}}" top-price="{{$val->Sz_Topprice}}">
+											{{$val->Sz_Abrev}}
 										</a>
-									</div>
-									
-								@endforeach
-							@else
-								<h2>No Toppings for now</h2>
-							@endif
+										@endforeach
+									@else
+										<p>No Hay Tamaños</p>
+									@endif
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
+				<div class="row">
+					
+					<div class="toppings">
+						<div class="row">
+							<div class="col-md-4">
+								<h2>Add Toping</h2>
+							</div>
+							<div class="col-md-8">
+								<div class="btn-sizes">
+									<div class="btn-complete-size topping-size" size-top="1" title="Complete">
+										<span class="name-size-top">Complete</span>
+									</div>
+									<div class="btn-semi-left-size topping-size" size-top="2" title="Left Half">
+										<span class="name-size-top">Left/Right</span>
+									</div>
+									<div class="btn-semi-right-size topping-size" size-top="3" title="Right Half">
+										
+									</div>
+									<div class="btn-double-size topping-size" size-top="4" title="Extra">
+										<span class="name-size-top">Extra</span>
+									</div>
+									<div class="btn-lite-size topping-size" size-top="5" title="Lite">
+										<span class="name-size-top">Lite</span>
+									</div>
+								</div>
+								<br>
+							</div>
+						</div>
+						
+						<div>
+							<br>
+							<p>
+								This is a drag & drop items.
+							</p>
+						</div>
+						
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="col-xs-8">
+									@if($toppings)
+										<div class="row">
+											<div class="col-xs-12">
+												
+												<?php
+													$contador = 1;
+													$con_catg = 1;
+													$categoria= ['cheese', 'meats', 'vegetables', 'fruit'];
+												?>
+												<ul class="nav nav-tabs" role="tablist">
+													@foreach($categoria as $name)
+														<li role="presentation">
+															<a href="#top-{{$con_catg}}" aria-controls="top-{{$name}}" role="tab" data-toggle="tab">
+																{{ucwords($name)}}
+															</a>
+														</li>
+														<?php
+															$con_catg++;
+														?>
+													@endforeach
+												</ul>
+												
+												<div class="tab-content">
 
+													<div role="tabpanel" class="tab-pane active" id="top-1">
+															
+														@foreach($toppings as $data => $table)
+															@if($table->Tp_Cat > $contador)
+																<?php
+																	$contador = $table->Tp_Cat;
+																?>
+																
+																</div>
+																<div role="tabpanel" class="tab-pane" id="top-{{$contador}}">
+																
+
+															@endif
+															
+																<div class="box-drag">
+																	<a id-top="{{$table->Tp_Id}}" class="btn drag">
+																		{{ucwords( strtolower($table->TP_Descrip) )}}
+																	</a>
+																</div>
+															
+																
+														@endforeach
+														
+													</div>
+													
+												</div>
+											
+											</div>
+										</div>
+									@else
+										<h2>No Toppings for now</h2>
+									@endif
+								</div>
+								<div class="col-xs-4">
+									<h4>Cooking Instructions</h4>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" value="">
+											No Pasta
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" value="">
+											No Sauce
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" value="">
+											No Cheese
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" value="">
+											Crispy
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" value="">
+											Extra Crispy
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" value="">
+											Lite Pasta
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" value="">
+											Lite Sauce
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" value="">
+											Lite Cheese
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" value="">
+											Lite Cook
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" value="">
+											Well Done
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" value="">
+											Extra Sauce
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" value="">
+											No Parm
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" value="">
+											Pasta on Side
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" value="">
+											Sauce on Side
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" value="">
+											Double Cut
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" value="">
+											Square Cut
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" value="">
+											Cold
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" value="">
+											Hot
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+				</div>
 			</div>
 		</div>
-
 
 		<div class="col-md-4 bottom-space">
 			<div class="counter-price" id="droppable">
@@ -93,40 +264,45 @@
 				</div>
 				<h2 class="text-success price-all"><span class="total-price"></span>$</h2>
 				<a class="btn btn-success go-checkout-cart">Add to Car</a>
-			</div>	
+			</div>
 		</div>
-@else
-	<div class="row">
-		<h3>This item no exist</h3>
-	</div>
-@endif
-	</div>
-	
+
+	@else
+		<div class="row">
+			<h3>This item no exist</h3>
+		</div>
+	@endif
 </div>
 
+</div>
 <form action="{{url('/add_to_cart')}}" method="post" class="add-to-cart hide">
-	{{-- <input type="hidden" name="" value="" /> --}}
+
 	<input type="submit" class="send-to-cart" />
 	<input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
 </form>
 
 	<script src="{{asset('assets/jquery/jquery.min.js')}}"></script>
 	<script src="{{asset('assets/jquery-ui/jquery-ui.min.js')}}"></script>
+	<script src="{{asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
 	<link rel="stylesheet" type="text/css" href="{{asset('assets/jquery-ui/jquery-ui.min.css')}}">
 
 <style type="text/css">
 	.drag{
-		background: #eee;
+		background: #923030;
+		color: white;
+		box-shadow: 0 0 3px rgba(0,0,0,.15);
 		border-radius: 3px;
 		padding: .5em;
-		transition:.8s background;
+		transition:.8s background, .8s box-shadow;
 		z-index: 6;
 	}
 	.drag:hover{
-		background: #ccc;
+		color: white;
+		background: #C53B3B;
+		box-shadow: 0 0 10px rgba(0,0,0,.4);
 	}
 	.drag:active{
-		border:dashed #333 1px;
+		border:dashed #eee 1px;
 		padding: .5em;
 	}
 
@@ -161,6 +337,8 @@
 
 	.toppings{
 		padding: 1em;
+		border-radius: 3px;
+		box-shadow: 0 0 2px rgba(0,0,0,0.26);
 	}
 	.head-product{
 		padding-bottom: 1em;
@@ -217,17 +395,7 @@
 		background: #FDF4A7;
 		border-color: #F58F19;
 	}
-	.box-drag{
-		/*background: orange;*/
-		display: inline-block;
-	}
-	.box-drag .glyphicon-plus{
-		/*border:solid white 1px;*/
-		background: green;
-		border-radius: 50%;
-		color:white;
-		padding: .3em;
-	}
+
 	.items-toppings{
 		list-style: none;
 		min-height: 50px;
@@ -243,6 +411,33 @@
 	}
 	.items-toppings li{
 		font-size: 1.3em;
+	}
+	.topping-size{
+		position: relative;
+	}
+	.topping-size .name-size-top{
+		position: absolute;
+		top: 85px;
+		left: 10px;
+	}
+	.tab-content .tab-pane{
+		padding: 1em;
+	}
+	.box-drag{
+		display: inline-block;
+		margin-left: .7em;
+		margin-right: .7em;
+		position: relative;
+	}
+	.box-drag .glyphicon-plus{
+		position: absolute;
+		background: green;
+		border-radius: 50%;
+		color:white;
+		padding: .3em;
+		left: 100%;
+		top: 5px;
+		z-index: 6;
 	}
 </style>
 
@@ -271,17 +466,23 @@ function addToCart()
 
 function add_toping_to_list(object, parent)
 {
-	//cambiar selector para que sean todos los elemntos del ul, esto en caso de que el topping ya lo traiga
+	//cambiar selector para que sean todos los elementos del ul, esto en caso de que el topping ya lo traiga
 	//la pizza
-	$(".add-topping").each(function(index){
+	$(".add-topping").each(function(index, ele){
 		//acá es por donde se puede eliminar el caso de que existan dos toppings iguales,
 		//pero con diferente proporcion
+		var add_top = $(this);
+
+		var size_topping_name = ["", "[left]", "[rigth]", "[extra]", "[lite]"];
 		
-		if($(this).text()==object.text()+" "+size_topping)
-		{
-			$(this).remove();
-			calcular_cuenta();
-		}
+		size_topping_name.forEach(function(name){
+			if(add_top.text()==object.text()+" "+name)
+			{
+				add_top.remove();
+				calcular_cuenta();
+			}
+		});
+		
 	});
 
 	$( "<li class='add-topping'></li>" )
@@ -313,13 +514,30 @@ function hover_click_topping()
 
 
 	$('.items-toppings li ').on('click', '.glyphicon-minus', function(){	
-		if($(this).parent().hasClass('def-top'))
-			if(menos_toppings.length)
-				menos_toppings +=  ', ' + $(this).parent().text();
-			else
-				menos_toppings = $(this).parent().text();
+		var parent = $(this).parent();
 
-		$(this).parent().remove();
+		if(parent.hasClass('def-top'))
+		{
+			console.log( parent.css('color') );
+			
+			if( parent.css('color')!='rgb(51, 51, 51)' )
+			{
+				if(menos_toppings.length)
+					menos_toppings +=  ', ' + $(this).parent().text();
+				else
+					menos_toppings = $(this).parent().text();
+			}
+			
+
+			parent.css({
+				'color': 'red',
+				'text-decoration':'line-through'
+			});
+			
+		}
+		else
+			parent.remove();
+		
 		calcular_cuenta();
 	});
 
@@ -356,12 +574,12 @@ var menos_toppings = "";
 
 $(function()
 {
-
+	$('ul.nav.nav-tabs li:first-child a').click();
 	hover_click_topping();
 
 	$('.box-drag')
 		.hover(function(){
-			$(this).prepend('<span class="glyphicon glyphicon-plus"></span>');
+			$(this).append('<span class="glyphicon glyphicon-plus"></span>');
 		},
 		function(){
 			$(this).children('.glyphicon-plus').remove();
@@ -383,7 +601,7 @@ $(function()
 	$('.topping-size').click(function() {
 		$('.topping-size').removeClass('active');
 		$(this).addClass('active');
-
+		
 		//size_topping
 		if($(this).attr('size-top')=="1")
 			size_topping = "";
@@ -392,7 +610,7 @@ $(function()
 		else if($(this).attr('size-top')=="3")
 			size_topping = "[rigth]";
 		else if($(this).attr('size-top')=="4")
-			size_topping = "[double]";
+			size_topping = "[extra]";
 		else if($(this).attr('size-top')=="5")
 			size_topping = "[lite]";
 
