@@ -15,7 +15,10 @@
 						<div class="col-md-6">
 							<div class="row">
 								<h2>{{$name}}</h2>
-								<p>Pepperoni, Sausage, Onions, Green Peppers, Mushrooms, Black Olives</p>
+								@if( !empty($description) )
+									<p>{{$description}}</p>
+								@endif
+								
 							</div>
 							<div class="row">
 								<div class="sizes">

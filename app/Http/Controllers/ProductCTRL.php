@@ -13,12 +13,13 @@ class ProductCTRL extends Controller
     public function index($cat, $id)
     {
 
-    	$items = DB::select('SELECT It_Descrip, It_Id from items where It_Id = ?', [$id]);
+    	$items = DB::select('SELECT It_Descrip, It_Id, description from items where It_Id = ?', [$id]);
     	
     	if($items)
     	{
     		$name = $items[0]->It_Descrip;
     		$id_item = $items[0]->It_Id;
+            $description = $items[0]->description;
 
     		$size_t = DB::select('SELECT * from size where Sz_Item = ?', [$id_item]);
 
@@ -38,6 +39,6 @@ class ProductCTRL extends Controller
 
 
 
-    	return view('product')->with(['name'=>$name, 'size'=>$size_t, 'toppings'=>$toppings, 'item'=>$items]);
+    	return view('product')->with(['name'=>$name, 'size'=>$size_t, 'toppings'=>$toppings, 'item'=>$items, 'description'=>$description]);
 	}
 }

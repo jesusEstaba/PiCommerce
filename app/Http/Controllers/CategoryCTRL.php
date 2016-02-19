@@ -27,7 +27,7 @@ class CategoryCTRL extends Controller
     		
             if($group_id)
     		{
-    			$items = DB::select('SELECT items.It_Id, items.It_Descrip, size.Sz_Price, size.Sz_item
+    			$items = DB::select('SELECT items.description, items.It_Id, items.It_Descrip, size.Sz_Price, size.Sz_item
                     FROM items 
                     INNER JOIN size 
                     ON items.It_Id=size.Sz_item  

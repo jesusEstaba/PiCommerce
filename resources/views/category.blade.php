@@ -52,6 +52,12 @@
 												{{$valor->It_Descrip}}
 											@endif
 										</h3>
+										<p>
+											@if( !empty($valor->description) )
+												{{$valor->description}}
+											@endif
+											
+										</p>
 										<span href="{{url('product/'.$name_cat_url.'/'.$valor->Sz_item)}}" class="btn btn-success">
 										{{$valor->Sz_Price}}$
 										</span>

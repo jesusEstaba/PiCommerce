@@ -15,7 +15,8 @@ class RegisterCTRL extends Controller
 {
     public function index(){
         $codes = DB::select('SELECT * from street where St_City = ?', ['Orlando']);
-        return view('register')->with(['codes'=>$codes]);
+        $streets = DB::select('SELECT distinct St_ZipCode from street');
+        return view('register')->with(['codes'=>$codes, 'streets'=>$streets]);
     }
     
     public function register(Request $request){
