@@ -15,7 +15,7 @@
 <body>
 	<nav>
 		<div class="container">
-
+				<a href="{{url('/choose')}}" class="btn btn-infosite hidden-xs">Home</a>
 				<a class="btn btn-infosite hidden-xs">About</a>
 				<a class="btn btn-infosite hidden-xs">Gallery</a>
 				<a class="btn btn-infosite hidden-xs">Contact</a>

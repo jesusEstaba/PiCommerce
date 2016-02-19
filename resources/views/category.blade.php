@@ -35,29 +35,31 @@
 
 	<div class="container">
 		<div class="row elements">
-			
 			@if($items)
 				@foreach($items as $item => $valor)
-
-					
-						<div class="col-md-6">
-							<div class="row type">
-								<div class="col-md-5 col-xs-6">
-									<img src="{{asset('images/items/nopicture.jpg')}}" class="item" alt="item-type">
-								</div>
-								<div class="col-md-7 col-xs-6">
-									<h3>
-										@if($sub)
-											{{$valor->Sz_Descrip}}
-										@else
-											{{$valor->It_Descrip}}
-										@endif
-									</h3>
-									<a href="{{url('product/'.$name_cat_url.'/'.$valor->Sz_item)}}" class="btn btn-success">{{$valor->Sz_Price}}$</a>
+					<div class="col-md-6">
+						<a href="{{url('product/'.$name_cat_url.'/'.$valor->Sz_item)}}">
+							<div class="type">
+								<div class="row">
+									<div class="col-md-5 col-xs-6">
+										<img src="{{asset('images/items/nopicture.jpg')}}" class="item" alt="item-type">
+									</div>
+									<div class="col-md-7 col-xs-6">
+										<h3>
+											@if($sub)
+												{{$valor->Sz_Descrip}}
+											@else
+												{{$valor->It_Descrip}}
+											@endif
+										</h3>
+										<span href="{{url('product/'.$name_cat_url.'/'.$valor->Sz_item)}}" class="btn btn-success">
+										{{$valor->Sz_Price}}$
+										</span>
+									</div>
 								</div>
 							</div>
-						</div>
-					
+						</a>
+					</div>
 				@endforeach
 			@else
 				<h3>no result for {{$name_category}}.</h3>
@@ -66,4 +68,10 @@
 
 		</div>
 	</div>
+	<style type="text/css">
+	.type{
+		text-decoration: none !important;
+		color: #333;
+	}
+	</style>
 @stop

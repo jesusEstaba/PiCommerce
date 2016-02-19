@@ -29,6 +29,21 @@ class CartCTRL extends Controller
     	return Redirect::to('cart');
     }
 
+    
+    /**
+     * [delete description]
+     * @param  Request $id [description]
+     * @return [type]      [description]
+     */
+    public function delete($id)
+    {
+    	$delete_res = DB::table('cart')->where('id_user', '=',Auth::user()->id)->where('id', '=', $id)->delete();
+
+    	return response()->json([
+        	'state' => $delete_res,
+        ]);
+    }
+    
 
     /**
      * [index description]
@@ -131,7 +146,11 @@ class CartCTRL extends Controller
     }
 
 
-    	public static function total_price(){
+    /**
+     * [total_price description]
+     * @return [type] [description]
+     */
+    public static function total_price(){
     	
     	$total_cart = DB::select('SELECT sum(cart_top.price) as toppings
     		from cart 
