@@ -180,12 +180,22 @@
 
 
 <script type="text/javascript">
+
+var streets = [
+		@foreach($streets as $tab => $table)
+			"{{strtolower($table->St_ZipCode)}}",
+		@endforeach
+	    ];
 	$(document).ready(function() {
 		var availableTags = [
 		@foreach($codes as $tab => $table)
 			"{{strtolower($table->St_Name)}}",
 		@endforeach
 	    ];
+
+	    $('[name=street_number]').autocomplete({
+	      source: streets
+	    });	
 
 	    $( "#tags" ).autocomplete({
 	      source: availableTags
