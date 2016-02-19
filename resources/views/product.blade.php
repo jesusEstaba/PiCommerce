@@ -62,25 +62,24 @@
 							</div>
 						</div>
 						
-						<div>
-							<br>
-							<p>
-								This is a drag & drop items.
-							</p>
-						</div>
-						
+						<br>
+						<br>
+
 						<div class="row">
 							<div class="col-xs-12">
 								<div class="col-xs-8">
 									@if($toppings)
 										<div class="row">
 											<div class="col-xs-12">
-												
+												<p class="text-drag-drop-desc">
+													This is a drag & drop items.
+												</p>
 												<?php
 													$contador = 1;
 													$con_catg = 1;
 													$categoria= ['cheese', 'meats', 'vegetables', 'fruit'];
 												?>
+
 												<ul class="nav nav-tabs" role="tablist">
 													@foreach($categoria as $name)
 														<li role="presentation">
@@ -359,11 +358,17 @@
 		height: 80px;
 		width: 80px;
 	}
+	.btn-complete-size span{
+		left: 8px !important;
+	}
 	.btn-semi-left-size{
 		border-radius: 40px 0 0 40px;
 		border:1px #333 solid;
 		height: 80px;
 		width: 40px;
+	}
+	.btn-semi-left-size span{
+		
 	}
 	.btn-semi-right-size{
 		border-radius: 0 40px 40px 0;
@@ -377,11 +382,17 @@
 		height: 80px;
 		width: 80px;
 	}
+	.btn-double-size span{
+		left: 18px !important;
+	}
 	.btn-lite-size{
 		border-radius:50%;
 		border:1px #333 dashed;
 		height: 80px;
 		width: 80px;
+	}
+	.btn-lite-size span{
+		left: 25px !important;
 	}
 	.btn-sizes div{
 		display: inline-block;
@@ -441,6 +452,9 @@
 		top: 5px;
 		z-index: 6;
 		cursor:pointer;
+	}
+	.text-drag-drop-desc{
+		text-align: center;
 	}
 </style>
 
