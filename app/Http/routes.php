@@ -20,6 +20,9 @@ Route::get('/pass', function () {
 Route::get('/', function () {
     return view('selection');
 });
+Route::get('contact', function(){
+    return view('contact');
+});
 
 Route::get('/login', 'LoginCTRL@index');
 
