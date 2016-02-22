@@ -52,7 +52,8 @@ class CategoryCTRL extends Controller
     		$items = '';
     	if( !isset($submenu_cat) )
     		$submenu_cat = 0;
-
+        if( !isset($name_cat) )
+            $name_cat = "";
 
         $categorys = DB::select("select name,name_cat  from category");
 

@@ -16,9 +16,9 @@
 	<nav>
 		<div class="container">
 				<a href="{{url('/choose')}}" class="btn btn-infosite hidden-xs">Home</a>
-				<a class="btn btn-infosite hidden-xs">About</a>
-				<a class="btn btn-infosite hidden-xs">Gallery</a>
-				<a href="{{url('/contact')}}" class="btn btn-infosite hidden-xs">Contact</a>
+				<a href="{{url('/diginos#about')}}" class="btn btn-infosite hidden-xs">About</a>
+				<a href="{{url('/diginos#gallery')}}" class="btn btn-infosite hidden-xs">Gallery</a>
+				<a href="{{url('/diginos#contact')}}" class="btn btn-infosite hidden-xs">Contact</a>
 				<a class="btn btn-default btn-infosite visible-xs-inline-block">
 					<span class="glyphicon glyphicon-menu-hamburger"></span>
 				</a>
