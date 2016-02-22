@@ -66,7 +66,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <!-- The user image in the navbar-->
                   <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                  <span class="hidden-xs">Alexander Pierce</span>
+                  <span class="hidden-xs">Admin</span>
                 </a>
               </li>
               <li>
