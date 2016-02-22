@@ -24,7 +24,7 @@ class ItemCTRL extends Controller
             $items = DB::table('items')
                 ->join('groups', 'items.It_Groups', '=', 'groups.Gr_Id')
                 ->where('items.It_Descrip', 'like', '%'.$search.'%')
-                ->select('items.It_Descrip', 'items.description', 'items.It_Status', 'groups.Gr_Descrip')
+                ->select('items.It_Id', 'items.It_Descrip', 'items.description', 'items.It_Status', 'groups.Gr_Descrip')
                 ->paginate(15);
         }
         else
