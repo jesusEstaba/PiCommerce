@@ -20,8 +20,8 @@ Route::get('/pass', function () {
 Route::get('/', function () {
     return view('selection');
 });
-Route::get('contact', function(){
-    return view('contact');
+Route::get('diginos', function(){
+    return view('diginos');
 });
 
 Route::get('/login', 'LoginCTRL@index');
@@ -49,3 +49,11 @@ Route::group(['middleware'=>'auth'], function(){
     Route::get('/pay', 'PayCTRL@index');
 });
 
+
+
+Route::group(['prefix'=>'admin'], function(){
+    Route::get('home',function(){
+        return view('admin.home');
+    });
+    Route::resource('items','ItemCTRL');
+});

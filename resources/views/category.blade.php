@@ -68,7 +68,7 @@
 					</div>
 				@endforeach
 			@else
-				<h3>no result for {{$name_category}}.</h3>
+				<h3>no result for {{$name_cat_url}}.</h3>
 			@endif
 			
 
