@@ -56,4 +56,5 @@ Route::group(['prefix'=>'admin'], function(){
         return view('admin.home');
     });
     Route::resource('items','ItemCTRL');
+    Route::resource('users','UserCTRL');
 });

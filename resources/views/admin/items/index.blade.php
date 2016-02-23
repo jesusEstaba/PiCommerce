@@ -1,9 +1,9 @@
 @extends('admin.layout')
 
 @section('title', 'Items')
-@section('section', 'Items')
 
 @section('content')
+<h2>Items</h2>
 <div>
 	<form action="{{url('admin/items')}}" method="get">
 		<div class="input-group">
@@ -12,6 +12,12 @@
 	        <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
 	      </span>
 	    </div>
+	    <select name="category">
+	    	<option value="">Groups</option>
+	    	@foreach($groups as $array => $group)
+	    		<option value="{{$group->Gr_ID}}">{{$group->Gr_Descrip}}</option>
+	    	@endforeach
+	    </select>
 	</form>
 </div>
 @if( count($items) )
@@ -30,7 +36,7 @@
 				<b>Status</b>
 			</td>
 			<td>
-				<b>Edit</b>
+				<b>More</b>
 			</td>
 		</tr>
 		@foreach($items as $item)
@@ -52,13 +58,13 @@
 					@endif
 				</td>
 				<td>
-					<a href="{{url('admin/items/'.$item->It_Id)}}" class="btn btn-default">Edit</a>
+					<a href="{{url('admin/items/'.$item->It_Id)}}" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span></a>
 				</td>
 			</tr>
 		@endforeach
 	</table>
 	@if(isset($search))
-		{!!$items->appends(['search' => $search])->render()!!}
+		{!!$items->appends(['search' => $search, 'category'=>$category])->render()!!}
 	@else
 		{!!$items->render()!!}
 	@endif

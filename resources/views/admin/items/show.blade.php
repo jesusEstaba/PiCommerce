@@ -1,13 +1,24 @@
 @extends('admin.layout')
 
 @section('title', 'Item')
-@section('section', 'Item')
 
 @section('content')
 
 
 	@if($item)
-		<h2>{{$item->It_Descrip}} <h4></h4></h2>
+		<h2>
+			<span class="title-item">{{$item->It_Descrip}}</span>
+			<span class="glyphicon edit-item glyphicon-pencil btn btn-default"></span>
+			
+			@if(!$item->It_Status)
+				<span class="glyphicon visible-sta item-status glyphicon-eye-open btn btn-success"></span>
+			@else
+				<span class="glyphicon visible-sta item-status glyphicon-eye-close btn btn-danger"></span>
+			@endif
+		</h2>
+		<p>
+			<b class="cat_item">{{$item->Gr_Descrip}}</b>
+		</p>
 		@if($item->description)
 			<p class="code">{{$item->description}}</p>
 		@else
@@ -34,22 +45,22 @@
 			</tr>
 		
 			@foreach($sizes as $key => $size)
-				<tr>
-					<td><span class="glyphicon glyphicon-pencil btn btn-default"></span></td>
-					<td>
-						{{$size->Sz_Descrip}}
+				<tr size="{{$size->Sz_Id}}">
+					<td><span id-size="{{$size->Sz_Id}}" class="glyphicon edit-size glyphicon-pencil btn btn-default"></span></td>
+					<td class="abrev">
+						{{$size->Sz_Abrev}}
+					</td>
+					<td class="price">
+						$<span>{{$size->Sz_Price}}</span>
+					</td>
+					<td class="topprice">
+						$<span>{{$size->Sz_Topprice}}</span>
 					</td>
 					<td>
-						${{$size->Sz_Price}}
-					</td>
-					<td>
-						${{$size->Sz_Topprice}}
-					</td>
-					<td>
-						@if(!$item->It_Status)
-							<span class="glyphicon status glyphicon-eye-open btn btn-success"></span>
+						@if(!$size->Sz_Status)
+							<span id-size="{{$size->Sz_Id}}" class="glyphicon visible-sta status glyphicon-eye-open btn btn-success"></span>
 						@else
-							<span class="glyphicon status glyphicon-eye-close btn btn-danger"></span>
+							<span id-size="{{$size->Sz_Id}}" class="glyphicon visible-sta status glyphicon-eye-close btn btn-danger"></span>
 						@endif
 					</td>
 				</tr>
@@ -60,22 +71,68 @@
 	@endif
 
 
+{!!Form::token()!!}
+
+
+
 <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Modal title</h4>
+        <h4 class="modal-title">Edit Size</h4>
       </div>
       <div class="modal-body">
-        <div class="form-group">
-        	<input class="text" placeholder="Description Name" class="form-control" />
-        </div>
+
+      	<div class="input-group">
+	      <input type="text" class="form-control" name="name" placeholder="Description Name" autocomplete="off">
+	    </div>
+	    <div class="input-group">
+	      <input type="text" class="form-control" name="price" placeholder="Price" autocomplete="off">
+	    </div>
+	    <div class="input-group">
+	      <input type="text" class="form-control" name="top_price" placeholder="Topping Price" autocomplete="off">
+	    </div>       
         
-        <input class="text" placeholder="Price" class="form-control" />
-        <input class="text" placeholder="Topping Price" class="form-control" />
       </div>
       <div class="modal-footer">
+      	<button type="button" class="btn btn-primary save" data-dismiss="modal">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div id="ModalEdit" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Edit Item</h4>
+      </div>
+      <div class="modal-body">
+
+      	<div class="input-group">
+	      <input type="text" class="form-control" name="item_name" placeholder="Name" autocomplete="off">
+	    </div>
+		<div class="input-group">
+			<textarea class="form-control" name="item_descrip" placeholder="Description"></textarea>
+	    </div>
+
+	    <div class="input-group">
+			<select class="form-control" name="category">
+				    	<option value="">Groups</option>
+				    	@foreach($groups as $array => $group)
+				    		<option value="{{$group->Gr_ID}}">{{$group->Gr_Descrip}}</option>
+				    	@endforeach
+				    </select>
+	    </div>
+	    
+        
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-primary save-item" data-dismiss="modal">Save</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div><!-- /.modal-content -->
@@ -97,10 +154,62 @@
 
 @section('script')
 <script type="text/javascript">
-	$('.glyphicon-pencil').click(function(){
+	$('.edit-size').click(function(){
+		$('.save').attr('id-size', $(this).attr('id-size'));
 		$('#myModal').modal();
 	});
-	$('.status').click(function(){
+
+
+	$('.edit-item').click(function(){
+		$('#ModalEdit').modal();
+	});
+
+	$('.save').click(function(){
+		
+		
+		var id = $(this).attr('id-size');
+
+		var abrev = $("[size="+id+"]").children('.abrev');
+		var price = $("[size="+id+"]").children('td.price').children();
+
+
+		var topprice = $("[size="+id+"]").children('td.topprice').children();
+
+		$.ajax({
+			url: '{{$item->It_Id}}',
+			type: 'PUT',
+			dataType: 'json',
+			headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
+			data:
+			{
+				id: id,
+				descrip:$('[name=name]').val(), 
+				price: $('[name=price]').val(), 
+				top_price: $('[name=top_price]').val()
+			},
+		})
+		.done(function(data) {
+			console.log(data.state);
+
+			if( $('[name=name]').val() )
+				abrev.html($('[name=name]').val());
+			if( $('[name=price]').val() )
+				price.html( $('[name=price]').val() );
+			if( $('[name=top_price]').val() )
+				topprice.html( $('[name=top_price]').val() );
+
+			$('[name=name]').val("")
+			$('[name=price]').val("")
+			$('[name=top_price]').val("")
+				
+		})
+		.fail(function() {
+			console.log("error");
+		});
+	});
+
+
+	$('.visible-sta').click(function(){
 		if( $(this).hasClass('glyphicon-eye-open') )
 		{
 			$(this)
@@ -119,5 +228,95 @@
 				.removeClass('btn-danger')
 		}
 	});
+
+	$('.status').click(function(){
+		var status = 0;
+
+		if( $(this).hasClass('glyphicon-eye-close') )
+			status = 1
+
+		$.ajax({
+			url: '{{$item->It_Id}}',
+			type: 'PUT',
+			dataType: 'json',
+			headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
+			data: {change_visible: $(this).attr('id-size'), status:status},
+		})
+		.done(function(data) {
+		})
+		.fail(function() {
+			console.log("error");
+		});
+		
+	});
+
+
+	$('.item-status').click(function(){
+		var status = 0;
+
+		if( $(this).hasClass('glyphicon-eye-close') )
+			status = 1
+
+		$.ajax({
+			url: '{{$item->It_Id}}',
+			type: 'PUT',
+			dataType: 'json',
+			headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
+			data: {item_visible: "visible", status:status},
+		})
+		.done(function(data) {
+
+		})
+		.fail(function() {
+			console.log("error");
+		});
+		
+	});
+
+
+	$('.save-item').click(function(){
+	
+
+		$.ajax({
+			url: '{{$item->It_Id}}',
+			type: 'PUT',
+			dataType: 'json',
+			headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
+			data:
+			{
+				edit_item: true,
+				name:$("[name=item_name]").val(), 
+				descrip:$("[name=item_descrip]").val(), 
+				category:$("[name=category]").val()
+			},
+		})
+		.done(function(data) {
+
+			if( $("[name=item_descrip]").val() )
+			{
+				if( $('.code').hasClass('text-center') )
+				{
+					$('.code').removeClass('text-center')
+				}
+				$('.code').html($("[name=item_name]").val());
+			}
+
+			if( $("[name=item_name]").val() )
+				$('.title-item').html($("[name=item_name]").val())
+
+			if( $("[name=category]").val() )
+				$('.cat_item').html($("[name=category] option:selected").text());
+
+			$("[name=item_name]").val("");
+			$("[name=item_descrip]").val("");
+			$("[name=category]").val("");
+		})
+		.fail(function() {
+			console.log("error");
+		});
+		
+	});
+
+	
 </script>
 @stop

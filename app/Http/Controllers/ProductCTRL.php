@@ -22,7 +22,7 @@ class ProductCTRL extends Controller
             $description = $items[0]->description;
             $It_Groups = $items[0]->It_Groups;
 
-    		$size_t = DB::select('SELECT * from size where Sz_Item = ?', [$id_item]);
+    		$size_t = DB::select('SELECT * from size where Sz_Item = ? and Sz_Status!=1', [$id_item]);
 
 
             $type_categoty = 1;
