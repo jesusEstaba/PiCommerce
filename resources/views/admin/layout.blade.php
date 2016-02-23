@@ -44,7 +44,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <header class="main-header">
 
         <!-- Logo -->
-        <a href="{{url('admin/home')}}" class="logo">
+        <a href="{{url('admin')}}" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><b>A</b>Dπ</span>
           <!-- logo for regular state and mobile devices -->
@@ -84,14 +84,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
           <!-- search form (Optional) -->
-          <form action="#" method="get" class="sidebar-form">
+          
+          {{-- <form action="#" method="get" class="sidebar-form">
             <div class="input-group">
               <input type="text" name="q" class="form-control" placeholder="Search...">
               <span class="input-group-btn">
                 <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
               </span>
             </div>
-          </form>
+          </form> --}}
+
           <!-- /.search form -->
 
           <!-- Sidebar Menu -->
@@ -259,5 +261,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
          Both of these plugins are recommended to enhance the
          user experience. Slimscroll is required when using the
          fixed layout. -->
+    @yield('script')
   </body>
 </html>

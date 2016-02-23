@@ -3,16 +3,6 @@
 @section('title', 'Cart')
 @section('content')
 <div class="container space">
-	<div class="acctions-elements">
-		<div class="row">
-			<div class="col-xs-12">
-				<a class="btn btn-info select-item">
-					<spam class="glyphicon glyphicon-check"></spam>
-					Select
-				</a>
-			</div>
-		</div>
-	</div>
 	<div class="row list-cart">
 
 		@if($cart)
@@ -31,6 +21,7 @@
 					</div>
 				</div>
 			</div>
+			<div class="items-list-box">
 			@foreach($cart as $table => $campo)
 				<div class="col-xs-12">
 					<div id-cart="{{$campo->id}}" class="item-pay">
@@ -54,7 +45,7 @@
 											$size_topping = "";
 										?>
 
-										<li>{{strtolower($val->Tp_Descrip).$size_topping}}: {{$val->price}}$</li>
+										<li>{{strtolower($val->Tp_Descrip).$size_topping}}: ${{$val->price}}</li>
 										<?php $total_price_top += $val->price;?>
 									@endforeach
 							</ul>
@@ -67,13 +58,14 @@
 							<div class="col-md-offset-3 col-md-1 col-xs-3">
 								<a class="btn btn-default view-details-toppings-modal">view</a>
 							</div>
-							<div class="col-md-2 col-xs-3">
-								<h4 class="text-success">{{$campo->Sz_Price+$total_price_top}}$</h4>
+							<div class="col-md-2 col-xs-3 price_box">
+								<h4 class="text-success">$<span class="price">{{$campo->Sz_Price+$total_price_top}}</span></h4>
 							</div>
 						</div>
 					</div>
 				</div>
 			@endforeach
+			</div>
 			<div class="col-xs-12">
 				<div class="sub-total-box">
 					<div class="row">
@@ -101,7 +93,7 @@
 			
 		</div>
 		<div class="col-md-offset-1 col-md-3">
-			<a href="#" class="hide btn btn-success btn-lg pay-btn">Pay</a>
+			<a href="#" class="btn btn-success btn-lg pay-btn">Pay</a>
 		</div>
 	</div>
 	<form action="{{url('pay')}}" class="hide" id="pay">
@@ -190,12 +182,19 @@
 		border-radius: 0 0 3px 3px;
 		padding: .5em;
 	}
+	.empty-cart-text{
+		background: white;
+		text-align: center;
+		padding: 1em;
+		margin: 0;
+		border-left: #b2b2b2 solid 1px;
+		border-right: #b2b2b2 solid 1px;
+	}
 </style>
 
 <script src="{{asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
 
 <script type="text/javascript">
-	var select_items = true;
 
 	$(document).ready(function() {
 		
@@ -203,51 +202,18 @@
 			
 			var id = $(this).parents('.item-pay').attr('id-cart');
 			
+			var price = $(this).parent().siblings('.price_box').children().children().html();
+
 			$(this).parents('.item-pay').parent().remove();
 
 			$.get("delete/item/"+id);
-		});
 
-		$('.select-item').click(function()
-		{
-			if(select_items)
+			var total = parseFloat($(".total-in_cart").html())-parseFloat(price);
+			$(".total-in_cart").html(total.toFixed(2));
+
+			if(!$('.item-pay').length)
 			{
-				select_items = false;
-				$(".item-pay").click(function()
-				{
-					if( $(this).hasClass('element-cart') )
-					{
-						$(this).children().children('.col-xs-1').children('spam').removeClass('hover-parent');
-						$(this).removeClass('element-cart');
-					}
-					else
-					{
-						$(this).addClass('element-cart');
-
-						$(this).children().children('.col-xs-1').children('spam').addClass('hover-parent');
-					}
-
-					if( $(".item-pay").hasClass('element-cart') )
-					{
-						$('.pay-btn').removeClass("hide");
-					}
-					else
-						$('.pay-btn').addClass("hide");
-				});
-				$(this).addClass('active');
-			}
-			else
-			{
-				$(".item-pay")
-					.off()
-					.removeClass('element-cart');
-
-				$('.glyphicon.glyphicon-remove.delete-element').removeClass('hover-parent');
-				
-				
-				select_items = true;
-				$(this).removeClass('active');
-				$('.pay-btn').addClass("hide");
+				$('.items-list-box').append('<div class="col-xs-12"><h2 class="empty-cart-text">Cart Empty</h2></div>');
 			}
 		});
 

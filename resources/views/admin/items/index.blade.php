@@ -30,7 +30,7 @@
 				<b>Status</b>
 			</td>
 			<td>
-				Edit
+				<b>Edit</b>
 			</td>
 		</tr>
 		@foreach($items as $item)
@@ -46,9 +46,9 @@
 				</td>
 				<td>
 					@if(!$item->It_Status)
-						<span class="glyphicon glyphicon-eye-open"></span>
+						<span class="glyphicon glyphicon-eye-open text-success"></span>
 					@else
-						<span class="glyphicon glyphicon-eye-close"></span>
+						<span class="glyphicon glyphicon-eye-close text-danger"></span>
 					@endif
 				</td>
 				<td>

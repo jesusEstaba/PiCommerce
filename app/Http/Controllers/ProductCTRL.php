@@ -41,13 +41,45 @@ class ProductCTRL extends Controller
             $It_Groups = "";
 
 
-        if($It_Groups==1 or $It_Groups==13){
-           return view('builder.product')->with([
-            'name'=>$name, 'size'=>$size_t, 'toppings'=>$toppings, 
-            'item'=>$items, 'description'=>$description
-            ]); 
-        }
+        function view_with_you($view, $name, $size_t, $toppings, $items, $description, $image_category)
+        {
+            return view($view)->with([
+                    'name'=>$name, 
+                    'size'=>$size_t, 
+                    'toppings'=>$toppings, 
+                    'item'=>$items, 
+                    'description'=>$description,
+                    'image_category'=>$image_category
+                ]); 
+        } 
 
+
+        if($It_Groups==1 or $It_Groups==13)
+        {
+            $image_category = 'healthy-honey-vegetable-pizza-561561.jpg';
+            if($It_Groups==13)
+            {
+                $image_category ='calzone_jamon_300x200.png';
+            }
+
+            return view_with_you('builder.pizza', $name, $size_t, $toppings, $items, $description, $image_category);
+                
+        }
+        else if($It_Groups==11 or $It_Groups==7)
+        {
+            $image_category = "xsLmTnr55b8xLnF72P2eYqV57bk.png";
+            if($It_Groups==7)
+            {
+                $image_category = "BBQ-Chicken-wings.jpg";
+            }
+            return view_with_you('builder.salad', $name, $size_t, $toppings, $items, $description, $image_category);
+            
+        }
+        else if($It_Groups==9)
+        {
+            $image_category = "soft-drinks.jpg";
+            return view_with_you('builder.simple', $name, $size_t, $toppings, $items, $description, $image_category); 
+        }
         return view('builder.generic_builder');
     	   
 	}
