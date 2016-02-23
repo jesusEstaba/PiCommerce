@@ -31,7 +31,7 @@ class CategoryCTRL extends Controller
                     FROM items 
                     INNER JOIN size 
                     ON items.It_Id=size.Sz_item  
-                    WHERE items.It_Groups = ? AND Sz_Special=1', [$group_id]
+                    WHERE items.It_Groups = ? AND Sz_Special=1 AND items.It_Status!=1', [$group_id]
                 );
     			
                 //$items = $items[0];

@@ -117,7 +117,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </li>
             
             <li>
-              <a href="#">
+              <a href="{{url('admin/users')}}">
                 <i class="fa fa-link">
                 </i>
                 <span>Users
@@ -159,11 +159,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
-        <section class="content-header">
-          <h1>
-            @yield('section')
-          </h1>
-        </section>
+        
 
         <!-- Main content -->
         <section class="content white">
