@@ -4,270 +4,62 @@
 @section('content')
 
 <div class="container space bottom-space">
-	<div class="row">
-		@if($item)
-			<div class="col-md-8 bottom-space">
+	@if($item)
+<div class="row">
+	
+	<div class="col-md-8 bottom-space">
+		<div class="row">
 				<div class="head-product">
 					<div class="row">
 						<div class="col-md-6">
-							<img src="{{asset('images/category/healthy-honey-vegetable-pizza-561561.jpg')}}" class="img-build">
+							<img src="{{asset('images/category/'.$image_category)}}" class="img-build">
 						</div>
 						<div class="col-md-6">
 							<div class="row">
 								<h2>{{$name}}</h2>
 								@if( !empty($description) )
-									<p>{{$description}}</p>
+								<p>{{$description}}</p>
 								@endif
 								
 							</div>
 							<div class="row">
 								<div class="sizes">
 									@if($size)
-										@foreach($size as $table => $val)
-										<a class="btn btn-default size" id-size="{{$val->Sz_Id}}" price="{{$val->Sz_Price}}" top-price="{{$val->Sz_Topprice}}">
-											{{$val->Sz_Abrev}}
-										</a>
-										@endforeach
+									@foreach($size as $table => $val)
+									<a class="btn btn-default size" id-size="{{$val->Sz_Id}}" price="{{$val->Sz_Price}}" top-price="{{$val->Sz_Topprice}}">
+										{{$val->Sz_Abrev}}
+									</a>
+									@endforeach
 									@else
-										<p>No Hay Tamaños</p>
+									<p>No Hay Tamaños</p>
 									@endif
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="row">
-					
-					<div class="toppings">
-						<div class="row">
-							<div class="col-md-4">
-								<h2>Add Toping</h2>
-							</div>
-							<div class="col-md-8">
-								<div class="btn-sizes">
-									<div class="btn-complete-size topping-size" size-top="1" title="Complete">
-										<span class="name-size-top">Complete</span>
-									</div>
-									<div class="btn-semi-left-size topping-size" size-top="2" title="Left Half">
-										<span class="name-size-top">Left/Right</span>
-									</div>
-									<div class="btn-semi-right-size topping-size" size-top="3" title="Right Half">
-										
-									</div>
-									<div class="btn-double-size topping-size" size-top="4" title="Extra">
-										<span class="name-size-top">Extra</span>
-									</div>
-									<div class="btn-lite-size topping-size" size-top="5" title="Lite">
-										<span class="name-size-top">Lite</span>
-									</div>
-								</div>
-								<br>
-							</div>
-						</div>
-						
-						<br>
-						<br>
+				
+				@yield('head-data')
 
-						<div class="row">
-							<div class="col-xs-12">
-								<div class="col-xs-8">
-									@if($toppings)
-										<div class="row">
-											<div class="col-xs-12">
-												<p class="text-drag-drop-desc">
-													This is a drag & drop items.
-												</p>
-												<?php
-													$contador = 1;
-													$con_catg = 1;
-													$categoria= ['cheese', 'meats', 'vegetables', 'fruit'];
-												?>
-
-												<ul class="nav nav-tabs" role="tablist">
-													@foreach($categoria as $name)
-														<li role="presentation">
-															<a href="#top-{{$con_catg}}" aria-controls="top-{{$name}}" role="tab" data-toggle="tab">
-																{{ucwords($name)}}
-															</a>
-														</li>
-														<?php
-															$con_catg++;
-														?>
-													@endforeach
-												</ul>
-												
-												<div class="tab-content">
-
-													<div role="tabpanel" class="tab-pane active" id="top-1">
-															
-														@foreach($toppings as $data => $table)
-															@if($table->Tp_Cat > $contador)
-																<?php
-																	$contador = $table->Tp_Cat;
-																?>
-																
-																</div>
-																<div role="tabpanel" class="tab-pane" id="top-{{$contador}}">
-																
-
-															@endif
-															
-																<div class="box-drag">
-																	<a id-top="{{$table->Tp_Id}}" class="btn drag">
-																		{{ucwords( strtolower($table->TP_Descrip) )}}
-																	</a>
-																</div>
-															
-																
-														@endforeach
-														
-													</div>
-													
-												</div>
-											
-											</div>
-										</div>
-									@else
-										<h2>No Toppings for now</h2>
-									@endif
-								</div>
-								<div class="col-xs-4">
-									<h4>Cooking Instructions</h4>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" value="">
-											No Pasta
-										</label>
-									</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" value="">
-											No Sauce
-										</label>
-									</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" value="">
-											No Cheese
-										</label>
-									</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" value="">
-											Crispy
-										</label>
-									</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" value="">
-											Extra Crispy
-										</label>
-									</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" value="">
-											Lite Pasta
-										</label>
-									</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" value="">
-											Lite Sauce
-										</label>
-									</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" value="">
-											Lite Cheese
-										</label>
-									</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" value="">
-											Lite Cook
-										</label>
-									</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" value="">
-											Well Done
-										</label>
-									</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" value="">
-											Extra Sauce
-										</label>
-									</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" value="">
-											No Parm
-										</label>
-									</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" value="">
-											Pasta on Side
-										</label>
-									</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" value="">
-											Sauce on Side
-										</label>
-									</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" value="">
-											Double Cut
-										</label>
-									</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" value="">
-											Square Cut
-										</label>
-									</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" value="">
-											Cold
-										</label>
-									</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" value="">
-											Hot
-										</label>
-									</div>
-								</div>
-							</div>
-						</div>
-				</div>
-			</div>
 		</div>
-
-		<div class="col-md-4 bottom-space">
-			<div class="counter-price" id="droppable">
-				<h3 class="pizza_size" id-size="0"  price="0">Pizza Size</h3>
-				<ul topprice='0' class="items-toppings">
-					<li class="def-top">Pepperoni</li>
-					<li class="def-top">Double Cheese</li>
-					<li class="def-top">Onios</li>
-					<li class="def-top">Corn</li>
-				</ul>
-				<div class="row">
-					<div class="col-xs-12">
-						<div class="input-control">
-							<textarea name="cooking_instructions" placeholder="cooking instructions" class="form-control"></textarea>
-						</div>
+	</div>
+	
+	<div class="col-md-4 bottom-space">
+		<div class="counter-price" id="droppable">
+			<h3 class="pizza_size" id-size="0" price="0"></h3>
+			@yield('toppings')
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="input-control">
+						<textarea name="cooking_instructions" placeholder="Additional notes" class="notes_instructions form-control"></textarea>
 					</div>
 				</div>
-				<h2 class="text-success price-all"><span class="total-price"></span>$</h2>
-				<a class="btn btn-success go-checkout-cart">Add to Car</a>
 			</div>
+			<h2 class="text-success price-all">$<span class="total-price"></span></h2>
+			<a class="btn btn-success go-checkout-cart">Add to Cart</a>
 		</div>
+	</div>
+</div>
 
 	@else
 		<div class="row">
@@ -462,6 +254,19 @@
 </style>
 
 <script type="text/javascript">
+function cooking_instruction(){
+	var acum = "";
+	$(".checkbox input:checked").each(function(index, el)
+	{
+		if(acum.length)
+			acum += ", "+$(this).parent().children("span").html();
+		else
+			acum = "\n\n[Cooking Instructions]\n"+$(this).parent().children("span").html();
+	});
+
+	return acum;
+}
+
 function addToCart()
 {
 	var selected=[];
@@ -477,11 +282,16 @@ function addToCart()
 
 	var id_size = $("<input>").attr({"type":"hidden","name":"id_size"}).val( $(".pizza_size").attr('id-size') );
 	
+	
+	var cooking_instrr = $("<input>").attr({"type":"hidden","name":"cooking_instructions"}).val( "[Notes]\n"+$(".notes_instructions").val()+menos_toppings+cooking_instruction());
+
+	
+
 	$('.add-to-cart')
 		.append(input)
 		.append(toping_size)
 		.append(id_size)
-		.append($("[name=cooking_instructions]").clone());
+		.append( cooking_instrr);
 }
 
 function add_toping_to_list(object, parent)
@@ -538,14 +348,12 @@ function hover_click_topping()
 
 		if(parent.hasClass('def-top'))
 		{
-			console.log( parent.css('color') );
-			
-			if( parent.css('color')!='rgb(51, 51, 51)' )
+			if( parent.css('color')=='rgb(51, 51, 51)' )
 			{
 				if(menos_toppings.length)
 					menos_toppings +=  ', ' + $(this).parent().text();
 				else
-					menos_toppings = $(this).parent().text();
+					menos_toppings = "\n\n[deleted]\n" + $(this).parent().text();
 			}
 			
 

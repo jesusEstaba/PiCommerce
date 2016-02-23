@@ -25,7 +25,7 @@ class CartCTRL extends Controller
     	Session::put('size', $request['id_size']);
     	Session::put('topping', $request['selected']);
     	Session::put('topping_size', $request['sizes']);
-
+        Session::put('cooking_instructions', $request['cooking_instructions']);
     	return Redirect::to('cart');
     }
 
@@ -37,6 +37,7 @@ class CartCTRL extends Controller
      */
     public function delete($id)
     {
+        DB::table('cart_top')->where('id_cart', '=', $id)->delete();
     	$delete_res = DB::table('cart')->where('id_user', '=',Auth::user()->id)->where('id', '=', $id)->delete();
 
     	return response()->json([
@@ -58,10 +59,12 @@ class CartCTRL extends Controller
 			$size = Session::get('size');
 			$toppings = Session::get('topping');
 			$top_size = Session::get('topping_size');
+            $cooking_instructions = Session::get('cooking_instructions');
 
 			$id_cart = Cart::create([
-				'id_user'=>Auth::user()->id,
-				'product_id'=>$size
+				'id_user' => Auth::user()->id,
+				'product_id' => $size,
+                'cooking_instructions' => $cooking_instructions
 			])->id;
 
 
@@ -113,6 +116,7 @@ class CartCTRL extends Controller
     		Session::forget('size');
     		Session::forget('toppings');
     		Session::forget('topping_size');
+            Session::forget('cooking_instructions');
     		
     	}
 

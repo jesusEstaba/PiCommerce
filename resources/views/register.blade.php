@@ -40,7 +40,7 @@
 
 						<div class="input-form">
 							<label>Email:</label>	
-							<input type="text" class="form-control" name="email" placeholder="Email" />
+							<input type="email" class="form-control" name="email" placeholder="Email" />
 						</div>
 						<div class="input-form">
 							<label>Phone:</label>
@@ -149,6 +149,25 @@
 	</div>
 </div>
 
+<a class="btn btn-default send">SEND</a>
+
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <p>One fine body&hellip;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
 <style type="text/css">
 	.input-form{
@@ -178,6 +197,8 @@
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
+  <script src="{{asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
+
 
 <script type="text/javascript">
 
@@ -199,7 +220,40 @@ var streets = [
 
 	    $( "#tags" ).autocomplete({
 	      source: availableTags
-	    });	
+	    });
+
+	    $('.send').click(function(){
+	    	var message = "";
+	    	
+	    	if( !$('[name=password]').val() )
+				message += "<li>Password Empty</li>";
+			if( $('[name=password]').val()!=$('[name=confirm]').val() )
+				message += "<li>Passwords do not match</li>";
+			
+			if( !$('[name=email]').val() )
+				message += "<li>Email Empty</li>"; 
+			if( !$('[name=phone]').val() )
+				message += "<li>Phone Empty</li>"; 
+			if( !$('[name=first_name]').val() )
+				message += "<li>First name Empty</li>"; 
+			if( !$('[name=last_name]').val() )
+				message += "<li>Last Name Empty</li>"; 
+			if( !$('[name=street_number]').val() )
+				message += "<li>Street Number Empty</li>"; 
+			if( !$('[name=street_name]').val() )
+				message += "<li>Street Name Empty</li>"; 
+
+
+			$("#myModal .modal-title").html('<h4>Error</h4>');
+			$("#myModal .modal-body").html('<ul>'+message+'</ul>');
+			$('#myModal').modal('show');
+	    });
+
+
+
+
+
+
 	});
 </script>
 

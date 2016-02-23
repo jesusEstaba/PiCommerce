@@ -29,7 +29,7 @@
 			@if( Auth::check() )	
 				<a class="btn btn-warning btn-cart" href="{{url('cart')}}">
 					<span class="glyphicon glyphicon-shopping-cart"></span>
-					<span class="total-in_cart">0.00$</span>
+					<span>$<span class="total-in_cart">0.00</span></span>
 				</a>
 				<a class="btn btn-cart" href="{{url('logout')}}">
 					Logout
@@ -47,7 +47,7 @@
 		if( $(".btn-cart").text()!="Login" )
 		{
 			$.get('{{url("total_price_cart")}}', function(data) {
-				$('.total-in_cart').html(data.total+"$");
+				$('.total-in_cart').html(data.total);
 			});
 		}
 	});

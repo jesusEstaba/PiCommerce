@@ -52,7 +52,7 @@ Route::group(['middleware'=>'auth'], function(){
 
 
 Route::group(['prefix'=>'admin'], function(){
-    Route::get('home',function(){
+    Route::get('/',function(){
         return view('admin.home');
     });
     Route::resource('items','ItemCTRL');
