@@ -2,7 +2,7 @@
 <footer>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-8">
+			<div class="col-md-12">
 				<p>
 					3895 Lake Emma Rd #151, Lake Mary, FL 32746
 				</p>
@@ -10,7 +10,8 @@
 					Phone: <a href="tel:+14073332733">(407) 333-2733</a> Fax: <a href="tel:+14073332733">(407) 333-2733</a>
 				</p>
 			</div>
-			<div class="col-md-3">
+			<div class="col-md-12">
+				
 				{!!Html::style('css/style_techandall.css')!!}
 				<link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 				
@@ -21,6 +22,12 @@
 				}
 				#social3{
 					margin-top: 5px;
+
+				}
+				#social3 a{
+					width: 40px;
+					height: 40px;
+					font-size: 1.5em;
 				}
 				.facebook a:hover{
 					border-color:#3b5a9b !important;

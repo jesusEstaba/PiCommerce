@@ -298,7 +298,8 @@
 				{
 					$('.code').removeClass('text-center')
 				}
-				$('.code').html($("[name=item_name]").val());
+				
+				$('.code').html($("[name=item_descrip]").val());
 			}
 
 			if( $("[name=item_name]").val() )
