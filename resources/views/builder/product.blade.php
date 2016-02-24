@@ -60,9 +60,11 @@
 				</div>
 			</div>
 			<div class="cantidad">
-				<span class=""></span>
-				<span class="quantity"></span>
-				<span class=""></span>
+				<div class="box-cant">
+					<span class="glyphicon glyphicon-minus btn btn-default"></span>
+					<span class="quantity btn btn-default">1</span>
+					<span class="glyphicon glyphicon-plus btn btn-default"></span>
+				</div>
 			</div>
 			<h2 class="text-success price-all">$<span class="total-price"></span></h2>
 			<a class="btn btn-success go-checkout-cart">Add to Cart</a>
@@ -90,6 +92,26 @@
 	<link rel="stylesheet" type="text/css" href="{{asset('assets/jquery-ui/jquery-ui.min.css')}}">
 
 <style type="text/css">
+	/*rojo #E26F6F*/
+	/*verde #A1E26F*/
+	.cantidad{
+		margin-top: .5em;
+		text-align: center;
+
+	}
+	.cantidad .btn{
+		margin: 0 !important;
+		
+	}
+	.cantidad .quantity{
+		border-radius: 0;
+		
+		border:solid #b2b2b2 1px;
+	}
+	.cantidad .quantity:hover{
+		background: white;
+	}
+	
 	.drag{
 		background: #923030;
 		color: white;
@@ -291,12 +313,22 @@ function addToCart()
 
 	var id_size = $("<input>").attr({"type":"hidden","name":"id_size"}).val( $(".pizza_size").attr('id-size') );
 	
+	var quantity = $("<input>").attr({"type":"hidden","name":"quantity"}).val( parseInt( $('.cantidad .quantity').html() ) );
 	
-	var cooking_instrr = $("<input>").attr({"type":"hidden","name":"cooking_instructions"}).val( "[Notes]\n"+$(".notes_instructions").val()+menos_toppings+cooking_instruction());
+	
+	var instrucciones = $(".notes_instructions").val();
 
+	if(instrucciones.length)
+	{
+		instrucciones = "[Notes]\n"+instrucciones;
+	}
+	
+
+	var cooking_instrr = $("<input>").attr({"type":"hidden","name":"cooking_instructions"}).val(instrucciones+menos_toppings+cooking_instruction());
 	
 
 	$('.add-to-cart')
+		.append(quantity)
 		.append(input)
 		.append(toping_size)
 		.append(id_size)
@@ -400,7 +432,7 @@ function calcular_cuenta()
 		else if($(this).attr('size-top')=="5")
 			cuenta += topping_price;
 	});
-	cuenta_total = pizza_price + cuenta;
+	cuenta_total = (pizza_price+cuenta) * parseInt( $('.cantidad .quantity').html() );
 	$('.total-price').html(cuenta_total.toFixed(2));
 }
 
@@ -411,6 +443,20 @@ var menos_toppings = "";
 
 $(function()
 {
+	$('.cantidad .glyphicon-minus').click(function(){
+		var cantidad = parseInt( $('.cantidad .quantity').html() );
+		if(cantidad>1)
+			$('.cantidad .quantity').html( cantidad-1 );
+		calcular_cuenta();
+	});
+
+	$('.cantidad .glyphicon-plus').click(function(){
+		var cantidad = parseInt( $('.cantidad .quantity').html() );
+		$('.cantidad .quantity').html( cantidad+1 );
+		calcular_cuenta();
+	});
+
+
 	$('ul.nav.nav-tabs li:first-child a').click();
 	hover_click_topping();
 

@@ -26,6 +26,7 @@ class CartCTRL extends Controller
     	Session::put('topping', $request['selected']);
     	Session::put('topping_size', $request['sizes']);
         Session::put('cooking_instructions', $request['cooking_instructions']);
+        Session::put('quantity', $request['quantity']);
     	return Redirect::to('cart');
     }
 
@@ -60,11 +61,16 @@ class CartCTRL extends Controller
 			$toppings = Session::get('topping');
 			$top_size = Session::get('topping_size');
             $cooking_instructions = Session::get('cooking_instructions');
+            $quantity = (int)Session::get('quantity');
 
-			$id_cart = Cart::create([
+            if(!$quantity)
+                $quantity = 1;
+			
+            $id_cart = Cart::create([
 				'id_user' => Auth::user()->id,
 				'product_id' => $size,
-                'cooking_instructions' => $cooking_instructions
+                'cooking_instructions' => $cooking_instructions,
+                'quantity' => $quantity
 			])->id;
 
 
@@ -117,11 +123,12 @@ class CartCTRL extends Controller
     		Session::forget('toppings');
     		Session::forget('topping_size');
             Session::forget('cooking_instructions');
+            Session::forget('quantity');
     		
     	}
 
 
-    	$cart = DB::select('SELECT cart.id, size.Sz_Abrev, size.Sz_FArea, size.Sz_Price 
+    	$cart = DB::select('SELECT cart.quantity, cart.id, size.Sz_Abrev, size.Sz_FArea, size.Sz_Price 
     		from cart 
     		inner join size 
     		on cart.product_id = size.Sz_Id 
@@ -156,7 +163,7 @@ class CartCTRL extends Controller
      */
     public static function total_price(){
     	
-    	$total_cart = DB::select('SELECT sum(cart_top.price) as toppings
+    	$total_cart = DB::select('SELECT ( sum(cart_top.price*cart.quantity) ) as toppings
     		from cart 
     		
     		inner join cart_top 
@@ -169,7 +176,7 @@ class CartCTRL extends Controller
 
     	if($total_cart)
     	{
-    		$total_cart2 = DB::select('SELECT sum(size.Sz_Price) as pizza
+    		$total_cart2 = DB::select('SELECT ( sum(size.Sz_Price*cart.quantity) ) as pizza
 	    		from cart 
 	    		inner join size
 	    		on cart.product_id=size.Sz_Id
