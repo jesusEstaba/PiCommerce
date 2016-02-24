@@ -6,27 +6,30 @@
 	<div class="row list-cart">
 
 		@if($cart)
-			<div class="col-xs-12">
-				<div class="box-title-products">
-					<div class="row">
-						<div class="col-xs-offset-1 col-xs-5">
-							<b class="center-text">Product</b>
-						</div>
-						<div class="col-md-offset-3 col-md-1 col-xs-3">
-							<b>Toppings</b>
-						</div>
-						<div class="col-md-2 col-xs-3">
-							<b>Price</b>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="items-list-box">
-			@foreach($cart as $table => $campo)
-				<div class="col-xs-12">
-					<div id-cart="{{$campo->id}}" class="item-pay">
-						<div class="row">
-							<ul class="hide topping-list">
+
+		<div class="col-xs-12">
+			<table class="table">
+				<tr class="thead">
+					<td>
+						<b>Remove</b>
+					</td>
+					<td>
+						<b>Product</b>
+					</td>
+					<td>
+						<b>Quantity</b>
+					</td>
+					<td>
+						<b>Price</b>
+					</td>
+					<td>
+						<b>Toppings</b>
+					</td>
+				</tr>
+				@foreach($cart as $table => $campo)
+				<tr id-cart="{{$campo->id}}" class="item-pay">
+					<td class="hide">
+						<ul class="topping-list">
 									<?php $total_price_top = 0;?>
 									@foreach($campo->toppings_list as $tab => $val)
 										
@@ -48,29 +51,35 @@
 										<li>{{strtolower($val->Tp_Descrip).$size_topping}}: ${{$val->price}}</li>
 										<?php $total_price_top += $val->price;?>
 									@endforeach
-							</ul>
-							<div class="col-xs-1">
-								<spam class="glyphicon glyphicon-remove delete-element"></spam>
-							</div>
-							<div class="col-xs-5">
-								<h4 class="title-product">@if($campo->Sz_FArea=="P"){{"Pizza"}}@endif {{$campo->Sz_Abrev}}</h4>
-							</div>
-							<div class="col-md-offset-3 col-md-1 col-xs-3">
-								<a class="btn btn-default view-details-toppings-modal">view</a>
-							</div>
-							<div class="col-md-2 col-xs-3 price_box">
-								<h4 class="text-success">$<span class="price">{{$campo->Sz_Price+$total_price_top}}</span></h4>
-							</div>
-						</div>
-					</div>
-				</div>
-			@endforeach
-			</div>
+						</ul>
+					</td>
+					<td>
+						<spam total-price-product="{{($campo->Sz_Price+$total_price_top)*$campo->quantity}}" class="glyphicon glyphicon-remove delete-element"></spam>
+					</td>
+					<td>
+						<h4 class="title-product">@if($campo->Sz_FArea=="P"){{"Pizza"}}@endif {{$campo->Sz_Abrev}}</h4>
+					</td>
+					<td>
+						<span class="quantity">{{$campo->quantity}}</span>
+					</td>
+					<td>
+						<h4 class="text-success">$<span class="price">{{$campo->Sz_Price+$total_price_top}}</span></h4>
+					</td>
+					<td>
+						@if($total_price_top)
+							<a class="btn btn-default view-details-toppings-modal">view</a>
+						@endif
+					</td>
+				</tr>
+				@endforeach
+			</table>	
+		</div>
+
 			<div class="col-xs-12">
 				<div class="sub-total-box">
 					<div class="row">
 						<div class="col-md-6 col-md-offset-6">
-							total price
+							<h3>Total Price: $<span class="total_cart_price">0</span></h3>
 						</div>
 					</div>
 				</div>
@@ -93,7 +102,7 @@
 			
 		</div>
 		<div class="col-md-offset-1 col-md-3">
-			<a href="#" class="btn btn-success btn-lg pay-btn">Pay</a>
+			<a href="#" class="btn btn-success btn-lg pay-btn">Checkout</a>
 		</div>
 	</div>
 	<form action="{{url('pay')}}" class="hide" id="pay">
@@ -130,6 +139,8 @@
 		text-align: center;
 		color: #666;
 	}
+
+
 	.item-pay{
 		padding: .5em;
 		background: white;
@@ -187,8 +198,9 @@
 		text-align: center;
 		padding: 1em;
 		margin: 0;
-		border-left: #b2b2b2 solid 1px;
-		border-right: #b2b2b2 solid 1px;
+	}
+	.table{
+		margin: 0;
 	}
 </style>
 
@@ -197,24 +209,39 @@
 <script type="text/javascript">
 
 	$(document).ready(function() {
+
+
+
 		
+
 		$('.delete-element').click(function(event) {
 			
 			var id = $(this).parents('.item-pay').attr('id-cart');
+			$(this).parents('.item-pay').remove();
 			
-			var price = $(this).parent().siblings('.price_box').children().children().html();
-
-			$(this).parents('.item-pay').parent().remove();
-
-			$.get("delete/item/"+id);
-
+			var price = $(this).attr('total-price-product');
+			//$.get("delete/item/"+id);
+			
+			
+			
 			var total = parseFloat($(".total-in_cart").html())-parseFloat(price);
 			$(".total-in_cart").html(total.toFixed(2));
 
+			$('.total_cart_price').html(total.toFixed(2));
+			
 			if(!$('.item-pay').length)
 			{
-				$('.items-list-box').append('<div class="col-xs-12"><h2 class="empty-cart-text">Cart Empty</h2></div>');
+				$('.table').append('<tr class="item-pay deleted-all-cart"><td></td><td><h3 class="empty-cart-text">Cart Empty</h3></td><td></td><td></td><td></td></tr>');
 			}
+			
+		});
+
+		$('.delete-element').each(function(index, el) {
+			var price = parseFloat($(this).attr('total-price-product'));
+			
+			var total = parseFloat($(".total_cart_price").html()) + price;
+			
+			$('.total_cart_price').html( total.toFixed(2) );
 		});
 
 		$('.pay-btn').click(function(){
@@ -226,7 +253,9 @@
 
 
 		$('.view-details-toppings-modal').click(function() {
-			var toppings = $(this).parent().siblings('ul').html();
+			var toppings = $(this).parent().parent().children().html();
+			
+
 			var title = $(this).parent().siblings().children("h4.title-product").html();
 			
 			$("#myModal .modal-title").html('<h4>'+title+'</h4>');
