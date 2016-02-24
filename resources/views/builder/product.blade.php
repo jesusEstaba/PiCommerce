@@ -8,40 +8,44 @@
 <div class="row">
 	
 	<div class="col-md-8 bottom-space">
-		<div class="row">
-				<div class="head-product">
+
+		<div class="head-product">
+			
+			<div class="row">
+				<div class="col-md-6">
+					<img src="{{asset('images/category/'.$image_category)}}" class="img-build">
+				</div>
+				<div class="col-md-6">
 					<div class="row">
-						<div class="col-md-6">
-							<img src="{{asset('images/category/'.$image_category)}}" class="img-build">
+						<div class="col-xs-12">
+							<h2>{{$name}}</h2>
+							@if( !empty($description) )
+							<p>{{$description}}</p>
+							@endif
 						</div>
-						<div class="col-md-6">
-							<div class="row">
-								<h2>{{$name}}</h2>
-								@if( !empty($description) )
-								<p>{{$description}}</p>
+						
+					</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="sizes">
+								@if($size)
+								@foreach($size as $table => $val)
+								<a class="btn btn-default size" id-size="{{$val->Sz_Id}}" price="{{$val->Sz_Price}}" top-price="{{$val->Sz_Topprice}}">
+									{{$val->Sz_Abrev}}
+								</a>
+								@endforeach
+								@else
+								<p>No Hay Tamaños</p>
 								@endif
-								
-							</div>
-							<div class="row">
-								<div class="sizes">
-									@if($size)
-									@foreach($size as $table => $val)
-									<a class="btn btn-default size" id-size="{{$val->Sz_Id}}" price="{{$val->Sz_Price}}" top-price="{{$val->Sz_Topprice}}">
-										{{$val->Sz_Abrev}}
-									</a>
-									@endforeach
-									@else
-									<p>No Hay Tamaños</p>
-									@endif
-								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				
-				@yield('head-data')
-
+			</div>
 		</div>
+			
+
+		@yield('head-data')
 	</div>
 	
 	<div class="col-md-4 bottom-space">
@@ -54,6 +58,11 @@
 						<textarea name="cooking_instructions" placeholder="Additional notes" class="notes_instructions form-control"></textarea>
 					</div>
 				</div>
+			</div>
+			<div class="cantidad">
+				<span class=""></span>
+				<span class="quantity"></span>
+				<span class=""></span>
 			</div>
 			<h2 class="text-success price-all">$<span class="total-price"></span></h2>
 			<a class="btn btn-success go-checkout-cart">Add to Cart</a>

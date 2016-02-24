@@ -10,6 +10,9 @@
 @stop
 
 @section('head-data')
+
+
+
 <div class="toppings">
 	<div class="row">
 		<div class="col-md-4">
