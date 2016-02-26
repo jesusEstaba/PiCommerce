@@ -53,7 +53,7 @@
 					<?php
 						$contador = 1;
 						$con_catg = 1;
-						$categoria= ['cheese', 'meats', 'vegetables', 'fruitx'];
+						$categoria= ['cheese', 'meats', 'vegetables', 'fruit'];
 					?>
 					<ul class="nav nav-tabs" role="tablist">
 						@foreach($categoria as $name_category)

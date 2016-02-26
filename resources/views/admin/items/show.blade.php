@@ -11,7 +11,7 @@
 			<span class="glyphicon edit-item glyphicon-pencil btn btn-default"></span>
 			
 			@if(!$item->It_Status)
-				<span class="glyphicon visible-sta item-status glyphicon-eye-open btn btn-success"></span>
+				<span class="glyphicon visible-sta item-status glyphicon-eye-open btn btn-info"></span>
 			@else
 				<span class="glyphicon visible-sta item-status glyphicon-eye-close btn btn-danger"></span>
 			@endif
@@ -24,7 +24,7 @@
 		@else
 			<p class="code text-center"><b>No Description.</b></p>
 		@endif
-		<h3>Sizes</h3>
+		<h3>Sizes <span class="glyphicon glyphicon-plus btn btn-success"></h3>
 		<table class="table">
 			<tr>
 				<td>
@@ -58,7 +58,7 @@
 					</td>
 					<td>
 						@if(!$size->Sz_Status)
-							<span id-size="{{$size->Sz_Id}}" class="glyphicon visible-sta status glyphicon-eye-open btn btn-success"></span>
+							<span id-size="{{$size->Sz_Id}}" class="glyphicon visible-sta status glyphicon-eye-open btn btn-info"></span>
 						@else
 							<span id-size="{{$size->Sz_Id}}" class="glyphicon visible-sta status glyphicon-eye-close btn btn-danger"></span>
 						@endif
@@ -214,7 +214,7 @@
 		{
 			$(this)
 				.removeClass('glyphicon-eye-open')
-				.removeClass('btn-success')
+				.removeClass('btn-info')
 				.addClass('glyphicon-eye-close')
 				.addClass('btn-danger')
 				
@@ -223,7 +223,7 @@
 		{
 			$(this)
 				.addClass('glyphicon-eye-open')
-				.addClass('btn-success')
+				.addClass('btn-info')
 				.removeClass('glyphicon-eye-close')
 				.removeClass('btn-danger')
 		}

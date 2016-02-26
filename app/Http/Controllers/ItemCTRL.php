@@ -26,27 +26,27 @@ class ItemCTRL extends Controller
         if ( $search!='' and $category!='')
         {
             $items = DB::table('items')
-                    ->join('groups', 'items.It_Groups', '=', 'groups.Gr_Id')
-                    ->where('items.It_Descrip', 'like', '%'.$search.'%')
-                    ->where('groups.Gr_ID', '=', $category)
-                    ->select('items.It_Id', 'items.It_Descrip', 'items.description', 'items.It_Status', 'groups.Gr_Descrip')
-                    ->paginate(15);
+                ->join('groups', 'items.It_Groups', '=', 'groups.Gr_Id')
+                ->where('items.It_Descrip', 'like', '%'.$search.'%')
+                ->where('groups.Gr_ID', $category)
+                ->select('items.It_Id', 'items.It_Descrip', 'items.description', 'items.It_Status', 'groups.Gr_Descrip')
+                ->paginate(15);
         }
         else if($search!='')
         {
             $items = DB::table('items')
-                    ->join('groups', 'items.It_Groups', '=', 'groups.Gr_Id')
-                    ->where('items.It_Descrip', 'like', '%'.$search.'%')
-                    ->select('items.It_Id', 'items.It_Descrip', 'items.description', 'items.It_Status', 'groups.Gr_Descrip')
-                    ->paginate(15);
+                ->join('groups', 'items.It_Groups', '=', 'groups.Gr_Id')
+                ->where('items.It_Descrip', 'like', '%'.$search.'%')
+                ->select('items.It_Id', 'items.It_Descrip', 'items.description', 'items.It_Status', 'groups.Gr_Descrip')
+                ->paginate(15);
         }
         else if($category!='')
         {
             $items = DB::table('items')
-                    ->join('groups', 'items.It_Groups', '=', 'groups.Gr_Id')
-                    ->where('groups.Gr_ID', '=', $category)
-                    ->select('items.It_Id', 'items.It_Descrip', 'items.description', 'items.It_Status', 'groups.Gr_Descrip')
-                    ->paginate(15);
+                ->join('groups', 'items.It_Groups', '=', 'groups.Gr_Id')
+                ->where('groups.Gr_ID', $category)
+                ->select('items.It_Id', 'items.It_Descrip', 'items.description', 'items.It_Status', 'groups.Gr_Descrip')
+                ->paginate(15);
         }
         else
         {
@@ -92,15 +92,16 @@ class ItemCTRL extends Controller
     {
         $item = DB::table('items')
             ->join('groups', 'groups.Gr_ID', '=', 'items.It_Groups')
-            ->where('It_Id', '=', $id)
+            ->where('It_Id', $id)
             ->get();
 
         if($item)
         {
-            
             $item = $item[0];
             $item_id = $item->It_Id;
-            $sizes = DB::table('size')->where('Sz_Item', '=', $item_id)->get();
+            $sizes = DB::table('size')
+                ->where('Sz_Item', $item_id)
+                ->get();
         }
 
         $groups = DB::table('groups')->get();
@@ -145,7 +146,7 @@ class ItemCTRL extends Controller
             
             if( count($update) )
                 DB::table('items')
-                    ->where('It_Id', '=', $id)
+                    ->where('It_Id', $id)
                     ->update($update);
 
             $respuesta = ['state'=>'Changed'];
@@ -166,7 +167,7 @@ class ItemCTRL extends Controller
             
             if( count($update) )
                 DB::table('size')
-                    ->where('Sz_Id', '=', $request['id'])
+                    ->where('Sz_Id', $request['id'])
                     ->update($update);
 
             $respuesta = ['state'=>'Changed'];
@@ -178,7 +179,7 @@ class ItemCTRL extends Controller
             $status  = (int)$request['status'];
             
             DB::table('items')
-                ->where('It_Id', '=', $id)
+                ->where('It_Id', $id)
                 ->update(['It_Status'=>$status]);
             
             $respuesta = ['state'=>'Changed'];
@@ -189,7 +190,7 @@ class ItemCTRL extends Controller
             $status  = (int)$request['status'];
             
             DB::table('size')
-                ->where('Sz_Id', '=', $request['change_visible'])
+                ->where('Sz_Id', $request['change_visible'])
                 ->update(['Sz_Status'=>$status]);
             
             $respuesta = ['state'=>'Changed'];

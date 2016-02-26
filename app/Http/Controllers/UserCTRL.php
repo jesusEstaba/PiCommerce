@@ -66,7 +66,16 @@ class UserCTRL extends Controller
      */
     public function show($id)
     {
-        //
+        $user = DB::table('users')->where('id', '=', $id)->get();
+
+        if($user)
+        {
+            $user = $user[0];
+        }
+        else
+            $user = "";
+
+        return view('admin.users.user')->with(['user'=>$user]);
     }
 
     /**
