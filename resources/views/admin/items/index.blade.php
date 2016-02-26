@@ -3,7 +3,7 @@
 @section('title', 'Items')
 
 @section('content')
-<h2>Items</h2>
+<h2>Items <span class="glyphicon glyphicon-plus btn btn-success"></span></h2>
 <div>
 	<form action="{{url('admin/items')}}" method="get">
 		<div class="input-group">

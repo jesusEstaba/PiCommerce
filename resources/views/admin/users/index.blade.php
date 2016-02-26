@@ -4,7 +4,7 @@
 
 
 @section('content')
-<h2>Users</h2>
+<h2>Users <span class="glyphicon glyphicon-plus btn btn-success"></span></h2>
 <div>
 	<form action="{{url('admin/users')}}" method="get">
 		<div class="input-group">

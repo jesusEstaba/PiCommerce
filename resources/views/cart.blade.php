@@ -102,13 +102,29 @@
 			
 		</div>
 		<div class="col-md-offset-1 col-md-3">
-			<a href="#" class="btn btn-success btn-lg pay-btn">Checkout</a>
+			<a href="{{url('pay')}}" class="btn btn-success btn-lg pay-btn">Checkout</a>
 		</div>
 	</div>
-	<form action="{{url('pay')}}" class="hide" id="pay">
-		<input type="submit" class="send">
-	</form>
 </div>
+
+
+<div id="ModalDeleteItem" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Delete Item</h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete this item?</p>
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-danger" id="delete-item-now" data-dismiss="modal">Delete</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 
 <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
@@ -208,22 +224,23 @@
 
 <script type="text/javascript">
 
+
+var element_box_delete;
+
 	$(document).ready(function() {
 
 
 
-		
+		$('#delete-item-now').click(function(){
 
-		$('.delete-element').click(function(event) {
+
+			var id = $(this).attr('id-item');
+			var price = $(this).attr('price');
 			
-			var id = $(this).parents('.item-pay').attr('id-cart');
-			$(this).parents('.item-pay').remove();
+			debugger;
 			
-			var price = $(this).attr('total-price-product');
-			//$.get("delete/item/"+id);
-			
-			
-			
+			element_box_delete.remove()
+
 			var total = parseFloat($(".total-in_cart").html())-parseFloat(price);
 			$(".total-in_cart").html(total.toFixed(2));
 
@@ -233,7 +250,30 @@
 			{
 				$('.table').append('<tr class="item-pay deleted-all-cart"><td></td><td><h3 class="empty-cart-text">Cart Empty</h3></td><td></td><td></td><td></td></tr>');
 			}
+			debugger;
+			$.get("delete/item/"+id);
+
+		});
+
+		
+
+		$('.delete-element').click(function(event) {
 			
+			debugger;
+			
+			var id = $(this).parents('.item-pay').attr('id-cart');
+			var price = $(this).attr('total-price-product');
+			
+			debugger;
+			
+			element_box_delete = $(this).parents('.item-pay');
+			
+			$('#delete-item-now')
+				.attr('id-item', id)
+				.attr('price', price);
+
+			debugger;
+			$('#ModalDeleteItem').modal();
 		});
 
 		$('.delete-element').each(function(index, el) {
@@ -242,13 +282,6 @@
 			var total = parseFloat($(".total_cart_price").html()) + price;
 			
 			$('.total_cart_price').html( total.toFixed(2) );
-		});
-
-		$('.pay-btn').click(function(){
-			$(".item-pay.element-cart").each(function() {
-				$('#pay').append('<input type="hidden" name="select_cart[]" value="'+$(this).attr('id-cart')+'">');
-			});
-			$('.send').click();
 		});
 
 
