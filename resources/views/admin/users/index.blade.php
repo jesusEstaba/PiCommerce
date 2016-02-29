@@ -4,11 +4,11 @@
 
 
 @section('content')
-<h2>Users <span class="glyphicon glyphicon-plus btn btn-success"></span></h2>
+<h2>Users</h2>
 <div>
 	<form action="{{url('admin/users')}}" method="get">
 		<div class="input-group">
-	      <input type="text" class="form-control" placeholder="Search for Items" name="search" autocomplete="off">
+	      <input type="text" class="form-control" placeholder="Search by name" name="search" autocomplete="off">
 	      <span class="input-group-btn">
 	        <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
 	      </span>

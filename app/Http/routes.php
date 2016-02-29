@@ -71,6 +71,7 @@ Route::group([], function()
             });
             Route::resource('items','ItemCTRL');
             Route::resource('users','UserCTRL');
+            Route::resource('categories','CategoriesCTRL');
         });
     });
 

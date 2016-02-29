@@ -79,13 +79,18 @@ class CartCTRL extends Controller
                     'quantity' => $quantity
                 ]);
 
-			$topping_price = DB::table('size')
+			$size_price = DB::table('size')
                 ->where('Sz_Id', $size)
-                ->select('Sz_Topprice')
+                ->select('Sz_Topprice', 'Sz_Topprice2')
                 ->get();
 
-			$topping_price = $topping_price[0];
-			$topping_price = (float)$topping_price->Sz_Topprice;
+			$size_price = $size_price[0];
+			
+            //return dd($topping_price);
+
+            $topping_price = (float)$size_price->Sz_Topprice;
+            
+            $topping_price_2 = (float)$size_price->Sz_Topprice2;
 
 			$toppings = explode(',',$toppings);
 			$top_size = explode(',',$top_size);
@@ -97,23 +102,55 @@ class CartCTRL extends Controller
 				$id_top = (int)$toppings[$idx];
 				$size_top_id = (int)$top_size[$idx];
 				$size_del_top = $size_top_id;
-
-
-                if($size_top_id==1 or $size_top_id==5)
-					$size_top_id = $topping_price;
-				
-				elseif ($size_top_id==2 or $size_top_id==3)
-					$size_top_id = round($topping_price * 1/2 , 2);
-
-				elseif($size_top_id==4)
-					$size_top_id = $topping_price * 2;
-				
-
-				else
-					$size_top_id = $topping_price;
 				
 				if($id_top)
 				{
+
+                    $topping = DB::table('toppings')
+                        ->where('Tp_Id', $id_top)
+                        ->select('Tp_Topprice', 'Tp_Double')
+                        ->get();
+
+                    $Tp_Topprice =  $topping[0]->Tp_Topprice;
+                    $Tp_Double =  $topping[0]->Tp_Double;
+
+                    
+                    
+                    if ($size_top_id==2 or $size_top_id==3)
+                    {
+                        if($Tp_Topprice)
+                            $size_top_id = round($Tp_Topprice* 1/2 , 2);
+                        else
+                            if($Tp_Double == 'N')
+                                $size_top_id = round($topping_price * 1/2 , 2);
+                            else
+                                $size_top_id = round($topping_price2 * 1/2 , 2);
+                    }
+
+                    elseif($size_top_id==4)
+                    {
+                        if($Tp_Topprice)
+                            $size_top_id = $Tp_Topprice  * 2;
+                        else
+                            if($Tp_Double == 'N')
+                                $size_top_id = $topping_price * 2;
+                            else
+                                $size_top_id = $topping_price_2* 2;
+                    }
+                    
+                    else
+                    {
+                        if($Tp_Topprice)
+                           $size_top_id =  $Tp_Topprice;
+                        else
+                            if($Tp_Double == 'N')
+                                $size_top_id = $topping_price;
+                            else
+                                $size_top_id = $topping_price_2;
+                    }
+
+
+
 					DB::table('cart_top')->insert([
 						'id_cart' => $id_cart,
 						'id_topping' => $id_top,

@@ -6,10 +6,9 @@ use Illuminate\Http\Request;
 
 use Pizza\Http\Requests;
 use Pizza\Http\Controllers\Controller;
-use Input;
 use DB;
 
-class UserCTRL extends Controller
+class CategoriesCTRL extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,24 +17,18 @@ class UserCTRL extends Controller
      */
     public function index()
     {
-        $search = Input::get('search');
-        if ( $search!='' )
-        {
-            $users = DB::table('users')
-                ->where('first_name', 'like', '%'.$search.'%')
-                ->orWhere('last_name', 'like', '%'.$search.'%')
-                ->select('id', 'first_name', 'last_name', 'email', 'phone')
-                ->paginate(15);
-        }
-        else
-        {
-            $users = DB::table('users')
-                ->select('id', 'first_name', 'last_name', 'email', 'phone')
-                ->paginate(15);
-        }
-        
-        return view('admin.users.index')
-            ->with(['users'=>$users, 'search'=>$search]);
+        $categories = DB::table('category')
+        	->join('groups', 'groups.Gr_ID', '=', 'category.group_id')
+        	->select(
+        		'category.id',
+        		'category.name', 
+        		'category.name_cat', 
+        		'groups.Gr_Descrip', 
+        		'category.Status'
+        	)
+        	->paginate(15);
+
+        return view('admin.categories.index')->with(['categories'=>$categories]);
     }
 
     /**
@@ -67,18 +60,18 @@ class UserCTRL extends Controller
      */
     public function show($id)
     {
-        $user = DB::table('users')
+        $category = DB::table('category')
             ->where('id', $id)
             ->get();
 
-        if($user)
+        if($category)
         {
-            $user = $user[0];
+            $category = $category[0];
         }
         else
-            $user = "";
+            $category = "";
 
-        return view('admin.users.user')->with(['user'=>$user]);
+        return view('admin.categories.category')->with(['category'=>$category]);
     }
 
     /**
@@ -101,7 +94,22 @@ class UserCTRL extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+    	$id = (int)$id;
+
+        if( $id != 0 )
+        {
+            $status  = (int)$request['status'];
+            
+            DB::table('category')
+                ->where('id', $id)
+                ->update(['Status'=>$status]);
+            
+            $respuesta = ['state'=>'Changed'];
+        }
+        else
+        	$respuesta ="empty";
+
+        return $respuesta;
     }
 
     /**

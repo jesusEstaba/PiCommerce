@@ -21,6 +21,7 @@ class CategoryCTRL extends Controller
 
     	$consulta = DB::table('category')
             ->where('name_cat', $name_category)
+            ->where('Status', 0)
             ->select('name', 'image_cat', 'group_id', 'submenu_cat')
             ->get();
 
@@ -85,6 +86,7 @@ class CategoryCTRL extends Controller
             $name_cat = "";
 
         $categorys = DB::table('category')
+            ->where('Status', 0)
             ->select('name', 'name_cat')
             ->get();
 
