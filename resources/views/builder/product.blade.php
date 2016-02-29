@@ -30,7 +30,7 @@
 							<div class="sizes">
 								@if($size)
 								@foreach($size as $table => $val)
-								<a class="btn btn-default size" id-size="{{$val->Sz_Id}}" price="{{$val->Sz_Price}}" top-price="{{$val->Sz_Topprice}}">
+								<a class="btn btn-default size" id-size="{{$val->Sz_Id}}" price="{{$val->Sz_Price}}" top-price="{{$val->Sz_Topprice}}" top-price-two="{{$val->Sz_Topprice2}}">
 									{{$val->Sz_Abrev}}
 								</a>
 								@endforeach
@@ -282,6 +282,10 @@
 	.text-drag-drop-desc{
 		text-align: center;
 	}
+	.delete-def-top{
+		color: red;
+		text-decoration:line-through;
+	}
 </style>
 
 <script type="text/javascript">
@@ -323,6 +327,22 @@ function addToCart()
 		instrucciones = "[Notes]\n"+instrucciones;
 	}
 	
+	var menos_toppings = "";
+
+
+
+
+$('ul .def-top.delete-def-top').each(function(index, el)
+{
+	if(menos_toppings.length)
+		menos_toppings +=  ', ' + $(this).text();
+	else
+		menos_toppings = "\n\n[deleted]\n" + $(this).text();
+});
+
+
+
+
 
 	var cooking_instrr = $("<input>").attr({"type":"hidden","name":"cooking_instructions"}).val(instrucciones+menos_toppings+cooking_instruction());
 	
@@ -360,6 +380,8 @@ function add_toping_to_list(object, parent)
 		.text(object.text()+" "+size_topping )
 		.attr('id-top',object.attr('id-top'))
 		.attr('size-top', num_size_top)
+		.attr('t-double', object.attr('double'))
+		.attr('t-price', object.attr('price'))
 		.appendTo( parent );
 
     
@@ -389,20 +411,11 @@ function hover_click_topping()
 
 		if(parent.hasClass('def-top'))
 		{
-			if( parent.css('color')=='rgb(51, 51, 51)' )
-			{
-				if(menos_toppings.length)
-					menos_toppings +=  ', ' + $(this).parent().text();
-				else
-					menos_toppings = "\n\n[deleted]\n" + $(this).parent().text();
-			}
-			
+			if( !parent.hasClass('delete-def-top') )
+				parent.addClass('delete-def-top');
+			else
+				parent.removeClass('delete-def-top');
 
-			parent.css({
-				'color': 'red',
-				'text-decoration':'line-through'
-			});
-			
 		}
 		else
 			parent.remove();
@@ -417,20 +430,71 @@ function calcular_cuenta()
 {
 	var cuenta = 0;
 	var topping_price = parseFloat( $('.items-toppings').attr('topprice') );
+	var topping_price2 = parseFloat( $('.items-toppings').attr('topprice-two') );
+
 	var pizza_price = parseFloat( $(".pizza_size").attr('price') );
 
 	$(".add-topping").not(".def-top").each(function(index, val)
 	{
 		if($(this).attr('size-top')=="1")
-			cuenta += topping_price;
-		else if($(this).attr('size-top')=="2")
-			cuenta += topping_price * 1/2;
-		else if($(this).attr('size-top')=="3")
-			cuenta += topping_price * 1/2;
+		{
+			if( $(this).attr('t-price') != "0" )
+			{
+				cuenta += parseFloat( $(this).attr('t-price') );
+			}
+			else
+			{
+				if( $(this).attr('t-double') == 'N' )
+					cuenta += topping_price;
+				else
+					cuenta += topping_price2;
+			}
+		}
+		
+		else if($(this).attr('size-top')=="2" || $(this).attr('size-top')=="3")
+		{
+			if( $(this).attr('t-price') != "0" )
+			{
+				cuenta += parseFloat( $(this).attr('t-price') ) * 1/2;
+			}
+			else
+			{
+				if( $(this).attr('t-double') == 'N' )
+					cuenta += topping_price * 1/2;
+				else
+					cuenta += topping_price2 * 1/2;
+			}
+		}
+		
 		else if($(this).attr('size-top')=="4")
-			cuenta += topping_price * 2;
+		{
+			if( $(this).attr('t-price') != "0" )
+			{
+				cuenta += parseFloat( $(this).attr('t-price') ) * 2;;
+			}
+			else
+			{
+				if( $(this).attr('t-double') == 'N' )
+					cuenta += topping_price * 2;
+				else
+					cuenta += topping_price2 * 2;
+			}
+		}
+		
 		else if($(this).attr('size-top')=="5")
-			cuenta += topping_price;
+		{
+			if( $(this).attr('t-price') != "0" )
+			{
+				cuenta += parseFloat( $(this).attr('t-price') );
+			}
+			else
+			{
+				if( $(this).attr('t-double') == 'N' )
+					cuenta += topping_price;
+				else
+					cuenta += topping_price2;
+			}
+		}
 	});
 	cuenta_total = (pizza_price+cuenta) * parseInt( $('.cantidad .quantity').html() );
 	$('.total-price').html(cuenta_total.toFixed(2));
@@ -439,7 +503,6 @@ function calcular_cuenta()
 var cuenta_total = 0;
 var size_topping = '';
 var num_size_top = 1;
-var menos_toppings = "";
 
 $(function()
 {
@@ -507,11 +570,15 @@ $(function()
 	
 	$('.total-price').html( $(".sizes a:first-child").attr('price') );
 
-	$('.items-toppings').attr('topprice', $(".sizes a:first-child").attr('top-price'));
+	$('.items-toppings')
+		.attr('topprice', $(".sizes a:first-child").attr('top-price'))
+		.attr('topprice-two', $(".sizes a:first-child").attr('top-price-two'));
 	
 	$('.size').click(function()
 	{
-		$('.items-toppings').attr('topprice', $(this).attr("top-price"));
+		$('.items-toppings')
+			.attr('topprice', $(this).attr("top-price"))
+			.attr('topprice-two', $(this).attr("top-price-two"));
 		
 		$(".pizza_size")
 			.attr('price', $(this).attr('price'))

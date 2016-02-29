@@ -83,7 +83,7 @@
 							@endif
 							
 							<div class="box-drag">
-								<a id-top="{{$table->Tp_Id}}" class="btn drag">
+								<a id-top="{{$table->Tp_Id}}" class="btn drag" double="{{$table->Tp_Double}}" price="{{$table->Tp_Topprice}}">
 									{{ucwords( strtolower($table->TP_Descrip) )}}
 								</a>
 							</div>

@@ -144,13 +144,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </li>
                 
                 <li>
-                  <a href="#">nav
+                  <a href="{{url('admin/categories')}}">nav
                   </a>
                 </li>
 
               </ul>
               
             </li>
+
+            <li>
+              <a href="{{url('admin/')}}">
+                <i class="fa fa-link">
+                </i>
+                <span>Orders
+                </span>
+              </a>
+            </li>
+
+
             </ul><!-- /.sidebar-menu -->
         </section>
         <!-- /.sidebar -->
