@@ -86,9 +86,7 @@
 	<input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
 </form>
 
-	<script src="{{asset('assets/jquery/jquery.min.js')}}"></script>
 	<script src="{{asset('assets/jquery-ui/jquery-ui.min.js')}}"></script>
-	<script src="{{asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
 	<link rel="stylesheet" type="text/css" href="{{asset('assets/jquery-ui/jquery-ui.min.css')}}">
 
 <style type="text/css">
@@ -319,7 +317,6 @@ function addToCart()
 	
 	var quantity = $("<input>").attr({"type":"hidden","name":"quantity"}).val( parseInt( $('.cantidad .quantity').html() ) );
 	
-	
 	var instrucciones = $(".notes_instructions").val();
 
 	if(instrucciones.length)
@@ -329,9 +326,6 @@ function addToCart()
 	
 	var menos_toppings = "";
 
-
-
-
 $('ul .def-top.delete-def-top').each(function(index, el)
 {
 	if(menos_toppings.length)
@@ -339,11 +333,6 @@ $('ul .def-top.delete-def-top').each(function(index, el)
 	else
 		menos_toppings = "\n\n[deleted]\n" + $(this).text();
 });
-
-
-
-
-
 	var cooking_instrr = $("<input>").attr({"type":"hidden","name":"cooking_instructions"}).val(instrucciones+menos_toppings+cooking_instruction());
 	
 
@@ -357,17 +346,18 @@ $('ul .def-top.delete-def-top').each(function(index, el)
 
 function add_toping_to_list(object, parent)
 {
+	var texto_comp = object.text().substr(10, object.text().length);
 	//cambiar selector para que sean todos los elementos del ul, esto en caso de que el topping ya lo traiga
 	//la pizza
-	$(".add-topping").each(function(index, ele){
-		//acá es por donde se puede eliminar el caso de que existan dos toppings iguales,
-		//pero con diferente proporcion
+	$(".add-topping").each(function(index, ele)
+	{
 		var add_top = $(this);
 
 		var size_topping_name = ["", "[left]", "[rigth]", "[extra]", "[lite]"];
-		
-		size_topping_name.forEach(function(name){
-			if(add_top.text()==object.text()+" "+name)
+
+		size_topping_name.forEach(function(name)
+		{
+			if(add_top.text()==texto_comp+" "+name)
 			{
 				add_top.remove();
 				calcular_cuenta();
@@ -376,19 +366,17 @@ function add_toping_to_list(object, parent)
 		
 	});
 
+
 	$( "<li class='add-topping'></li>" )
-		.text(object.text()+" "+size_topping )
+		.text(texto_comp+" "+size_topping)
 		.attr('id-top',object.attr('id-top'))
 		.attr('size-top', num_size_top)
 		.attr('t-double', object.attr('double'))
 		.attr('t-price', object.attr('price'))
 		.appendTo( parent );
 
-    
 	hover_click_topping();
 	calcular_cuenta();
-
-
 }
 
 

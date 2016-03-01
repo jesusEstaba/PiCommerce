@@ -2,10 +2,11 @@
 
 @section('toppings')
 	<ul topprice='0' class="items-toppings">
-		<li class="def-top">Pepperoni</li>
-		<li class="def-top">Double Cheese</li>
-		<li class="def-top">Onios</li>
-		<li class="def-top">Corn</li>
+		@if($def_top)
+			@foreach($def_top as $def => $name_top)
+				<li class="def-top">{{ucwords( strtolower($name_top->Tp_Descrip) )}} </li>
+			@endforeach
+		@endif
 	</ul>
 @stop
 
