@@ -76,6 +76,12 @@ class ProductCTRL extends Controller
                 ->select('Tp_Id', 'TP_Descrip', 'Tp_Cat', 'Tp_Double', 'Tp_Topprice')
                 ->orderBy('Tp_Cat')
                 ->get();
+
+            $def_top = DB::table('topppings_default')
+                ->join('toppings', 'toppings.Tp_Id', '=', 'topppings_default.topping_id')
+                ->where('topppings_default.product_id', $id_item)
+                ->select('toppings.Tp_Descrip')
+                ->get();
     	}
     	
     	if( !isset($name) )
@@ -84,6 +90,8 @@ class ProductCTRL extends Controller
     		$size_t = "";
         if(!isset($toppings))
             $toppings = "";
+        if(!isset($def_top))
+            $def_top = "";
 
 
         if($size_t)
@@ -106,7 +114,8 @@ class ProductCTRL extends Controller
                     'toppings'=>$toppings, 
                     'item'=>$items, 
                     'description'=>$description,
-                    'image_category'=>$image
+                    'image_category'=>$image,
+                    'def_top' => $def_top
                 ]);
         }
 

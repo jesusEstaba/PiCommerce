@@ -220,7 +220,6 @@
 	}
 </style>
 
-<script src="{{asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
 
 <script type="text/javascript">
 
