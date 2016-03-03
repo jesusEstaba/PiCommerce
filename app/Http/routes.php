@@ -11,21 +11,16 @@
 |
 */
 
-//Delete this route in production
-Route::get('/pass', function ()
-{
-    return bcrypt('pass');
-});
-/////////////////////////////////
-
 Route::get('/', function ()
 {
-    return view('selection');
+    return redirect()->to('login');
 });
 
 
+Route::get('/closed', 'CloseCTRL@index');
+
 //middleware Hora
-Route::group([], function()
+Route::group(['middleware'=>'hora'], function()
 {
 
     Route::get('/login', 'LoginCTRL@index');
@@ -35,14 +30,11 @@ Route::group([], function()
     Route::get('/register', 'RegisterCTRL@index');
     Route::post('/register', 'RegisterCTRL@register');
 
-    Route::get('/choose', function()
-    {
-        return view('choose');
-    });
+    Route::get('/choose', 'ChooseCTRL@index');
 
     Route::get('/category/{name_category}', 'CategoryCTRL@category');
 
-    Route::get('/product/{cat}/{id}', 'ProductCTRL@index');
+    Route::get('/product/{cat}/{id}/{sub?}', 'ProductCTRL@index');
 
     Route::post('/add_to_cart', 'CartCTRL@add');
 
@@ -52,15 +44,22 @@ Route::group([], function()
 
     Route::group(['middleware'=>'auth'], function()
     {
+
+
         Route::get('/cart', 'CartCTRL@index');
         Route::get('/total_price_cart', 'CartCTRL@total_price');
         Route::get('/delete/item/{id}', 'CartCTRL@delete');
-        Route::get('/pay', 'PayCTRL@index');
+        
+        Route::get('/select', 'PayCTRL@select');
 
+        Route::get('/pay/{select}', 'PayCTRL@index');
         Route::get('/order_now', 'OrderCTRL@create');
     });
 
-    //middleware Admin
+});
+
+
+//middleware Admin
     Route::group([], function()
     {
         Route::group(['prefix'=>'admin'], function()
@@ -72,7 +71,9 @@ Route::group([], function()
             Route::resource('items','ItemCTRL');
             Route::resource('users','UserCTRL');
             Route::resource('categories','CategoriesCTRL');
+            Route::resource('groups','GroupCTRL');
+            Route::resource('choose_category', 'ChooseCatCTRL');
+            Route::resource('orders', 'OrdersCTRL');
+            Route::resource('config', 'ConfigCTRL');
         });
     });
-
-});

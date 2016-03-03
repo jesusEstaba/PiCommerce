@@ -28,12 +28,16 @@
 					<div class="row">
 						<div class="col-xs-12">
 							<div class="sizes">
-								@if($size)
-								@foreach($size as $table => $val)
-								<a class="btn btn-default size" id-size="{{$val->Sz_Id}}" price="{{$val->Sz_Price}}" top-price="{{$val->Sz_Topprice}}" top-price-two="{{$val->Sz_Topprice2}}">
-									{{$val->Sz_Abrev}}
-								</a>
-								@endforeach
+								@if($item===true)
+									<a class="btn btn-default size" id-size="{{$size->Sz_Id}}" price="{{$size->Sz_Price}}" top-price="{{$size->Sz_Topprice}}" top-price-two="{{$size->Sz_Topprice2}}">
+										{{$size->Sz_Abrev}}
+									</a>
+								@elseif($size)
+									@foreach($size as $table => $val)
+									<a class="btn btn-default size" id-size="{{$val->Sz_Id}}" price="{{$val->Sz_Price}}" top-price="{{$val->Sz_Topprice}}" top-price-two="{{$val->Sz_Topprice2}}">
+										{{$val->Sz_Abrev}}
+									</a>
+									@endforeach
 								@else
 								<p>No Hay Tamaños</p>
 								@endif

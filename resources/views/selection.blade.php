@@ -25,7 +25,7 @@
 				<div class="row">
 					<div class="col-md-offset-3 col-md-6 ">
 						<div class="row box">
-							<a href="{{url('login')}}">
+							<a href="{{url('pay/delivery')}}">
 								<div class="col-md-6">
 									<div class="orange-box box-type">
 										<h2>Delivery</h2>
@@ -35,7 +35,7 @@
 								</div>	
 							</a>
 							
-							<a href="{{url('choose')}}">
+							<a href="{{url('pay/pickup')}}">
 								<div class="col-md-6">
 									<div class="blue-box box-type">
 										<h2>Pick Up</h2>

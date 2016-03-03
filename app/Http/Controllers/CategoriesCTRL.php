@@ -61,17 +61,16 @@ class CategoriesCTRL extends Controller
     public function show($id)
     {
         $category = DB::table('category')
+            ->join('groups', 'groups.Gr_ID', '=', 'category.group_id')
             ->where('id', $id)
-            ->get();
+            ->first();
 
-        if($category)
-        {
-            $category = $category[0];
-        }
-        else
+        $groups = DB::table('groups')->get();
+
+        if( !isset($category) )
             $category = "";
 
-        return view('admin.categories.category')->with(['category'=>$category]);
+        return view('admin.categories.category')->with(['category'=>$category, 'groups'=>$groups]);
     }
 
     /**
@@ -94,22 +93,39 @@ class CategoriesCTRL extends Controller
      */
     public function update(Request $request, $id)
     {
-    	$id = (int)$id;
-
-        if( $id != 0 )
+        if( isset($request['change_visible']) )
         {
-            $status  = (int)$request['status'];
-            
-            DB::table('category')
+            $id = (int)$id;
+            if( $id != 0 )
+            {
+                $status  = (int)$request['status'];
+
+                DB::table('category')
                 ->where('id', $id)
                 ->update(['Status'=>$status]);
-            
-            $respuesta = ['state'=>'Changed'];
-        }
-        else
-        	$respuesta ="empty";
 
-        return $respuesta;
+                $respuesta = ['state'=>'Changed'];
+            }
+            else
+                $respuesta ="empty";
+        }
+
+        if($request['cambios'])
+        {
+            $update=[];
+            
+            if( !empty($request['category']) )
+                $update['group_id'] = $request['category'];
+
+            if( count($update) )
+                DB::table('category')
+                    ->where('id', $id)
+                    ->update($update);
+
+            $respuesta = ['state'=>'update'];
+            
+        }
+    	return response()->json($respuesta);
     }
 
     /**
