@@ -22,7 +22,8 @@ class OrderCTRL extends Controller
     {
     	
     	$mytime = Carbon::now();
-    	$cart = CartCTRL::busq_cart();
+    	
+    	$cart = CartCTRL::busq_cart();//sesion en vez de llamar al controller
 
     	//Calculando total del carrito
 

@@ -16,24 +16,84 @@ class ProductCTRL extends Controller
      * @param  [type] $id  [description]
      * @return [type]      [description]
      */
-    public function index($cat, $id)
+    public function index($cat, $id, $sub="")
     {	
+        if($sub=="sub")
+        {
+            $size_t = DB::table('size')
+                ->join('items', 'items.It_Id', '=', 'size.Sz_Item')
+                ->where('size.Sz_Id', $id)
+                ->first();
+
+
+            $builder_data = DB::table('category')
+                ->where('group_id', $size_t->It_Groups)
+                ->where('Status', 0)
+                ->select('builder_id', 'image')
+                ->first();
+
+
+            if($builder_data)
+            {
+                $id_builder = $builder_data->builder_id;
+                $image = $builder_data->image;
+                
+                if(!$image)
+                    $image = "recipe-no-photo.jpg";
+            }
+            else
+            {
+                $id_builder = 0;
+                $image = "";
+            }
+
+
+            if($size_t)
+            {            
+                if($id_builder == 1)
+                    $vista = 'builder.pizza';
+                        
+                else if($id_builder == 2)
+                    $vista = 'builder.salad';
+                    
+                else if($id_builder == 3)
+                    $vista = 'builder.simple';
+            }
+
+
+            if ( isset($vista) )
+            {
+            return view($vista)->with([
+                    'name'=>$size_t->Sz_Descrip, 
+                    'size'=>$size_t, 
+                    'toppings'=>"", 
+                    'item'=>true, 
+                    'description'=>"",
+                    'image_category'=>$image,
+                    'def_top' => ""
+                ]);
+            }
+
+            return view('builder.generic_builder');
+        }
+
         $items = DB::table('items')
             ->where('It_Id', $id)
             ->where('It_Status', 0)
             ->select('items.It_Groups', 'items.It_Descrip', 'items.It_Id', 'items.description')
-            ->get();
+            ->first();
 
 
     	if($items)
     	{
-    		$name = $items[0]->It_Descrip;
-    		$id_item = $items[0]->It_Id;
-            $description = $items[0]->description;
-            $It_Groups = $items[0]->It_Groups;
+    		$name = $items->It_Descrip;
+    		$id_item = $items->It_Id;
+            $description = $items->description;
+            $It_Groups = $items->It_Groups;
 
             $builder_data = DB::table('category')
                 ->where('group_id', $It_Groups)
+                ->where('Status', 0)
                 ->select('builder_id', 'image', 'tp_kind')
                 ->get();
             

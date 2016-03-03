@@ -98,11 +98,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
           <!-- Sidebar Menu -->
           <ul class="sidebar-menu">
-            <li class="active">
-              <a href="#">
+            <li >
+              <a href="{{url('admin')}}">
                 <i class="fa fa-link">
                 </i>
-                <span>Orders
+                <span>Home
                 </span>
               </a>
             </li>
@@ -125,7 +125,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </a>
             </li>
             
-            <li class="treeview">
+            <li class="treeview active">
               
               <a href="#">
                 <i class="fa fa-link">
@@ -137,26 +137,39 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </a>
 
               <ul class="treeview-menu">
-
+                <li class="active">
+                  <a href="{{url('admin/categories')}}">Categories
+                  </a>
+                </li>
                 <li>
-                  <a href="#">choose
+                  <a href="{{url('admin/groups')}}">Groups
+                  </a>
+                </li>
+                <li>
+                  <a href="{{url('admin/choose_category')}}">Choose
                   </a>
                 </li>
                 
-                <li>
-                  <a href="{{url('admin/categories')}}">nav
-                  </a>
-                </li>
+                
 
               </ul>
               
             </li>
 
             <li>
-              <a href="{{url('admin/')}}">
+              <a href="{{url('admin/orders')}}">
                 <i class="fa fa-link">
                 </i>
                 <span>Orders
+                </span>
+              </a>
+            </li>
+
+            <li>
+              <a href="{{url('admin/config')}}">
+                <i class="fa fa-link">
+                </i>
+                <span>Config
                 </span>
               </a>
             </li>

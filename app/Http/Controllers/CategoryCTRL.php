@@ -23,14 +23,14 @@ class CategoryCTRL extends Controller
             ->where('name_cat', $name_category)
             ->where('Status', 0)
             ->select('name', 'image_cat', 'group_id', 'submenu_cat')
-            ->get();
+            ->first();
 
     	if($consulta)
     	{
-    		$banner = $consulta[0]->image_cat;
-    		$group_id = $consulta[0]->group_id;
-    		$submenu_cat = $consulta[0]->submenu_cat;
-            $name_cat = $consulta[0]->name;
+    		$banner = $consulta->image_cat;
+    		$group_id = $consulta->group_id;
+    		$submenu_cat = $consulta->submenu_cat;
+            $name_cat = $consulta->name;
     		
             if($group_id)
     		{
@@ -40,37 +40,40 @@ class CategoryCTRL extends Controller
                     ->select('description', 'It_Id', 'It_Descrip')
                     ->get();
                 
-                foreach ($items as $key => $item)
-                {
-                    $size = DB::table('size')
-                        ->where('Sz_item', '=', $item->It_Id)
-                        ->where('Sz_Status', '=', '0')
-                        ->select('Sz_Price')
-                        ->take(1)
-                        ->get();
-
-                    if($size)
-                    {
-                        $item->{'Sz_Price'} = $size[0]->Sz_Price;
-                        $item->{'Sz_item'} = $item->It_Id;
-                    }
-                    else
-                    {
-                       $item->{'Sz_Price'} = 0;
-                        $item->{'Sz_item'} = 0;
-                    }
-                }
-
-    			
     			if($submenu_cat)
     			{
     				$id = $items[0]->It_Id;
     				
                     $items = DB::table('size')
                         ->where('Sz_Item', $id)
-                        ->select('Sz_Price', 'Sz_item', 'Sz_Descrip')
+                        ->select('Sz_Id', 'Sz_Price', 'Sz_item', 'Sz_Descrip')
                         ->get();
     			}
+                else
+                {
+
+                    foreach ($items as $key => $item)
+                    {
+                        $size = DB::table('size')
+                            ->where('Sz_item', '=', $item->It_Id)
+                            ->where('Sz_Status', '=', '0')
+                            ->select('Sz_Price')
+                            ->take(1)
+                            ->get();
+
+                        if($size)
+                        {
+                            $item->{'Sz_Price'} = $size[0]->Sz_Price;
+                            $item->{'Sz_item'} = $item->It_Id;
+                        }
+                        else
+                        {
+                           $item->{'Sz_Price'} = 0;
+                            $item->{'Sz_item'} = 0;
+                        }
+                    }
+                }
+
     		}
     	}
     	else

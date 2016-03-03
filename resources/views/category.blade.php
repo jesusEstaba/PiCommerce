@@ -38,7 +38,11 @@
 			@if($items)
 				@foreach($items as $item => $valor)
 					<div class="col-md-6">
+					@if( isset($valor->Sz_Id) )
+						<a href="{{url('product/'.$name_cat_url.'/'.$valor->Sz_Id.'/sub')}}">
+					@else
 						<a href="{{url('product/'.$name_cat_url.'/'.$valor->Sz_item)}}">
+					@endif
 							<div class="type">
 								<div class="row">
 									<div class="col-md-5 col-xs-6">

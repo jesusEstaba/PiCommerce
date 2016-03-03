@@ -102,7 +102,7 @@
 			type: 'PUT',
 			dataType: 'json',
 			headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
-			data: {change_visible: $(this).attr('id-size'), status:status},
+			data: {change_visible: true, status:status},
 		})
 		.done(function(data) {
 		})

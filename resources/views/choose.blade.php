@@ -6,49 +6,44 @@
 	<div class="row">
 		<div class="col-md-10 col-md-offset-1">
 			<div class="row">
-				<a href="{{url('category/pizzas')}}">
-					<div class="col-xs-12 col-sm-6 col-md-4 category-choose">
-						<h3 class="text-choose">Pizzas</h3>
-						<img src="{{asset('images/category/healthy-honey-vegetable-pizza-561561.jpg')}}" alt="choose" class="choose">
-					</div>
-				</a>
 				
-				<a href="{{url('category/pastas')}}">
+				@foreach($categories as $arra => $cat)
 					<div class="col-xs-12 col-sm-6 col-md-4 category-choose">
-						<h3 class="text-choose">Pastas</h3>
-						<img src="{{asset('images/category/lasagna300.jpg')}}" alt="choose" class="choose">
+						<a href="{{url('category/'.$cat->name_cat)}}">
+							<div class="contenedor-image">
+								<!-- class="text-choose" -->
+								<h3>{{$cat->name}}</h3>
+								<?php
+									if(!$cat->image)
+										$cat->image = "recipe-no-photo.jpg";
+								?>
+								<img src="{{asset('images/category/'.$cat->image)}}" alt="choose" class="img-responsive choose">
+							</div>
+						</a>
 					</div>
-				</a>
-				
-				<a href="{{url('category/drinks')}}">
-					<div class="col-xs-12 col-sm-6 col-md-4 category-choose">
-						<h3 class="text-choose">Drinks</h3>
-						<img src="{{asset('images/category/soft-drinks.jpg')}}" alt="choose" class="choose">
-					</div>
-				</a>
-				
-				<a href="{{url('category/calzon')}}">
-					<div class="col-xs-12 col-sm-6 col-md-4 category-choose">
-						<h3 class="text-choose">Calzon</h3>
-						<img src="{{asset('images/category/calzone_jamon_300x200.png')}}" alt="choose" class="choose">
-					</div>
-				</a>
-				<a href="{{url('category/rolls')}}">
-					<div class="col-xs-12 col-sm-6 col-md-4 category-choose">
-						<h3 class="text-choose">Rolls</h3>
-						<img src="{{asset('images/category/hot-roll-300x200.jpg')}}" alt="choose" class="choose">
-					</div>
-				</a>
-				
-				<a href="{{url('category/salads')}}">
-					<div class="col-xs-12 col-sm-6 col-md-4 category-choose">
-						<h3 class="text-choose">Salads</h3>
-						<img src="{{asset('images/category/xsLmTnr55b8xLnF72P2eYqV57bk.png')}}" alt="choose" class="choose">
-					</div>
-				</a>
+				@endforeach
 				
 			</div>
 		</div>
 	</div>
 </div>
+
+<style type="text/css">
+	.contenedor-image{
+		height: 200px;
+		max-width: 300px;
+		margin-left: auto;
+		margin-right: auto;
+		position: relative;
+	}
+
+	.contenedor-image h3{
+		top:.5em;
+		left: .5em;
+		margin: 0;
+		position: absolute;
+		color: white;
+		text-shadow: 1px 1px 2px rgba(0,0,0,.5);
+	}
+</style>
 @stop

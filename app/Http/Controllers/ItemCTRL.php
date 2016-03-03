@@ -95,6 +95,8 @@ class ItemCTRL extends Controller
             ->where('It_Id', $id)
             ->get();
 
+        $sizes = "";
+        
         if($item)
         {
             $item = $item[0];

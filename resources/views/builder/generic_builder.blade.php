@@ -6,7 +6,8 @@
 <div class="container space">
 	<div class="row">
 		<div class="col-xs-12">
-			<h2>Generic Builder</h2>
+			<h2>Sorry, this product does not exist or is not available</h2>
+			<a href="{{url('choose')}}">Back to Categories</a>
 		</div>
 	</div>
 </div>

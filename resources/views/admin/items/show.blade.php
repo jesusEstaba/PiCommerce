@@ -6,7 +6,7 @@
 
 
 	@if($item)
-		<h2>
+		<h2 id="id_item" id-item="{{$item->It_Id}}">
 			<span class="title-item">{{$item->It_Descrip}}</span>
 			<span class="glyphicon edit-item glyphicon-pencil btn btn-default"></span>
 			
@@ -34,10 +34,19 @@
 					<b>Description</b>
 				</td>
 				<td>
+					<b>Abreviation</b>
+				</td>
+				<td>
 					<b>Price</b>
 				</td>
 				<td>
 					<b>Topping Price</b>
+				</td>
+				<td>
+					<b>Topping Price 2</b>
+				</td>
+				<td>
+					<b>Area</b>
 				</td>
 				<td>
 					<b>Status</b>
@@ -47,6 +56,9 @@
 			@foreach($sizes as $key => $size)
 				<tr size="{{$size->Sz_Id}}">
 					<td><span id-size="{{$size->Sz_Id}}" class="glyphicon edit-size glyphicon-pencil btn btn-default"></span></td>
+					<td>
+						{{$size->Sz_Descrip}}
+					</td>
 					<td class="abrev">
 						{{$size->Sz_Abrev}}
 					</td>
@@ -55,6 +67,12 @@
 					</td>
 					<td class="topprice">
 						$<span>{{$size->Sz_Topprice}}</span>
+					</td>
+					<td>
+						$<span>{{$size->Sz_Topprice2}}</span>
+					</td>
+					<td>
+						{{$size->Sz_FArea}}
 					</td>
 					<td>
 						@if(!$size->Sz_Status)
@@ -176,7 +194,7 @@
 		var topprice = $("[size="+id+"]").children('td.topprice').children();
 
 		$.ajax({
-			url: '{{$item->It_Id}}',
+			url: $('#id_item').attr('id-item'),
 			type: 'PUT',
 			dataType: 'json',
 			headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
@@ -236,7 +254,7 @@
 			status = 1
 
 		$.ajax({
-			url: '{{$item->It_Id}}',
+			url: $('#id_item').attr('id-item'),
 			type: 'PUT',
 			dataType: 'json',
 			headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
@@ -258,7 +276,7 @@
 			status = 1
 
 		$.ajax({
-			url: '{{$item->It_Id}}',
+			url: $('#id_item').attr('id-item'),
 			type: 'PUT',
 			dataType: 'json',
 			headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
@@ -278,7 +296,7 @@
 	
 
 		$.ajax({
-			url: '{{$item->It_Id}}',
+			url: $('#id_item').attr('id-item'),
 			type: 'PUT',
 			dataType: 'json',
 			headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},

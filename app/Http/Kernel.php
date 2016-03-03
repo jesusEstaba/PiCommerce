@@ -29,5 +29,6 @@ class Kernel extends HttpKernel
         'auth' => \Pizza\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'guest' => \Pizza\Http\Middleware\RedirectIfAuthenticated::class,
+        'hora' => \Pizza\Http\Middleware\hora::class,
     ];
 }
