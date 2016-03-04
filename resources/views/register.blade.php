@@ -169,6 +169,7 @@
 </div><!-- /.modal -->
 
 
+
 <style type="text/css">
 	.input-form{
 		margin-bottom: .5em;
@@ -214,7 +215,7 @@ var streets = [
 		@endforeach
 	    ];
 
-	    $('[name=street_number]').autocomplete({
+	    $('[name=zip_code]').autocomplete({
 	      source: streets
 	    });	
 

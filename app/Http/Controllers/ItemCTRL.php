@@ -79,7 +79,57 @@ class ItemCTRL extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if( isset($request['add']) )
+        {
+            if( !empty($request['name']) && !empty($request['category']) && !empty($request['descrip']) )
+            {
+                DB::table('items')->insert([
+                    'It_Descrip'=> $request['name'],
+                    'It_Abrev' =>$request['name'],
+                    'It_Groups'=>$request['category'],
+                    'It_Status'=>1,
+                    'description'=>$request['descrip'],
+                ]);
+                return response()->json("New Item");
+            }
+        }
+
+        if( isset($request['new_size']) )
+        {
+            if(
+                !empty($request['descrip']) &&
+                !empty($request['abrev']) &&
+                !empty($request['price']) &&
+                !empty($request['top_price']) &&
+                !empty($request['top_price2']) &&
+                !empty($request['area']) 
+            )
+            {
+                $id_item = (int) $request['id_item'];
+                $price = (float)$request['price'];
+                $top = (float)$request['top_price'];
+                $top2 = (float)$request['top_price2'];
+
+                $price = round($price, 2);
+                $top = round($top, 2);
+                $top2 = round($top2, 2);
+
+                DB::table('size')->insert([
+                    'Sz_Item' => $id_item,
+                    'Sz_Descrip' => $request['descrip'],
+                    'Sz_Abrev' => $request['abrev'],
+                    'Sz_Price' => $price,
+                    'Sz_Topprice' => $top,
+                    'Sz_Topprice2' => $top2,
+                    'Sz_FArea' => $request['area'],
+                    'Sz_Status' => 1,
+                ]);
+                return response()->json("New Size");
+            }
+        }
+
+
+        return response()->json("error");
     }
 
     /**
@@ -107,8 +157,14 @@ class ItemCTRL extends Controller
         }
 
         $groups = DB::table('groups')->get();
-
-        return view('admin.items.show')->with(['item'=>$item, 'sizes'=>$sizes, 'groups'=>$groups]);
+        $food = DB::table('food')->get();
+        
+        return view('admin.items.show')->with([
+            'item'=>$item, 
+            'sizes'=>$sizes, 
+            'groups'=>$groups, 
+            'food'=>$food
+        ]);
     }
 
     /**
