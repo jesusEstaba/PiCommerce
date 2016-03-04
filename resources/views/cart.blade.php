@@ -8,6 +8,10 @@
 		@if($cart)
 
 		<div class="col-xs-12">
+		<div class="actions">
+			<a class="btn btn-info profile">Profile</a>
+		</div>
+
 			<table class="table">
 				<tr class="thead">
 					<td>
@@ -145,6 +149,29 @@
 </div><!-- /.modal -->
 
 
+<div id="perfil" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">User Info</h4>
+      </div>
+      <div class="modal-body">
+	      
+	      <div class="input-group">
+	      	
+	      </div>
+	      
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-primary save-data" data-dismiss="modal">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
 <style type="text/css">
 	.cart-empty-img{
 		display: block;
@@ -228,6 +255,9 @@ var element_box_delete;
 
 	$(document).ready(function() {
 
+		$('.profile').click(function(){
+			$('#perfil').modal();
+		});
 
 
 		$('#delete-item-now').click(function(){

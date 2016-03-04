@@ -62,7 +62,7 @@
 											@endif
 											
 										</p>
-										<span href="{{url('product/'.$name_cat_url.'/'.$valor->Sz_item)}}" class="btn btn-success">
+										<span href="{{url('product/'.$name_cat_url.'/'.$valor->Sz_item)}}" class="btn btn-success price-abs">
 										{{$valor->Sz_Price}}$
 										</span>
 									</div>
@@ -82,6 +82,19 @@
 	.type{
 		text-decoration: none !important;
 		color: #333;
+	}
+	
+	.type{
+		position: relative;
+	}
+	.type *{
+		position:initial !important;
+	}
+	.price-abs{
+		bottom: 10px;
+    	right: 10px;
+	    display: inline-block;
+	    position: absolute !important;
 	}
 	</style>
 @stop

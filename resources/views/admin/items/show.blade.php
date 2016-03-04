@@ -24,7 +24,7 @@
 		@else
 			<p class="code text-center"><b>No Description.</b></p>
 		@endif
-		<h3>Sizes <span class="glyphicon glyphicon-plus btn btn-success"></h3>
+		<h3>Sizes <span class="glyphicon glyphicon-plus btn btn-success add-size"></h3>
 		<table class="table">
 			<tr>
 				<td>
@@ -156,6 +156,52 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+<div id="addSize" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Add Size</h4>
+      </div>
+      <div class="modal-body">
+
+      	<div class="input-group">
+	      <input type="text" class="form-control" name="size-descrip" placeholder="Description" autocomplete="off">
+	    </div>
+	    <div class="input-group">
+	      <input type="text" class="form-control" name="size-abrev" placeholder="Abreviation" autocomplete="off">
+	    </div>
+	    <div class="input-group">
+	      <input type="text" class="form-control" name="size-price" placeholder="Price" autocomplete="off">
+	    </div>
+	    <div class="input-group">
+	      <input type="text" class="form-control" name="size-top_price" placeholder="Topping Price" autocomplete="off">
+	    </div> 
+	    <div class="input-group">
+	      <input type="text" class="form-control" name="size-top_price2" placeholder="Topping Price 2" autocomplete="off">
+	    </div>       
+	    <div class="input-group">
+		<select class="form-control" name="size-area">
+			<option value="">Area</option>
+			@foreach($food as $array => $area)
+					<option value="{{$area->F_Abrev}}">{{$area->F_Descripc}}</option>
+			@endforeach
+
+		</select>
+	    </div>
+        
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-primary add-new-size" data-dismiss="modal">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
 
 <style type="text/css">
 	.code{
@@ -336,6 +382,64 @@
 		
 	});
 
+	$('.add-size').click(function(){
+		$("#addSize").modal();
+	});
+
+	$('.add-new-size').click(function()
+	{
+		if(
+			$('[name=size-descrip]').val() &&
+			$('[name=size-abrev]').val() &&
+			$('[name=size-price]').val() &&
+			$('[name=size-top_price]').val() &&
+			$('[name=size-top_price2]').val() &&
+			$('[name=size-area]').val()
+		)
+		{
+			$.ajax({
+				url:'/admin/items',
+				type: 'POST',
+				dataType: 'json',
+				headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
+				data:
+				{
+					id_item:$("#id_item").attr('id-item'),
+					new_size:true,
+					descrip:$('[name=size-descrip]').val(),
+					abrev:$('[name=size-abrev]').val(),
+					price:$('[name=size-price]').val(),
+					top_price:$('[name=size-top_price]').val(),
+					top_price2:$('[name=size-top_price2]').val(),
+					area:$('[name=size-area]').val(),
+				},
+			})
+			.done(function(data)
+			{
+				if("New Item"==data)
+				{
+					//Agregar a la vista
+					/*
+					//
+					*/
+					$('[name=size-descrip]').val("");
+					$('[name=size-abrev]').val("");
+					$('[name=size-price]').val("");
+					$('[name=size-top_price]').val("");
+					$('[name=size-top_price2]').val("");
+					$('[name=size-area]').val("");
+				}
+			})
+			.fail(function()
+			{
+				console.log("error");
+			});
+		}
+		else
+		{
+			alert("Field Empty");
+		}
+	});
 	
 </script>
 @stop

@@ -42,34 +42,58 @@
 				border-color:#2baae1 !important;
 				}
 				</style>
+
+				<?php
 				
+				$config = DB::table('config')->select('facebook', 'gplus', 'instagram', 'twitter')->first();
+				
+				$facebook = $config->facebook;
+				$gplus = $config->gplus;
+				$insta = $config->instagram;
+				$twitter = $config->twitter;
+
+				?>
+
 				<div id="social3">
 					<ul class="social-links clearfix">
+						
+						@if($facebook)
 						<li class="facebook">
-							<a href="http://facebook.com" title="Facebook" target="_blank">
+							<a href="{{$facebook}}" title="Facebook" target="_blank">
 								<i class="icon-facebook">
 								</i>
 							</a>
 						</li>
+						@endif
+						
+						@if($gplus)
 						<li class="googleplus">
-							<a href="https://plus.google.com" title="Google+" target="_blank">
+							<a href="{{$gplus}}" title="Google+" target="_blank">
 								<i class="icon-google-plus">
 								</i>
 							</a>
 						</li>
+						@endif
+						
+						@if($insta)
 						<li class="instagram">
-							<a href="http://instagram.com/" title="Instagram" target="_blank">
+							<a href="{{$insta}}" title="Instagram" target="_blank">
 								<i class="icon-instagram">
 								</i>
 							</a>
 						</li>
+						@endif
+						
+						@if($twitter)
 						<li class="twitter">
-							<a href="http://www.twitter.com/" title="Twitter" target="_blank">
+							<a href="{{$twitter}}" title="Twitter" target="_blank">
 								<i class="icon-twitter">
 								</i>
 							</a>
 						</li>
-					</ul>
+						@endif
+					</ul
+					>
 				</div>
 			</div>
 		</div>
