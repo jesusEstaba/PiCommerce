@@ -24,7 +24,7 @@ class PayCTRL extends Controller
     	//Session = $select
     	$user = DB::table('customers')->where('Cs_Phone', Auth::user()->phone)->first();
 
-    	return view('pay')->with(['cart'=>$cart, 'user'=>$user, 'select'=>$select]);
+    	return view('pay')->with(['cart'=>$cart, 'user'=>$user]);
     }
 	
 
