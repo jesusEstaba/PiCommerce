@@ -19,10 +19,7 @@
 	<table class="table">
 		<tr class="white">
 			<td>
-				<b>First Name</b>	
-			</td>
-			<td>
-				<b>Last Name</b>	
+				<b>Name</b>	
 			</td>
 			<td>
 				<b>Email</b>
@@ -37,10 +34,7 @@
 		@foreach($users as $user)
 			<tr>
 				<td>
-					{{$user->first_name}}
-				</td>
-				<td>
-					{{$user->last_name}}
+					{{$user->Cs_Name}}
 				</td>
 				<td>
 					{{$user->email}}

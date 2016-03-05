@@ -21,16 +21,15 @@ class UserCTRL extends Controller
         $search = Input::get('search');
         if ( $search!='' )
         {
-            $users = DB::table('users')
-                ->where('first_name', 'like', '%'.$search.'%')
-                ->orWhere('last_name', 'like', '%'.$search.'%')
-                ->select('id', 'first_name', 'last_name', 'email', 'phone')
+            $users = DB::table('customers')
+                ->join('users', 'customers.Cs_Phone', '=', 'users.phone')
+                ->where('Cs_Name', 'like', '%'.$search.'%')
                 ->paginate(15);
         }
         else
         {
-            $users = DB::table('users')
-                ->select('id', 'first_name', 'last_name', 'email', 'phone')
+            $users = DB::table('customers')
+                ->join('users', 'customers.Cs_Phone', '=', 'users.phone')
                 ->paginate(15);
         }
         
@@ -68,15 +67,9 @@ class UserCTRL extends Controller
     public function show($id)
     {
         $user = DB::table('users')
-            ->where('id', $id)
-            ->get();
-
-        if($user)
-        {
-            $user = $user[0];
-        }
-        else
-            $user = "";
+            ->join('customers', 'customers.Cs_Phone', '=', 'users.phone')
+            ->where('users.id', $id)
+            ->first();
 
         return view('admin.users.user')->with(['user'=>$user]);
     }

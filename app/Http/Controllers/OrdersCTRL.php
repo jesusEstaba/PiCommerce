@@ -23,17 +23,17 @@ class OrdersCTRL extends Controller
         if( isset($num) and !empty($num) )
         {
             $orders = DB::table('hd_tticket')
-            ->join('users', 'users.phone', '=', 'hd_tticket.Hd_Customers')
+            ->join('customers', 'customers.Cs_Phone', '=', 'hd_tticket.Hd_Customers')
             ->where('hd_tticket.Hd_Ticket', $num)
-            ->select('users.first_name', 'users.last_name', 'hd_tticket.Hd_Ticket', 'hd_tticket.Hd_Date', 'hd_tticket.Hd_Total')
+            ->select('customers.Cs_Name', 'hd_tticket.Hd_Ticket', 'hd_tticket.Hd_Date', 'hd_tticket.Hd_Total')
             ->orderBy('hd_tticket.Hd_Ticket', 'desc')
             ->paginate(15);
         }
         else
         {
             $orders = DB::table('hd_tticket')
-            ->join('users', 'users.phone', '=', 'hd_tticket.Hd_Customers')
-            ->select('users.first_name', 'users.last_name', 'hd_tticket.Hd_Ticket', 'hd_tticket.Hd_Date', 'hd_tticket.Hd_Total')
+            ->join('customers', 'customers.Cs_Phone', '=', 'hd_tticket.Hd_Customers')
+            ->select('customers.Cs_Name', 'hd_tticket.Hd_Ticket', 'hd_tticket.Hd_Date', 'hd_tticket.Hd_Total')
             ->orderBy('hd_tticket.Hd_Ticket', 'desc')
             ->paginate(15);
         }
@@ -72,7 +72,7 @@ class OrdersCTRL extends Controller
     public function show($id)
     {
         $order = DB::table('hd_tticket')
-            ->join('users', 'users.phone', '=', 'hd_tticket.Hd_Customers')
+            ->join('customers', 'customers.Cs_Phone', '=', 'hd_tticket.Hd_Customers')
             ->join('payform', 'payform.Pf_Id', '=', 'Hd_Payform')
             ->where('Hd_Ticket', $id)
             ->first();

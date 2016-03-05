@@ -30,5 +30,6 @@ class Kernel extends HttpKernel
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'guest' => \Pizza\Http\Middleware\RedirectIfAuthenticated::class,
         'hora' => \Pizza\Http\Middleware\hora::class,
+        'admin_panel' => \Pizza\Http\Middleware\AdminPanel::class,
     ];
 }

@@ -10,7 +10,6 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
 Route::get('/', function ()
 {
     return redirect()->to('login');
@@ -20,6 +19,10 @@ Route::get('/', function ()
 Route::get('/closed', 'CloseCTRL@index');
 
 //middleware Hora
+
+
+
+
 Route::group(['middleware'=>'hora'], function()
 {
 
@@ -60,20 +63,25 @@ Route::group(['middleware'=>'hora'], function()
 
 
 //middleware Admin
-    Route::group([], function()
+Route::group(['prefix'=>'admin'], function()
+{
+    Route::get('/login', 'AdminLoginCTRL@index');
+    Route::post('/login', 'AdminLoginCTRL@login');
+    Route::get('/logout', 'AdminLoginCTRL@logout');
+
+    Route::group(['middleware'=>'admin_panel'], function()
     {
-        Route::group(['prefix'=>'admin'], function()
+       
+        Route::get('/',function()
         {
-            Route::get('/',function()
-            {
-                return view('admin.home');
-            });
-            Route::resource('items','ItemCTRL');
-            Route::resource('users','UserCTRL');
-            Route::resource('categories','CategoriesCTRL');
-            Route::resource('groups','GroupCTRL');
-            Route::resource('choose_category', 'ChooseCatCTRL');
-            Route::resource('orders', 'OrdersCTRL');
-            Route::resource('config', 'ConfigCTRL');
+            return view('admin.home');
         });
+        Route::resource('items','ItemCTRL');
+        Route::resource('users','UserCTRL');
+        Route::resource('categories','CategoriesCTRL');
+        Route::resource('groups','GroupCTRL');
+        Route::resource('choose_category', 'ChooseCatCTRL');
+        Route::resource('orders', 'OrdersCTRL');
+        Route::resource('config', 'ConfigCTRL');
     });
+});

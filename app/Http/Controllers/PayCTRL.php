@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 
 use Pizza\Http\Requests;
 use Pizza\Http\Controllers\Controller;
-
+use DB;
+use Auth;
 
 class PayCTRL extends Controller
 {
@@ -21,9 +22,9 @@ class PayCTRL extends Controller
     	//Session = $cart -> to OrderCTRL
     	//
     	//Session = $select
-    	
+    	$user = DB::table('customers')->where('Cs_Phone', Auth::user()->phone)->first();
 
-    	return view('pay')->with(['cart'=>$cart]);
+    	return view('pay')->with(['cart'=>$cart, 'user'=>$user, 'select'=>$select]);
     }
 	
 
