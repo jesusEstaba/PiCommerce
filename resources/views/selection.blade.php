@@ -12,8 +12,13 @@
 </head>
 <body>
 	<nav>
+		<?php
+				$config = DB::table('config')->select('logo')->first();
+			?>
 		<div class="container">
-			<img src="{{asset('images/logos/one.png')}}" alt="logo" class="logo">
+			@if($config->logo)
+				<img src="{{asset('images/logos/'.$config->logo)}}" alt="logo" class="logo">
+			@endif
 		</div>
 	</nav>
 

@@ -1,14 +1,28 @@
 <div class="separator-fix-footer"></div>
+
+<?php
+				
+	$config = DB::table('config')
+		->select('facebook', 'gplus', 'instagram', 'twitter', 'footer')
+		->first();
+				
+	$facebook = $config->facebook;
+	$gplus = $config->gplus;
+	$insta = $config->instagram;
+	$twitter = $config->twitter;
+
+	$footer = $config->footer;
+
+?>
+
+
 <footer>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<p>
-					3895 Lake Emma Rd #151, Lake Mary, FL 32746
-				</p>
-				<p>
-					Phone: <a href="tel:+14073332733">(407) 333-2733</a> Fax: <a href="tel:+14073332733">(407) 333-2733</a>
-				</p>
+				@if($footer)
+				{!!$footer!!}
+				@endif
 			</div>
 			<div class="col-md-12">
 				
@@ -42,17 +56,6 @@
 				border-color:#2baae1 !important;
 				}
 				</style>
-
-				<?php
-				
-				$config = DB::table('config')->select('facebook', 'gplus', 'instagram', 'twitter')->first();
-				
-				$facebook = $config->facebook;
-				$gplus = $config->gplus;
-				$insta = $config->instagram;
-				$twitter = $config->twitter;
-
-				?>
 
 				<div id="social3">
 					<ul class="social-links clearfix">
