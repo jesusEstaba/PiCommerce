@@ -5,7 +5,7 @@
 
 @section('content')
 
-	<h2>Categories <span class="glyphicon glyphicon-plus btn btn-success"></span></h2>
+	<h2>Categories <span class="glyphicon glyphicon-plus btn btn-success add"></span></h2>
 	
 	@if( count($categories) )
 		<table class="table">
@@ -61,6 +61,51 @@
 
 {!!Form::token()!!}
 
+
+
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Add Category</h4>
+      </div>
+      <div class="modal-body">
+
+      	<div class="input-group">
+	      <input type="text" class="form-control" name="name" placeholder="Name" autocomplete="off">
+	    </div>
+
+	    <div class="input-group">
+	      <input type="text" class="form-control" name="url" placeholder="Url" autocomplete="off">
+	    </div>
+
+		<div class="input-group">
+			<select class="form-control" name="category">
+				<option value="">Groups</option>
+				@foreach($groups as $array => $group)
+					<option value="{{$group->Gr_ID}}">{{$group->Gr_Descrip}}</option>
+				@endforeach
+			</select>
+		</div>
+
+	    <div class="input-group">
+	    	<label class="form-control" >
+	    		Sub Menu
+	    		<input type="checkbox"name="submenu">
+	    	</label>
+	    </div>
+        
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-primary save" data-dismiss="modal">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
 @stop
 
 
@@ -110,6 +155,47 @@
 			console.log("error");
 		});
 		
+	});
+
+	$('.add').click(function(){
+		$('#myModal').modal();
+	});
+
+	$('.save').click(function(){
+		if(
+			$("[name=name").val() &&
+			$("[name=url").val() &&
+			$("[name=category").val()
+		)
+		{
+
+
+		$.ajax(
+		{
+			type: 'POST',
+			dataType: 'json',
+			headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
+			data: {
+				name:$("[name=name").val(),
+				url:$("[name=url").val(),
+				group:$("[name=category").val(),
+				sub:$("[name=submenu]:checked").length
+			},
+		})
+		.done(function(data) {
+			if(data=="created")
+			{
+				$("[name=name").val();
+				$("[name=url").val();
+				$("[name=category").val();
+				$("[name=submenu]").prop('checked', false);
+			}
+
+		})
+
+		}
+		else
+			alert("Field Empty");
 	});
 
 </script>
