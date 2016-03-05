@@ -47,9 +47,15 @@
 				
 			</ul>
 			<a href="{{url('/choose')}}" class="btn btn-infosite hidden-xs">Home</a>
-				
+			
+			<?php
+				$config = DB::table('config')->select('logo')->first();
+			?>
+
 			<a href="{{url('choose')}}">
-				<img src="{{asset('images/logos/one.png')}}" alt="logo" class="logo">
+				@if($config->logo)
+					<img src="{{asset('images/logos/'.$config->logo)}}" alt="logo" class="logo">
+				@endif
 			</a>
 			
 			@if( Auth::check() )	
@@ -71,9 +77,6 @@
 	
 	@include('sections.footer')
 	<script type="text/javascript">
-	/*$('.glyphicon-menu-hamburger').click(function(){
-			$('#dropdownMenu3').dropdown('toggle');
-		});*/
 
 	$(document).ready(function(){
 

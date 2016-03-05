@@ -51,6 +51,7 @@ footer img {
   right: 0;
   top: -100px;
   z-index: 3;
+  height: 129px;
 }
 .btn {
   display: block !important;
