@@ -44,9 +44,6 @@
       </div>
       <div class="modal-body">
 
-      	<div class="input-group">
-	      <input type="text" class="form-control" name="name" placeholder="Description Name" autocomplete="off">
-	    </div>
 
 
 <div class="input-group">
@@ -58,12 +55,6 @@
 		</select>
 </div>
 
-	    <div class="input-group">
-	      <input type="text" class="form-control" name="price" placeholder="Price" autocomplete="off">
-	    </div>
-	    <div class="input-group">
-	      <input type="text" class="form-control" name="top_price" placeholder="Topping Price" autocomplete="off">
-	    </div>       
         
       </div>
       <div class="modal-footer">

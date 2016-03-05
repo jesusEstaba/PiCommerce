@@ -28,7 +28,10 @@ class CategoriesCTRL extends Controller
         	)
         	->paginate(15);
 
-        return view('admin.categories.index')->with(['categories'=>$categories]);
+
+        $groups = DB::table('groups')->get();
+
+        return view('admin.categories.index')->with(['categories'=>$categories, 'groups'=>$groups]);
     }
 
     /**
@@ -49,7 +52,24 @@ class CategoriesCTRL extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if(
+            $request['name'] &&
+            $request['url'] &&
+            $request['group']
+        )
+        {    
+            DB::table('category')->insert([
+                'name' => $request['name'],
+                'name_cat' => $request['url'],
+                'group_id' => $request['group'],
+                'submenu_cat' => $request['sub'],
+                'Status' => 1
+            ]);
+
+            return response()->json("created");
+        }
+        return response()->json("Empty");
+
     }
 
     /**
