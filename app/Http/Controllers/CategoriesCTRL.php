@@ -68,7 +68,12 @@ class CategoriesCTRL extends Controller
 
             return response()->json("created");
         }
-        return response()->json("Empty");
+        return response()->json([
+            "Empty",
+            'name' => $request['name'],
+            'url' => $request['url'],
+            'group' => $request['group'],
+            ]);
 
     }
 
