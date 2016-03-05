@@ -68,8 +68,13 @@
 					
 					<div class="col-md-6">
 						
-
+	
 						<h3 class="title-register">Your Address</h3>
+						<div class="input-form">
+							<label>Zip Code:</label>
+							<input type="text" name="zip_code" placeholder="Zipe Code" class="form-control"/>
+						</div>
+						
 						<div class="input-form">
 							<label>Street Number:</label>
 							<input type="text" name="street_number" placeholder="eg. 2400" class="form-control"/>
@@ -90,10 +95,7 @@
 							<label>Complex Name:</label>
 							<input type="text" name="complex_name" placeholder="Complex Name" class="form-control"/>
 						</div>
-						<div class="input-form">
-							<label>Zip Code:</label>
-							<input type="text" name="zip_code" placeholder="Zipe Code" class="form-control"/>
-						</div>
+						
 						<div class="input-form">
 							<label>City:</label>
 							<input type="text" name="city" placeholder="City" class="form-control"/>
@@ -137,19 +139,20 @@
 					
 					<div class="col-xs-offset-4 col-xs-4">
 						<div class="input-form">
-							<input type="submit" class="form-control btn btn-primary" value="Register" />
+							<a class="send form-control btn btn-primary">Register</a>
+							
 						</div>
 					</div>
 				</div>
 				
-
+				<input type="submit" class="hide sending" value="reg" />
 				{!!Form::token()!!}
 			{!!Form::close()!!}
 		</div>
 	</div>
 </div>
 
-<a class="btn btn-default send">SEND</a>
+
 
 <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog">
@@ -243,11 +246,18 @@ var streets = [
 				message += "<li>Street Number Empty</li>"; 
 			if( !$('[name=street_name]').val() )
 				message += "<li>Street Name Empty</li>"; 
+			if(!$("[name=terms]:checked").length)
+				message += "<li>Accept the Terms and Conditions</li>"; 
 
 
-			$("#myModal .modal-title").html('<h4>Error</h4>');
-			$("#myModal .modal-body").html('<ul>'+message+'</ul>');
-			$('#myModal').modal('show');
+			if(message)
+			{
+				$("#myModal .modal-title").html('<h4>Error</h4>');
+				$("#myModal .modal-body").html('<ul>'+message+'</ul>');
+				$('#myModal').modal('show');
+			}
+			else
+				$('.sending').click();
 	    });
 
 

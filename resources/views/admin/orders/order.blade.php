@@ -10,13 +10,13 @@
 		<div class="col-md-6">
 			<div class="divisor">
 				<p>
-					<b>Customer: </b> {{$order->first_name." ".$order->last_name}}
+					<b>Customer: </b> {{$order->Cs_Name}}
 				</p>
 				<p>
-					<b>Phone:</b> {{$order->phone}}
+					<b>Phone:</b> {{$order->Cs_Phone}}
 				</p>
 				<p>
-					<b>Email:</b> {{$order->email}}
+					<b>Email:</b> {{$order->Cs_Email1}}
 				</p>
 			</div>
 		</div>
@@ -26,22 +26,13 @@
 					<b>Shiping Address:</b>
 				</p>
 				<p>
-					{{$order->street_number}}
+					{{$order->Cs_Number}}
 				</p>
 				<p>
-					{{$order->street_name}}
+					{{$order->Cs_Street}}
 				</p>
 				<p>
-					{{$order->zip_code}}
-				</p>
-				<p>
-					{{$order->city}}
-				</p>
-				<p>
-					{{$order->state}}
-				</p>
-				<p>
-					{{$order->country}}
+					{{$order->Cs_ZipCode}}
 				</p>
 			</div>
 		</div>

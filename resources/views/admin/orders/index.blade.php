@@ -43,7 +43,7 @@
 						{{$order->Hd_Ticket}}
 					</td>
 					<td>
-						{{$order->first_name." ".$order->last_name}}
+						{{$order->Cs_Name}}
 					</td>
 					<td>
 						{{$order->Hd_Total}}

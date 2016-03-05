@@ -75,31 +75,28 @@
 							<div class="divisor">
 								<h4>User Data</h4>
 								<p>
-									<b>Name: </b>{{Auth::user()->first_name." ".Auth::user()->last_name}}
+									<b>Name: </b>{{$user->Cs_Name}}
 								</p>
 								<p>
-									<b>Email: </b>{{Auth::user()->email}}
+									<b>Email: </b>{{$user->Cs_Email1}}
 								</p>
 								<p>
-									<b>Phone: </b>{{Auth::user()->phone}}
+									<b>Phone: </b>{{$user->Cs_Phone}}
 								</p>
 							</div>
 							<div class="divisor">
 								<h4>Delivery Details</h4>
 								<p>
-									<b>street #: </b>{{Auth::user()->street_number}}
+									<b>street #: </b>{{$user->Cs_Number}}
 								</p>
 								<p>
-									<b>street Name: </b>{{Auth::user()->street_name}}
+									<b>street Name: </b>{{$user->Cs_Street}}
 								</p>
 								<p>
-									<b>Zip Code: </b>{{Auth::user()->zip_code}}
-								</p>
-								<p>
-									<b>City: </b>{{Auth::user()->city}}
+									<b>Zip Code: </b>{{$user->Cs_ZipCode}}
 								</p>
 								<p class="divisor">
-									<b>Special Directions: </b>{{Auth::user()->special_directions}}
+									<b>Special Directions: </b>{{$user->Cs_Notes}}
 								</p>
 							</div>
 							<div class="divisor">
