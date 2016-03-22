@@ -1,12 +1,7 @@
 @extends('builder.product')
 
 @section('toppings')
-	<ul topprice='0' class="items-toppings">
-		@if($def_top)
-			@foreach($def_top as $def => $name_top)
-				<li class="def-top">{{ucwords( strtolower($name_top->Tp_Descrip) )}} </li>
-			@endforeach
-		@endif
+	<ul data-topprice='0' class="items-toppings">
 	</ul>
 @stop
 
@@ -21,19 +16,19 @@
 		</div>
 		<div class="col-md-8">
 			<div class="btn-sizes">
-				<div class="btn-complete-size topping-size" size-top="1" title="Complete">
+				<div class="btn-complete-size topping-size" data-size-top="1" title="Complete">
 					<span class="name-size-top">Complete</span>
 				</div>
-				<div class="btn-semi-left-size topping-size" size-top="2" title="Left Half">
+				<div class="btn-semi-left-size topping-size" data-size-top="2" title="Left Half">
 					<span class="name-size-top">Left/Right</span>
 				</div>
-				<div class="btn-semi-right-size topping-size" size-top="3" title="Right Half">
+				<div class="btn-semi-right-size topping-size" data-size-top="3" title="Right Half">
 					
 				</div>
-				<div class="btn-double-size topping-size" size-top="4" title="Extra">
+				<div class="btn-double-size topping-size" data-size-top="4" title="Extra">
 					<span class="name-size-top">Extra</span>
 				</div>
-				<div class="btn-lite-size topping-size" size-top="5" title="Lite">
+				<div class="btn-lite-size topping-size" data-size-top="5" title="Lite">
 					<span class="name-size-top">Lite</span>
 				</div>
 			</div>
@@ -51,51 +46,49 @@
 					<p class="text-drag-drop-desc">
 						This is a drag & drop items.
 					</p>
-					<?php
-						$contador = 1;
-						$con_catg = 1;
-						$categoria= ['cheese', 'meats', 'vegetables', 'fruit'];
-					?>
-					<ul class="nav nav-tabs" role="tablist">
-						@foreach($categoria as $name_category)
-						<li role="presentation">
-							<a href="#top-{{$con_catg}}" aria-controls="top-{{$name_category}}" role="tab" data-toggle="tab">
-								{{ucwords($name_category)}}
-							</a>
-						</li>
-						<?php
-							$con_catg++;
-						?>
-						@endforeach
-					</ul>
-					
-					<div class="tab-content">
-						<div role="tabpanel" class="tab-pane active" id="top-1">
-							
-							@foreach($toppings as $data => $table)
-							@if($table->Tp_Cat > $contador)
-							<?php
-								$contador = $table->Tp_Cat;
-							?>
-							
-						</div>
-						<div role="tabpanel" class="tab-pane" id="top-{{$contador}}">
-							
-							@endif
-							
-							<div class="box-drag">
-								<a id-top="{{$table->Tp_Id}}" class="btn drag" double="{{$table->Tp_Double}}" price="{{$table->Tp_Topprice}}">
-									{{ucwords( strtolower($table->TP_Descrip) )}}
-								</a>
-							</div>
-							
-							
-							@endforeach
-							
-						</div>
-						
+
+
+
+
+
+
+<!-- TOPPINGS CATEGORY -->
+<div class="topping_category">
+	<?php
+		if($tp_kind==1)
+			$categoria= ['cheese'=>1, 'meats'=>2, 'vegetables'=>3];
+		else
+			$categoria= ['dressing and sauces'=>-1];
+	?>
+	
+	@foreach($categoria as $name_category => $id_cat_top)
+	
+		<h4 class="{{snake_case($name_category)}}">{{ucwords($name_category)}}</h4>
+		
+		<div class="toppings-btns">
+			@foreach($toppings as $data => $top)
+			
+				@if($id_cat_top==$top->Tp_Cat)
+					<div class="box-drag">
+						<a data-id-top="{{$top->Tp_Id}}" class="btn drag" data-double="{{$top->Tp_Double}}" data-price="{{$top->Tp_Topprice}}">
+							{{ucwords( strtolower($top->TP_Descrip) )}}
+						</a>
 					</div>
-					
+				@endif
+			@endforeach
+		</div>
+	
+	@endforeach
+</div>
+<!-- TOPPINGS CATEGORY -->
+
+
+
+
+
+
+
+
 				</div>
 			</div>
 			@else

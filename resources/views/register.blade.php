@@ -100,14 +100,6 @@
 							<label>City:</label>
 							<input type="text" name="city" placeholder="City" class="form-control"/>
 						</div>
-						<div class="input-form">
-							<label>State:</label>
-							<input type="text" name="state" placeholder="State" class="form-control"/>
-						</div>
-						<div class="input-form">
-							<label>Country:</label>
-							<input type="text" name="country" placeholder="Country" class="form-control"/>
-						</div>
 
 						<div class="input-form">
 							<label>Special Directions:</label>
@@ -193,6 +185,9 @@
 	}
 	.reg-data-check{
 		padding: 1em;
+	}
+	.send{
+		margin-bottom: 3em;
 	}
 </style>
 

@@ -72,18 +72,7 @@
 					</div>
 					<div class="col-md-8">
 						<div class="white space-bottom">
-							<div class="divisor">
-								<h4>User Data</h4>
-								<p>
-									<b>Name: </b>{{$user->Cs_Name}}
-								</p>
-								<p>
-									<b>Email: </b>{{$user->Cs_Email1}}
-								</p>
-								<p>
-									<b>Phone: </b>{{$user->Cs_Phone}}
-								</p>
-							</div>
+							
 							<div class="divisor">
 								<h4>Delivery Details</h4>
 								<p>
