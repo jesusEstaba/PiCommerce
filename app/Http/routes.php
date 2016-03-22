@@ -10,10 +10,15 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+
+
 Route::get('/', function ()
 {
     return redirect()->to('login');
 });
+
+
+Route::get('/now', 'CloseCTRL@now');
 
 
 Route::get('/closed', 'CloseCTRL@index');

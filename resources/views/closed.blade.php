@@ -22,6 +22,12 @@
 	.login-box{
 		top:-150px;
 	}
+
+	@media (max-width: 991px) {
+		.login-box{
+			top:0;
+		}
+	}
 	</style>
 </head>
 <body>

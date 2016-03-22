@@ -50,22 +50,30 @@ class OrderCTRL extends Controller
     		else
 				$total_cart2 = 0;
 
-    		$total = $total_cart[0]->toppings + $total_cart2;
+    		$sub_total = $total_cart[0]->toppings + $total_cart2;
     	}
     	else
     	{
-    		$total = 0.00;
+    		$sub_total = 0.00;
     	}
     	//
-    	#$total
+    	#$total// es el sub total
     	
 		$hd_discount = 0;
-		$hd_tax = 0;
+
+		$tax = DB::table('taxes')->first();
+		$tax = (float)$tax->Tx_Base;
+		
+		$hd_tax = ($sub_total-$hd_discount) * $tax/100;
+		$hd_tax = round($hd_tax, 2);
+
 		$hd_charge = 0;
 		$hd_tips = 0;
 		$hd_delivery = 0;
     	
-    	$total_de_la_Orden = $total + $hd_discount + $hd_tax + $hd_charge + $hd_tips + $hd_delivery;//con los descuentos y vainas
+    	$total_de_la_Orden = $sub_total + $hd_discount + $hd_tax + $hd_charge + $hd_tips + $hd_delivery;
+
+    	$total_de_la_Orden = round($total_de_la_Orden, 2);
 
 		
 		if($total_de_la_Orden)
@@ -78,11 +86,11 @@ class OrderCTRL extends Controller
 				'Hd_User' => 96,#CAMBIAR//REGISTRO NO. 81 DE LA TABLA PASSWORD1
 				'Hd_Payform' => 1,#CAMBIAR//RELACION CON LA TABLA PAYFORM (1=CASH, 2=CARD) POR AHORA SOLO 2
 
-				'Hd_Subtotal' => $total,
+				'Hd_Subtotal' => $sub_total,
 				
-				#'Hd_Discount' => $hd_discount,
+				'Hd_Discount' => $hd_discount,
 				
-				#'Hd_Tax' => $hd_tax,//TAX (MULTIPLICACION DEL NET: SUBTOTAL - DISCOUNT) POR EL PORCENTAJE QUE VIENE EN LA TABLA TAXES
+				'Hd_Tax' => $hd_tax,
 				
 				#'Hd_Charge' => $hd_charge,//CREDIT CARD PROCESSING FEE EL REGISTRO 2 DE LA TABLA PAYFORM EN EL CAMPO Pf_Charge
 				

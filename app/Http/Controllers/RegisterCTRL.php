@@ -13,16 +13,19 @@ use DB;
 
 class RegisterCTRL extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $codes = DB::select('SELECT * from street where St_City = ?', ['Orlando']);
         $streets = DB::select('SELECT distinct St_ZipCode from street');
+        
         return view('register')->with(['codes'=>$codes, 'streets'=>$streets]);
     }
     
-    public function register(Request $request){
+    public function register(Request $request)
+    {
 
-    	if(
-    	   !empty($request['password']) &&
+    	if (
+            !empty($request['password']) &&
             !empty($request['email']) &&
             !empty($request['phone']) &&
             !empty($request['first_name']) &&
@@ -43,10 +46,11 @@ class RegisterCTRL extends Controller
             
             if(!$datos && !$datos_phone)
     		{
-    			User::create([
+    			 DB::table('users')->insert([
                     'password' => bcrypt($request['password']),
                     'email' => $request['email'], 
                     'phone'=> $request['phone'],
+                    'dir_ip'=> $_SERVER['REMOTE_ADDR'],
 	    		]);
 
                 DB::table('customers')->insert([
@@ -62,9 +66,6 @@ class RegisterCTRL extends Controller
                     '' => $request['aparment_complex'], 
                     '' => $request['complex_name'], 
                     '' => $request['city'], 
-                    '' => $request['state'], 
-                    '' => $request['country'], 
-
 
                     'Cs_ZipCode' => $request['zip_code'], 
                     'Cs_Notes' => $request['special_directions'],

@@ -70,7 +70,6 @@ class ProductCTRL extends Controller
                     'item'=>true, 
                     'description'=>"",
                     'image_category'=>$image,
-                    'def_top' => ""
                 ]);
             }
 
@@ -95,13 +94,13 @@ class ProductCTRL extends Controller
                 ->where('group_id', $It_Groups)
                 ->where('Status', 0)
                 ->select('builder_id', 'image', 'tp_kind')
-                ->get();
+                ->first();
             
             if($builder_data)
             {
-                $id_builder = $builder_data[0]->builder_id;
-                $image = $builder_data[0]->image;
-                $tp_kind = $builder_data[0]->tp_kind;
+                $id_builder = $builder_data->builder_id;
+                $image = $builder_data->image;
+                $tp_kind = $builder_data->tp_kind;
                 
                 if(!$image)
                     $image = "recipe-no-photo.jpg";
@@ -114,7 +113,7 @@ class ProductCTRL extends Controller
             }
 
 
-            $tp_kind = 1;#eliminar esta linea si desea que
+            //$tp_kind = 1;#eliminar esta linea si desea que
             #cada grupo de producto tenga sus toppings
             
 
@@ -132,16 +131,12 @@ class ProductCTRL extends Controller
             $toppings = DB::table('toppings')
                 ->where('Tp_Kind', $tp_kind)
                 ->where('Tp_Abrev', '!=', '.')
-                ->where('Tp_Cat', '>', 0)
+                ->where('Tp_Cat', '!=', 0)
                 ->select('Tp_Id', 'TP_Descrip', 'Tp_Cat', 'Tp_Double', 'Tp_Topprice')
                 ->orderBy('Tp_Cat')
                 ->get();
 
-            $def_top = DB::table('topppings_default')
-                ->join('toppings', 'toppings.Tp_Id', '=', 'topppings_default.topping_id')
-                ->where('topppings_default.product_id', $id_item)
-                ->select('toppings.Tp_Descrip')
-                ->get();
+            
     	}
     	
     	if( !isset($name) )
@@ -150,9 +145,6 @@ class ProductCTRL extends Controller
     		$size_t = "";
         if(!isset($toppings))
             $toppings = "";
-        if(!isset($def_top))
-            $def_top = "";
-
 
         if($size_t)
         {            
@@ -175,7 +167,7 @@ class ProductCTRL extends Controller
                     'item'=>$items, 
                     'description'=>$description,
                     'image_category'=>$image,
-                    'def_top' => $def_top
+                    'tp_kind'=>$tp_kind
                 ]);
         }
 

@@ -100,4 +100,14 @@ class CloseCTRL extends Controller
 
         return false;
     }
+
+
+    public function now()
+    {
+        $times = Carbon::now();
+        $hora = $times->toTimeString();
+        $dia = $times->format('l');
+        
+        return 'Dia:'.$dia.'<br> Hora: '.$hora;
+    }
 }

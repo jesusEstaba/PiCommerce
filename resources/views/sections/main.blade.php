@@ -46,7 +46,7 @@
 
 				
 			</ul>
-			<a href="{{url('/choose')}}" class="btn btn-infosite hidden-xs">Home</a>
+			<a href="{{url('/choose')}}" class="btn btn-infosite btn-info hidden-xs"><span class="glyphicon glyphicon-home"></span> Home</a>
 			
 			<?php
 				$config = DB::table('config')->select('logo')->first();
@@ -67,7 +67,7 @@
 					Logout
 				</a>
 			@else
-				<a href="{{url('login')}}" class="btn btn-info btn-cart">Login</a>
+				<a href="{{url('login')}}" class="btn btn-default btn-cart">Login</a>
 			@endif
 		</div>
 	</nav>

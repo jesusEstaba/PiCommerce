@@ -29,12 +29,12 @@
 						<div class="col-xs-12">
 							<div class="sizes">
 								@if($item===true)
-									<a class="btn btn-default size" id-size="{{$size->Sz_Id}}" price="{{$size->Sz_Price}}" top-price="{{$size->Sz_Topprice}}" top-price-two="{{$size->Sz_Topprice2}}">
+									<a class="btn btn-default size" data-id-size="{{$size->Sz_Id}}" data-price="{{$size->Sz_Price}}" data-top-price="{{$size->Sz_Topprice}}" data-top-price-two="{{$size->Sz_Topprice2}}">
 										{{$size->Sz_Abrev}}
 									</a>
 								@elseif($size)
 									@foreach($size as $table => $val)
-									<a class="btn btn-default size" id-size="{{$val->Sz_Id}}" price="{{$val->Sz_Price}}" top-price="{{$val->Sz_Topprice}}" top-price-two="{{$val->Sz_Topprice2}}">
+									<a class="btn btn-default size" data-id-size="{{$val->Sz_Id}}" data-price="{{$val->Sz_Price}}" data-top-price="{{$val->Sz_Topprice}}" data-top-price-two="{{$val->Sz_Topprice2}}">
 										{{$val->Sz_Abrev}}
 									</a>
 									@endforeach
@@ -54,10 +54,11 @@
 	
 	<div class="col-md-4 bottom-space">
 		<div class="counter-price" id="droppable">
-			<h3 class="pizza_size" id-size="0" price="0"></h3>
+			<h3 class="pizza_size" data-id-size="0" data-price="0"></h3>
 			@yield('toppings')
 			<div class="row">
 				<div class="col-xs-12">
+					<h2 class="price-all">$<span class="total-price"></span></h2>
 					<div class="input-control">
 						<textarea name="cooking_instructions" placeholder="Additional notes" class="notes_instructions form-control"></textarea>
 					</div>
@@ -65,12 +66,12 @@
 			</div>
 			<div class="cantidad">
 				<div class="box-cant">
+					<p>Quantity</p>
 					<span class="glyphicon glyphicon-minus btn btn-default"></span>
 					<span class="quantity btn btn-default">1</span>
 					<span class="glyphicon glyphicon-plus btn btn-default"></span>
 				</div>
 			</div>
-			<h2 class="text-success price-all">$<span class="total-price"></span></h2>
 			<a class="btn btn-success go-checkout-cart">Add to Cart</a>
 		</div>
 	</div>
@@ -195,9 +196,6 @@
 		height: 80px;
 		width: 40px;
 	}
-	.btn-semi-left-size span{
-		
-	}
 	.btn-semi-right-size{
 		border-radius: 0 40px 40px 0;
 		border:1px #333 solid;
@@ -288,6 +286,60 @@
 		color: red;
 		text-decoration:line-through;
 	}
+	.box-cant{
+		margin-top: 1em;
+		margin-bottom: 1em;
+	}
+
+	.topping_category{
+		margin-bottom: 1.5em;
+	}
+
+	.topping_category h4{
+		text-align: center;
+		padding-top: .4em;
+		padding-bottom: .4em;
+		border-radius: 2px;
+		color: white;
+		text-shadow: 1px 1px 4px rgba(0,0,0,.4);
+	}
+
+	.topping_category .cheese{
+		background: #FEB800;
+	}
+	.topping_category .cheese+.toppings-btns .btn.drag{
+		background: #FFEC0D;
+	}
+
+	.topping_category .meats+.toppings-btns .btn.drag{
+		background: #5D3C2E;
+	}
+	.topping_category .meats{
+		background: #501313;
+	}
+
+
+	.topping_category .vegetables{
+		background: #108C10;
+	}
+	.topping_category .vegetables+.toppings-btns .btn.drag{
+		background: #0A995B;
+	}
+	.topping_category .dressingandsauces{
+		background: #A79264;
+	}
+	.topping_category .dressingandsauces+.toppings-btns .btn.drag{
+		background: #D8B76D;
+	}
+	.price-all{
+		color: #3C763D;
+		margin: 0;
+		padding: 0;
+		margin-bottom: .5em;
+	}
+	.descript_top{
+		font-weight: bolder;
+	}
 </style>
 
 <script type="text/javascript">
@@ -309,15 +361,15 @@ function addToCart()
 	var selected=[];
 	var topings_selected = [];
 	$(".add-topping").each(function(index){
-		selected.push( parseInt( $(this).not(".def-top").attr('id-top') ) );
-		topings_selected.push( $(this).not(".def-top").attr('size-top') );
+		selected.push( parseInt( $(this).not(".def-top").attr('data-id-top') ) );
+		topings_selected.push( $(this).not(".def-top").attr('data-size-top') );
 	});
 	
 	var input = $("<input>").attr({"type":"hidden","name":"selected"}).val(selected);
 
 	var toping_size = $("<input>").attr({"type":"hidden","name":"sizes"}).val(topings_selected);
 
-	var id_size = $("<input>").attr({"type":"hidden","name":"id_size"}).val( $(".pizza_size").attr('id-size') );
+	var id_size = $("<input>").attr({"type":"hidden","name":"id_size"}).val( $(".pizza_size").attr('data-id-size') );
 	
 	var quantity = $("<input>").attr({"type":"hidden","name":"quantity"}).val( parseInt( $('.cantidad .quantity').html() ) );
 	
@@ -350,10 +402,9 @@ $('ul .def-top.delete-def-top').each(function(index, el)
 
 function add_toping_to_list(object, parent)
 {
-	var texto_comp = object.text().substr(10, object.text().length);
-	//cambiar selector para que sean todos los elementos del ul, esto en caso de que el topping ya lo traiga
-	//la pizza
-	$(".add-topping").each(function(index, ele)
+	var texto_comp = object.text().trim();
+
+	$(".descript_top").each(function(index, ele)
 	{
 		var add_top = $(this);
 
@@ -363,26 +414,57 @@ function add_toping_to_list(object, parent)
 		{
 			if(add_top.text()==texto_comp+" "+name)
 			{
-				add_top.remove();
+				add_top.parent().remove();
 				calcular_cuenta();
 			}
 		});
 		
 	});
 
+	var price_top_new = calc_top_price_ind(
+		object.attr('data-price'), 
+		object.attr('data-double'),
+		num_size_top,
+		parseFloat($('.items-toppings').attr('data-topprice')),
+		parseFloat($('.items-toppings').attr('data-topprice-two'))
+
+	);
 
 	$( "<li class='add-topping'></li>" )
-		.text(texto_comp+" "+size_topping)
-		.attr('id-top',object.attr('id-top'))
-		.attr('size-top', num_size_top)
-		.attr('t-double', object.attr('double'))
-		.attr('t-price', object.attr('price'))
+		.append('<span class="descript_top">'+texto_comp+" "+size_topping+'</span>')
+		.attr('data-id-top',object.attr('data-id-top'))
+		.attr('data-size-top', num_size_top)
+		.attr('data-t-double', object.attr('data-double'))
+		.attr('data-t-price', object.attr('data-price'))
+		.append('<span class="topp_ind">$'+price_top_new.toFixed(2)+'</span>')
 		.appendTo( parent );
 
 	hover_click_topping();
 	calcular_cuenta();
 }
 
+function calc_top_price_ind(o_price, o_double, now_size, price, price2)
+{
+	var price_top_new = 0;
+
+	if( o_price!=0 )
+		price_top_new = parseFloat(o_price);
+	else
+		if(o_double=='N')
+			price_top_new = parseFloat(price);
+		else
+			price_top_new = parseFloat(price2);
+
+	if(now_size==1 ||  now_size==5)
+		return price_top_new *= 1;
+	
+	else if(now_size==2 ||  now_size==3)
+		return price_top_new *= 1/2;
+
+	else if(now_size==4)
+		return price_top_new *= 2;
+	
+}
 
 function hover_click_topping()
 {
@@ -421,73 +503,24 @@ function hover_click_topping()
 function calcular_cuenta()
 {
 	var cuenta = 0;
-	var topping_price = parseFloat( $('.items-toppings').attr('topprice') );
-	var topping_price2 = parseFloat( $('.items-toppings').attr('topprice-two') );
+	var topping_price = parseFloat( $('.items-toppings').attr('data-topprice') );
+	var topping_price2 = parseFloat( $('.items-toppings').attr('data-topprice-two') );
 
-	var pizza_price = parseFloat( $(".pizza_size").attr('price') );
+	var pizza_price = parseFloat( $(".pizza_size").attr('data-price') );
 
 	$(".add-topping").not(".def-top").each(function(index, val)
 	{
-		if($(this).attr('size-top')=="1")
-		{
-			if( $(this).attr('t-price') != "0" )
-			{
-				cuenta += parseFloat( $(this).attr('t-price') );
-			}
-			else
-			{
-				if( $(this).attr('t-double') == 'N' )
-					cuenta += topping_price;
-				else
-					cuenta += topping_price2;
-			}
-		}
+		var top_calc = calc_top_price_ind(
+			$(this).attr('data-t-price'), 
+			$(this).attr('data-t-double'), 
+			$(this).attr('data-size-top'), 
+			topping_price, 
+			topping_price2
+		);
 		
-		else if($(this).attr('size-top')=="2" || $(this).attr('size-top')=="3")
-		{
-			if( $(this).attr('t-price') != "0" )
-			{
-				cuenta += parseFloat( $(this).attr('t-price') ) * 1/2;
-			}
-			else
-			{
-				if( $(this).attr('t-double') == 'N' )
-					cuenta += topping_price * 1/2;
-				else
-					cuenta += topping_price2 * 1/2;
-			}
-		}
-		
-		else if($(this).attr('size-top')=="4")
-		{
-			if( $(this).attr('t-price') != "0" )
-			{
-				cuenta += parseFloat( $(this).attr('t-price') ) * 2;;
-			}
-			else
-			{
-				if( $(this).attr('t-double') == 'N' )
-					cuenta += topping_price * 2;
-				else
-					cuenta += topping_price2 * 2;
-			}
-		}
-		
-		else if($(this).attr('size-top')=="5")
-		{
-			if( $(this).attr('t-price') != "0" )
-			{
-				cuenta += parseFloat( $(this).attr('t-price') );
-			}
-			else
-			{
-				if( $(this).attr('t-double') == 'N' )
-					cuenta += topping_price;
-				else
-					cuenta += topping_price2;
-			}
-		}
+		cuenta += top_calc;
 	});
+
 	cuenta_total = (pizza_price+cuenta) * parseInt( $('.cantidad .quantity').html() );
 	$('.total-price').html(cuenta_total.toFixed(2));
 }
@@ -541,46 +574,63 @@ $(function()
 		$(this).addClass('active');
 		
 		//size_topping
-		if($(this).attr('size-top')=="1")
+		if($(this).attr('data-size-top')=="1")
 			size_topping = "";
-		else if($(this).attr('size-top')=="2")
+		else if($(this).attr('data-size-top')=="2")
 			size_topping = "[left]";
-		else if($(this).attr('size-top')=="3")
+		else if($(this).attr('data-size-top')=="3")
 			size_topping = "[rigth]";
-		else if($(this).attr('size-top')=="4")
+		else if($(this).attr('data-size-top')=="4")
 			size_topping = "[extra]";
-		else if($(this).attr('size-top')=="5")
+		else if($(this).attr('data-size-top')=="5")
 			size_topping = "[lite]";
 
-		num_size_top = parseInt( $(this).attr('size-top') );
+		num_size_top = parseInt( $(this).attr('data-size-top') );
 	});
 
 	$(".pizza_size")
 		.html( $(".sizes a:first-child").html() )
-		.attr('price', $(".sizes a:first-child").attr('price'))
-		.attr('id-size', $(".sizes a:first-child").attr('id-size'));
+		.attr('data-price', $(".sizes a:first-child").attr('data-price'))
+		.attr('data-id-size', $(".sizes a:first-child").attr('data-id-size'));
 	
-	$('.total-price').html( $(".sizes a:first-child").attr('price') );
+	$('.total-price').html( $(".sizes a:first-child").attr('data-price') );
 
 	$('.items-toppings')
-		.attr('topprice', $(".sizes a:first-child").attr('top-price'))
-		.attr('topprice-two', $(".sizes a:first-child").attr('top-price-two'));
+		.attr('data-topprice', $(".sizes a:first-child").attr('data-top-price'))
+		.attr('data-topprice-two', $(".sizes a:first-child").attr('data-top-price-two'));
 	
 	$('.size').click(function()
 	{
 		$('.items-toppings')
-			.attr('topprice', $(this).attr("top-price"))
-			.attr('topprice-two', $(this).attr("top-price-two"));
+			.attr('data-topprice', $(this).attr("data-top-price"))
+			.attr('data-topprice-two', $(this).attr("data-top-price-two"));
 		
 		$(".pizza_size")
-			.attr('price', $(this).attr('price'))
-			.attr('id-size', $(this).attr('id-size'))
+			.attr('data-price', $(this).attr('data-price'))
+			.attr('data-id-size', $(this).attr('data-id-size'))
 			.html( $(this).html() );
 
 		$('.size.active').removeClass('active');
 		$(this).addClass('active');
 
 		calcular_cuenta();
+
+
+		$('.add-topping').each(function(index, el)
+		{
+			var chan_val_top = calc_top_price_ind(
+				$(this).attr('data-t-price'), 
+				$(this).attr('data-t-double'),
+				$(this).attr('data-size-top'),
+				parseFloat($('.items-toppings').attr('data-topprice')),
+				parseFloat($('.items-toppings').attr('data-topprice-two'))
+			);
+			
+			$(this).children('.topp_ind').text('$'+chan_val_top.toFixed(2));
+			
+		});
+
+
 	});
 
     $( ".drag" ).draggable
