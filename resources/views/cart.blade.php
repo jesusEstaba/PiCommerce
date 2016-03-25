@@ -8,9 +8,6 @@
 		@if($cart)
 
 		<div class="col-xs-12">
-		<div class="actions">
-			<a class="btn btn-info profile">Profile</a>
-		</div>
 
 			<table class="table">
 				<tr class="thead">
