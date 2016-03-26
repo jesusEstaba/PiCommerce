@@ -44,8 +44,11 @@ Route::group(['middleware'=>'hora'], function()
 
     Route::get('/product/{cat}/{id}/{sub?}', 'ProductCTRL@index');
 
-    Route::post('/add_to_cart', 'CartCTRL@add');
 
+    Route::post('/add_to_cart_ajax', 'CartCTRL@add_ajax');
+    Route::get('/add_to_cart_ajax', function(){
+        return redirect()->back();
+    });
 
 
     //Rutas Sesion
