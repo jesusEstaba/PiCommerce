@@ -8,7 +8,7 @@
 	{!!Html::style('assets/bootstrap/css/bootstrap.min.css')!!}
 	{!!Html::style('css/main.css')!!}
 	{!!Html::script('assets/jquery/jquery.min.js')!!}
-<script src="{{asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
+	<script src="{{asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
 
 
 </head>

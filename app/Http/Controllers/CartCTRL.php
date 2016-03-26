@@ -15,19 +15,38 @@ use Pizza\Cart;
 
 class CartCTRL extends Controller
 {
-	/**
-	 * [add description]
-	 * @param Request $request [description]
-	 */
-    public function add(Request $request)
+    /**
+     * [add_ajax description]
+     * @param Request $request [description]
+     */
+    public function add_ajax(Request $request)
     {
-    	Session::put('size', $request['id_size']);
-    	Session::put('topping', $request['selected']);
-    	Session::put('topping_size', $request['sizes']);
-        Session::put('cooking_instructions', $request['cooking_instructions']);
-        Session::put('quantity', $request['quantity']);
-    	
-        return Redirect::to('cart');
+        if( Auth::check() )
+        {
+            $this->cargar_producto(
+                $request['id_size'],
+                $request['toppings_id'],
+                $request['toppings_size'],
+                $request['cooking_notes'],
+                $request['quantity']
+            );
+            
+            return response()->json([
+                'status'=>'online'
+            ]);
+        }
+        else
+        {
+            Session::put('size', $request['id_size']);
+            Session::put('topping', $request['toppings_id']);
+            Session::put('topping_size', $request['toppings_size']);
+            Session::put('cooking_instructions', $request['cooking_notes']);
+            Session::put('quantity', $request['quantity']);
+        
+            return response()->json([
+                'status'=>'offline'
+            ]);
+        }     
     }
 
     
@@ -66,99 +85,17 @@ class CartCTRL extends Controller
 			$toppings = Session::get('topping');
 			$top_size = Session::get('topping_size');
             $cooking_instructions = Session::get('cooking_instructions');
-            $quantity = (int)Session::get('quantity');
+            $quantity = Session::get('quantity');
 
-            if(!$quantity)
-                $quantity = 1;
-
-            $id_cart = DB::table('cart')
-                ->insertGetId([
-				    'id_user' => Auth::user()->id,
-				    'product_id' => $size,
-                    'cooking_instructions' => $cooking_instructions,
-                    'quantity' => $quantity
-                ]);
-
-			$size_price = DB::table('size')
-                ->where('Sz_Id', $size)
-                ->select('Sz_Topprice', 'Sz_Topprice2')
-                ->get();
-
-			$size_price = $size_price[0];
-			
-            //return dd($topping_price);
-
-            $topping_price = (float)$size_price->Sz_Topprice;
+            //funcion que carga el producto a la db
+            $this->cargar_producto(
+                $size,
+                $toppings,
+                $top_size,
+                $cooking_instructions,
+                $quantity
+            );
             
-            $topping_price_2 = (float)$size_price->Sz_Topprice2;
-
-			$toppings = explode(',',$toppings);
-			$top_size = explode(',',$top_size);
-
-			$array_size = count($toppings);
-			
-			for($idx = 0; $idx<$array_size; $idx++)
-			{
-				$id_top = (int)$toppings[$idx];
-				$size_top_id = (int)$top_size[$idx];
-				$size_del_top = $size_top_id;
-				
-				if($id_top)
-				{
-
-                    $topping = DB::table('toppings')
-                        ->where('Tp_Id', $id_top)
-                        ->select('Tp_Topprice', 'Tp_Double')
-                        ->get();
-
-                    $Tp_Topprice =  $topping[0]->Tp_Topprice;
-                    $Tp_Double =  $topping[0]->Tp_Double;
-
-                    
-                    
-                    if ($size_top_id==2 or $size_top_id==3)
-                    {
-                        if($Tp_Topprice)
-                            $size_top_id = round($Tp_Topprice* 1/2 , 2);
-                        else
-                            if($Tp_Double == 'N')
-                                $size_top_id = round($topping_price * 1/2 , 2);
-                            else
-                                $size_top_id = round($topping_price2 * 1/2 , 2);
-                    }
-
-                    elseif($size_top_id==4)
-                    {
-                        if($Tp_Topprice)
-                            $size_top_id = $Tp_Topprice  * 2;
-                        else
-                            if($Tp_Double == 'N')
-                                $size_top_id = $topping_price * 2;
-                            else
-                                $size_top_id = $topping_price_2* 2;
-                    }
-                    
-                    else
-                    {
-                        if($Tp_Topprice)
-                           $size_top_id =  $Tp_Topprice;
-                        else
-                            if($Tp_Double == 'N')
-                                $size_top_id = $topping_price;
-                            else
-                                $size_top_id = $topping_price_2;
-                    }
-
-
-
-					DB::table('cart_top')->insert([
-						'id_cart' => $id_cart,
-						'id_topping' => $id_top,
-						'price' => $size_top_id,
-						'size' => $size_del_top
-					]);
-				}
-			}
             Session::forget('size');
             Session::forget('toppings');
             Session::forget('topping_size');
@@ -257,5 +194,99 @@ class CartCTRL extends Controller
     	return response()->json([
         	'total' => $total
         ]);
+    }
+
+
+    /**
+     * [cargar_producto description]
+     * @param  [type] $size                 [description]
+     * @param  [type] $toppings             [description]
+     * @param  [type] $top_size             [description]
+     * @param  [type] $cooking_instructions [description]
+     * @param  [type] $quantity             [description]
+     * @return [type]                       [description]
+     */
+    private function cargar_producto($size, $toppings, $top_size, $cooking_instructions, $quantity)
+    {
+        $quantity = (int)$quantity;
+
+        if(!$quantity){
+            $quantity = 1;
+        }
+
+        $id_cart = DB::table('cart')->insertGetId([
+            'id_user' => Auth::user()->id,
+            'product_id' => $size,
+            'cooking_instructions' => $cooking_instructions,
+            'quantity' => $quantity
+        ]);
+
+        $size_price = DB::table('size')
+            ->where('Sz_Id', $size)
+            ->select('Sz_Topprice', 'Sz_Topprice2')
+            ->first();
+
+        $topping_price = (float)$size_price->Sz_Topprice;
+        $topping_price_2 = (float)$size_price->Sz_Topprice2;
+       
+        if( !is_array($toppings) )
+        {
+            $toppings = explode(',', $toppings);
+
+            $top_size = explode(',',$top_size);
+        }
+        
+
+        $array_size = count($toppings);
+
+        for($indice = 0; $indice<$array_size; $indice++)
+        {
+            $id_top = (int)$toppings[$indice];
+            $size_top_id = (int)$top_size[$indice];
+
+            if($id_top)
+            {
+                $topping = DB::table('toppings')
+                    ->where('Tp_Id', $id_top)
+                    ->select('Tp_Topprice', 'Tp_Double')
+                    ->first();
+
+                $Tp_Topprice =  $topping->Tp_Topprice;
+                $Tp_Double =  $topping->Tp_Double;
+                $price_top_new = 0;
+
+                if( $Tp_Topprice>0 )
+                {
+                    $price_top_new = (float)$Tp_Topprice;
+                }
+                else
+                {
+                    if($Tp_Double=='N')
+                        $price_top_new = (float)$topping_price;
+                    else
+                        $price_top_new = (float)$topping_price_2;
+                }
+
+                if($size_top_id==1 ||  $size_top_id==5)
+                {
+                    $price_top_new *= 1;
+                }
+                else if($size_top_id==2 ||  $size_top_id==3)
+                {
+                    $price_top_new *= 1/2;
+                }
+                else if($size_top_id==4)
+                {
+                    $price_top_new *= 2;
+                }
+
+                DB::table('cart_top')->insert([
+                    'id_cart' => $id_cart,
+                    'id_topping' => $id_top,
+                    'price' => round($price_top_new, 2),
+                    'size' => $size_top_id
+                ]);
+            }
+        }
     }
 }
