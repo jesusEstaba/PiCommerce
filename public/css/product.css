@@ -20,7 +20,7 @@
 	
 	.drag{
 		width: 150px;
-		background: #923030;
+		/*background: #923030;*/
 		color: white;
 		box-shadow: 0 0 3px rgba(0,0,0,.15);
 		border-radius: 3px;
@@ -255,8 +255,23 @@
 		cursor: not-allowed;
 	}
 
+.items-toppings{
+	padding: 0 !important;
+}
+
+.ui-state-default{
+	background: #FDF4A7 !important;
+	border:1px solid #F58F19 !important;
+}
 
 
+.add-topping span{
+	font-size: 14px;
+}
+
+h4.titulo-product{
+	margin-top: 1em;
+}
 
 
 
@@ -277,7 +292,7 @@
 
 .has-spinner.active .spinner {
   opacity: 1;
-  width: auto; /* This doesn't work, just fix for unkown width elements */
+  width: auto;
 }
 
 .has-spinner.btn-mini.active .spinner {

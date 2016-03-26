@@ -117,10 +117,20 @@ class CartCTRL extends Controller
 
     /**
      * [busq_cart description]
-     * @return [type] [description]
+     * @param  string $asc [description]
+     * @return [type]      [description]
      */
-    public static function busq_cart()
+    public static function busq_cart($asc='')
     {
+        if($asc==='asc')
+        {
+            $order_by_cart = 'asc';
+        }
+        else
+        {
+           $order_by_cart = 'desc'; 
+        }
+
         $cart = DB::table('cart')
             ->join('size', 'size.Sz_Id', '=','cart.product_id')
             ->where('cart.id_user', Auth::user()->id)
@@ -137,7 +147,7 @@ class CartCTRL extends Controller
                 'size.Sz_FArea',
                 'size.Sz_Descrip'
                 )
-            ->orderBy('cart.id', 'desc')
+            ->orderBy('cart.id', $order_by_cart)
             ->get();
 
         foreach ($cart as $key => $value)

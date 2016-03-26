@@ -16,7 +16,7 @@ function addToCart()
 	var selected=[];
 	var topings_selected = [];
 
-	$(".add-topping").each(function(index){
+	$(".add-topping").not(".ui-sortable-placeholder").each(function(index){
 		selected.push( parseInt( $(this).not(".def-top").attr('data-id-top') ) );
 		topings_selected.push( $(this).not(".def-top").attr('data-size-top') );
 	});
@@ -79,8 +79,6 @@ function addToCart()
 
 		
 	});
-
-
 }
 
 function add_toping_to_list(object, parent)
@@ -113,13 +111,19 @@ function add_toping_to_list(object, parent)
 
 	);
 
-	$( "<li class='add-topping'></li>" )
+	var price_new_message_top = '';
+
+	if(price_top_new>0){
+		price_new_message_top = '$'+price_top_new.toFixed(2);
+	}
+
+	$( "<li class='add-topping text-muted'></li>" )
 		.append('<span class="descript_top">'+texto_comp+" "+size_topping+'</span>')
 		.attr('data-id-top',object.attr('data-id-top'))
 		.attr('data-size-top', num_size_top)
 		.attr('data-t-double', object.attr('data-double'))
 		.attr('data-t-price', object.attr('data-price'))
-		.append('<span class="topp_ind">$'+price_top_new.toFixed(2)+'</span>')
+		.append('<span class="topp_ind pull-right">'+price_new_message_top+'</span>')
 		.appendTo( parent );
 
 	hover_click_topping();
@@ -193,7 +197,7 @@ function calcular_cuenta()
 
 	var pizza_price = parseFloat( $(".pizza_size").attr('data-price') );
 
-	$(".add-topping").not(".def-top").each(function(index, val)
+	$(".add-topping").not(".ui-sortable-placeholder").each(function(index, val)
 	{
 		var top_calc = calc_top_price_ind(
 			$(this).attr('data-t-price'), 
@@ -218,14 +222,17 @@ $(function()
 {
 	$('.cantidad .glyphicon-minus').click(function(){
 		var cantidad = parseInt( $('.cantidad .quantity').html() );
-		if(cantidad>1)
+		if(cantidad>1){
 			$('.cantidad .quantity').html( cantidad-1 );
+			$('.quantity-now-product').html( cantidad-1 );
+		}
 		calcular_cuenta();
 	});
 
 	$('.cantidad .glyphicon-plus').click(function(){
 		var cantidad = parseInt( $('.cantidad .quantity').html() );
 		$('.cantidad .quantity').html( cantidad+1 );
+		$('.quantity-now-product').html( cantidad+1 );
 		calcular_cuenta();
 	});
 
@@ -327,10 +334,12 @@ $(function()
 		$('.size.active').removeClass('active');
 		$(this).addClass('active');
 
+		$('.price-now-size-product').html($(this).attr('data-price'));
+
 		calcular_cuenta();
 
 
-		$('.add-topping').each(function(index, el)
+		$('.add-topping').not(".ui-sortable-placeholder").each(function(index, el)
 		{
 			var chan_val_top = calc_top_price_ind(
 				$(this).attr('data-t-price'), 
@@ -340,7 +349,9 @@ $(function()
 				parseFloat($('.items-toppings').attr('data-topprice-two'))
 			);
 			
-			$(this).children('.topp_ind').text('$'+chan_val_top.toFixed(2));
+			if(chan_val_top>0){
+				$(this).children('.topp_ind').text('$'+chan_val_top.toFixed(2));
+			}
 			
 		});
 
@@ -381,10 +392,10 @@ $(function()
 			{
 		        if(ui.helper)
 		        {
-		        	ui.helper.fadeOut(1000, function () {
-			            $(this).remove(function(){
-			            	calcular_cuenta();
-			            });
+		        	ui.helper.fadeOut(1000, function (){
+			            $(this).remove();
+
+			            calcular_cuenta();
 			        });
 		        }
 	    	}
