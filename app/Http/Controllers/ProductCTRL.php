@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Pizza\Http\Requests;
 use Pizza\Http\Controllers\Controller;
 use DB;
+use Auth;
 
 class ProductCTRL extends Controller
 {
@@ -103,6 +104,12 @@ class ProductCTRL extends Controller
 
             if ( isset($vista) )
             {
+                $cart = false;
+               
+                if( Auth::check() ){
+                    $cart = CartCTRL::busq_cart('asc');
+                }
+
                 return view($vista)->with([
                         'name'=>$name, 
                         'size'=>$size_t, 
@@ -110,7 +117,8 @@ class ProductCTRL extends Controller
                         'item'=>$items, 
                         'description'=>$description,
                         'image_category'=>$image,
-                        'tp_kind'=>$tp_kind
+                        'tp_kind'=>$tp_kind,
+                        'cart'=>$cart,
                     ]);
             }
         }

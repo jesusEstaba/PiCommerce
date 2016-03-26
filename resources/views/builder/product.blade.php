@@ -54,9 +54,51 @@
 	
 	<div class="col-md-4 bottom-space">
 		<div class="counter-price" id="droppable">
+			<div class="cart-actual">
 			
+				@if($cart)
+					@foreach($cart as $array => $campo)
+						<h4 class="titulo-product">
+							<span><b>{{ $campo->quantity .'x '}}</b> {{$campo->Sz_Abrev }}</span>
+							<span class="pull-right">{{$campo->Sz_Price}}</span>
+						</h4>
+						<?php //$total_price_top = 0;?>
+						@foreach($campo->toppings_list as $tab => $val)
+							<?php
+							if($val->size==1)
+								$size_topping = "";
+							elseif($val->size==2)
+								$size_topping = " [left]";
+							elseif($val->size==3)
+								$size_topping = " [rigth]";
+							elseif($val->size==4)
+								$size_topping = " [extra]";
+							elseif($val->size==5)
+								$size_topping = " [lite]";
+							else
+								$size_topping = "";
+							?>
 
-			<h3 class="pizza_size" data-id-size="0" data-price="0"></h3>
+							<h5 class="text-muted">
+								<span><b>{{strtolower($val->Tp_Descrip).$size_topping}}</b></span>
+								<span class="pull-right">
+									@if($val->price > 0)
+										${{$val->price}}
+									@endif
+								</span>
+							</h5>
+							
+							<?php //$total_price_top += $val->price;?>
+						@endforeach
+					@endforeach
+				@endif
+			</div>
+
+			<h4 class="titulo-product">
+				<span><b class="quantity-now-product">1</b><b>x</b></span>
+				<span class="pizza_size" data-id-size="0" data-price="0"></span>
+				<span class="price-now-size-product pull-right"></span>
+			</h4>
 			@yield('toppings')
 			<div class="row">
 				<div class="col-xs-12">

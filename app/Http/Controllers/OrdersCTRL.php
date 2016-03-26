@@ -38,7 +38,6 @@ class OrdersCTRL extends Controller
             ->paginate(15);
         }
         
-        
         return view('admin.orders.index')->with(['orders'=>$orders]);
     }
 

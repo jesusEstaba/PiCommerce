@@ -49,7 +49,13 @@
 											$size_topping = "";
 										?>
 
-										<li>{{strtolower($val->Tp_Descrip).$size_topping}}: ${{$val->price}}</li>
+										<li>
+											<b>{{strtolower($val->Tp_Descrip).$size_topping}}</b>
+											@if($val->price > 0)
+												<span>: ${{$val->price}}</span>
+											@endif
+										</li>
+										
 										<?php $total_price_top += $val->price;?>
 									@endforeach
 						</ul>
@@ -58,7 +64,12 @@
 						<spam total-price-product="{{($campo->Sz_Price+$total_price_top)*$campo->quantity}}" class="glyphicon glyphicon-remove delete-element"></spam>
 					</td>
 					<td>
-						<h4 class="title-product">@if($campo->Sz_FArea=="P"){{"Pizza"}}@endif {{$campo->Sz_Abrev}}</h4>
+						<h4 class="title-product">
+						@if($campo->Sz_FArea=="P")
+							{{"Pizza"}}
+						@endif 
+							{{$campo->Sz_Abrev}}
+						</h4>
 					</td>
 					<td>
 						<span class="quantity">{{$campo->quantity}}</span>
@@ -67,7 +78,7 @@
 						<h4 class="text-success">$<span class="price">{{$campo->Sz_Price+$total_price_top}}</span></h4>
 					</td>
 					<td>
-						@if($total_price_top)
+						@if($campo->toppings_list)
 							<a class="btn btn-default view-details-toppings-modal">view</a>
 						@endif
 					</td>
