@@ -105,9 +105,11 @@ class ProductCTRL extends Controller
             if ( isset($vista) )
             {
                 $cart = false;
-               
+                $total_cart = 0.00;
+
                 if( Auth::check() ){
                     $cart = CartCTRL::busq_cart('asc');
+                    $total_cart = CartCTRL::total_price(true);
                 }
 
                 return view($vista)->with([
@@ -119,6 +121,7 @@ class ProductCTRL extends Controller
                         'image_category'=>$image,
                         'tp_kind'=>$tp_kind,
                         'cart'=>$cart,
+                        'total_cart'=>$total_cart,
                     ]);
             }
         }

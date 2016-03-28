@@ -170,9 +170,10 @@ class CartCTRL extends Controller
 
     /**
      * [total_price description]
-     * @return [type] [description]
+     * @param  boolean $res [description]
+     * @return [type]       [description]
      */
-    public static function total_price()
+    public static function total_price($res=false)
     {
         $total_cart = DB::table('cart')
             ->join('cart_top', 'cart_top.id_cart', '=', 'cart.id')
@@ -202,6 +203,11 @@ class CartCTRL extends Controller
     		$total = 0.00;
     	}
     	
+        if($res){
+            return $total;
+        }
+
+
     	return response()->json([
         	'total' => $total
         ]);

@@ -212,7 +212,22 @@ function calcular_cuenta()
 
 	cuenta_total = (pizza_price+cuenta) * parseInt( $('.cantidad .quantity').html() );
 	$('.total-price').html(cuenta_total.toFixed(2));
+
+	sub_tax_total();
 }
+
+function sub_tax_total()
+{
+	var sub_total_price = parseFloat( $('.cart-actual').attr('data-total-cart') ) + parseFloat( $('.total-price').html());
+	var sub_total_tax = sub_total_price * 6.5 / 100;
+
+	$('.sub-total').html( sub_total_price.toFixed(2) );
+	
+	$('.taxes').html( sub_total_tax.toFixed(2) );
+	
+	$('.total-cart').html( (sub_total_price+sub_total_tax).toFixed(2) );
+}
+
 
 var cuenta_total = 0;
 var size_topping = '';
@@ -220,6 +235,7 @@ var num_size_top = 1;
 
 $(function()
 {
+
 	$('.cantidad .glyphicon-minus').click(function(){
 		var cantidad = parseInt( $('.cantidad .quantity').html() );
 		if(cantidad>1){
@@ -403,4 +419,7 @@ $(function()
 
 	    $(".sizes a:first-child").click();
 	    $('.btn-complete-size').click();
-  });
+
+
+	sub_tax_total();
+ });
