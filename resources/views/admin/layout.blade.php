@@ -100,16 +100,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <ul class="sidebar-menu">
             <li >
               <a href="{{url('admin')}}">
-                <i class="fa fa-link">
+                <i class="fa fa-tachometer">
                 </i>
-                <span>Home
+                <span>Dashboard
                 </span>
               </a>
             </li>
 
             <li>
               <a href="{{url('admin/items')}}">
-                <i class="fa fa-link">
+                <i class="fa fa-cutlery">
                 </i>
                 <span>Items
                 </span>
@@ -118,17 +118,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
             
             <li>
               <a href="{{url('admin/users')}}">
-                <i class="fa fa-link">
+                <i class="fa fa-group">
                 </i>
                 <span>Users
                 </span>
               </a>
             </li>
             
-            <li class="treeview active">
+            <li class="treeview"> <!-- class="active" -->
               
               <a href="#">
-                <i class="fa fa-link">
+                <i class="fa fa-tag">
                 </i>
                 <span>Category
                 </span>
@@ -137,7 +137,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </a>
 
               <ul class="treeview-menu">
-                <li class="active">
+                <li> <!-- class="active" -->
                   <a href="{{url('admin/categories')}}">Categories
                   </a>
                 </li>
@@ -158,7 +158,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             <li>
               <a href="{{url('admin/orders')}}">
-                <i class="fa fa-link">
+                <i class="fa fa-shopping-cart">
                 </i>
                 <span>Orders
                 </span>
@@ -167,7 +167,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             <li>
               <a href="{{url('admin/config')}}">
-                <i class="fa fa-link">
+                <i class="fa fa-gear">
                 </i>
                 <span>Config
                 </span>
@@ -186,7 +186,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         
 
         <!-- Main content -->
-        <section class="content white">
+        <section class="content"><!-- white -->
 
           @yield('content')
 
@@ -281,6 +281,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
          Both of these plugins are recommended to enhance the
          user experience. Slimscroll is required when using the
          fixed layout. -->
+
+    <script src="{{asset('assets/admin/plugins/chartjs/Chart.min.js')}}"></script>
+
     @yield('script')
   </body>
 </html>

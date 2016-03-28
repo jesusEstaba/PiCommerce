@@ -70,3 +70,14 @@
 @endif
 
 @stop
+
+
+@section('script')
+<script type="text/javascript">
+
+	$(function()
+	{
+		$('.sidebar-menu li:eq(7)').addClass('active');
+	});
+</script>
+@stop

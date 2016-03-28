@@ -28,12 +28,32 @@
 					</td>
 				</tr>
 				@foreach($cart as $table => $campo)
+					
+					<?php $total_price_top = 0;?>
+					@foreach($campo->toppings_list as $tab => $val)
+						<?php $total_price_top += $val->price;?>
+					@endforeach
+
+
 				<tr id-cart="{{$campo->id}}" class="item-pay">
-					<td class="hide">
+					<td>
+						<spam total-price-product="{{($campo->Sz_Price+$total_price_top)*$campo->quantity}}" class="glyphicon glyphicon-remove delete-element"></spam>
+					</td>
+					<td>
+						<h4 class="title-product">
+							<b>{{$campo->It_Descrip}}</b>
+							{{$campo->Sz_Abrev}}
+						</h4>
+					</td>
+					<td>
+						<span class="quantity">{{$campo->quantity}}</span>
+					</td>
+					<td>
+						<h4 class="text-success">$<span class="price">{{$campo->Sz_Price+$total_price_top}}</span></h4>
+					</td>
+					<td>
 						<ul class="topping-list">
-									<?php $total_price_top = 0;?>
 									@foreach($campo->toppings_list as $tab => $val)
-										
 										<?php
 										if($val->size==1)
 											$size_topping = "";
@@ -48,39 +68,14 @@
 										else
 											$size_topping = "";
 										?>
-
 										<li>
 											<b>{{strtolower($val->Tp_Descrip).$size_topping}}</b>
 											@if($val->price > 0)
 												<span>: ${{$val->price}}</span>
 											@endif
 										</li>
-										
-										<?php $total_price_top += $val->price;?>
 									@endforeach
 						</ul>
-					</td>
-					<td>
-						<spam total-price-product="{{($campo->Sz_Price+$total_price_top)*$campo->quantity}}" class="glyphicon glyphicon-remove delete-element"></spam>
-					</td>
-					<td>
-						<h4 class="title-product">
-						@if($campo->Sz_FArea=="P")
-							{{"Pizza"}}
-						@endif 
-							{{$campo->Sz_Abrev}}
-						</h4>
-					</td>
-					<td>
-						<span class="quantity">{{$campo->quantity}}</span>
-					</td>
-					<td>
-						<h4 class="text-success">$<span class="price">{{$campo->Sz_Price+$total_price_top}}</span></h4>
-					</td>
-					<td>
-						@if($campo->toppings_list)
-							<a class="btn btn-default view-details-toppings-modal">view</a>
-						@endif
 					</td>
 				</tr>
 				@endforeach
@@ -104,17 +99,17 @@
 	<div class="row actions-cart">
 		<div class="col-md-4">
 			<a href="{{url('/category/drinks')}}">
-				<img src="images/category/soft-drinks.jpg" alt="choose" class="choose">
+				<img src="images/category/soft-drinks.jpg" alt="choose1" class="choose img-responsive choose">
 			</a>
 		</div>
 		<div class="col-md-4">
 			<a href="{{url('/category/salads')}}">
-				<img src="images/category/xsLmTnr55b8xLnF72P2eYqV57bk.png" alt="choose" class="choose">
+				<img src="images/category/xsLmTnr55b8xLnF72P2eYqV57bk.png" alt="choose2" class="choose img-responsive choose">
 			</a>
 			
 		</div>
 		<div class="col-md-offset-1 col-md-3">
-			<a href="{{url('select')}}" class="btn btn-success btn-lg pay-btn">Checkout</a>
+			<a href="{{url('checkout')}}" class="btn btn-success btn-lg pay-btn">Checkout</a>
 		</div>
 	</div>
 </div>
@@ -134,28 +129,9 @@
       	<button type="button" class="btn btn-danger" id="delete-item-now" data-dismiss="modal">Delete</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-
-<div id="myModal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        <p>One fine body&hellip;</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
+    </div>
+  </div>
+</div>
 
 <div id="perfil" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog">
@@ -175,9 +151,9 @@
       	<button type="button" class="btn btn-primary save-data" data-dismiss="modal">Save</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+    </div>
+  </div>
+</div>
 
 
 <style type="text/css">
@@ -319,18 +295,6 @@ var element_box_delete;
 			var total = parseFloat($(".total_cart_price").html()) + price;
 			
 			$('.total_cart_price').html( total.toFixed(2) );
-		});
-
-
-		$('.view-details-toppings-modal').click(function() {
-			var toppings = $(this).parent().parent().children().html();
-			
-
-			var title = $(this).parent().siblings().children("h4.title-product").html();
-			
-			$("#myModal .modal-title").html('<h4>'+title+'</h4>');
-			$("#myModal .modal-body").html('<ul>'+toppings+'</ul>');
-			$('#myModal').modal('show');
 		});
 
 	});

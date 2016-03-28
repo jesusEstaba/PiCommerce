@@ -12,7 +12,7 @@
 <div class="toppings">
 	<div class="row">
 		<div class="col-md-4">
-			<h2>Add Toping</h2>
+			<h2>Add Topping</h2>
 		</div>
 		<div class="col-md-8">
 			<div class="btn-sizes">
@@ -55,7 +55,7 @@
 <div class="topping_category">
 	<?php
 		if($tp_kind==1)
-			$categoria= ['cheese'=>1, 'meats'=>2, 'vegetables'=>3];
+			$categoria= ['cheese'=>1, 'Special Toppings'=>4, 'meats'=>2,  'vegetables'=>3];
 		else
 			$categoria= ['dressing and sauces'=>-1];
 	?>

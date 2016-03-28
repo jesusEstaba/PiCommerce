@@ -33,6 +33,7 @@ Route::group(['middleware'=>'hora'], function()
 
     Route::get('/login', 'LoginCTRL@index');
     Route::post('/login', 'LoginCTRL@login');
+    
     Route::get('/logout', 'LoginCTRL@logout');
 
     Route::get('/register', 'RegisterCTRL@index');
@@ -61,9 +62,9 @@ Route::group(['middleware'=>'hora'], function()
         Route::get('/total_price_cart', 'CartCTRL@total_price');
         Route::get('/delete/item/{id}', 'CartCTRL@delete');
         
-        Route::get('/select', 'PayCTRL@select');
+        Route::get('/select', 'PayCTRL@select');//borrar vista y metodo()
 
-        Route::get('/pay/{select}', 'PayCTRL@index');
+        Route::get('/checkout', 'PayCTRL@index');
         Route::get('/order_now', 'OrderCTRL@create');
     });
 
@@ -75,6 +76,7 @@ Route::group(['prefix'=>'admin'], function()
 {
     Route::get('/login', 'AdminLoginCTRL@index');
     Route::post('/login', 'AdminLoginCTRL@login');
+    
     Route::get('/logout', 'AdminLoginCTRL@logout');
 
     Route::group(['middleware'=>'admin_panel'], function()

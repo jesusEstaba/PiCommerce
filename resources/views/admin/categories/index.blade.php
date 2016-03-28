@@ -110,8 +110,20 @@
 
 
 
+
 @section('script')
 <script type="text/javascript">
+
+	$(function()
+	{
+		$('.sidebar-menu li:eq(3)')
+			.addClass('active')
+			.children('ul li:eq(0)')
+			.addClass('active');
+
+
+
+
 
 	$('.visible-sta').click(function(){
 		if( $(this).hasClass('glyphicon-eye-open') )
@@ -198,5 +210,6 @@
 			alert("Field Empty");
 	});
 
+	});
 </script>
 @stop

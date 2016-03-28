@@ -34,18 +34,24 @@
 								Logout
 							</a>
 						</li>
-					@else
-						<li role="presentation">
-							<a role="menuitem" tabindex="-1" href="{{url('login')}}">Login</a>
-						</li>
 					@endif
+					
+					<?php
+						$categorys = DB::table('category')->get();
+					?>
+					
+					<hr>
+
+					@if($categorys)
+						@foreach($categorys as $category => $val)
+							<li role="presentation">
+								<a role="menuitem" tabindex="-1" href="{{url('category/'.$val->name_cat)}}">{{$val->name}}</a>
+							</li>
+						@endforeach
+					@endif
+
 				</ul>
 
-
-
-
-				
-			</ul>
 			<a href="{{url('/choose')}}" class="btn btn-infosite btn-info hidden-xs"><span class="glyphicon glyphicon-home"></span> Home</a>
 			
 			<?php

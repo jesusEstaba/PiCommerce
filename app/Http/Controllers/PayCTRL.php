@@ -13,16 +13,18 @@ class PayCTRL extends Controller
 {
 	/**
 	 * [index description]
-	 * @param  [type] $select [description]
-	 * @return [type]         [description]
+	 * @return [type] [description]
 	 */
-    public function index($select)
+    public function index()
     {
     	$cart = CartCTRL::busq_cart();
     	//Session = $cart -> to OrderCTRL
-    	//
-    	//Session = $select
-    	$user = DB::table('customers')->where('Cs_Phone', Auth::user()->phone)->first();
+
+    	$user = DB::table('users')
+    		->leftJoin('customers', 'customers.Cs_Phone', '=', 'users.phone')
+    		->where('users.phone', Auth::user()->phone)
+    		->select('Cs_Number', 'Cs_Street', 'Cs_ZipCode', 'Cs_Notes')
+    		->first();
 
     	return view('pay')->with(['cart'=>$cart, 'user'=>$user]);
     }

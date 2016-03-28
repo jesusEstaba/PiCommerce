@@ -114,48 +114,55 @@
 
 @section('script')
 <script type="text/javascript">
-	$('.add-new').click(function(){
-		$('#myModal').modal();
-	});
+
+	$(function()
+	{
+		$('.sidebar-menu li:eq(1)').addClass('active');
+		
+
+		$('.add-new').click(function(){
+			$('#myModal').modal();
+		});
 
 
-	$('.save').click(function(){
-		if( $("[name=name]").val() && $('[name=category-item]').val() && $('[name=descrip-item]').val() )
-		{
-			$.ajax({
-				type: 'POST',
-				dataType: 'json',
-				headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
-				data:
-				{
-					add:true,
-					name: $("[name=name]").val(),
-					category: $('[name=category-item]').val(),
-					descrip: $('[name=descrip-item]').val(),
-				},
-			})
-			.done(function(data)
+		$('.save').click(function(){
+			if( $("[name=name]").val() && $('[name=category-item]').val() && $('[name=descrip-item]').val() )
 			{
-				if("New Item"==data)
+				$.ajax({
+					type: 'POST',
+					dataType: 'json',
+					headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
+					data:
+					{
+						add:true,
+						name: $("[name=name]").val(),
+						category: $('[name=category-item]').val(),
+						descrip: $('[name=descrip-item]').val(),
+					},
+				})
+				.done(function(data)
 				{
-					//Agregar a la vista
-					/*
-					//
-					*/
-					$("[name=name]").val("");
-					$('[name=category-item]').val("");
-					$('[name=descrip-item]').val("");
-				}
-			})
-			.fail(function()
+					if("New Item"==data)
+					{
+						//Agregar a la vista
+						/*
+						//
+						*/
+						$("[name=name]").val("");
+						$('[name=category-item]').val("");
+						$('[name=descrip-item]').val("");
+					}
+				})
+				.fail(function()
+				{
+					console.log("error");
+				});
+			}
+			else
 			{
-				console.log("error");
-			});
-		}
-		else
-		{
-			alert("Field Empty");
-		}
-	});
+				alert("Field Empty");
+			}
+		});
+	})
 </script>
 @stop
