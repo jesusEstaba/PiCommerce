@@ -54,13 +54,17 @@
 	
 	<div class="col-md-4 bottom-space">
 		<div class="counter-price" id="droppable">
-			
+			<h4>
+				<span>Qty.</span>
+				<span>Description</span>
+				<span class="pull-right">Price</span>
+			</h4>
 			@if($cart)
-				<div class="cart-actual">
+				<div class="cart-actual" data-total-cart="{{$total_cart}}">
 
 					@foreach($cart as $array => $campo)
 						<h4 class="titulo-product">
-							<span><b class="text-descrip-product">{{ $campo->quantity .'x '}}</b> {{$campo->It_Descrip or $campo->Sz_Abrev}}</span>
+							<span><b class="text-descrip-product">{{ $campo->quantity }}</b> {{$campo->It_Descrip or $campo->Sz_Abrev}}</span>
 							<span class="pull-right">${{$campo->Sz_Price}}</span>
 						</h4>
 						<?php //$total_price_top = 0;?>
@@ -97,7 +101,8 @@
 			@endif
 
 			<h4 class="titulo-product">
-				<span class="text-descrip-product"><b class="quantity-now-product">1</b><b>x</b></span>
+				<span class="text-descrip-product"><b class="quantity-now-product">1</b></span>
+				<span>{{$name}} </span>
 				<span class="pizza_size" data-id-size="0" data-price="0"></span>
 				<span class="pull-right">$<span class="price-now-size-product"></span></span>
 			</h4>
@@ -119,9 +124,9 @@
 				</div>
 			</div>
 			<div class="Subtotales">
-				<h4>Sub-Total: $<span>0.99</span></h4>
-				<h4>Tax: $<span>0.09</span></h4>
-				<h3>Total: $<span>1.00</span></h3>
+				<h4>Sub-Total: $<span class="sub-total">0.00</span></h4>
+				<h4>Tax: $<span class="taxes">0.00</span></h4>
+				<h3>Total: $<span class="total-cart">0.00</span></h3>
 			</div>
 			<a class="btn btn-success go-checkout-cart has-spinner">
 				<span class="spinner"><i class="icon-spin icon-refresh"></i></span>

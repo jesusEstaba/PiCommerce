@@ -55,29 +55,32 @@
 <div class="topping_category">
 	<?php
 		if($tp_kind==1)
-			$categoria= ['cheese'=>1, 'Special Toppings'=>4, 'meats'=>2,  'vegetables'=>3];
+			$categoria= ['cheese'=>1,  'meats'=>2,  'vegetables'=>3, 'Specialty'=>4];
 		else
 			$categoria= ['dressing and sauces'=>-1];
 	?>
-	
-	@foreach($categoria as $name_category => $id_cat_top)
-	
-		<h4 class="{{snake_case($name_category)}}">{{ucwords($name_category)}}</h4>
+	<div class="row">
 		
-		<div class="toppings-btns">
-			@foreach($toppings as $data => $top)
+		@foreach($categoria as $name_category => $id_cat_top)
+		<div class="col-md-6">
+			<h4 class="{{snake_case($name_category)}}">{{ucwords($name_category)}}</h4>
 			
-				@if($id_cat_top==$top->Tp_Cat)
-					<div class="box-drag">
-						<a data-id-top="{{$top->Tp_Id}}" class="btn drag" data-double="{{$top->Tp_Double}}" data-price="{{$top->Tp_Topprice}}">
-							{{ucwords( strtolower($top->TP_Descrip) )}}
-						</a>
-					</div>
-				@endif
-			@endforeach
+			<div class="toppings-btns">
+				@foreach($toppings as $data => $top)
+				
+					@if($id_cat_top==$top->Tp_Cat)
+						<div class="box-drag">
+							<a data-id-top="{{$top->Tp_Id}}" class="btn drag" data-double="{{$top->Tp_Double}}" data-price="{{$top->Tp_Topprice}}">
+								{{ucwords( strtolower($top->TP_Descrip) )}}
+							</a>
+						</div>
+					@endif
+				@endforeach
+			</div>
 		</div>
-	
-	@endforeach
+		@endforeach
+
+	</div>
 </div>
 <!-- TOPPINGS CATEGORY -->
 

@@ -245,10 +245,10 @@
 	}
 
 
-	.topping_category .special_toppings{
+	.topping_category .specialty{
 		background: #CE4A18;
 	}
-	.topping_category .special_toppings+.toppings-btns .btn.drag{
+	.topping_category .specialty+.toppings-btns .btn.drag{
 		background: #EA7B1C;
 	}
 
