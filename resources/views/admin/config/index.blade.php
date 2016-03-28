@@ -229,8 +229,14 @@ color:green;
 @stop
 
 @section('script')
-
 <script type="text/javascript">
+
+	$(function()
+	{
+		$('.sidebar-menu li:eq(8)').addClass('active');
+
+
+
 	$('.save.social').click(function(){
 		
 		if( $("[name=social-net]").val() )
@@ -331,6 +337,7 @@ color:green;
 			console.log("error");
 		});
 		
+	});
 	});
 </script>
 @stop

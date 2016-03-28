@@ -13,7 +13,7 @@
 			
 			<div class="row">
 				<div class="col-md-6">
-					<img src="{{asset('images/category/'.$image_category)}}" class="img-build">
+					<img src="{{asset('images/category/'.$image_category)}}" class="img-build img-responsive choose">
 				</div>
 				<div class="col-md-6">
 					<div class="row">
@@ -54,13 +54,14 @@
 	
 	<div class="col-md-4 bottom-space">
 		<div class="counter-price" id="droppable">
-			<div class="cart-actual">
 			
-				@if($cart)
+			@if($cart)
+				<div class="cart-actual">
+
 					@foreach($cart as $array => $campo)
 						<h4 class="titulo-product">
-							<span><b>{{ $campo->quantity .'x '}}</b> {{$campo->Sz_Abrev }}</span>
-							<span class="pull-right">{{$campo->Sz_Price}}</span>
+							<span><b class="text-descrip-product">{{ $campo->quantity .'x '}}</b> {{$campo->It_Descrip or $campo->Sz_Abrev}}</span>
+							<span class="pull-right">${{$campo->Sz_Price}}</span>
 						</h4>
 						<?php //$total_price_top = 0;?>
 						@foreach($campo->toppings_list as $tab => $val)
@@ -91,18 +92,19 @@
 							<?php //$total_price_top += $val->price;?>
 						@endforeach
 					@endforeach
-				@endif
-			</div>
+				
+				</div>
+			@endif
 
 			<h4 class="titulo-product">
-				<span><b class="quantity-now-product">1</b><b>x</b></span>
+				<span class="text-descrip-product"><b class="quantity-now-product">1</b><b>x</b></span>
 				<span class="pizza_size" data-id-size="0" data-price="0"></span>
-				<span class="price-now-size-product pull-right"></span>
+				<span class="pull-right">$<span class="price-now-size-product"></span></span>
 			</h4>
 			@yield('toppings')
 			<div class="row">
 				<div class="col-xs-12">
-					<h2 class="price-all">$<span class="total-price"></span></h2>
+					<h3 class="price-all">$<span class="total-price"></span></h3>
 					<div class="input-control">
 						<textarea name="cooking_instructions" placeholder="Additional notes" class="notes_instructions form-control"></textarea>
 					</div>
@@ -116,6 +118,11 @@
 					<span class="glyphicon glyphicon-plus btn btn-default"></span>
 				</div>
 			</div>
+			<div class="Subtotales">
+				<h4>Sub-Total: $<span>0.99</span></h4>
+				<h4>Tax: $<span>0.09</span></h4>
+				<h3>Total: $<span>1.00</span></h3>
+			</div>
 			<a class="btn btn-success go-checkout-cart has-spinner">
 				<span class="spinner"><i class="icon-spin icon-refresh"></i></span>
 				<span class="text-cart">Add to Cart</span>
@@ -126,7 +133,7 @@
 	</div>
 </div>
 
-<input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
+<input type="hidden" name="_token" value="{{ csrf_token() }}" />
 	
 	@else
 		<div class="row">

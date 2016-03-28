@@ -133,10 +133,11 @@ class CartCTRL extends Controller
 
         $cart = DB::table('cart')
             ->join('size', 'size.Sz_Id', '=','cart.product_id')
+            ->join('items', 'items.It_Id', '=', 'size.Sz_Item')
             ->where('cart.id_user', Auth::user()->id)
             ->select(
-                'cart.id',
-                'cart.product_id', 
+                'items.It_Descrip',
+                'cart.product_id',
                 'cart.quantity', 
                 'cart.id', 
                 'cart.cooking_instructions', 

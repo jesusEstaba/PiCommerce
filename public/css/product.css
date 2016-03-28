@@ -1,5 +1,13 @@
 	/*rojo #E26F6F*/
 	/*verde #A1E26F*/
+	.cart-actual{
+		border:1px #E6E6E6 solid;
+		border-radius: 2px;
+		padding: .3em;
+	}
+	.text-descrip-product{
+		color: #E1543B;
+	}
 	.cantidad{
 		margin-top: .5em;
 		text-align: center;
@@ -235,6 +243,18 @@
 	.topping_category .dressingandsauces+.toppings-btns .btn.drag{
 		background: #D8B76D;
 	}
+
+
+	.topping_category .special_toppings{
+		background: #CE4A18;
+	}
+	.topping_category .special_toppings+.toppings-btns .btn.drag{
+		background: #EA7B1C;
+	}
+
+	
+
+
 	.price-all{
 		color: #3C763D;
 		margin: 0;

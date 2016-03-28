@@ -21,15 +21,19 @@
 	
 	<section class="name-category">
 		<div class="container">
-			<ul>
-				@if($categorys)
-					@foreach($categorys as $category => $val)
-						<a href="{{url('category/'.$val->name_cat)}}"><li>{{$val->name}}</li></a>
-					@endforeach
-				@else
-					<li><a href="{{url('choose')}}">No Categories</a></li>
-				@endif
-			</ul>
+			<div class="row">
+				<div class="col-xs-12">
+					<ul class="hidden-xs">
+						@if($categorys)
+							@foreach($categorys as $category => $val)
+								<a href="{{url('category/'.$val->name_cat)}}"><li>{{$val->name}}</li></a>
+							@endforeach
+						@else
+							<li><a href="{{url('choose')}}">No Categories</a></li>
+						@endif
+					</ul>
+				</div>
+			</div>
 		</div>
 	</section>
 
@@ -45,11 +49,11 @@
 					@endif
 							<div class="type">
 								<div class="row">
-									<div class="col-md-5 col-xs-6">
+									<div class="col-md-5 col-sm-6 col-xs-12">
 										<img src="{{asset('images/items/nopicture.jpg')}}" class="item" alt="item-type">
 									</div>
-									<div class="col-md-7 col-xs-6">
-										<h3>
+									<div class="col-md-7 col-sm-6 col-xs-12">
+										<h3 class="title-type">
 											@if($sub)
 												{{$valor->Sz_Descrip}}
 											@else
@@ -96,5 +100,19 @@
 	    display: inline-block;
 	    position: absolute !important;
 	}
+	.name-category{
+		min-height: 2em;
+	}
+	
+	.item{
+		margin-left: auto;
+	    margin-right: auto;
+	    display: block;
+	    max-width: 100%;
+	}
+	.title-type{
+		text-align: center;
+	}
+
 	</style>
 @stop
