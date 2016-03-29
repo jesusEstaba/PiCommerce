@@ -203,7 +203,7 @@ class CartCTRL extends Controller
     		$total = 0.00;
     	}
     	
-        if($res){
+        if($res===true){
             return $total;
         }
 
