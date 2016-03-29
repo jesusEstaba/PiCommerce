@@ -21,15 +21,15 @@ class UserCTRL extends Controller
         $search = Input::get('search');
         if ( $search!='' )
         {
-            $users = DB::table('customers')
-                ->join('users', 'customers.Cs_Phone', '=', 'users.phone')
+            $users = DB::table('users')
+                ->leftJoin('customers', 'customers.Cs_Phone', '=', 'users.phone')
                 ->where('Cs_Name', 'like', '%'.$search.'%')
                 ->paginate(15);
         }
         else
         {
-            $users = DB::table('customers')
-                ->join('users', 'customers.Cs_Phone', '=', 'users.phone')
+            $users = DB::table('users')
+                ->leftJoin('customers', 'customers.Cs_Phone', '=', 'users.phone')
                 ->paginate(15);
         }
         
