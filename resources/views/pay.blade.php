@@ -45,7 +45,7 @@
 
 
 
-								<h4>Costumerrs Details</h4>
+								<h4>Customers Details</h4>
 								<p>
 									<b>Name: </b>{!!$user->Cs_Name or '<em>No Name</em>'!!}
 								</p>
