@@ -14,26 +14,30 @@
 		<div class="col-md-4">
 			<h2>Add Topping</h2>
 		</div>
-		<div class="col-md-8">
-			<div class="btn-sizes">
-				<div class="btn-complete-size topping-size" data-size-top="1" title="Complete">
-					<span class="name-size-top">Complete</span>
+
+		@if($tp_kind==1)
+			<div class="col-md-8">
+				<div class="btn-sizes">
+					<div class="btn-complete-size topping-size" data-size-top="1" title="Complete">
+						<span class="name-size-top">Complete</span>
+					</div>
+					<div class="btn-semi-left-size topping-size" data-size-top="2" title="Left Half">
+						<span class="name-size-top">Left/Right</span>
+					</div>
+					<div class="btn-semi-right-size topping-size" data-size-top="3" title="Right Half">
+						
+					</div>
+					<div class="btn-double-size topping-size" data-size-top="4" title="Extra">
+						<span class="name-size-top">Extra</span>
+					</div>
+					<div class="btn-lite-size topping-size" data-size-top="5" title="Lite">
+						<span class="name-size-top">Lite</span>
+					</div>
 				</div>
-				<div class="btn-semi-left-size topping-size" data-size-top="2" title="Left Half">
-					<span class="name-size-top">Left/Right</span>
-				</div>
-				<div class="btn-semi-right-size topping-size" data-size-top="3" title="Right Half">
-					
-				</div>
-				<div class="btn-double-size topping-size" data-size-top="4" title="Extra">
-					<span class="name-size-top">Extra</span>
-				</div>
-				<div class="btn-lite-size topping-size" data-size-top="5" title="Lite">
-					<span class="name-size-top">Lite</span>
-				</div>
+				<br>
 			</div>
-			<br>
-		</div>
+		@endif
+
 	</div>
 	<br>
 	<br>
