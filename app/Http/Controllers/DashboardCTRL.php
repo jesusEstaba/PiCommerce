@@ -6,18 +6,44 @@ use Illuminate\Http\Request;
 
 use Pizza\Http\Requests;
 use Pizza\Http\Controllers\Controller;
-use DB;
 use Input;
+use DB;
+use Carbon\Carbon;
 
-class OrdersCTRL extends Controller
+class DashboardCTRL extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    
+    public function profit_month($ano, $mes)
+    {
+        $min_month = Carbon::create($ano, $mes, 1, 0);
+        $max_month = Carbon::create($ano, $mes, 1, 0)->endOfMonth();
+
+        return DB::table('hd_tticket')
+            ->whereBetween('Hd_Date', [$min_month, $max_month])
+            ->where('Hd_Status', '1')
+            ->sum('Hd_Total');
+    }
+
     public function index()
     {
+        $times = Carbon::now();
+        //$hora = $times->toTimeString();
+        //$dia = $times->format('l');
+        $min_month = Carbon::create($times->format('Y'), $times->format('m'), 1, 0);
+        $max_month = Carbon::create($times->format('Y'), $times->format('m'), 1, 0)->endOfMonth();        
+        
+  
+        $profit_month = $this->profit_month($times->format('Y'), $times->format('m'));
+
+
+        $today = $times->format('l jS \of F Y');
+        $date = $times->format('Y-m-d');
+
         $num = Input::get('num');
 
         if( isset($num) and !empty($num) )
@@ -25,6 +51,8 @@ class OrdersCTRL extends Controller
             $orders = DB::table('hd_tticket')
             ->leftJoin('customers', 'customers.Cs_Phone', '=', 'hd_tticket.Hd_Customers')
             ->where('hd_tticket.Hd_Ticket', $num)
+            ->where('Hd_Ticket', '!=', '1')
+            ->where('Hd_Date', '>=', $date)
             ->select(
                 'customers.Cs_Name', 
                 'hd_tticket.Hd_Ticket', 
@@ -33,12 +61,14 @@ class OrdersCTRL extends Controller
                 'Hd_Status'
             )
             ->orderBy('hd_tticket.Hd_Ticket', 'desc')
-            ->paginate(15);
+            ->paginate(5);
         }
         else
         {
             $orders = DB::table('hd_tticket')
             ->leftJoin('customers', 'customers.Cs_Phone', '=', 'hd_tticket.Hd_Customers')
+            ->where('Hd_Ticket', '!=', '1')
+            ->where('Hd_Date', '>=', $date)
             ->select(
                 'customers.Cs_Name', 
                 'hd_tticket.Hd_Ticket', 
@@ -47,10 +77,47 @@ class OrdersCTRL extends Controller
                 'Hd_Status'
             )
             ->orderBy('hd_tticket.Hd_Ticket', 'desc')
-            ->paginate(15);
+            ->paginate(5);
+        }
+
+        $num_user = DB::table('users')->count();
+
+        $pendientes = DB::table('hd_tticket')
+            ->whereBetween('Hd_Date', [$min_month, $max_month])
+            ->where(function($query){
+                $query->where('Hd_Status', 0)
+                    ->orWhere('Hd_Status', null);
+            })
+            ->count();
+
+        $new_orders = DB::table('hd_tticket')
+            ->whereBetween('Hd_Date', [$min_month, $max_month])
+            ->where('Hd_Status', '1')
+            ->count();
+
+
+        //$final_anual = Carbon::now()->startOfYear();
+        //dd($times, $final_anual);
+
+        $data_month = [];
+        $number_months = [];
+
+        for ($i=1; $i <= $times->format('m'); $i++)
+        { 
+            $data_month[] = $this->profit_month($times->format('Y'), $i);
+            $number_months[] = $i-1;
         }
         
-        return view('admin.orders.index')->with(['orders'=>$orders]);
+        return view('admin.home')->with([
+            'number_months'=>$number_months,
+            'data_month'=>$data_month,
+            'new_orders'=>$new_orders,
+            'profit_month'=>$profit_month,
+            'orders'=>$orders,
+            'today'=>$today,
+            'pendientes'=>$pendientes,
+            'num_user'=>$num_user,
+        ]);
     }
 
     /**
@@ -82,48 +149,7 @@ class OrdersCTRL extends Controller
      */
     public function show($id)
     {
-        $order = DB::table('hd_tticket')
-            ->leftJoin('customers', 'customers.Cs_Phone', '=', 'hd_tticket.Hd_Customers')
-            ->join('payform', 'payform.Pf_Id', '=', 'Hd_Payform')
-            ->where('Hd_Ticket', $id)
-            ->first();
-
-        $products = false;
-
-        if($order)
-        {
-            $products = DB::table('dt_tticket')
-            ->join('size', 'size.Sz_Id', '=', 'dt_tticket.Dt_Size')
-            ->join('food', 'food.F_Abrev', '=', 'dt_tticket.Dt_FArea')
-            ->where('Dt_Ticket', $order->Hd_Ticket)
-            ->select(
-                'Dt_Id',
-                'Dt_Qty',
-                'Dt_Price',
-                'Dt_TopPrice',
-                'Dt_Total',
-                'Dt_Detail',
-                'Dt_Detail',
-                'F_Descripc',
-                'Sz_Abrev'
-            )
-            ->get();
-
-            foreach ($products as $key => $product)
-            {
-                $toppings = DB::table('dt_topping')
-                    ->where('DTt_SzId', $product->Dt_Id)
-                    ->get();
-
-                $product->{'topppings'} =  $toppings;
-            }
-        
-        }
-
-        return view('admin.orders.order')->with([
-            'order'=>$order, 
-            'products'=>$products
-        ]);
+        //
     }
 
     /**

@@ -81,11 +81,7 @@ Route::group(['prefix'=>'admin'], function()
 
     Route::group(['middleware'=>'admin_panel'], function()
     {
-       
-        Route::get('/',function()
-        {
-            return view('admin.home');
-        });
+        Route::resource('/', 'DashboardCTRL');
         Route::resource('items','ItemCTRL');
         Route::resource('users','UserCTRL');
         Route::resource('categories','CategoriesCTRL');
