@@ -218,7 +218,17 @@ function calcular_cuenta()
 
 function sub_tax_total()
 {
-	var sub_total_price = parseFloat( $('.cart-actual').attr('data-total-cart') ) + parseFloat( $('.total-price').html());
+	
+	var total_cart = 0.00;
+
+	if( $('.cart-actual').length ){
+		total_cart = parseFloat( $('.cart-actual').attr('data-total-cart') );
+	}
+
+	var price = parseFloat( $('.total-price').html());
+
+
+	var sub_total_price = total_cart + price;
 	var sub_total_tax = sub_total_price * 6.5 / 100;
 
 	$('.sub-total').html( sub_total_price.toFixed(2) );
@@ -226,6 +236,7 @@ function sub_tax_total()
 	$('.taxes').html( sub_total_tax.toFixed(2) );
 	
 	$('.total-cart').html( (sub_total_price+sub_total_tax).toFixed(2) );
+
 }
 
 
