@@ -71,7 +71,7 @@
 										<li>
 											<b>{{strtolower($val->Tp_Descrip).$size_topping}}</b>
 											@if($val->price > 0)
-												<span>: ${{$val->price}}</span>
+												<span><b>:</b> ${{$val->price}}</span>
 											@endif
 										</li>
 									@endforeach
@@ -228,6 +228,9 @@
 	}
 	.table{
 		margin: 0;
+	}
+	.topping-list>li{
+		list-style: none;
 	}
 </style>
 

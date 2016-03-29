@@ -37,7 +37,9 @@
 							
 							@else
 								<div class="divisor">
-									<p>NO Delivery!</p>
+									<h3 class="text-danger">
+										Delivery not available because you are not in the zipcode range.
+									</h3>
 								</div>
 							@endif
 							
@@ -213,6 +215,9 @@
 	}
 	.divisor>h4, .title-orange{
 		color:#E1543B;
+	}
+	.text-danger{
+		text-align: center;
 	}
 
 	.title-orange{

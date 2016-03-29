@@ -55,14 +55,19 @@
 <div class="topping_category">
 	<?php
 		if($tp_kind==1)
-			$categoria= ['cheese'=>1,  'meats'=>2,  'vegetables'=>3, 'Specialty'=>4];
+			$categoria = ['cheese'=>1,  'meats'=>2,  'vegetables'=>3, 'Specialty'=>4];
 		else
-			$categoria= ['dressing and sauces'=>-1];
+			$categoria = ['dressing and sauces'=>-1];
 	?>
 	<div class="row">
 		
 		@foreach($categoria as $name_category => $id_cat_top)
-		<div class="col-md-6">
+		
+		@if( isset($categoria['dressing and sauces']) )
+			<div class="col-md-12">
+		@else
+			<div class="col-md-6">
+		@endif	
 			<h4 class="{{snake_case($name_category)}}">{{ucwords($name_category)}}</h4>
 			
 			<div class="toppings-btns">
