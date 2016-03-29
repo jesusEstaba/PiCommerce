@@ -57,15 +57,15 @@
 			<h4>
 				<div class="row">
 					<div class="col-xs-2">
-						Qty.
+						<b>Qty.</b>
 					</div>
 					<div class="col-xs-7">
 						<p>
-							Description
+							<b>Description</b>
 						</p>
 					</div>
 					<div class="col-xs-3">
-						<span class="pull-right">Price</span>
+						<span class="pull-right"><b>Price</b></span>
 					</div>
 				</div>
 				
@@ -133,7 +133,7 @@
 				</div>
 			@endif
 			
-			<hr>
+	
 
 			<h4 class="titulo-product">
 
@@ -154,7 +154,8 @@
 			@yield('toppings')
 			<div class="row">
 				<div class="col-xs-12">
-					<h3 class="price-all">$<span class="total-price"></span></h3>
+					<hr>
+					<h4>Price: <span class="pull-right">$<span class="total-price"></span></span></h4>
 					<div class="input-control">
 						<textarea name="cooking_instructions" placeholder="Additional notes" class="notes_instructions form-control"></textarea>
 					</div>
@@ -169,9 +170,9 @@
 				</div>
 			</div>
 			<div class="Subtotales">
-				<h4>Sub-Total: $<span class="sub-total">0.00</span></h4>
-				<h4>Tax: $<span class="taxes">0.00</span></h4>
-				<h3>Total: $<span class="total-cart">0.00</span></h3>
+				<h4>Sub-Total: <span class="pull-right">$<span class="sub-total">0.00</span></span></h4>
+				<h4>Tax: <span class="pull-right">$<span class="taxes">0.00</span></span></h4>
+				<h3>Total: <span class="pull-right">$<span class="total-cart">0.00</span></span></h3>
 			</div>
 			<a class="btn btn-success go-checkout-cart has-spinner">
 				<span class="spinner"><i class="icon-spin icon-refresh"></i></span>
