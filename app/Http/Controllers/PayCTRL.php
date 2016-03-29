@@ -39,9 +39,12 @@ class PayCTRL extends Controller
     		$delivery = true;
     	}
 
+    	$tax = DB::table('taxes')->select('Tx_Base')->first();
+
     	return view('pay')->with([
     		'cart'=>$cart,
     		'total_in_cart'=>$total_in_cart,
+    		'tax'=>$tax->Tx_Base,
     		'user'=>$user,
     		'delivery'=>$delivery
     		]);

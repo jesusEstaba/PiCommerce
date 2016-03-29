@@ -93,12 +93,13 @@
 								<div class="totales">
 									<?php
 									$total_cart = (float)$total_in_cart;
-									$tax = 6.5;
+									$total_cart = round($total_cart, 2);
+									$tax = (float)$tax;
 									$taxes = $total_cart * $tax / 100;
 								?>
 									<h4><b>Sub-Total: </b>{{$total_cart}}</h4>
-									<h4><b>Taxes: </b>{{$taxes}}</h4>
-									<h3><b>Total: </b>{{$total_cart+$taxes}}</h3>
+									<h4><b>Taxes: </b>{{round($taxes, 2)}}</h4>
+									<h3><b>Total: </b>{{round($total_cart+$taxes, 2)}}</h3>
 								</div>
 							</div>
 
