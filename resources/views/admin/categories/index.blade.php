@@ -5,59 +5,85 @@
 
 @section('content')
 
-	<h2>Categories <span class="glyphicon glyphicon-plus btn btn-success add"></span></h2>
+
+<div class="box">
+	<div class="box-header">
+		<h2>Categories <span class="glyphicon glyphicon-plus btn btn-success add"></span></h2>
+	</div>
 	
-	@if( count($categories) )
-		<table class="table">
-			<tr class="white">
-				<td>
-					<b>Name</b>	
-				</td>
-				<td>
-					<b>Url</b>	
-				</td>
-				<td>
-					<b>Gruop</b>
-				</td>
-				<td>
-					<b>status</b>
-				</td>
-				<td>
-					<b>More</b>
-				</td>
-			</tr>
-			@foreach($categories as $category)
-				<tr>
-					<td>
-						{{$category->name}}
-					</td>
-					<td>
-						{{$category->name_cat}}
-					</td>
-					<td>
-						{{$category->Gr_Descrip}}
-					</td>
-					<td>
-						@if(!$category->Status)
-							<span id-cat="{{$category->id}}" class="visible-sta status glyphicon glyphicon-eye-open btn btn-success"></span>
-						@else
-							<span id-cat="{{$category->id}}" class="visible-sta status glyphicon glyphicon-eye-close btn btn-danger"></span>
-						@endif
-					</td>
-					<td>
-						<a href="{{url('admin/categories/'.$category->id)}}" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span></a>
-					</td>
-				</tr>
-			@endforeach
-		</table>
-		@if(isset($search))
-			{!!$categories->appends(['search' => $search])->render()!!}
+	<div class="box-body">
+		@if(count($categories))
+		<div class="row">
+			<div class="col-sm-12">
+				<table class="table table-bordered table-striped dataTable">
+					<thead>
+						<tr>
+							<th>
+								<b>Name</b>
+							</th>
+							<th>
+								<b>Url</b>
+							</th>
+							<th>
+								<b>Gruop</b>
+							</th>
+							<th>
+								<b>Status</b>
+							</th>
+							<th>
+								<b>More</b>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach($categories as $category)
+						<tr>
+							<td>
+								{{$category->name}}
+							</td>
+							<td>
+								{{$category->name_cat}}
+							</td>
+							<td>
+								{{$category->Gr_Descrip}}
+							</td>
+							<td>
+								@if(!$category->Status)
+								<span id-cat="{{$category->id}}" class="visible-sta status glyphicon glyphicon-eye-open btn btn-success"></span>
+								@else
+								<span id-cat="{{$category->id}}" class="visible-sta status glyphicon glyphicon-eye-close btn btn-danger"></span>
+								@endif
+							</td>
+							<td>
+								<a href="{{url('admin/categories/'.$category->id)}}" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span></a>
+							</td>
+						</tr>
+						@endforeach
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-5">
+			</div>
+			<div class="col-sm-7">
+				<div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+					@if(isset($search))
+					{!!$categories->appends(['search' => $search])->render()!!}
+					@else
+					{!!$categories->render()!!}
+					@endif
+				</div>
+			</div>
+		</div>
 		@else
-			{!!$categories->render()!!}
+		<h3 class="text-muted text-center">No Results</h3>
+		<br>
+		
 		@endif
-	@else
-		<h2>No Results</h2>
-	@endif
+	</div>
+</div>
+
 
 {!!Form::token()!!}
 

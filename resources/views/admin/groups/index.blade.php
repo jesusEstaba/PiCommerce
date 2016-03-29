@@ -1,40 +1,53 @@
 @extends('admin.layout')
 @section('title', 'Groups')
 @section('content')
-	<h2>Groups <span class="glyphicon glyphicon-plus btn btn-success new"></span></h2>
+	
 
-	@if($groups)
-		<table class="table">
-			<thead>
-				<tr>
-					<td>
-						<b>Description</b>
-					</td>
-					<td>
-						<b>Order</b>
-					</td>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach($groups as $arra => $group)
-					<tr>
-						<td class="hide">
-							{{$group->Gr_ID}}
-						</td>
-						<td>
-							{{$group->Gr_Descrip}}
-						</td>
-						<td>
-							{{$group->Gr_Special}}
-						</td>
-						
-					</tr>
-				@endforeach
-			</tbody>
-		</table>
-	@else
-		<h2>No Results</h2>
-	@endif
+<div class="box">
+	<div class="box-header">
+		<h2>Groups <span class="glyphicon glyphicon-plus btn btn-success new"></span></h2>
+	</div>
+	<div class="box-body">
+		@if( count($groups) )
+		<div class="row">
+			<div class="col-sm-12">
+				<table class="table table-bordered table-striped dataTable">
+					<thead>
+						<tr>
+							<th>
+								<b>Description</b>
+							</th>
+							<th>
+								<b>Order</b>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach($groups as $arra => $group)
+						<tr>
+							<td class="hide">
+								{{$group->Gr_ID}}
+							</td>
+							<td>
+								{{$group->Gr_Descrip}}
+							</td>
+							<td>
+								{{$group->Gr_Special}}
+							</td>
+							
+						</tr>
+						@endforeach
+					</tbody>
+				</table>
+			</div>
+		</div>
+		@else
+		<h3 class="text-muted text-center">No Results</h3>
+		<br>
+		
+		@endif
+	</div>
+</div>
 
 
 <div id="myModal" class="modal fade" tabindex="-1" role="dialog">

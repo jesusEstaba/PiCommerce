@@ -11,7 +11,9 @@
 
 <div class="row">
 	<div class="col-md-6">
-		<h3>Maintenance Mode 
+	<div class="box">
+		<div class="box-body">
+			<h3>Maintenance Mode 
 	
 		@if($config->closed)
 			<span class="btn btn-default glyphicon glyphicon-off on"></span>
@@ -24,23 +26,47 @@
 	<p>
 		{{$config->message_close}}
 	</p>
+		</div>
+	</div>
+		
+
 </div>
 	</div>
 
 	<div class="col-md-6">
-		<h3>Social Networks <span class="glyphicon social edit glyphicon-pencil btn btn-default"></span></h3>
+		<div class="box">
+			<div class="box-body">
+				<h3>Social Networks <span class="glyphicon social edit glyphicon-pencil btn btn-default"></span></h3>
 		<div class="divisor">
 			<p><b>Facebook :</b><a target="_blank" href="{{$config->facebook}}">{{$config->facebook}}</a></p>
 			<p><b>Twitter :</b><a target="_blank" href="{{$config->twitter}}">{{$config->twitter}}</a></p>
 			<p><b>Instagram :</b><a target="_blank" href="{{$config->instagram}}">{{$config->instagram}}</a></p>
 			<p><b>Google+ :</b><a target="_blank" href="{{$config->gplus}}">{{$config->gplus}}</a></p>
 		</div>
+			</div>
+		</div>
+
+
+		
+	
+
+
+
 	</div>
 </div>
+
+<div class="box">
+	<div class="box-header">
+		<h3>Hours <span class="glyphicon hour edit glyphicon-pencil btn btn-default"></span></h3>
+	</div>
 	
-<h3>Hours <span class="glyphicon hour edit glyphicon-pencil btn btn-default"></span></h3>
-		<table class="table">
-			<thead>
+
+	<div class="box-body">
+
+	<div class="row">
+			<div class="col-sm-12">
+				<table class="table table-bordered table-striped dataTable">
+<thead>
 				<tr>
 					<td>
 						<b>Day</b>
@@ -133,7 +159,19 @@
 				</td>
 			</tr>
 			</tbody>
-		</table>	
+		</table>
+
+			</div>
+	</div>
+
+	</div>
+</div>
+
+
+
+
+
+				
 		
 	@endif
 

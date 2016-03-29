@@ -8,136 +8,166 @@
 		
 	<div class="row">
 		<div class="col-md-6">
-			<div class="divisor">
-				<p>
-					<b>Customer: </b> {{$order->Cs_Name}}
-				</p>
-				<p>
-					<b>Phone:</b> {{$order->Cs_Phone}}
-				</p>
-				<p>
-					<b>Email:</b> {{$order->Cs_Email1}}
-				</p>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="divisor">
-				<p>
-					<b>Shiping Address:</b>
-				</p>
-				<p>
-					{{$order->Cs_Number}}
-				</p>
-				<p>
-					{{$order->Cs_Street}}
-				</p>
-				<p>
-					{{$order->Cs_ZipCode}}
-				</p>
-			</div>
-		</div>
-	</div>
-	<div class="divisor">
-		<p>
-			<b>Payment Method: </b>{{$order->Pf_Description}}
-		</p>
-	</div>
-
-		<table class="table space">
-			<thead>
-				<tr>
-					<td>
-						<b>Area</b>
-					</td>
-					<td>
-						<b>Item</b>
-					</td>
-					<td>
-						<b>Quantity</b>
-					</td>
-					<td>
-						<b>Price</b>
-					</td>
-					<td>
-						<b>Top Price</b>
-					</td>
-					<td>
-						<b>Total</b>
-					</td>
-					<td>
-						<b>Notes</b>
-					</td>
-					<td>
-						<b>Toppings</b>
-					</td>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach($products as $arra => $product)
-					<tr>
-						<td>{{$product->F_Descripc}}</td>
-						<td>{{$product->Sz_Abrev}}</td>
-						<td>{{$product->Dt_Qty}}</td>
-						<td><b>$</b>{{$product->Dt_Price}}</td>
-						<td><b>$</b>{{$product->Dt_TopPrice}}</td>
-						<td><b>$</b>{{$product->Dt_Total}}</td>
-						<td class="hide notes">{{$product->Dt_Detail}}</td>
-						<td>
-							@if($product->Dt_Detail)
-								<a class="btn note btn-default">view</a>
-							@endif
-						</td>
-						<td class="hide top">
-							<div class="tops">
-								@foreach($product->topppings as $arra => $topping)
-									<p>
-										{{ucwords( strtolower($topping->DTt_Detail) )}} 
-										<b>${{$topping->DTt_Topprice}}</b>
-									</p>
-								@endforeach
-							</div>
-						</td>
-						<td>
-							@if( count($product->topppings) )
-								<a class="btn toppings btn-default">view</a>
-							@endif
-						</td>
-					</tr>
-				@endforeach
-			</tbody>
-		</table>
-		<div class="row">
-			<div class="col-md-6">
-				<div class="divisor light">
+			<div class="box">
+				<div class="box-body">
 					<p>
-						<b>Sub Total: $</b>{{$order->Hd_Subtotal}}
+						<b>Customer: </b> {{$order->Cs_Name}}
 					</p>
 					<p>
-						<b>Dsicount: $</b>{{$order->Hd_Discount}}
+						<b>Phone:</b> {{$order->Cs_Phone}}
 					</p>
 					<p>
-						<b>Tax: $</b>{{$order->Hd_Tax}}
-					</p>
-					<p>
-						<b>Charge: $</b>{{$order->Hd_Charge}}
-					</p>
-					<p>
-						<b>Tips: $</b>{{$order->Hd_Tips}}
-					</p>
-					<p>
-						<b>Delivery: $</b>{{$order->Hd_Delivery}}
-					</p>
-					<p>
-						<b>Total: $</b>{{$order->Hd_Total}}
+						<b>Email:</b> {{$order->Cs_Email1}}
 					</p>
 				</div>
 			</div>
-			<div class="col-md-6">
-				
+		</div>
+		<div class="col-md-6">
+			<div class="box">
+				<div class="box-body">
+					<p>
+						<b>Shiping Address:</b>
+					</p>
+					<p>
+						{{$order->Cs_Number}}
+					</p>
+					<p>
+						{{$order->Cs_Street}}
+					</p>
+					<p>
+						{{$order->Cs_ZipCode}}
+					</p>
+				</div>
 			</div>
 		</div>
-	@else
+	</div>
+	<div class="box">
+		<div class="box-body">
+			<p>
+				<b>Payment Method: </b>{{$order->Pf_Description}}
+			</p>
+		</div>
+	</div>
+
+
+
+<div class="box">
+	<div class="box-body">
+		@if(count($products))
+		<div class="row">
+			<div class="col-sm-12">
+				<table class="table table-bordered table-striped dataTable">
+					<thead>
+						<tr>
+							<th>
+								Area
+							</th>
+							<th>
+								Item
+							</th>
+							<th>
+								Quantity
+							</th>
+							<th>
+								Price
+							</th>
+							<th>
+								Top Price
+							</th>
+							<th>
+								Total
+							</th>
+							<th>
+								Notes
+							</th>
+							<th>
+								Toppings
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach($products as $arra => $product)
+						<tr>
+							<td>{{$product->F_Descripc}}</td>
+							<td>{{$product->Sz_Abrev}}</td>
+							<td>{{$product->Dt_Qty}}</td>
+							<td><b>$</b>{{$product->Dt_Price}}</td>
+							<td><b>$</b>{{$product->Dt_TopPrice}}</td>
+							<td><b>$</b>{{$product->Dt_Total}}</td>
+							<td class="hide notes">{{$product->Dt_Detail}}</td>
+							<td>
+								@if($product->Dt_Detail)
+								<a class="btn note btn-default">view</a>
+								@endif
+							</td>
+							<td class="hide top">
+								<div class="tops">
+									@foreach($product->topppings as $arra => $topping)
+									<p>
+										{{ucwords( strtolower($topping->DTt_Detail) )}}
+										<b>${{$topping->DTt_Topprice}}</b>
+									</p>
+									@endforeach
+								</div>
+							</td>
+							<td>
+								@if( count($product->topppings) )
+								<a class="btn toppings btn-default">view</a>
+								@endif
+							</td>
+						</tr>
+						@endforeach
+					</tbody>
+				</table>
+			</div>
+		</div>
+		@else
+		<h3 class="text-muted text-center">No Products</h3>
+		<br>
+		
+		@endif
+	</div>
+</div>
+
+
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="box">
+			<div class="box-body">
+				<h4>
+					<b>Sub Total: </b>${{$order->Hd_Subtotal}}
+				</h4>
+				<h4>
+					<b>Dsicount: </b>${{$order->Hd_Discount}}
+				</h4>
+				<h4>
+					<b>Tax: </b>${{$order->Hd_Tax}}
+				</h4>
+				<h4>
+					<b>Charge: </b>${{$order->Hd_Charge}}
+				</h4>
+				<h4>
+					<b>Tips: </b>${{$order->Hd_Tips}}
+				</h4>
+				<h4>
+					<b>Delivery: </b>${{$order->Hd_Delivery}}
+				</h4>
+				<h3>
+					<b>Total: </b>${{$order->Hd_Total}}
+				</h3>
+			</div>
+		</div>
+	</div>
 	
+</div>
+	@else
+		<div class="box">
+			<div class="box-body">
+			<h3 class="text-center text-muted">This order does not exist!</h3>
+		</div>
+		</div>
+		
 	@endif
 
 <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
