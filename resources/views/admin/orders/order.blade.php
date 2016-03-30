@@ -14,9 +14,18 @@
 
 
 	
-		<div class="box-header">
-			<h2>Order</h2>
-		</div>
+<div class="box-header">
+	<h2>
+	Order
+	@if($order)
+		@if($order->Hd_Status==1)
+			<span data-id-cat="{{$order->Hd_Ticket}}" class="visible-sta status glyphicon glyphicon-ok btn btn-success"></span>
+		@else
+			<span data-id-cat="{{$order->Hd_Ticket}}" class="visible-sta status glyphicon glyphicon-bell btn btn-warning"></span>
+		@endif
+	@endif
+	</h2>
+</div>
 
 
 
@@ -200,6 +209,8 @@
 		</div>
 	@endif
 
+{!!Form::token()!!}
+
 <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -260,5 +271,58 @@
 			$('#myModal .modal-body').html("<p>"+top+"</p>");
 			$('#myModal').modal();
 		});
+
+
+		$('.status').click(function(){
+			var status = 0;
+
+			if( $(this).hasClass('glyphicon-bell') )
+				status = 1
+
+			var id = $(this).attr('data-id-cat');
+
+
+			$.ajax({
+				url: id,
+				type: 'PUT',
+				dataType: 'json',
+				headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
+				data: {change_visible: true, status:status},
+			})
+			.done(function(data){
+				
+			});
+		});
+
+
+
+		$('.visible-sta').click(function(){
+			
+			$(this)
+				.toggleClass('glyphicon-bell')
+				.toggleClass('btn-warning')
+				.toggleClass('glyphicon-ok')
+				.toggleClass('btn-success');
+			/*
+			if( $(this).hasClass('glyphicon-eye-open') )
+			{
+				$(this)
+					.removeClass('glyphicon-eye-open')
+					.removeClass('btn-success')
+					.addClass('glyphicon-eye-close')
+					.addClass('btn-danger')
+					
+			}
+			else
+			{
+				$(this)
+					.addClass('glyphicon-eye-open')
+					.addClass('btn-success')
+					.removeClass('glyphicon-eye-close')
+					.removeClass('btn-danger')
+			}*/
+		});
+
+		
 	</script>
 @stop
