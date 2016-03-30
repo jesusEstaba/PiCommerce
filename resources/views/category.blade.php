@@ -50,7 +50,17 @@
 							<div class="type">
 								<div class="row">
 									<div class="col-md-5 col-sm-6 col-xs-12">
-										<img src="{{asset('images/items/nopicture.jpg')}}" class="item" alt="item-type">
+										
+										@if( isset($valor->It_ImagePre) )
+											@if($valor->It_ImagePre)
+												<img width="200" height="200" src="{{asset('images/items/'.$valor->It_ImagePre)}}" class="item" alt="item-type">
+											@else
+												<img src="{{asset('images/items/nopicture.jpg')}}" class="item" alt="item-type">
+											@endif
+											
+										@else
+											<img src="{{asset('images/items/nopicture.jpg')}}" class="item" alt="item-type">
+										@endif
 									</div>
 									<div class="col-md-7 col-sm-6 col-xs-12">
 										<h3 class="title-type">

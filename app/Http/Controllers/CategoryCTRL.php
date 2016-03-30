@@ -37,7 +37,7 @@ class CategoryCTRL extends Controller
                 $items = DB::table('items')
                     ->where('It_Groups', '=', $group_id)
                     ->where('It_Status', '=', '0')
-                    ->select('description', 'It_Id', 'It_Descrip')
+                    ->select('description', 'It_Id', 'It_Descrip', 'It_ImagePre')
                     ->orderBy('It_Special')
                     ->get();
                 
@@ -53,7 +53,6 @@ class CategoryCTRL extends Controller
     			}
                 else
                 {
-
                     foreach ($items as $key => $item)
                     {
                         $size = DB::table('size')
