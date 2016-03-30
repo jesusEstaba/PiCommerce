@@ -147,7 +147,27 @@ class OrdersCTRL extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $respuesta = 'Error';
+
+        if( isset($request['change_visible']) )
+        {
+            $id = (int)$id;
+            
+            if( $id != 0 )
+            {
+                $status  = (int)$request['status'];
+
+                DB::table('hd_tticket')
+                    ->where('Hd_Ticket', $id)
+                    ->update(['Hd_Status'=>$status]);
+
+                $respuesta = ['state'=>'Changed', $status];
+            }
+            else
+                $respuesta ="empty";
+        } 
+
+        return response()->json($respuesta);
     }
 
     /**
