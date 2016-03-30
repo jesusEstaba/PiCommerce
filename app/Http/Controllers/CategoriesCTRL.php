@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 use Pizza\Http\Requests;
 use Pizza\Http\Controllers\Controller;
 use DB;
+use Storage;
+use File;
+use Input;
+
+
+use Carbon\Carbon;
 
 class CategoriesCTRL extends Controller
 {
@@ -52,29 +58,107 @@ class CategoriesCTRL extends Controller
      */
     public function store(Request $request)
     {
+
         if(
             $request['name'] &&
             $request['url'] &&
             $request['group']
         )
-        {    
-            DB::table('category')->insert([
+        {
+            $insert_to_db = [
                 'name' => $request['name'],
-                'name_cat' => $request['url'],
+                'name_cat' => str_slug($request['url']),
                 'group_id' => $request['group'],
                 'submenu_cat' => $request['sub'],
                 'Status' => 1
-            ]);
+            ];
+
+            if( Input::file('imagen')->isValid() )
+            {
+                $name = $request['imagen']->getClientOriginalName();
+                $ext_img = $request['imagen']->getClientOriginalExtension();
+                $name = md5( Carbon::now() . $name . rand(1024, 1280) ) . '.' . $ext_img;
+
+                try{
+                
+                    Storage::disk('public_images_category')
+                        ->put( $name, File::get( Input::file('imagen')->getRealPath() ) );
+
+                    $insert_to_db['image'] = $name;
+                }
+                catch(Execption $e){
+                    echo "error al subir";
+                }
+            }
+
+            DB::table('category')->insert($insert_to_db);
 
             return response()->json("created");
         }
-        return response()->json([
+          
+
+        $respuesta = [
             "Empty",
             'name' => $request['name'],
             'url' => $request['url'],
             'group' => $request['group'],
-            ]);
+        ];
 
+
+
+        if($request['cambios'])
+        {
+            $id = (int)$request['id'];
+            $update=[];
+            
+            if( !empty($request['category']) )
+                $update['group_id'] = $request['category'];
+
+            if( !empty($request['url']) )
+                $update['name_cat'] = str_slug($request['url']);
+
+            if( !empty($request['name_category']) )
+                $update['name'] = $request['name_category'];
+
+           
+            if( !empty( Input::file('imagen') ) )
+            {
+                $image = $this->upload_image_sys(Input::file('imagen'), 'public_images_category');
+                
+                if($image)
+                    $update['image'] = $image;
+
+                //delete dthe old element #Storage::delete('file.jpg');
+            }
+
+            if( !empty( Input::file('imagen_cat') ) )
+            {
+               $image = $this->upload_image_sys(Input::file('imagen_cat'), 'public_images_banner');
+               
+               if($image)
+                    $update['image_cat'] = $image;
+
+                //delete dthe old element #Storage::delete('file.jpg');
+            }
+
+
+            if( count($update) )
+                DB::table('category')
+                    ->where('id', $id)
+                    ->update($update);
+
+            $respuesta = ['state'=>'update'];
+
+
+
+
+        }
+
+
+
+
+
+        return response()->json($respuesta);
     }
 
     /**
@@ -168,23 +252,7 @@ class CategoriesCTRL extends Controller
             }
             else
                 $respuesta ="empty";
-        }
-
-        if($request['cambios'])
-        {
-            $update=[];
-            
-            if( !empty($request['category']) )
-                $update['group_id'] = $request['category'];
-
-            if( count($update) )
-                DB::table('category')
-                    ->where('id', $id)
-                    ->update($update);
-
-            $respuesta = ['state'=>'update'];
-            
-        }
+        }        
 
         if($request['order_change'])
         {
@@ -215,6 +283,27 @@ class CategoriesCTRL extends Controller
 
     	return response()->json($respuesta);
     }
+
+
+    public function upload_image_sys($image_file, $disk_driver)
+    {
+        $update = false;
+        $name = $image_file->getClientOriginalName();
+        $ext_img = $image_file->getClientOriginalExtension();
+        $name = md5( Carbon::now() . $name . rand(1024, 1280) ) . '.' . $ext_img;
+        
+        try{
+            Storage::disk($disk_driver)->put( $name, File::get( $image_file->getRealPath() ) );
+            
+            $update = $name;
+        }
+        catch(Execption $e){
+            //
+        }
+        
+        return $update;
+    }
+
 
     /**
      * Remove the specified resource from storage.

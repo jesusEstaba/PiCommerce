@@ -84,6 +84,7 @@ class OrdersCTRL extends Controller
     {
         $order = DB::table('hd_tticket')
             ->leftJoin('customers', 'customers.Cs_Phone', '=', 'hd_tticket.Hd_Customers')
+            ->leftJoin('users', 'users.phone','=', 'hd_tticket.Hd_Customers')
             ->join('payform', 'payform.Pf_Id', '=', 'Hd_Payform')
             ->where('Hd_Ticket', $id)
             ->first();

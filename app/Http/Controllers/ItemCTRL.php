@@ -58,7 +58,12 @@ class ItemCTRL extends Controller
 
         $groups = DB::table('groups')->get();
         
-        return view('admin.items.index')->with(['items'=>$items, 'search'=>$search, 'category'=>$category, 'groups'=>$groups]);
+        return view('admin.items.index')->with([
+            'items'=>$items, 
+            'search'=>$search, 
+            'category'=>$category, 
+            'groups'=>$groups
+        ]);
     }
 
     /**
@@ -217,11 +222,25 @@ class ItemCTRL extends Controller
             $update = [];
 
             if($request['descrip']!="")
-                $update['Sz_Abrev'] = $request['descrip'];
+                $update['Sz_Descrip'] = $request['descrip'];
+
+            if($request['size_abrev']!="")
+                $update['Sz_Abrev'] = $request['size_abrev'];
+            
             if($request['price']!="")
                 $update['Sz_Price'] = (float)$request['price'];
+            
             if($request['top_price']!="")
                 $update['Sz_Topprice'] = (float)$request['top_price'];
+
+            if($request['top_price2']!="")
+                $update['Sz_Topprice2'] = $request['top_price2'];
+
+            if($request['size_area_change']!="")
+                $update['Sz_FArea'] = $request['size_area_change'];
+            
+            
+            
             
             if( count($update) )
                 DB::table('size')

@@ -3,87 +3,119 @@
 @section('title', 'Item')
 
 @section('content')
+<a title="Back to Items" href="{{url('admin/items')}}"><spam class="backtoback btn btn-default btn-sm glyphicon glyphicon-chevron-left"></spam></a>
 
+@if($item)
 
-	@if($item)
-		<h2 id="id_item" id-item="{{$item->It_Id}}">
-			<span class="title-item">{{$item->It_Descrip}}</span>
-			<span class="glyphicon edit-item glyphicon-pencil btn btn-default"></span>
-			
-			@if(!$item->It_Status)
+<div class="box">
+	<div class="box-header">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2 id="id_item" id-item="{{$item->It_Id}}">
+				<span class="title-item">{{$item->It_Descrip}}</span>
+				<span class="glyphicon edit-item glyphicon-pencil btn btn-default"></span>
+				
+				@if(!$item->It_Status)
 				<span class="glyphicon visible-sta item-status glyphicon-eye-open btn btn-info"></span>
-			@else
+				@else
 				<span class="glyphicon visible-sta item-status glyphicon-eye-close btn btn-danger"></span>
-			@endif
-		</h2>
+				@endif
+				</h2>
+			</div>
+		</div>
+	</div>
+	<div class="box-body">
 		<p>
-			<b class="cat_item">{{$item->Gr_Descrip}}</b>
+			<b>Group: </b><span class="cat_item">{{$item->Gr_Descrip}}</span>
 		</p>
 		@if($item->description)
-			<p class="code">{{$item->description}}</p>
+		<p class="code">{{$item->description}}</p>
 		@else
-			<p class="code text-center"><b>No Description.</b></p>
+		<p class="code text-center"><b>No Description.</b></p>
 		@endif
+	</div>
+</div>
+
+<div class="box">
+	<div class="box-header">
 		<h3>Sizes <span class="glyphicon glyphicon-plus btn btn-success add-size"></h3>
-		<table class="table">
-			<tr>
-				<td>
-					<b>Edit</b>
-				</td>
-				<td>
-					<b>Description</b>
-				</td>
-				<td>
-					<b>Abreviation</b>
-				</td>
-				<td>
-					<b>Price</b>
-				</td>
-				<td>
-					<b>Topping Price</b>
-				</td>
-				<td>
-					<b>Topping Price 2</b>
-				</td>
-				<td>
-					<b>Area</b>
-				</td>
-				<td>
-					<b>Status</b>
-				</td>
-			</tr>
+	</div>
+	<div class="box-body">
+		@if( $sizes )
+		<div class="row">
+			<div class="col-sm-12">
+				<table class="table table-bordered table-striped dataTable">
+					<thead>
+						<tr>
+							<th>
+								Edit
+							</th>
+							<th>
+								Description
+							</th>
+							<th>
+								Abreviation
+							</th>
+							<th>
+								Price
+							</th>
+							<th>
+								Topping Price
+							</th>
+							<th>
+								Topping Price 2
+							</th>
+							<th>
+								Area
+							</th>
+							<th>
+								Status
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach($sizes as $key => $size)
+						<tr size="{{$size->Sz_Id}}">
+							<td><span id-size="{{$size->Sz_Id}}" class="glyphicon edit-size glyphicon-pencil btn btn-default"></span></td>
+							<td class="descrip">
+								{{$size->Sz_Descrip}}
+							</td>
+							<td class="abrev">
+								{{$size->Sz_Abrev}}
+							</td>
+							<td class="price">
+								$<span>{{$size->Sz_Price}}</span>
+							</td>
+							<td class="topprice">
+								$<span>{{$size->Sz_Topprice}}</span>
+							</td>
+							<td class="topprice2">
+								$<span>{{$size->Sz_Topprice2}}</span>
+							</td>
+							<td class="area_chan">
+								{{$size->Sz_FArea}}
+							</td>
+							<td>
+								@if(!$size->Sz_Status)
+								<span id-size="{{$size->Sz_Id}}" class="glyphicon visible-sta status glyphicon-eye-open btn btn-info"></span>
+								@else
+								<span id-size="{{$size->Sz_Id}}" class="glyphicon visible-sta status glyphicon-eye-close btn btn-danger"></span>
+								@endif
+							</td>
+						</tr>
+						@endforeach
+					</tbody>
+				</table>
+			</div>
+		</div>
+		@else
+		<h3 class="text-muted text-center">No Results</h3>
+		<br>
 		
-			@foreach($sizes as $key => $size)
-				<tr size="{{$size->Sz_Id}}">
-					<td><span id-size="{{$size->Sz_Id}}" class="glyphicon edit-size glyphicon-pencil btn btn-default"></span></td>
-					<td>
-						{{$size->Sz_Descrip}}
-					</td>
-					<td class="abrev">
-						{{$size->Sz_Abrev}}
-					</td>
-					<td class="price">
-						$<span>{{$size->Sz_Price}}</span>
-					</td>
-					<td class="topprice">
-						$<span>{{$size->Sz_Topprice}}</span>
-					</td>
-					<td>
-						$<span>{{$size->Sz_Topprice2}}</span>
-					</td>
-					<td>
-						{{$size->Sz_FArea}}
-					</td>
-					<td>
-						@if(!$size->Sz_Status)
-							<span id-size="{{$size->Sz_Id}}" class="glyphicon visible-sta status glyphicon-eye-open btn btn-info"></span>
-						@else
-							<span id-size="{{$size->Sz_Id}}" class="glyphicon visible-sta status glyphicon-eye-close btn btn-danger"></span>
-						@endif
-					</td>
-				</tr>
-			@endforeach
-		</table>
+		@endif
+	</div>
+</div>
+
 	@else
 		<h2>No Results</h2>
 	@endif
@@ -102,24 +134,49 @@
       </div>
       <div class="modal-body">
 
-      	<div class="input-group">
-	      <input type="text" class="form-control" name="name" placeholder="Description Name" autocomplete="off">
+      	<div class="form-group">
+      		<label>Description:</label>
+	    	<input type="text" class="form-control" name="name" placeholder="Description Size" autocomplete="off">
 	    </div>
-	    <div class="input-group">
-	      <input type="text" class="form-control" name="price" placeholder="Price" autocomplete="off">
+
+		<div class="form-group">
+	    	<label>Abreviation:</label>
+	     	<input type="text" class="form-control" name="size_abrev" placeholder="Abreviation Size" autocomplete="off">
 	    </div>
-	    <div class="input-group">
-	      <input type="text" class="form-control" name="top_price" placeholder="Topping Price" autocomplete="off">
+
+	    <div class="form-group">
+	    	<label>Price:</label>
+	    	<input type="text" class="form-control" name="price" placeholder="Price Size" autocomplete="off">
+	    </div>
+	    <div class="form-group">
+	    	<label>Topping Price:</label>
+	    	<input type="text" class="form-control" name="top_price" placeholder="Topping Price Size" autocomplete="off">
+	    </div> 
+	    <div class="form-group">
+	    	<label>Topping Price 2:</label>
+	    	<input type="text" class="form-control" name="top_price2" placeholder="Topping Price Size 2" autocomplete="off">
 	    </div>       
         
+        <div class="form-group">
+		    <label>Area:</label>
+			<select class="form-control" name="size_area_change">
+				<option value="">Area Size</option>
+				@foreach($food as $array => $area)
+						<option value="{{$area->F_Abrev}}">{{$area->F_Descripc}}</option>
+				@endforeach
+
+			</select>
+	    </div>
+
+
       </div>
       <div class="modal-footer">
       	<button type="button" class="btn btn-primary save" data-dismiss="modal">Save</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+    </div>
+  </div>
+</div>
 
 
 <div id="ModalEdit" class="modal fade" tabindex="-1" role="dialog">
@@ -131,31 +188,35 @@
       </div>
       <div class="modal-body">
 
-      	<div class="input-group">
-	      <input type="text" class="form-control" name="item_name" placeholder="Name" autocomplete="off">
+      	<div class="form-group">
+      		<label>Name:</label>
+	      <input type="text" class="form-control" name="item_name" placeholder="Name Category" autocomplete="off">
 	    </div>
-		<div class="input-group">
-			<textarea class="form-control" name="item_descrip" placeholder="Description"></textarea>
-	    </div>
-
-	    <div class="input-group">
+		
+	    <div class="form-group">
+	    	<label>Group:</label>
 			<select class="form-control" name="category">
 				    	<option value="">Groups</option>
 				    	@foreach($groups as $array => $group)
 				    		<option value="{{$group->Gr_ID}}">{{$group->Gr_Descrip}}</option>
 				    	@endforeach
-				    </select>
+			</select>
 	    </div>
 	    
+	    <div class="form-group">
+	    	<label>Description:</label>
+			<textarea class="form-control" name="item_descrip" placeholder="Description for Category"></textarea>
+	    </div>
+
         
       </div>
       <div class="modal-footer">
       	<button type="button" class="btn btn-primary save-item" data-dismiss="modal">Save</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+    </div>
+  </div>
+</div>
 
 
 <div id="addSize" class="modal fade" tabindex="-1" role="dialog">
@@ -167,29 +228,36 @@
       </div>
       <div class="modal-body">
 
-      	<div class="input-group">
-	      <input type="text" class="form-control" name="size-descrip" placeholder="Description" autocomplete="off">
+      	<div class="form-group">
+      		<label>Description:</label>
+	     	<input type="text" class="form-control" name="size-descrip" placeholder="Description Size" autocomplete="off">
 	    </div>
-	    <div class="input-group">
-	      <input type="text" class="form-control" name="size-abrev" placeholder="Abreviation" autocomplete="off">
+	    <div class="form-group">
+	    	<label>Abreviation:</label>
+	     	<input type="text" class="form-control" name="size-abrev" placeholder="Abreviation Size" autocomplete="off">
 	    </div>
-	    <div class="input-group">
-	      <input type="text" class="form-control" name="size-price" placeholder="Price" autocomplete="off">
+	    <div class="form-group">
+	    	<label>Price:</label>
+	     	<input type="text" class="form-control" name="size-price" placeholder="Price Size" autocomplete="off">
 	    </div>
-	    <div class="input-group">
-	      <input type="text" class="form-control" name="size-top_price" placeholder="Topping Price" autocomplete="off">
+	    <div class="form-group">
+	    	<label>Topping Price:</label>
+	     	<input type="text" class="form-control" name="size-top_price" placeholder="Topping Price Size" autocomplete="off">
 	    </div> 
-	    <div class="input-group">
-	      <input type="text" class="form-control" name="size-top_price2" placeholder="Topping Price 2" autocomplete="off">
+	    <div class="form-group">
+	    	<label>Topping Price 2:</label>
+	     	<input type="text" class="form-control" name="size-top_price2" placeholder="Topping Price 2 Size" autocomplete="off">
 	    </div>       
-	    <div class="input-group">
-		<select class="form-control" name="size-area">
-			<option value="">Area</option>
-			@foreach($food as $array => $area)
-					<option value="{{$area->F_Abrev}}">{{$area->F_Descripc}}</option>
-			@endforeach
+	    
+	    <div class="form-group">
+		    <label>Area:</label>
+			<select class="form-control" name="size-area">
+				<option value="">Area Size</option>
+				@foreach($food as $array => $area)
+						<option value="{{$area->F_Abrev}}">{{$area->F_Descripc}}</option>
+				@endforeach
 
-		</select>
+			</select>
 	    </div>
         
       </div>
@@ -197,9 +265,9 @@
       	<button type="button" class="btn btn-primary add-new-size" data-dismiss="modal">Save</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+    </div>
+  </div>
+</div>
 
 
 
@@ -216,8 +284,17 @@
 
 @stop
 
+
+
+
 @section('script')
 <script type="text/javascript">
+
+	$(function()
+	{
+		$('.sidebar-menu li:eq(2)').addClass('active');
+	
+
 	$('.edit-size').click(function(){
 		$('.save').attr('id-size', $(this).attr('id-size'));
 		$('#myModal').modal();
@@ -233,11 +310,17 @@
 		
 		var id = $(this).attr('id-size');
 
-		var abrev = $("[size="+id+"]").children('.abrev');
-		var price = $("[size="+id+"]").children('td.price').children();
+		var elemt = $("[size="+id+"]");
 
-
-		var topprice = $("[size="+id+"]").children('td.topprice').children();
+		var abrev = elemt.children('.abrev');
+		var price =elemt.children('td.price').children();
+		
+		var topprice = elemt.children('td.topprice').children();
+		
+		var descrip = elemt.children('.descrip');
+		var price2 = elemt.children('td.topprice2').children();
+		var area_change = elemt.children('.area_chan');
+		
 
 		$.ajax({
 			url: $('#id_item').attr('id-item'),
@@ -249,18 +332,34 @@
 				id: id,
 				descrip:$('[name=name]').val(), 
 				price: $('[name=price]').val(), 
-				top_price: $('[name=top_price]').val()
+				top_price: $('[name=top_price]').val(),
+				size_abrev: $('[name=size_abrev]').val(),
+				top_price2: $('[name=top_price2]').val(),
+				size_area_change:$('[name=size_area_change]').val()
 			},
 		})
 		.done(function(data) {
 			console.log(data.state);
 
 			if( $('[name=name]').val() )
-				abrev.html($('[name=name]').val());
+				descrip.html($('[name=name]').val());
 			if( $('[name=price]').val() )
 				price.html( $('[name=price]').val() );
 			if( $('[name=top_price]').val() )
 				topprice.html( $('[name=top_price]').val() );
+
+			if( $('[name=size_abrev]').val() )
+				abrev.html($('[name=size_abrev]').val());
+
+			if( $('[name=top_price2]').val() )
+				price2.html($('[name=top_price2]').val());
+
+			if( $('[name=size_area_change]').val() )
+				area_change.html($('[name=size_area_change]').val());
+
+			$('[name=size_abrev]').val("");
+			$('[name=top_price2]').val("");
+			$('[name=size_area_change]').val("");
 
 			$('[name=name]').val("")
 			$('[name=price]').val("")
@@ -439,6 +538,8 @@
 		{
 			alert("Field Empty");
 		}
+	});
+
 	});
 	
 </script>

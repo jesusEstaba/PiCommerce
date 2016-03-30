@@ -23,47 +23,25 @@
 			<div class="row">
 				<div class="col-xs-12">
 
-					<form action="{{url('admin/items')}}" method="get">
+					<form class="pull-right" action="{{url('admin/items')}}" method="get">
+						
+						<select style="height: 34px;" class="form-control input-sm" name="category">
+							<option value="">Groups</option>
+							@foreach($groups as $array => $group)
+							<option value="{{$group->Gr_ID}}">{{$group->Gr_Descrip}}</option>
+							@endforeach
+						</select>
 						<div class="input-group">
 							<input type="text" class="form-control" placeholder="Search for Name Items" name="search" autocomplete="off">
 							<span class="input-group-btn">
 								<button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
 							</span>
 						</div>
-						<select name="category">
-							<option value="">Groups</option>
-							@foreach($groups as $array => $group)
-							<option value="{{$group->Gr_ID}}">{{$group->Gr_Descrip}}</option>
-							@endforeach
-						</select>
+						
 					</form>
 
-
-				</div>
-
-
-				<div class="col-sm-6">
-					<div class="dataTables_length" id="example1_length">
-						<label>Show
-							<select name="example1_length" aria-controls="example1" class="form-control input-sm">
-								<option value="10">10
-								</option>
-								<option value="25">25
-								</option>
-								<option value="50">50
-								</option>
-								<option value="100">100
-								</option>
-							</select> entries
-						</label>
-					</div>
-				</div>
-				<div class="col-sm-6">
-					<div id="example1_filter" class="dataTables_filter">
-						<label>Search:
-							<input type="search" class="form-control input-sm" placeholder="" aria-controls="example1">
-						</label>
-					</div>
+					<br>
+					<br>
 				</div>
 			</div>
 			
@@ -145,20 +123,6 @@
 
 </div>
 		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
