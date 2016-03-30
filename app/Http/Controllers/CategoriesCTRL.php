@@ -73,22 +73,15 @@ class CategoriesCTRL extends Controller
                 'Status' => 1
             ];
 
-            if( Input::file('imagen')->isValid() )
+
+            if( !empty( Input::file('imagen') ) )
             {
-                $name = $request['imagen']->getClientOriginalName();
-                $ext_img = $request['imagen']->getClientOriginalExtension();
-                $name = md5( Carbon::now() . $name . rand(1024, 1280) ) . '.' . $ext_img;
-
-                try{
+                $name = $this->upload_image_sys(Input::file('imagen'), 'public_images_category');
                 
-                    Storage::disk('public_images_category')
-                        ->put( $name, File::get( Input::file('imagen')->getRealPath() ) );
-
+                if($name)
                     $insert_to_db['image'] = $name;
-                }
-                catch(Execption $e){
-                    echo "error al subir";
-                }
+
+                //delete dthe old element #Storage::delete('file.jpg');
             }
 
             DB::table('category')->insert($insert_to_db);
@@ -285,8 +278,10 @@ class CategoriesCTRL extends Controller
     }
 
 
-    public function upload_image_sys($image_file, $disk_driver)
+    public static function upload_image_sys($image_file, $disk_driver)
     {
+        //if( $imagen_file->isValid() )
+        
         $update = false;
         $name = $image_file->getClientOriginalName();
         $ext_img = $image_file->getClientOriginalExtension();

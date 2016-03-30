@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 use Pizza\Http\Requests;
 use Pizza\Http\Controllers\Controller;
 use DB;
+use Carbon\Carbon;
+use Storage;
+use File;
+use Input;
+
 
 class ConfigCTRL extends Controller
 {
@@ -40,7 +45,27 @@ class ConfigCTRL extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if(!empty( Input::file('logo') ))
+        {
+            $insert_to_db = [];
+            
+            if( !empty( Input::file('logo') ) )
+            {
+                $logo = CategoriesCTRL::upload_image_sys(Input::file('logo'), 'public_logo');
+                
+                if($logo)
+                    $insert_to_db['logo'] = $logo;
+
+                //delete dthe old element #Storage::delete('file.jpg');
+            }
+
+            if( count($insert_to_db) ){
+                DB::table('config')->update($insert_to_db);
+            }
+
+            
+        }
+        return response()->json("created");
     }
 
     /**
@@ -74,6 +99,8 @@ class ConfigCTRL extends Controller
      */
     public function update(Request $request, $id)
     {
+        $update = [];
+
         if($id==1)
         {
             if($request['change_state'])
@@ -89,7 +116,6 @@ class ConfigCTRL extends Controller
         }
         else if($id==2)
         {
-            $update = [];
             if($request['day']==1)
             {
                 if($request['open'])
@@ -139,17 +165,9 @@ class ConfigCTRL extends Controller
                 if($request['close'])
                     $update['sun_close'] = $request['close'];
             }
-
-            if( count($update) )
-            {
-                DB::table('config')->update($update);
-                return response()->json("time changed");
-            }
         }
         else if($id==3)
         {
-
-            $update = [];
             if($request['social']==1)
             {
                 $update['facebook'] = $request['url'];
@@ -166,13 +184,26 @@ class ConfigCTRL extends Controller
             {
                 $update['gplus'] = $request['url'];
             }
-
-
-            if( count($update) )
+        }
+        else if($id==4)
+        {
+            if(!empty($request['footer']))
             {
-                DB::table('config')->update($update);
-                return response()->json("social changed");
+                $update['footer'] = $request['footer'];
             }
+        }
+        else if($id==5)
+        {
+            if(!empty($request['message']))
+            {
+                $update['message_close'] = $request['message'];
+            }
+        }
+
+        if( count($update) )
+        {
+            DB::table('config')->update($update);
+            return response()->json("change!");
         }
 
         return response()->json("empty");
