@@ -10,6 +10,7 @@ use Pizza\User;
 use Redirect;
 use Session;
 use DB;
+use Auth;
 
 class RegisterCTRL extends Controller
 {
@@ -77,7 +78,7 @@ class RegisterCTRL extends Controller
                 
                 if( Auth::attempt(['email'=>$request['email'], 'password'=>$request['password'] ]) )
                 {
-                    return Redirect::to('choose');    
+                    return Redirect::to('cart');    
                 }
     		}
     		else
