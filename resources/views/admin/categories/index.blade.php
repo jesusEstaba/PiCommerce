@@ -42,7 +42,7 @@
 								{{$category->name}}
 							</td>
 							<td>
-								{{$category->name_cat}}
+								<a target="_blank" href="{{url('category/'.$category->name_cat)}}">{{$category->name_cat}}</a>
 							</td>
 							<td>
 								{{$category->Gr_Descrip}}
@@ -98,15 +98,18 @@
       </div>
       <div class="modal-body">
 
-      	<div class="input-group">
-	      <input type="text" class="form-control" name="name" placeholder="Name" autocomplete="off">
+      	<div class="form-group">
+      		<label>Name:</label>
+	      <input type="text" class="form-control" name="name" placeholder="Name Category" autocomplete="off">
 	    </div>
 
-	    <div class="input-group">
-	      <input type="text" class="form-control" name="url" placeholder="Url" autocomplete="off">
+	    <div class="form-group">
+	    	<label>Url:</label>
+	      <input type="text" class="form-control" name="url" placeholder="Url Category" autocomplete="off">
 	    </div>
 
-		<div class="input-group">
+		<div class="form-group">
+			<label>Groups:</label>
 			<select class="form-control" name="category">
 				<option value="">Groups</option>
 				@foreach($groups as $array => $group)
@@ -115,11 +118,27 @@
 			</select>
 		</div>
 
-	    <div class="input-group">
-	    	<label class="form-control" >
-	    		Sub Menu
+	    <div class="form-group">
+	    	<label>Sub menu:</label>
+	    	<label class="form-control">
 	    		<input type="checkbox"name="submenu">
+	    		Active Sub menu?
+	    		<br>
+	    	<span class="text-muted" style="font-size: .8em;">
+	    		you can see the sizes as items.
+	    	</span>
 	    	</label>
+	    	
+	    </div>
+		<br>
+	    <div class="form-group">
+	    	<label>Builder Image:</label>
+	    	<input class="form-control" id="image" name="image_upload" type="file" />
+	    </div>
+
+	    <div class="form-group">
+	    	<label>Banner:</label>
+	    	<input class="form-control" id="banner" name="image_upload" type="file" />
 	    </div>
         
       </div>
@@ -143,8 +162,9 @@
 	$(function()
 	{
 		$('.sidebar-menu li:eq(3)')
-			.addClass('active')
-			.children('ul li:eq(0)')
+			.addClass('active');
+
+		$('.sidebar-menu li:eq(4)')
 			.addClass('active');
 
 
@@ -208,17 +228,36 @@
 		{
 
 
+		var inputFileImage = document.getElementById('image');
+
+		var file = inputFileImage.files[0];
+
+		var data = new FormData();
+
+		data.append('name', $("[name=name").val());
+		data.append('url', $("[name=url").val());
+		data.append('group', $("[name=category").val());
+		data.append('sub', $("[name=submenu]:checked").length);
+
+		data.append('imagen',file);
+
+
+
+
 		$.ajax(
 		{
 			type: 'POST',
 			dataType: 'json',
 			headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
-			data: {
-				name:$("[name=name").val(),
-				url:$("[name=url").val(),
-				group:$("[name=category").val(),
-				sub:$("[name=submenu]:checked").length
-			},
+			
+			contentType:false,
+
+			data:data,
+
+			processData:false,
+
+			cache:false
+
 		})
 		.done(function(data) {
 			if(data=="created")
@@ -227,6 +266,8 @@
 				$("[name=url").val();
 				$("[name=category").val();
 				$("[name=submenu]").prop('checked', false);
+				
+				document.location.reload(true);
 			}
 
 		})

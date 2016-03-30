@@ -48,6 +48,21 @@ return [
             'root'   => storage_path('app'),
         ],
 
+        'public_images_banner' => [
+            'driver' => 'local',
+            'root'   => public_path('images/banners'),
+        ],
+
+        'public_images_category' => [
+            'driver' => 'local',
+            'root'   => public_path('images/category'),
+        ],
+
+        'public_logo' => [
+            'driver' => 'local',
+            'root'   => public_path('images/logos'),
+        ],
+
         'ftp' => [
             'driver'   => 'ftp',
             'host'     => 'ftp.example.com',

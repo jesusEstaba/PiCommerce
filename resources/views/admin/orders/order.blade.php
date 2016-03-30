@@ -3,13 +3,28 @@
 @section('title', 'Order')
 
 @section('content')
-	<h2>Order</h2>
-	@if($order)
+
+<a title="Back to Orders" href="{{url('admin/orders')}}"><spam class="backtoback btn btn-default btn-sm glyphicon glyphicon-chevron-left"></spam></a>
+
+	
 		
 	<div class="row">
-		<div class="col-md-6">
+		<div class="col-xs-12">
 			<div class="box">
-				<div class="box-body">
+
+
+	
+		<div class="box-header">
+			<h2>Order</h2>
+		</div>
+
+
+
+	@if($order)
+		
+		<div class="box-body">
+
+				<div class="col-md-6">
 					<p>
 						<b>Name: </b> {!!$order->Cs_Name or 'No Name'!!}
 					</p>
@@ -19,13 +34,17 @@
 					<p>
 						<b>Email:</b> {!!$order->Cs_Email1 or 'No Email'!!}
 					</p>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="box">
-				<div class="box-body">
+
+					<br>
 					<p>
+						<a href="{{url('/admin/users/'.$order->id)}}">Go to user</a>
+					</p>
+				</div>
+
+
+		<div class="col-md-6">
+			
+<p>
 						<b>Shiping Address:</b>
 					</p>
 					<p>
@@ -37,10 +56,21 @@
 					<p>
 						{!!$order->Cs_ZipCode or 'No Zip Code'!!}
 					</p>
-				</div>
-			</div>
+
+
 		</div>
-	</div>
+
+
+		</div>
+		</div>
+		
+
+
+
+
+	
+
+
 	<div class="box">
 		<div class="box-body">
 			<p>
@@ -123,6 +153,9 @@
 		</div>
 		@else
 		<h3 class="text-muted text-center">No Products</h3>
+		
+	</div>
+</div>
 		<br>
 		
 		@endif
@@ -162,12 +195,9 @@
 	
 </div>
 	@else
-		<div class="box">
-			<div class="box-body">
+		<div class="box-body">
 			<h3 class="text-center text-muted">This order does not exist!</h3>
 		</div>
-		</div>
-		
 	@endif
 
 <div id="myModal" class="modal fade" tabindex="-1" role="dialog">

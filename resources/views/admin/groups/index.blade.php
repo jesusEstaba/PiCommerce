@@ -17,9 +17,6 @@
 							<th>
 								<b>Description</b>
 							</th>
-							<th>
-								<b>Order</b>
-							</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -31,10 +28,6 @@
 							<td>
 								{{$group->Gr_Descrip}}
 							</td>
-							<td>
-								{{$group->Gr_Special}}
-							</td>
-							
 						</tr>
 						@endforeach
 					</tbody>
@@ -59,8 +52,9 @@
       </div>
       <div class="modal-body">
 
-      	<div class="input-group">
-	      <input type="text" class="form-control" name="name" placeholder="Description Name" autocomplete="off">
+      	<div class="form-group">
+      		<label>Name</label>
+	      <input type="text" class="form-control" name="name" placeholder="Name Group" autocomplete="off">
 	    </div>
     
         
@@ -80,6 +74,17 @@
 
 @section('script')
 <script type="text/javascript">
+
+
+$(function(){
+	$('.sidebar-menu li:eq(3)')
+			.addClass('active');
+
+		$('.sidebar-menu li:eq(5)')
+			.addClass('active');
+
+
+
 	$('.new').click(function(){
 		$('#myModal').modal();
 	});
@@ -111,5 +116,8 @@
 			console.log("error");
 		});
 	});
+
+
+});
 </script>
 @stop

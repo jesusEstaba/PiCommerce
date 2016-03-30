@@ -34,6 +34,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
       .white{
         background: white;
       }
+      .backtoback{
+        margin-bottom: .5em;
+      }
     </style>
   </head>
 
@@ -145,10 +148,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <a href="{{url('admin/groups')}}">Groups
                   </a>
                 </li>
-                <li>
+                <!-- <li>
                   <a href="{{url('admin/choose_category')}}">Choose
                   </a>
-                </li>
+                </li> -->
                 
                 
 

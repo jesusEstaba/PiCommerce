@@ -4,6 +4,9 @@ namespace Pizza\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
+use DB;
+use Auth;
+
 
 class Authenticate
 {
@@ -41,6 +44,12 @@ class Authenticate
                 return redirect()->guest('login');
             }
         }
+
+        DB::table('users')
+            ->where('id', Auth::user()->id)
+            ->update([
+                'dir_ip'=> $_SERVER['REMOTE_ADDR']
+            ]);
 
         return $next($request);
     }
