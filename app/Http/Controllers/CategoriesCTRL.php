@@ -92,10 +92,45 @@ class CategoriesCTRL extends Controller
 
         $groups = DB::table('groups')->get();
 
+        $products = false;
+        $submenu_cat = 0;
+
+        if($category)
+        {
+            if(!$category->submenu_cat)
+            {
+                $products = DB::table('items')
+                            ->where('It_Groups', $category->group_id)
+                            ->orderBy('It_Special')
+                            ->get();
+            }
+            else
+            {
+                $id_item_group = DB::table('items')
+                            ->where('It_Groups', $category->group_id)
+                            ->orderBy('It_Special')
+                            ->first()
+                            ->It_Id;
+
+                $products = DB::table('size')
+                            ->where('Sz_Item', $id_item_group)
+                            ->orderBy('Sz_Special')
+                            ->get();
+                
+                $submenu_cat = 1;
+            }
+        }
+        
+
         if( !isset($category) )
             $category = "";
 
-        return view('admin.categories.category')->with(['category'=>$category, 'groups'=>$groups]);
+        return view('admin.categories.category')->with([
+            'submenu_cat'=>$submenu_cat,
+            'products'=>$products,
+            'category'=>$category, 
+            'groups'=>$groups
+        ]);
     }
 
     /**
@@ -150,6 +185,34 @@ class CategoriesCTRL extends Controller
             $respuesta = ['state'=>'update'];
             
         }
+
+        if($request['order_change'])
+        {
+
+            $all_count = count($request['order_items']);
+            
+            $sub_menus = (int)$request['sub'];
+
+            for ($i=0; $i < $all_count; $i++)
+            { 
+
+                if($sub_menus)
+                {
+                    DB::table('size')
+                        ->where('Sz_Id', $request['order_items'][$i])
+                        ->update(['Sz_Special'=> $i+1]);
+                }
+                else
+                {
+                    DB::table('items')
+                        ->where('It_Id', $request['order_items'][$i])
+                        ->update(['It_Special'=> $i+1]);
+                }
+            }
+
+            $respuesta = ['state'=>'Order Change'];
+        }
+
     	return response()->json($respuesta);
     }
 

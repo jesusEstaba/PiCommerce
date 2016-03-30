@@ -11,13 +11,13 @@
 			<div class="box">
 				<div class="box-body">
 					<p>
-						<b>Customer: </b> {{$order->Cs_Name}}
+						<b>Name: </b> {!!$order->Cs_Name or 'No Name'!!}
 					</p>
 					<p>
-						<b>Phone:</b> {{$order->Cs_Phone}}
+						<b>Phone:</b> {!!$order->Cs_Phone or 'No Phone'!!}
 					</p>
 					<p>
-						<b>Email:</b> {{$order->Cs_Email1}}
+						<b>Email:</b> {!!$order->Cs_Email1 or 'No Email'!!}
 					</p>
 				</div>
 			</div>
@@ -29,13 +29,13 @@
 						<b>Shiping Address:</b>
 					</p>
 					<p>
-						{{$order->Cs_Number}}
+						{!!$order->Cs_Number or 'No Number Street'!!}
 					</p>
 					<p>
-						{{$order->Cs_Street}}
+						{!!$order->Cs_Street or 'No Name Street'!!}
 					</p>
 					<p>
-						{{$order->Cs_ZipCode}}
+						{!!$order->Cs_ZipCode or 'No Zip Code'!!}
 					</p>
 				</div>
 			</div>
