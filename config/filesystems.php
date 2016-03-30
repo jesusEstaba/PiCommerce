@@ -58,6 +58,11 @@ return [
             'root'   => public_path('images/category'),
         ],
 
+        'public_images_item' => [
+            'driver' => 'local',
+            'root'   => public_path('images/items'),
+        ],
+
         'public_logo' => [
             'driver' => 'local',
             'root'   => public_path('images/logos'),

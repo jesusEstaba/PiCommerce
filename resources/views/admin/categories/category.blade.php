@@ -17,7 +17,7 @@
 			<span data-id-cat="{{$category->id}}" data-submenu="{{$submenu_cat}}" class="title-cat">{{$category->name}}</span>
 			<span class="glyphicon edit-item glyphicon-pencil btn btn-default"></span>
 		</h2>
-		<p><b>url: </b>{{$category->name_cat}}</p>
+		<p><b>Url: </b> <a target="_blank" href="{{url('category/'.$category->name_cat)}}">{{$category->name_cat}}</a></p>
 		<p><b>Group: </b><span class="cat_group">{{$category->Gr_Descrip}}</span></p>
 		<p>
 			<b>Sub Menu: </b>
@@ -29,8 +29,8 @@
 		</p>
 		<p><b>Builder: </b>{{$category->builder_id}}</p>
 
-		<p><b>Image: </b>{{$category->image}}</p>
-		<p><b>Banner: </b>{{$category->image_cat}}</p>
+		<p><b>Image: </b><a target="_blank" href="{{url('images/category/'.$category->image)}}">{{$category->image}}</a></p>
+		<p><b>Banner: </b><a target="_blank" href="{{url('images/banners/'.$category->image_cat)}}">{{$category->image_cat}}</a></p>
 		<p><b>Tp Kind: </b>{{$category->tp_kind}}</p>
 	
 </div>

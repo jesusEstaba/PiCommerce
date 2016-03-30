@@ -28,6 +28,11 @@
 		<p>
 			<b>Group: </b><span class="cat_item">{{$item->Gr_Descrip}}</span>
 		</p>
+		@if($item->It_ImagePre)
+		<p>
+			<b>Image: </b><a target="_blank" href="{{url('images/items/'.$item->It_ImagePre)}}">{{$item->It_ImagePre}}</a>
+		</p>	
+		@endif
 		@if($item->description)
 		<p class="code">{{$item->description}}</p>
 		@else
@@ -206,6 +211,11 @@
 	    <div class="form-group">
 	    	<label>Description:</label>
 			<textarea class="form-control" name="item_descrip" placeholder="Description for Category"></textarea>
+	    </div>
+
+	    <div class="form-group">
+	    	<label>Image:</label>
+	    	<input type="file" class="form-control" id="image">
 	    </div>
 
         
@@ -438,20 +448,32 @@
 
 
 	$('.save-item').click(function(){
-	
+		
 
+		var img_ele = document.getElementById('image');
+		var file_img = img_ele.files[0];
+
+		var data = new FormData();
+
+		data.append('imagen', file_img);
+		data.append('edit_item',  true);
+		data.append('name', $("[name=item_name]").val());
+		data.append('descrip', $("[name=item_descrip]").val());
+		data.append('category', $("[name=category]").val());
+		data.append('id', $('#id_item').attr('id-item'));
+
+		//	url: $('#id_item').attr('id-item'),
+		
 		$.ajax({
-			url: $('#id_item').attr('id-item'),
-			type: 'PUT',
+			
+			url: '/admin/items',
+			type: 'POST',
 			dataType: 'json',
 			headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
-			data:
-			{
-				edit_item: true,
-				name:$("[name=item_name]").val(), 
-				descrip:$("[name=item_descrip]").val(), 
-				category:$("[name=category]").val()
-			},
+			data:data,
+			contentType:false,
+			processData:false,
+			cache:false,
 		})
 		.done(function(data) {
 
@@ -474,6 +496,8 @@
 			$("[name=item_name]").val("");
 			$("[name=item_descrip]").val("");
 			$("[name=category]").val("");
+
+			//document.location.reload(true);
 		})
 		.fail(function() {
 			console.log("error");

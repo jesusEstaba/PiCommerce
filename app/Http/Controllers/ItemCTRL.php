@@ -133,6 +133,40 @@ class ItemCTRL extends Controller
             }
         }
 
+        if ( isset($request['edit_item']) )
+        {
+            $update = [];
+
+            if($request['name']!="")
+                $update['It_Descrip'] = $request['name'];
+            
+            if($request['descrip']!="")
+                $update['description'] = $request['descrip'];
+            
+            if($request['category']!="")
+                $update['It_Groups'] = (int)$request['category'];
+            
+            if( !empty( Input::file('imagen') ) )
+            {
+                $name = CategoriesCTRL::upload_image_sys(Input::file('imagen'), 'public_images_item');
+                
+                if($name){
+                    $update['It_ImagePre'] = $name;
+                }
+
+                //delete dthe old element #Storage::delete('file.jpg');
+            }
+
+            $id = (int)$request['id'];
+
+            if( count($update) && $id )
+                DB::table('items')
+                    ->where('It_Id', $id)
+                    ->update($update);
+
+            return response()->json(['state'=>'Changed Data']);
+        }
+
 
         return response()->json("error");
     }
@@ -194,31 +228,8 @@ class ItemCTRL extends Controller
     {
         //$respuesta=[];
 
-        if ( isset($request['edit_item']) )
+        if ( isset($request['id']) )
         {
-            $update = [];
-
-            if($request['name']!="")
-                $update['It_Descrip'] = $request['name'];
-            
-            if($request['descrip']!="")
-                $update['description'] = $request['descrip'];
-            
-            if($request['category']!="")
-                $update['It_Groups'] = (int)$request['category'];
-            
-            if( count($update) )
-                DB::table('items')
-                    ->where('It_Id', $id)
-                    ->update($update);
-
-            $respuesta = ['state'=>'Changed'];
-        }
-
-
-        if ( isset($request['id']) )//
-        {
-
             $update = [];
 
             if($request['descrip']!="")
