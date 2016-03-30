@@ -73,7 +73,12 @@ class RegisterCTRL extends Controller
                 ]);
 
 
-	    		Session::flash('message', 'User Registered [active your account in the mail send]');
+	    		Session::flash('message', 'User Registered!');
+                
+                if( Auth::attempt(['email'=>$request['email'], 'password'=>$request['password'] ]) )
+                {
+                    return Redirect::to('choose');    
+                }
     		}
     		else
     		{
