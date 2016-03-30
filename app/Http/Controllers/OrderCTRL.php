@@ -119,7 +119,6 @@ class OrderCTRL extends Controller
 	    		$id_cart = DB::table('dt_tticket')->insertGetId([
 	    			'Dt_Ticket' => $id,
 	    			'Dt_Size' => $product->product_id,
-	    			#'Dt_SzOrder' => ,//Item Order in the invoice//primary Ky
 	    			'Dt_FArea' => $product->Sz_FArea,
 	    			'Dt_Qty' => $product->quantity,
 	    			'Dt_Price' => $product->Sz_Price,
@@ -128,7 +127,14 @@ class OrderCTRL extends Controller
 	    			'Dt_TopDescrip' => $product->Sz_Descrip,
 	    			'Dt_Detail' => $product->cooking_instructions,
 	    		]);
+				
+				DB::table('dt_tticket')
+					->where('Dt_Ticket', $id)
+					->update([
+						'Dt_SzOrder' => $id_cart,//Item Order in the invoice//primary Ky
+					]);
 
+	    		$id_order_size = $id_cart;
 	    		
 	    		foreach ($product->toppings_list as $key => $topping)
 	    		{		
