@@ -76,38 +76,38 @@
                 </div>
                 <div class="box-body">
                  <!--  <p>Add the classes <code>.btn.btn-app</code> to an <code>&lt;a&gt;</code> tag to achieve the following:</p> -->
-                  <a class="btn btn-app">
+                  <a href="{{url('admin/config')}}" class="btn btn-app">
                     <i class="fa fa-cogs"></i> Configuration
                   </a>
-                  <a class="btn btn-app">
+                  <a href="{{url('admin/users')}}" class="btn btn-app">
                     <i class="fa fa-users"></i> Customers
                   </a>
-                  <a class="btn btn-app">
+                  <a href="{{url('admin/orders')}}" class="btn btn-app">
                     <i class="fa fa-shopping-cart"></i> Orders
                   </a>
-                  <a class="btn btn-app">
+                  <a class="btn disabled btn-app">
                     <i class="fa fa-book"></i> My Menu
                   </a>
-                  <a class="btn btn-app">
+                  <a class="btn disabled btn-app">
                     <i class="fa fa-money"></i> Coupons
                   </a>
-                  <a class="btn btn-app">
+                  <a class="btn disabled btn-app">
                     
                     <i class="fa fa-bullhorn"></i> Lunch Specials
                   </a>
-                  <a class="btn btn-app">
+                  <a class="btn disabled btn-app">
                     
                     <i class="fa fa-sticky-note-o"></i> Discount Coupons
                   </a>
-                  <a class="btn btn-app">
+                  <a class="btn disabled btn-app">
                     
                     <i class="fa fa-users"></i> Promo Tools
                   </a>
-                  <a class="btn btn-app">
+                  <a class="btn disabled btn-app">
                     
                     <i class="fa fa-bar-chart"></i> Reports
                   </a>
-                  <a class="btn btn-app">
+                  <a class="btn disabled btn-app">
                     
                     <i class="fa fa-credit-card"></i> Gif Cards
                   </a>
@@ -124,14 +124,15 @@
 
 <div class="box">
 	<div class="box-header">
-	</div>
-	<div class="box-body">
-	@if( count($orders) )
 		<div class="row">
 			<div class="col-xs-12">
 				<h4>Incoming orders from merchant for today <span class="text-success">{{$today}}</span></h4>
 			</div>
 		</div>
+	</div>
+	<div class="box-body">
+	@if( count($orders) )
+		
 		<div class="row">
 			<div class="col-sm-12">
 				<table class="table table-bordered table-striped dataTable">

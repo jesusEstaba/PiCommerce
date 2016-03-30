@@ -9,7 +9,7 @@
 
 @if($category)
 		<h2>
-			<span id-cat="{{$category->id}}" class="title-cat">{{$category->name}}</span>
+			<span data-id-cat="{{$category->id}}" data-submenu="{{$submenu_cat}}" class="title-cat">{{$category->name}}</span>
 			<span class="glyphicon edit-item glyphicon-pencil btn btn-default"></span>
 		</h2>
 		<p><b>url: </b>{{$category->name_cat}}</p>
@@ -27,9 +27,48 @@
 		<p><b>Image: </b>{{$category->image}}</p>
 		<p><b>Banner: </b>{{$category->image_cat}}</p>
 		<p><b>Tp Kind: </b>{{$category->tp_kind}}</p>
+	
+<style type="text/css">
+
+#sortable{
+	padding: 1em !important;
+}
+	
+#sortable>li{
+	list-style: none;
+	font-size: 1.5em;
+	margin-top: .3em;
+	margin-bottom: .3em;
+	border:1px #b2b2b2 solid;
+	border-radius: 3px;
+	background: white;
+	padding: .5em;
+	cursor: pointer;
+}
+</style>
+	
+	<div class="box">
+		<div class="box-body">
+			<ul id="sortable">
+
+				@foreach($products as $array => $producto)
+				  <li data-id="{{$producto->It_Id or $producto->Sz_Id}}">
+				  		<span class="fa fa-arrows-v"></span>
+				  		{{$producto->It_Descrip or $producto->Sz_Descrip}}
+				  </li>
+				@endforeach
+
+			</ul>
+			<br>
+			<a class="btn btn-primary save-all-special">Save</a>
+		</div>
+	</div>
+
 	@else
 		<h2>Category Not Found</h2>
 	@endif
+
+
 
 {!!Form::token()!!}
 
@@ -71,13 +110,52 @@
 
 @section('script')
 <script type="text/javascript">
+$(function() {
+    $( "#sortable" ).sortable();
+    $( "#sortable" ).disableSelection();
+
+    $('.save-all-special').click(function(){
+    	var order_items = [];
+
+    	$( "#sortable li" ).each(function(index, el) {
+    		
+    		order_items.push( Number( $(this).attr('data-id') ) );
+    		
+    		//console.log( $(this).attr('data-id') + "=>" + $(this).text() )
+    	});
+
+    	var id = $(".title-cat").attr('data-id-cat');
+    	var sub = Number( $(".title-cat").attr('data-submenu') );
+
+    	$.ajax({
+			url: id,
+			type: 'PUT',
+			dataType: 'json',
+			headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
+			data: {
+				order_change:true,
+				order_items:order_items,
+				sub:sub
+			},
+		})
+    	.done(function() {
+    		console.log("success");
+    	});
+    	
+    });
+
+
+
+  });
+	
+
 	$('.edit-item').click(function(){
 		$('#myModal').modal();
 	});
 	
 	$('.save').click(function(){
 
-		var id = $(".title-cat").attr('id-cat');
+		var id = $(".title-cat").attr('data-id-cat');
 
 		$.ajax({
 			url: id,

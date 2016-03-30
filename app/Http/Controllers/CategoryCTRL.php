@@ -38,6 +38,7 @@ class CategoryCTRL extends Controller
                     ->where('It_Groups', '=', $group_id)
                     ->where('It_Status', '=', '0')
                     ->select('description', 'It_Id', 'It_Descrip')
+                    ->orderBy('It_Special')
                     ->get();
                 
     			if($submenu_cat)
@@ -47,6 +48,7 @@ class CategoryCTRL extends Controller
                     $items = DB::table('size')
                         ->where('Sz_Item', $id)
                         ->select('Sz_Id', 'Sz_Price', 'Sz_item', 'Sz_Descrip')
+                        ->orderBy('Sz_Special')
                         ->get();
     			}
                 else

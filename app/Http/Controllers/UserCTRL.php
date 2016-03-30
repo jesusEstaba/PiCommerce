@@ -67,7 +67,7 @@ class UserCTRL extends Controller
     public function show($id)
     {
         $user = DB::table('users')
-            ->join('customers', 'customers.Cs_Phone', '=', 'users.phone')
+            ->LeftJoin('customers', 'customers.Cs_Phone', '=', 'users.phone')
             ->where('users.id', $id)
             ->first();
 

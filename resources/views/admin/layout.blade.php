@@ -285,6 +285,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <script src="{{asset('assets/admin/plugins/chartjs/Chart.min.js')}}"></script>
 
+    <script src="{{asset('assets/jquery-ui/jquery-ui.min.js')}}"></script>
+  <link rel="stylesheet" type="text/css" href="{{asset('assets/jquery-ui/jquery-ui.min.css')}}">
+
     @yield('script')
   </body>
 </html>
