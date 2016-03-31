@@ -77,10 +77,10 @@
 
 
 $(function(){
-	$('.sidebar-menu li:eq(3)')
+	$('#category')
 			.addClass('active');
 
-		$('.sidebar-menu li:eq(5)')
+		$('#groups')
 			.addClass('active');
 
 

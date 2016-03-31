@@ -76,13 +76,13 @@
                 </div>
                 <div class="box-body">
                  <!--  <p>Add the classes <code>.btn.btn-app</code> to an <code>&lt;a&gt;</code> tag to achieve the following:</p> -->
-                  <a href="{{url('admin/config')}}" class="btn btn-app">
+                  <a href="{{url('kitchen/config')}}" class="btn btn-app">
                     <i class="fa fa-cogs"></i> Configuration
                   </a>
-                  <a href="{{url('admin/users')}}" class="btn btn-app">
+                  <a href="{{url('kitchen/users')}}" class="btn btn-app">
                     <i class="fa fa-users"></i> Customers
                   </a>
-                  <a href="{{url('admin/orders')}}" class="btn btn-app">
+                  <a href="{{url('kitchen/orders')}}" class="btn btn-app">
                     <i class="fa fa-shopping-cart"></i> Orders
                   </a>
                   <a class="btn disabled btn-app">
@@ -183,7 +183,7 @@
 								@endif
 							</td>
 							<td>
-								<a href="{{url('admin/orders/'.$order->Hd_Ticket)}}" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span></a>
+								<a href="{{url('kitchen/orders/'.$order->Hd_Ticket)}}" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span></a>
 							</td>
 						</tr>
 						@endforeach

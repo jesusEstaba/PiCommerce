@@ -23,7 +23,7 @@
 			<div class="row">
 				<div class="col-xs-12">
 
-					<form class="pull-right" action="{{url('admin/items')}}" method="get">
+					<form class="pull-right" action="{{url('kitchen/items')}}" method="get">
 						
 						<select style="height: 34px;" class="form-control input-sm" name="category">
 							<option value="">Groups</option>
@@ -89,7 +89,7 @@
 									@endif
 								</td>
 								<td>
-									<a href="{{url('admin/items/'.$item->It_Id)}}" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span></a>
+									<a href="{{url('kitchen/items/'.$item->It_Id)}}" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span></a>
 								</td>
 							</tr>
 							@endforeach
@@ -169,7 +169,7 @@
 
 	$(function()
 	{
-		$('.sidebar-menu li:eq(1)').addClass('active');
+		$('#items').addClass('active');
 		
 
 		$('.add-new').click(function(){

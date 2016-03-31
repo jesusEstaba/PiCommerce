@@ -47,7 +47,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <header class="main-header">
 
         <!-- Logo -->
-        <a href="{{url('admin')}}" class="logo">
+        <a href="{{url('kitchen')}}" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><b>A</b>Dπ</span>
           <!-- logo for regular state and mobile devices -->
@@ -69,7 +69,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 
                   <!-- The user image in the navbar-->
                   <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                  <a href="{{url('admin/logout')}}">Logout</a>
+                  <a href="{{url('kitchen/logout')}}">Logout</a>
                 <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown"></a>-->
               </li>
               <li>
@@ -101,8 +101,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
           <!-- Sidebar Menu -->
           <ul class="sidebar-menu">
-            <li >
-              <a href="{{url('admin')}}">
+            <li id="dashboard">
+              <a href="{{url('kitchen')}}">
                 <i class="fa fa-tachometer">
                 </i>
                 <span>Dashboard
@@ -110,8 +110,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </a>
             </li>
 
-            <li>
-              <a href="{{url('admin/items')}}">
+            <li id="items">
+              <a href="{{url('kitchen/items')}}">
                 <i class="fa fa-cutlery">
                 </i>
                 <span>Items
@@ -119,8 +119,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </a>
             </li>
             
-            <li>
-              <a href="{{url('admin/users')}}">
+            <li id="users">
+              <a href="{{url('kitchen/users')}}">
                 <i class="fa fa-group">
                 </i>
                 <span>Users
@@ -128,7 +128,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </a>
             </li>
             
-            <li class="treeview"> <!-- class="active" -->
+            <li id="category" class="treeview"> <!-- class="active" -->
               
               <a href="#">
                 <i class="fa fa-tag">
@@ -139,17 +139,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </i>
               </a>
 
-              <ul class="treeview-menu">
-                <li> <!-- class="active" -->
-                  <a href="{{url('admin/categories')}}">Categories
+              <ul  class="treeview-menu">
+                <li id="categories"> <!-- class="active" -->
+                  <a href="{{url('kitchen/categories')}}">Categories
                   </a>
                 </li>
-                <li>
-                  <a href="{{url('admin/groups')}}">Groups
+                <li id="groups">
+                  <a href="{{url('kitchen/groups')}}">Groups
                   </a>
                 </li>
                 <!-- <li>
-                  <a href="{{url('admin/choose_category')}}">Choose
+                  <a href="{{url('kitchen/choose_category')}}">Choose
                   </a>
                 </li> -->
                 
@@ -159,18 +159,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
               
             </li>
 
-            <li>
-              <a href="{{url('admin/orders')}}">
-                <i class="fa fa-shopping-cart">
+            <li id="orders">
+              <a href="{{url('kitchen/orders')}}">
+                <i  class="fa fa-shopping-cart">
                 </i>
                 <span>Orders
                 </span>
               </a>
             </li>
 
-            <li>
-              <a href="{{url('admin/config')}}">
-                <i class="fa fa-gear">
+            <li id="config">
+              <a href="{{url('kitchen/config')}}">
+                <i  class="fa fa-gear">
                 </i>
                 <span>Config
                 </span>
@@ -208,65 +208,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <strong>Copyright &copy; 2015 <a href="#">Company</a>.</strong> All rights reserved.
       </footer>
 
-      <!-- Control Sidebar -->
-      <aside class="control-sidebar control-sidebar-dark">
-        <!-- Create the tabs -->
-        <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-          <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-          <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-        </ul>
-        <!-- Tab panes -->
-        <div class="tab-content">
-          <!-- Home tab content -->
-          <div class="tab-pane active" id="control-sidebar-home-tab">
-            <h3 class="control-sidebar-heading">Recent Activity</h3>
-            <ul class="control-sidebar-menu">
-              <li>
-                <a href="javascript::;">
-                  <i class="menu-icon fa fa-birthday-cake bg-red"></i>
-                  <div class="menu-info">
-                    <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
-                    <p>Will be 23 on April 24th</p>
-                  </div>
-                </a>
-              </li>
-            </ul><!-- /.control-sidebar-menu -->
 
-            <h3 class="control-sidebar-heading">Tasks Progress</h3>
-            <ul class="control-sidebar-menu">
-              <li>
-                <a href="javascript::;">
-                  <h4 class="control-sidebar-subheading">
-                    Custom Template Design
-                    <span class="label label-danger pull-right">70%</span>
-                  </h4>
-                  <div class="progress progress-xxs">
-                    <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
-                  </div>
-                </a>
-              </li>
-            </ul><!-- /.control-sidebar-menu -->
-
-          </div><!-- /.tab-pane -->
-          <!-- Stats tab content -->
-          <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div><!-- /.tab-pane -->
-          <!-- Settings tab content -->
-          <div class="tab-pane" id="control-sidebar-settings-tab">
-            <form method="post">
-              <h3 class="control-sidebar-heading">General Settings</h3>
-              <div class="form-group">
-                <label class="control-sidebar-subheading">
-                  Report panel usage
-                  <input type="checkbox" class="pull-right" checked>
-                </label>
-                <p>
-                  Some information about this general settings option
-                </p>
-              </div><!-- /.form-group -->
-            </form>
-          </div><!-- /.tab-pane -->
-        </div>
-      </aside><!-- /.control-sidebar -->
       <!-- Add the sidebar's background. This div must be placed
            immediately after the control sidebar -->
       <div class="control-sidebar-bg"></div>

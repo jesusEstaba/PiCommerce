@@ -4,7 +4,7 @@
 
 @section('content')
 
-<a title="Back to Orders" href="{{url('admin/orders')}}"><spam class="backtoback btn btn-default btn-sm glyphicon glyphicon-chevron-left"></spam></a>
+<a title="Back to Orders" href="{{url('kitchen/orders')}}"><spam class="backtoback btn btn-default btn-sm glyphicon glyphicon-chevron-left"></spam></a>
 
 	
 		
@@ -46,7 +46,7 @@
 
 					<br>
 					<p>
-						<a href="{{url('/admin/users/'.$order->id)}}">Go to user</a>
+						<a href="{{url('kitchen/users/'.$order->id)}}">Go to user</a>
 					</p>
 				</div>
 
@@ -252,8 +252,13 @@
 </style>
 @stop
 
+
 @section('script')
-	<script type="text/javascript">
+<script type="text/javascript">
+
+	$(function()
+	{
+		$('#orders').addClass('active');
 		$('.note').click(function()
 		{
 			var note = $(this).parent().siblings('td.hide.notes').html();
@@ -294,8 +299,6 @@
 			});
 		});
 
-
-
 		$('.visible-sta').click(function(){
 			
 			$(this)
@@ -303,26 +306,8 @@
 				.toggleClass('btn-warning')
 				.toggleClass('glyphicon-ok')
 				.toggleClass('btn-success');
-			/*
-			if( $(this).hasClass('glyphicon-eye-open') )
-			{
-				$(this)
-					.removeClass('glyphicon-eye-open')
-					.removeClass('btn-success')
-					.addClass('glyphicon-eye-close')
-					.addClass('btn-danger')
-					
-			}
-			else
-			{
-				$(this)
-					.addClass('glyphicon-eye-open')
-					.addClass('btn-success')
-					.removeClass('glyphicon-eye-close')
-					.removeClass('btn-danger')
-			}*/
 		});
 
-		
-	</script>
+	});
+</script>
 @stop

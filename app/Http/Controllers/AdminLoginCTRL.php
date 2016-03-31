@@ -24,11 +24,11 @@ class AdminLoginCTRL extends Controller
 
     		if( Auth::attempt(['email'=>$request['email'], 'password'=>$request['password'] ]) )
 	    	{
-				return Redirect::to('admin');	
+				return Redirect::to('kitchen');	
 	    	}
 
 	    	Session::flash('message-error', 'Bad Login');
-	    	return Redirect::to('admin/login');
+	    	return Redirect::to('kitchen/login');
 
     	
     }
@@ -40,6 +40,6 @@ class AdminLoginCTRL extends Controller
     public function logout()
     {
     	Auth::logout();
-        return Redirect::to('admin/login');
+        return Redirect::to('kitchen/login');
     }
 }
