@@ -19,36 +19,24 @@ class OrdersCTRL extends Controller
     public function index()
     {
         $num = Input::get('num');
-
-        if( isset($num) and !empty($num) )
-        {
-            $orders = DB::table('hd_tticket')
+            
+        $orders = DB::table('hd_tticket')
             ->leftJoin('customers', 'customers.Cs_Phone', '=', 'hd_tticket.Hd_Customers')
-            ->where('hd_tticket.Hd_Ticket', $num)
+            ->where(function($query) use ($num){
+                if($num)
+                {
+                    $query->where('hd_tticket.Hd_Ticket', $num);
+                }
+            })
             ->select(
-                'customers.Cs_Name', 
-                'hd_tticket.Hd_Ticket', 
-                'hd_tticket.Hd_Date', 
-                'hd_tticket.Hd_Total', 
+                'customers.Cs_Name',
+                'hd_tticket.Hd_Ticket',
+                'hd_tticket.Hd_Date',
+                'hd_tticket.Hd_Total',
                 'Hd_Status'
             )
             ->orderBy('hd_tticket.Hd_Ticket', 'desc')
             ->paginate(15);
-        }
-        else
-        {
-            $orders = DB::table('hd_tticket')
-            ->leftJoin('customers', 'customers.Cs_Phone', '=', 'hd_tticket.Hd_Customers')
-            ->select(
-                'customers.Cs_Name', 
-                'hd_tticket.Hd_Ticket', 
-                'hd_tticket.Hd_Date', 
-                'hd_tticket.Hd_Total', 
-                'Hd_Status'
-            )
-            ->orderBy('hd_tticket.Hd_Ticket', 'desc')
-            ->paginate(15);
-        }
         
         return view('admin.orders.index')->with(['orders'=>$orders]);
     }

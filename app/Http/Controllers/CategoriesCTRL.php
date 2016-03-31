@@ -59,11 +59,7 @@ class CategoriesCTRL extends Controller
     public function store(Request $request)
     {
 
-        if(
-            $request['name'] &&
-            $request['url'] &&
-            $request['group']
-        )
+        if($request['name'] && $request['url'] && $request['group'])
         {
             $insert_to_db = [
                 'name' => $request['name'],
@@ -73,13 +69,13 @@ class CategoriesCTRL extends Controller
                 'Status' => 1
             ];
 
-
             if( !empty( Input::file('imagen') ) )
             {
                 $name = $this->upload_image_sys(Input::file('imagen'), 'public_images_category');
                 
-                if($name)
+                if($name){
                     $insert_to_db['image'] = $name;
+                }
 
                 //delete dthe old element #Storage::delete('file.jpg');
             }
@@ -97,59 +93,54 @@ class CategoriesCTRL extends Controller
             'group' => $request['group'],
         ];
 
-
-
         if($request['cambios'])
         {
             $id = (int)$request['id'];
             $update=[];
             
-            if( !empty($request['category']) )
+            if( !empty($request['category']) ){
                 $update['group_id'] = $request['category'];
+            }
 
-            if( !empty($request['url']) )
+            if( !empty($request['url']) ){
                 $update['name_cat'] = str_slug($request['url']);
+            }
 
-            if( !empty($request['name_category']) )
+            if( !empty($request['name_category']) ){
                 $update['name'] = $request['name_category'];
-
+            }
            
             if( !empty( Input::file('imagen') ) )
             {
                 $image = $this->upload_image_sys(Input::file('imagen'), 'public_images_category');
                 
-                if($image)
+                if($image){
                     $update['image'] = $image;
+                }
 
                 //delete dthe old element #Storage::delete('file.jpg');
             }
 
             if( !empty( Input::file('imagen_cat') ) )
             {
-               $image = $this->upload_image_sys(Input::file('imagen_cat'), 'public_images_banner');
+                $image = $this->upload_image_sys(Input::file('imagen_cat'), 'public_images_banner');
                
-               if($image)
+                if($image){
                     $update['image_cat'] = $image;
+                }
 
                 //delete dthe old element #Storage::delete('file.jpg');
             }
 
-
             if( count($update) )
+            {
                 DB::table('category')
                     ->where('id', $id)
                     ->update($update);
+            }
 
             $respuesta = ['state'=>'update'];
-
-
-
-
         }
-
-
-
-
 
         return response()->json($respuesta);
     }
@@ -249,7 +240,6 @@ class CategoriesCTRL extends Controller
 
         if($request['order_change'])
         {
-
             $all_count = count($request['order_items']);
             
             $sub_menus = (int)$request['sub'];
