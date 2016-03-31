@@ -10,21 +10,18 @@
 	$gplus = $config->gplus;
 	$insta = $config->instagram;
 	$twitter = $config->twitter;
-
 	$footer = $config->footer;
-
 ?>
-
 
 <footer>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-8">
 				@if($footer)
 				{!!$footer!!}
 				@endif
 			</div>
-			<div class="col-md-12">
+			<div class="col-md-4">
 				
 				{!!Html::style('css/style_techandall.css')!!}
 				<link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
