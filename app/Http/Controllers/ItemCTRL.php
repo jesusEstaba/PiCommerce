@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 
 use Pizza\Http\Requests;
 use Pizza\Http\Controllers\Controller;
-
 use DB;
-
 use Input;
 
 class ItemCTRL extends Controller
@@ -23,38 +21,25 @@ class ItemCTRL extends Controller
         $search = Input::get('search');
         $category = Input::get('category');
 
-        if ( $search!='' and $category!='')
-        {
-            $items = DB::table('items')
-                ->join('groups', 'items.It_Groups', '=', 'groups.Gr_Id')
-                ->where('items.It_Descrip', 'like', '%'.$search.'%')
-                ->where('groups.Gr_ID', $category)
-                ->select('items.It_Id', 'items.It_Descrip', 'items.description', 'items.It_Status', 'groups.Gr_Descrip')
-                ->paginate(15);
-        }
-        else if($search!='')
-        {
-            $items = DB::table('items')
-                ->join('groups', 'items.It_Groups', '=', 'groups.Gr_Id')
-                ->where('items.It_Descrip', 'like', '%'.$search.'%')
-                ->select('items.It_Id', 'items.It_Descrip', 'items.description', 'items.It_Status', 'groups.Gr_Descrip')
-                ->paginate(15);
-        }
-        else if($category!='')
-        {
-            $items = DB::table('items')
-                ->join('groups', 'items.It_Groups', '=', 'groups.Gr_Id')
-                ->where('groups.Gr_ID', $category)
-                ->select('items.It_Id', 'items.It_Descrip', 'items.description', 'items.It_Status', 'groups.Gr_Descrip')
-                ->paginate(15);
-        }
-        else
-        {
-            $items = DB::table('items')
-                ->join('groups', 'items.It_Groups', '=', 'groups.Gr_Id')
-                ->select('items.It_Id', 'items.It_Descrip', 'items.description', 'items.It_Status', 'groups.Gr_Descrip')
-                ->paginate(15);
-        }
+        $items = DB::table('items')
+            ->join('groups', 'items.It_Groups', '=', 'groups.Gr_Id')
+            ->where(function($query) use ($search, $category){
+                if($search && $category)
+                {
+                    $query->where('items.It_Descrip', 'like', '%'.$search.'%')
+                        ->where('groups.Gr_ID', $category);
+                }
+                else if($search)
+                {
+                    $query->where('items.It_Descrip', 'like', '%'.$search.'%');
+                }
+                else if($category)
+                {
+                    $query->where('groups.Gr_ID', $category);
+                }
+            })
+            ->select('items.It_Id', 'items.It_Descrip', 'items.description', 'items.It_Status', 'groups.Gr_Descrip')
+            ->paginate(15);
 
         $groups = DB::table('groups')->get();
         
@@ -66,6 +51,7 @@ class ItemCTRL extends Controller
         ]);
     }
 
+
     /**
      * Show the form for creating a new resource.
      *
@@ -75,6 +61,7 @@ class ItemCTRL extends Controller
     {
         //
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -137,14 +124,17 @@ class ItemCTRL extends Controller
         {
             $update = [];
 
-            if($request['name']!="")
+            if($request['name']!=""){
                 $update['It_Descrip'] = $request['name'];
+            }
             
-            if($request['descrip']!="")
+            if($request['descrip']!=""){
                 $update['description'] = $request['descrip'];
+            }
             
-            if($request['category']!="")
+            if($request['category']!=""){
                 $update['It_Groups'] = (int)$request['category'];
+            }
             
             if( !empty( Input::file('imagen') ) )
             {
@@ -159,10 +149,11 @@ class ItemCTRL extends Controller
 
             $id = (int)$request['id'];
 
-            if( count($update) && $id )
+            if( count($update) && $id ){
                 DB::table('items')
                     ->where('It_Id', $id)
                     ->update($update);
+            }
 
             return response()->json(['state'=>'Changed Data']);
         }
@@ -170,6 +161,7 @@ class ItemCTRL extends Controller
 
         return response()->json("error");
     }
+
 
     /**
      * Display the specified resource.
@@ -206,6 +198,7 @@ class ItemCTRL extends Controller
         ]);
     }
 
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -216,6 +209,7 @@ class ItemCTRL extends Controller
     {
         //
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -232,31 +226,35 @@ class ItemCTRL extends Controller
         {
             $update = [];
 
-            if($request['descrip']!="")
+            if($request['descrip']!=""){
                 $update['Sz_Descrip'] = $request['descrip'];
+            }
 
-            if($request['size_abrev']!="")
+            if($request['size_abrev']!=""){
                 $update['Sz_Abrev'] = $request['size_abrev'];
+            }
             
-            if($request['price']!="")
+            if($request['price']!=""){
                 $update['Sz_Price'] = (float)$request['price'];
+            }
             
-            if($request['top_price']!="")
+            if($request['top_price']!=""){
                 $update['Sz_Topprice'] = (float)$request['top_price'];
+            }
 
-            if($request['top_price2']!="")
+            if($request['top_price2']!=""){
                 $update['Sz_Topprice2'] = $request['top_price2'];
+            }
 
-            if($request['size_area_change']!="")
+            if($request['size_area_change']!=""){
                 $update['Sz_FArea'] = $request['size_area_change'];
+            } 
             
-            
-            
-            
-            if( count($update) )
+            if( count($update) ){
                 DB::table('size')
                     ->where('Sz_Id', $request['id'])
                     ->update($update);
+            }
 
             $respuesta = ['state'=>'Changed'];
         }
@@ -284,12 +282,14 @@ class ItemCTRL extends Controller
             $respuesta = ['state'=>'Changed'];
         }
 
-        if( !count($respuesta) )
-             $respuesta = ['state'=>'No'];
+        if( !count($respuesta) ){
+            $respuesta = ['state'=>'No'];
+        }
         
         return response()->json($respuesta);
         
     }
+
 
     /**
      * Remove the specified resource from storage.
