@@ -18,10 +18,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{asset('assets/admin/dist/css/AdminLTE.min.css')}}">
-    <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
-          page. However, you can choose any other skin. Make sure you
-          apply the skin class to the body tag so the changes take effect.
-    -->
+    <!-- My Css-->
+
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/jquery-ui/jquery-ui.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/admin/dist/css/skins/skin-blue.min.css')}}">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -31,9 +30,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style type="text/css">
-      .white{
-        background: white;
-      }
       .backtoback{
         margin-bottom: .5em;
       }
@@ -84,20 +80,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
-
-
-          <!-- search form (Optional) -->
-          
-          {{-- <form action="#" method="get" class="sidebar-form">
-            <div class="input-group">
-              <input type="text" name="q" class="form-control" placeholder="Search...">
-              <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
-              </span>
-            </div>
-          </form> --}}
-
-          <!-- /.search form -->
 
           <!-- Sidebar Menu -->
           <ul class="sidebar-menu">
@@ -151,9 +133,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- <li>
                   <a href="{{url('kitchen/choose_category')}}">Choose
                   </a>
-                </li> -->
-                
-                
+                </li> -->  
 
               </ul>
               
@@ -189,12 +169,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
         
 
         <!-- Main content -->
-        <section class="content"><!-- white -->
+        <section class="content">
                 @yield('content')
           </div>
           
-
-
         </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
 
@@ -223,16 +201,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- AdminLTE App -->
     <script src="{{asset('assets/admin/dist/js/app.min.js')}}"></script>
 
-    <!-- Optionally, you can add Slimscroll and FastClick plugins.
-         Both of these plugins are recommended to enhance the
-         user experience. Slimscroll is required when using the
-         fixed layout. -->
+    <!-- My Js -->
 
     <script src="{{asset('assets/admin/plugins/chartjs/Chart.min.js')}}"></script>
 
     <script src="{{asset('assets/jquery-ui/jquery-ui.min.js')}}"></script>
-  <link rel="stylesheet" type="text/css" href="{{asset('assets/jquery-ui/jquery-ui.min.css')}}">
-
+    
     @yield('script')
+  
   </body>
 </html>
