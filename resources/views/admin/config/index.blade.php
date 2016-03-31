@@ -228,13 +228,93 @@
 	</div>
       	<div class="form-group">
       		<label>Open: </label>
-	      <input type="time" class="form-control" name="open" placeholder="Open" autocomplete="off">
+	      	<div>
+				<div id="open" class="calendar-time">
+					<select class="hourselect"><!-- <option value="6" selected="selected">6 -->
+						<option value="1">1
+						</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option selected="selected" value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+						<option value="13">13</option>
+						<option value="14">14</option>
+						<option value="15">15</option>
+						<option value="16">16</option>
+						<option value="17">17</option>
+						<option value="18">18</option>
+						<option value="19">19</option>
+						<option value="20">20</option>
+						<option value="21">21</option>
+						<option value="22">22</option>
+						<option value="23">23</option>
+						<option value="24">24</option>
+					</select> :
+					
+					<select class="minuteselect">
+						<option value="0">00
+						</option>
+						<option value="30" selected="selected">30
+						</option>
+					</select>
+
+				</div>
+        	</div>
 	    </div>
 	    <div class="form-group">
 	    	<label>Close:</label>
-	      <input type="time" class="form-control" name="close" placeholder="Close" autocomplete="off">
+	      	<div>
+				<div id="close" class="calendar-time">
+					<select class="hourselect"><!-- <option value="6" selected="selected">6 -->
+						<option value="1">1
+						</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+						<option value="13">13</option>
+						<option value="14">14</option>
+						<option value="15">15</option>
+						<option value="16">16</option>
+						<option value="17">17</option>
+						<option value="18">18</option>
+						<option value="19">19</option>
+						<option value="20">20</option>
+						<option selected="selected" value="21">21</option>
+						<option value="22">22</option>
+						<option value="23">23</option>
+						<option value="24">24</option>
+					</select> :
+					
+					<select class="minuteselect">
+						<option value="0" selected="selected">00
+						</option>
+						<option value="30">30
+						</option>
+					</select>
+
+				</div>
+        	</div>
 	    </div>    
-        
+        		
+
+
       </div>
       <div class="modal-footer">
       	<button type="button" class="btn btn-primary save hour" data-dismiss="modal">Save</button>
@@ -386,7 +466,15 @@ color:green;
 
 @section('script')
 <script type="text/javascript">
+function hora_24(element)
+{
+	var hora = $('#'+element).children('.hourselect').val()+':'+$('#'+element).children('.minuteselect').val();
+	
+	$('#'+element).children('.hourselect').val("");
+	$('#'+element).children('.minuteselect').val("");
 
+	return hora;
+}
 	$(function()
 	{
 		$('#config').addClass('active');
@@ -469,7 +557,6 @@ $('.save-logo').click(function(){
 				headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
 				data:data,
 				contentType:false,
-				data:data,
 				processData:false,
 				cache:false
 			})
@@ -517,7 +604,7 @@ $('.save-logo').click(function(){
 
 	$('.save.hour').click(function(){
 		
-		if( $("[name=day]").val() && ( $('[name=open]').val() || $('[name=close]').val() ) )
+		if( $("[name=day]").val() )
 			$.ajax({
 				url: 'config/2',
 				type: 'PUT',
@@ -526,18 +613,14 @@ $('.save-logo').click(function(){
 				data: {
 					change_hour:true, 
 					day:$("[name=day]").val(),
-					open:$('[name=open]').val(),
-					close:$('[name=close]').val(),
+					open:hora_24('open'),
+					close:hora_24('close'),
 				},
 			})
 			.done(function(data) {
-				if(data=="time changed")
-				{
-					$("[name=day]").val("");
-					$('[name=open]').val("");
-					$('[name=close]').val("");
-					document.location.reload(true);
-				}
+				$("[name=day]").val("");
+	
+				document.location.reload(true);
 			});
 
 		else
