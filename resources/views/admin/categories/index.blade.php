@@ -55,7 +55,7 @@
 								@endif
 							</td>
 							<td>
-								<a href="{{url('admin/categories/'.$category->id)}}" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span></a>
+								<a href="{{url('kitchen/categories/'.$category->id)}}" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span></a>
 							</td>
 						</tr>
 						@endforeach
@@ -161,10 +161,10 @@
 
 	$(function()
 	{
-		$('.sidebar-menu li:eq(3)')
+		$('#category')
 			.addClass('active');
 
-		$('.sidebar-menu li:eq(4)')
+		$('#categories')
 			.addClass('active');
 
 

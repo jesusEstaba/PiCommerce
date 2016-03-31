@@ -3,7 +3,7 @@
 @section('title', 'Item')
 
 @section('content')
-<a title="Back to Items" href="{{url('admin/items')}}"><spam class="backtoback btn btn-default btn-sm glyphicon glyphicon-chevron-left"></spam></a>
+<a title="Back to Items" href="{{url('kitchen/items')}}"><spam class="backtoback btn btn-default btn-sm glyphicon glyphicon-chevron-left"></spam></a>
 
 @if($item)
 
@@ -302,7 +302,7 @@
 
 	$(function()
 	{
-		$('.sidebar-menu li:eq(2)').addClass('active');
+		$('#items').addClass('active');
 	
 
 	$('.edit-size').click(function(){
@@ -466,7 +466,7 @@
 		
 		$.ajax({
 			
-			url: '/admin/items',
+			url: '/kitchen/items',
 			type: 'POST',
 			dataType: 'json',
 			headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
@@ -521,7 +521,7 @@
 		)
 		{
 			$.ajax({
-				url:'/admin/items',
+				url:'/kitchen/items',
 				type: 'POST',
 				dataType: 'json',
 				headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},

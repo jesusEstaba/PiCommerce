@@ -12,7 +12,7 @@
 		@if(count($orders))
 		<div class="row">
 			<div class="col-xs-12">
-				<form action="{{url('admin/orders')}}" method="get">
+				<form action="{{url('kitchen/orders')}}" method="get">
 					<div class="input-group">
 						<input type="text" class="form-control" placeholder="Order number" name="num" autocomplete="off">
 						<span class="input-group-btn">
@@ -70,7 +70,7 @@
 								@endif
 							</td>
 							<td>
-								<a href="{{url('admin/orders/'.$order->Hd_Ticket)}}" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span></a>
+								<a href="{{url('kitchen/orders/'.$order->Hd_Ticket)}}" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span></a>
 							</td>
 						</tr>
 						@endforeach
@@ -109,7 +109,7 @@
 
 	$(function()
 	{
-		$('.sidebar-menu li:eq(7)').addClass('active');
+		$('#orders').addClass('active');
 	});
 </script>
 @stop

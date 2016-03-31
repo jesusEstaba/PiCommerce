@@ -15,7 +15,7 @@
 		
 		<div class="row">
 			<div class="col-xs-4 pull-right">
-				<form action="{{url('admin/users')}}" method="get" class="pull-right">
+				<form action="{{url('kitchen/users')}}" method="get" class="pull-right">
 					
 					<div class="input-group ">
 						<input type="text" class="form-control" placeholder="Search by name" name="search" autocomplete="off">
@@ -65,7 +65,7 @@
 							<td>{{$user->Cs_ZipCode}}
 							</td>
 							<td>
-								<a href="{{url('admin/users/'.$user->id)}}" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span></a>
+								<a href="{{url('kitchen/users/'.$user->id)}}" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span></a>
 								
 							</td>
 						</tr>
@@ -108,7 +108,7 @@
 
 	$(function()
 	{
-		$('.sidebar-menu li:eq(2)').addClass('active');
+		$('#users').addClass('active');
 	});
 </script>
 @stop

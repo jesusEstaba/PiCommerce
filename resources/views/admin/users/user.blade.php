@@ -34,7 +34,7 @@
 
 	$(function()
 	{
-		$('.sidebar-menu li:eq(2)').addClass('active');
+		$('#users').addClass('active');
 	});
 </script>
 @stop

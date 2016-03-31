@@ -389,7 +389,7 @@ color:green;
 
 	$(function()
 	{
-		$('.sidebar-menu li:eq(8)').addClass('active');
+		$('#config').addClass('active');
 
 
 

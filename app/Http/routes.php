@@ -72,7 +72,7 @@ Route::group(['middleware'=>'hora'], function()
 
 
 //middleware Admin
-Route::group(['prefix'=>'admin'], function()
+Route::group(['prefix'=>'kitchen'], function()
 {
     Route::get('/login', 'AdminLoginCTRL@index');
     Route::post('/login', 'AdminLoginCTRL@login');

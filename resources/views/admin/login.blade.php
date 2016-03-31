@@ -59,7 +59,7 @@
 
 
 
-        {!!Form::open(['url'=>'admin/login'])!!}
+        {!!Form::open(['url'=>'kitchen/login'])!!}
           <div class="form-group has-feedback">
             <input type="text" name="email" class="form-control" placeholder="Email">
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>

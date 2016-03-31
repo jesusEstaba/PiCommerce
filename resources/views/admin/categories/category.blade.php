@@ -6,7 +6,7 @@
 @section('content')
 
 
-<a title="Back" href="{{url('admin/categories')}}"><spam class="backtoback btn btn-default btn-sm glyphicon glyphicon-chevron-left"></spam></a>
+<a title="Back" href="{{url('kitchen/categories')}}"><spam class="backtoback btn btn-default btn-sm glyphicon glyphicon-chevron-left"></spam></a>
 
 
 @if($category)
@@ -150,10 +150,10 @@
 <script type="text/javascript">
 $(function() {
 
-$('.sidebar-menu li:eq(3)')
+$('#category')
 			.addClass('active');
 
-		$('.sidebar-menu li:eq(4)')
+		$('#categories')
 			.addClass('active');
 
 
@@ -221,7 +221,7 @@ $('.sidebar-menu li:eq(3)')
 		data.append('imagen_cat', file_banner);
 
 		$.ajax({
-			url: '/admin/categories',
+			url: '/kitchen/categories',
 			type: 'POST',
 			dataType: 'json',
 			headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},

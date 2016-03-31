@@ -21,7 +21,7 @@ class AdminPanel
                 return $next($request);
         
 
-        return redirect()->to('admin/login');
+        return redirect()->to('kitchen/login');
 
     }
 }
