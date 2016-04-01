@@ -8,6 +8,8 @@ use Pizza\Http\Requests;
 use Pizza\Http\Controllers\Controller;
 use DB;
 use Auth;
+use Carbon\Carbon;
+
 
 class PayCTRL extends Controller
 {
@@ -41,7 +43,18 @@ class PayCTRL extends Controller
 
     	$tax = DB::table('taxes')->select('Tx_Base')->first();
 
+        $delivery_val = DB::table('password1')->select('G_Value')->where('G_Id', 5)->first();
+
+        $fee = DB::table('payform')->select('Pf_Charge')->where('Pf_Id', 2)->first();
+
+        $arrival_date = Carbon::now();
+
+        $arrival_date;
+
     	return view('pay')->with([
+            'arrival_date'=>$arrival_date,
+            'fee'=>$fee,
+            'delivery_val'=>$delivery_val,
     		'cart'=>$cart,
     		'total_in_cart'=>$total_in_cart,
     		'tax'=>$tax->Tx_Base,
