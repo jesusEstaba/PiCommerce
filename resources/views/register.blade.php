@@ -47,6 +47,18 @@
 							<input type="text" name="phone" placeholder="Phone" class="form-control" />	
 						</div>
 
+						
+
+						<div id="from-datepicker">
+							<label>Dirthdate:</label>
+							<div class="input-group">
+								<input placeholder="Birthdate(optional)" aria-describedby="basic-addon1" class="form-control" data-format="dd/MM/yyyy" type="text" name="birthday"></input>
+								<span class="input-group-addon add-on" id="basic-addon1"><span class="glyphicon glyphicon-calendar"></span></span>
+							</div>
+						</div>
+
+
+
 						<h3 class="title-register">Your Password</h3>
 						<div class="input-form">
 							<label>Password:</label>	
@@ -192,14 +204,38 @@
 </style>
 
 
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
-  <script src="{{asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
+	<script src="{{asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
+	
+	<script src="{{url('assets/datetimepicker/bootstrap-datetimepicker.min.js')}}" type="text/javascript"></script>
+	<link rel="stylesheet" type="text/css" href="{{url('assets/datetimepicker/bootstrap-datetimepicker.min.css')}}">
 
 
 <script type="text/javascript">
+
+	var fecha_act = new Date();
+
+	var startDate = new Date( ( fecha_act.getFullYear()-100 )+'-01-01');
+	var endDate = new Date(fecha_act.getFullYear() + "-" + (fecha_act.getMonth()+1) + "-" + fecha_act.getDate());
+    
+    $('#from-datepicker').datetimepicker({
+    	pickTime: false,
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 4,
+        keyboardNavigation: 1,
+        minView: 1,
+        forceParse: 0,
+        startDate: startDate,
+        endDate: endDate,
+        setDate: startDate
+    });
+
 
 var streets = [
 		@foreach($streets as $tab => $table)
@@ -207,6 +243,8 @@ var streets = [
 		@endforeach
 	    ];
 	$(document).ready(function() {
+		
+
 		var availableTags = [
 		@foreach($codes as $tab => $table)
 			"{{strtolower($table->St_Name)}}",
