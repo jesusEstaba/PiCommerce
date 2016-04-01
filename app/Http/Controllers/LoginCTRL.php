@@ -12,6 +12,7 @@ use Pizza\Http\Requests\LoginRequest;
 use Auth;
 use Session;
 use Redirect;
+use DB;
 
 class LoginCTRL extends Controller
 {
@@ -21,8 +22,10 @@ class LoginCTRL extends Controller
      */
     public function index()
     {
-        if( !Auth::check() )
-            return view('login');
+        if( !Auth::check() ){
+            $config = DB::table('config')->select('logo', 'background')->first();
+            return view('login')->with(['config'=>$config]);
+        }
 
         return Redirect::to('cart');
     }

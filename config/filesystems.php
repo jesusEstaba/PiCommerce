@@ -68,6 +68,11 @@ return [
             'root'   => public_path('images/logos'),
         ],
 
+        'public_background' => [
+            'driver' => 'local',
+            'root'   => public_path('images/backgrounds'),
+        ],
+
         'ftp' => [
             'driver'   => 'ftp',
             'host'     => 'ftp.example.com',
