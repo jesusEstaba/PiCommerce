@@ -169,6 +169,8 @@ class OrderCTRL extends Controller
 					->delete();
 			}
 
+			LogsCTRL::add_to_log('Order');
+
 			/*
 			$variables_correo = ['me_le_ponen'=>'gas del bueno'];
 

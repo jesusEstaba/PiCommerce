@@ -79,6 +79,7 @@ class RegisterCTRL extends Controller
                 
                 if( Auth::attempt(['email'=>$request['email'], 'password'=>$request['password'] ]) )
                 {
+                    LogsCTRL::add_to_log('Register');
                     return Redirect::to('cart');    
                 }
     		}

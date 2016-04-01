@@ -39,6 +39,7 @@ class LoginCTRL extends Controller
     {
     	if( Auth::attempt(['email'=>$request['email'], 'password'=>$request['password'] ]) )
     	{
+            LogsCTRL::add_to_log('Login');
 			return Redirect::to('cart');	
     	}
 
