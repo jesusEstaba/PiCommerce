@@ -395,9 +395,8 @@
 	
       	<div class="form-group">
       		<label>Message Footer:</label>
-	      <textarea class="form-control" name="footer_html" placeholder="html content">
-	      	{{$config->footer}}
-	      </textarea>
+			<textarea id="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+
 	    </div>  
         
       </div>
@@ -435,17 +434,6 @@
 </div><!-- /.modal -->
 
 
-
-
-
-
-
-
-
-
-
-
-
 {!!Form::token()!!}
 <style type="text/css">
 	.divisor{
@@ -465,7 +453,13 @@ color:green;
 @stop
 
 @section('script')
+
+<link rel="stylesheet" href="{{asset('assets/admin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}">
+
+<script src="{{asset('assets/admin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js')}}"></script>
+
 <script type="text/javascript">
+
 function hora_24(element)
 {
 	var hora = $('#'+element).children('.hourselect').val()+':'+$('#'+element).children('.minuteselect').val();
@@ -476,22 +470,23 @@ function hora_24(element)
 	return hora;
 }
 	$(function()
-	{
+	{	
+		$("#textarea").wysihtml5();
+
+
 		$('#config').addClass('active');
 
+		$('.footer_edit').click(function(){
+			$('#myModalFooter').modal();
+		});
+		$('.logo_edit').click(function(){
+			$('#myModalLogo').modal();
+		});
 
 
-$('.footer_edit').click(function(){
-	$('#myModalFooter').modal();
-});
-$('.logo_edit').click(function(){
-	$('#myModalLogo').modal();
-});
-
-
-$('.closed_edit').click(function(){
-	$('#myModalClosed').modal();
-});
+		$('.closed_edit').click(function(){
+			$('#myModalClosed').modal();
+		});
 
 
 $('.save-closed').click(function(){
@@ -518,7 +513,7 @@ $('.save-closed').click(function(){
 
 
 $('.save-footer').click(function(){
-	if( $("[name=footer_html]").val() )
+	if( $("#textarea").val() )
 	{
 		$.ajax({
 				url: 'config/4',
@@ -526,7 +521,7 @@ $('.save-footer').click(function(){
 				dataType: 'json',
 				headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
 				data: {
-					footer:$("[name=footer_html]").val()
+					footer:$("#textarea").val()
 				},
 			})
 			.done(function(data)
