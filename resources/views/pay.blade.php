@@ -38,15 +38,15 @@
 							@else
 								<div class="divisor">
 									<h3 class="text-danger">
-										Delivery not available because you are not in the zipcode range.
+										Your are not in the zipcode range, This order will be ready for pickup.
 									</h3>
 								</div>
 							@endif
 							
-							<div class="divisor">
 
-
-
+							<div class="row">
+								<div class="col-md-6">
+									<div class="divisor">
 								<h4>Customers Details</h4>
 								<p>
 									<b>Name: </b>{!!$user->Cs_Name or '<em>No Name</em>'!!}
@@ -60,8 +60,9 @@
 							</div>
 
 
-
-							<div class="divisor">
+								</div>
+								<div class="col-md-6">
+									<div class="divisor">
 								<h4>Delivery Details</h4>
 								<p>
 									<b>Street #: </b>{!!$user->Cs_Number or '<em>No Number</em>'!!}
@@ -78,6 +79,10 @@
 									</p>
 								@endif
 							</div>
+								</div>
+							</div>
+
+							
 
 							<div class="divisor">
 								<h4>Payment Method</h4>
@@ -93,17 +98,39 @@
 
 							<div class="divisor">
 								<div class="totales">
-									<?php
+								<?php
+
 									$total_cart = (float)$total_in_cart;
-									$total_cart = round($total_cart, 2);
+									
+									$total_to_pay = $total_cart;
+
 									$tax = (float)$tax;
-									$taxes = $total_cart * $tax / 100;
+									$taxs = $total_cart * $tax / 100;
+
+									if($delivery){
+										$total_to_pay += (float)$delivery_val->G_Value;
+									}
+
+									$fee = (float)$fee->Pf_Charge;
+
+									$total_to_pay += $taxs;
 								?>
-									<h4><b>Sub-Total: </b>{{$total_cart}}</h4>
-									<h4><b>Taxes: </b>{{round($taxes, 2)}}</h4>
-									<h3><b>Total: </b>{{round($total_cart+$taxes, 2)}}</h3>
+									<h4><b>Sub-Total: </b>${{round($total_cart, 2)}}</h4>
+									<h4><b>Tax: </b>${{round($taxs, 2)}}</h4>
+									@if($delivery)
+										<h4><b>Delivery: </b>${{round($delivery_val, 2)}}</h4>
+									@endif
+									<h4><b>Credit Card Processing Fee: </b>${{round($fee, 2)}}</h4>
+									<h3><b>Total: </b>${{round($total_to_pay, 2)}}</h3>
 								</div>
 							</div>
+
+<br>
+<div class="divisor">
+	<p>
+		<b>Arrival Date: </b>{{$arrival_date->format('d-m-Y')}}
+	</p>
+</div>
 
 							<br>
 							<div>
