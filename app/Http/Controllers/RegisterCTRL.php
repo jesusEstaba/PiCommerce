@@ -71,6 +71,7 @@ class RegisterCTRL extends Controller
                     'Cs_ZipCode' => $request['zip_code'], 
                     'Cs_Notes' => $request['special_directions'],
                     */
+                   'Cs_Birthday'=>$request['birthday']
                 ]);
 
 

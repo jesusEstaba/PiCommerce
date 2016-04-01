@@ -6,7 +6,7 @@
 @section('content')
 
 
-<a title="Back" href="{{url('kitchen/categories')}}"><spam class="backtoback btn btn-default btn-sm glyphicon glyphicon-chevron-left"></spam></a>
+<a title="Back to Categories" href="{{url('kitchen/categories')}}"><spam class="backtoback btn btn-default btn-sm glyphicon glyphicon-chevron-left"></spam></a>
 
 
 @if($category)
