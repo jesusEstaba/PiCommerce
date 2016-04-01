@@ -70,6 +70,17 @@
 			<p><b>Google+ :</b><a target="_blank" href="{{$config->gplus}}">{{$config->gplus}}</a></p>
 		</div>
 			</div>
+
+
+	<hr>
+				<div class="box-header">
+					<h3>Change Background
+						<span class="glyphicon background_edit glyphicon-pencil btn btn-default"></span>
+					</h3>
+				</div>
+				<div class="box-body">
+					<img class="img-responsive" src="{{asset('images/backgrounds/'.$config->background) }}">
+				</div>
 		</div>
 
 
@@ -395,7 +406,10 @@
 	
       	<div class="form-group">
       		<label>Message Footer:</label>
-			<textarea id="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+
+		<textarea id="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">
+                    	
+        </textarea>
 
 	    </div>  
         
@@ -432,6 +446,35 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+
+
+<div id="myModalBackground" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Edit Logo</h4>
+      </div>
+      <div class="modal-body">
+	
+	<div class="form-group">
+		<label>Background Image:</label>
+		<input type="file" name="background_img" id="background_img" class="form-control"></input>
+	</div> 
+        
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-primary save-background" data-dismiss="modal">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
 
 
 {!!Form::token()!!}
@@ -479,6 +522,12 @@ function hora_24(element)
 		$('.footer_edit').click(function(){
 			$('#myModalFooter').modal();
 		});
+
+		$('.background_edit').click(function(){
+			$('#myModalBackground').modal();
+		});
+
+
 		$('.logo_edit').click(function(){
 			$('#myModalLogo').modal();
 		});
@@ -545,6 +594,37 @@ $('.save-logo').click(function(){
 		var data = new FormData();
 
 		data.append('logo', file_img);
+
+		$.ajax({
+				type: 'POST',
+				dataType: 'json',
+				headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
+				data:data,
+				contentType:false,
+				processData:false,
+				cache:false
+			})
+			.done(function(data) {
+				document.location.reload(true);
+			});
+
+	}	
+	else
+		alert("Field Empty");
+});
+
+
+$('.save-background').click(function(){
+
+	if( $("[name=background_img]").val() )
+	{
+
+		var img_ele = document.getElementById('background_img');
+		var file_img = img_ele.files[0];
+
+		var data = new FormData();
+
+		data.append('background', file_img);
 
 		$.ajax({
 				type: 'POST',

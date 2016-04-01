@@ -65,6 +65,26 @@ class ConfigCTRL extends Controller
 
             
         }
+        if(!empty( Input::file('background') ))
+        {
+            $insert_to_db = [];
+            
+            if( !empty( Input::file('background') ) )
+            {
+                $background = CategoriesCTRL::upload_image_sys(Input::file('background'), 'public_background');
+                
+                if($background)
+                    $insert_to_db['background'] = $background;
+
+                //delete dthe old element #Storage::delete('file.jpg');
+            }
+
+            if( count($insert_to_db) ){
+                DB::table('config')->update($insert_to_db);
+            }
+
+            
+        }
         return response()->json("created");
     }
 

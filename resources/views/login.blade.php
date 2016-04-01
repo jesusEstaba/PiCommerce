@@ -7,6 +7,13 @@
 
 	{!!Html::style('assets/bootstrap/css/bootstrap.min.css')!!}
 	{!!Html::style('css/login.css')!!}
+
+	<style type="text/css">
+	body{
+		background: url("{{asset('images/backgrounds/'.$config->background)}}") center center no-repeat fixed !important;
+  		background-size: cover !important;
+	}
+	</style>
 	
 </head>
 <body>
@@ -24,9 +31,7 @@
 		<div class="row">
 			
 			<div class="col-md-offset-4 col-md-4 login-box">
-			<?php
-				$config = DB::table('config')->select('logo')->first();
-			?>
+
 				<a href="{{url('/')}}">
 					@if($config->logo)
 						<img src="{{asset('images/logos/'.$config->logo)}}" alt="logo" class="logo">
