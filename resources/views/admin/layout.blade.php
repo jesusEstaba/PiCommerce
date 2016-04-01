@@ -157,6 +157,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </a>
             </li>
 
+            <li id="logs">
+              <a href="{{url('kitchen/logs')}}">
+                <i  class="fa fa-book">
+                </i>
+                <span>Logs
+                </span>
+              </a>
+            </li>
+
+
 
             </ul><!-- /.sidebar-menu -->
         </section>

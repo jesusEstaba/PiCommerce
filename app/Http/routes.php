@@ -89,5 +89,6 @@ Route::group(['prefix'=>'kitchen'], function()
         Route::resource('choose_category', 'ChooseCatCTRL');
         Route::resource('orders', 'OrdersCTRL');
         Route::resource('config', 'ConfigCTRL');
+        Route::resource('logs', 'LogsCTRL');
     });
 });

@@ -45,12 +45,6 @@ class Authenticate
             }
         }
 
-        DB::table('users')
-            ->where('id', Auth::user()->id)
-            ->update([
-                'dir_ip'=> $_SERVER['REMOTE_ADDR']
-            ]);
-
         return $next($request);
     }
 }
