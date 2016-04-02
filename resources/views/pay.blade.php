@@ -417,7 +417,7 @@ $(function(){
 		.done(function(data) {
 			if(data.status=="correct")
 			{
-				location.href="cart";
+				location.href="/cart";
 			}
 		});
 	});
