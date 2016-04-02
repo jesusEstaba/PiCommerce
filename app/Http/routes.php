@@ -64,8 +64,15 @@ Route::group(['middleware'=>'hora'], function()
         
         Route::get('/select', 'PayCTRL@select');//borrar vista y metodo()
 
-        Route::get('/checkout', 'PayCTRL@index');
-        Route::get('/order_now', 'OrderCTRL@create');
+        Route::get('/checkout/{select?}', 'PayCTRL@index');
+        Route::post('/order_now', 'OrderCTRL@create');
+        Route::get('/order_now', function(){
+            return redirect()->back();
+        });
+
+        Route::get('/select', function(){
+            return view('selection');
+        });
 
         Route::get('/coupon/{coupon}', 'CouponsCTRL@return_discount');
     });

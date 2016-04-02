@@ -148,6 +148,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </a>
             </li>
 
+
+            <li id="coupons">
+              <a href="{{url('kitchen/coupons')}}">
+                <i  class="fa fa-money">
+                </i>
+                <span>Coupons
+                </span>
+              </a>
+            </li>
+
             <li id="config">
               <a href="{{url('kitchen/config')}}">
                 <i  class="fa fa-gear">

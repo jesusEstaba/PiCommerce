@@ -270,7 +270,7 @@
 				document.location.reload(true);
 			}
 
-		})
+		});
 
 		}
 		else

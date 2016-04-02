@@ -88,7 +88,7 @@
                   <a class="btn disabled btn-app">
                     <i class="fa fa-book"></i> My Menu
                   </a>
-                  <a class="btn disabled btn-app">
+                  <a href="{{url('kitchen/coupons')}}" class="btn btn-app">
                     <i class="fa fa-money"></i> Coupons
                   </a>
                   <a class="btn disabled btn-app">

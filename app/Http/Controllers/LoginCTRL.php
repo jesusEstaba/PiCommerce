@@ -53,6 +53,7 @@ class LoginCTRL extends Controller
      */
     public function logout()
     {
+        LogsCTRL::add_to_log('Logout');
     	Auth::logout();
         return Redirect::to('login');
     }
