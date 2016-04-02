@@ -132,6 +132,16 @@
 	</p>
 </div>
 
+<div class="divisor note">
+<p>
+	<b>NOTE! The below IP and ISP has been recorded for security purposes.</b>
+</p>
+<p>
+	<b>IP Address:</b> {{$_SERVER['REMOTE_ADDR']}}
+</p>
+
+</div>
+
 							<br>
 							<div>
 								<a href="{{url('cart')}}" class="btn btn-default">Back to cart</a>
@@ -293,6 +303,10 @@
 	.glyphicon-credit-card.select-pay{
 		color: #E6831D;
 	}
+	.note{
+		background: rgba(226, 145, 75, 0.62);
+	}
+
 </style>
 <script type="text/javascript">
 	$('.glyphicon-usd').click(function(){

@@ -12,11 +12,11 @@
 		<div class="head-product">
 			<div class="row">
 				
-				<div class="col-md-6">
+				<div class="col-md-4">
 					<img src="{{asset('images/category/'.$image_category)}}" class="img-build img-responsive choose">
 				</div>
 				
-				<div class="col-md-6">
+				<div class="col-md-8">
 					
 					<div class="row">
 						<div class="col-xs-12">
