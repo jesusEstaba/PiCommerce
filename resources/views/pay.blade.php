@@ -402,7 +402,7 @@ $(function(){
 
 		$.ajax(
 		{
-			url:'order_now',
+			url:'/order_now',
 			type: 'POST',
 			dataType: 'json',
 			headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
