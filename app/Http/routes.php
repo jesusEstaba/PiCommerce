@@ -25,7 +25,7 @@ Route::get('/closed', 'CloseCTRL@index');
 
 //middleware Hora
 
-
+Route::get('/sendmail', 'SendMailCTRL@send_mail');
 
 
 Route::group(['middleware'=>'hora'], function()
@@ -66,6 +66,8 @@ Route::group(['middleware'=>'hora'], function()
 
         Route::get('/checkout', 'PayCTRL@index');
         Route::get('/order_now', 'OrderCTRL@create');
+
+        Route::get('/coupon/{coupon}', 'CouponsCTRL@return_discount');
     });
 
 });
@@ -88,6 +90,7 @@ Route::group(['prefix'=>'kitchen'], function()
         Route::resource('groups','GroupCTRL');
         Route::resource('choose_category', 'ChooseCatCTRL');
         Route::resource('orders', 'OrdersCTRL');
+        Route::resource('coupons', 'CouponsCTRL');
         Route::resource('config', 'ConfigCTRL');
         Route::resource('logs', 'LogsCTRL');
     });
