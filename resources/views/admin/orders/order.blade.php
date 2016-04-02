@@ -181,7 +181,7 @@
 					<b>Sub Total: </b>${{$order->Hd_Subtotal}}
 				</h4>
 				<h4>
-					<b>Dsicount: </b>${{$order->Hd_Discount}}
+					<b>Discount: </b>${{$order->Hd_Discount}}
 				</h4>
 				<h4>
 					<b>Tax: </b>${{$order->Hd_Tax}}
