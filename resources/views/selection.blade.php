@@ -30,7 +30,7 @@
 				<div class="row">
 					<div class="col-md-offset-3 col-md-6 ">
 						<div class="row box">
-							<a href="{{url('pay/delivery')}}">
+							<a href="{{url('checkout/delivery')}}">
 								<div class="col-md-6">
 									<div class="orange-box box-type">
 										<h2>Delivery</h2>
@@ -40,7 +40,7 @@
 								</div>	
 							</a>
 							
-							<a href="{{url('pay/pickup')}}">
+							<a href="{{url('checkout/pickup')}}">
 								<div class="col-md-6">
 									<div class="blue-box box-type">
 										<h2>Pick Up</h2>

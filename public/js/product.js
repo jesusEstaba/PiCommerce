@@ -287,7 +287,7 @@ $(function()
 	$('.btn-checkout').click(function(){
 		if(!$(this).hasClass('off-check'))
 		{
-			window.location.href ='/checkout'
+			window.location.href ='/select'
 		}
 	});
 	

@@ -40,6 +40,7 @@ class AdminLoginCTRL extends Controller
      */
     public function logout()
     {
+        LogsCTRL::add_to_log('Logout Admin');
     	Auth::logout();
         return Redirect::to('kitchen/login');
     }

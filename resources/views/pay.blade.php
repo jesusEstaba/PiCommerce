@@ -16,23 +16,7 @@
 							
 							@if($delivery)
 							<div class="divisor">
-								<div class="row">
-									
-									<div class="col-md-6">
-										<div class="">
-											<h2>Delivery</h2>
-											<img src="{{asset('images/logos/pizza_delivery_man.png')}}" height="100">
-										</div>
-										
-									</div>
-									
-									<div class="col-md-6">
-										<div class="">
-											<h2>Pick Up</h2>
-											<img src="{{asset('images/logos/horno.png')}}" height="100">
-										</div>
-									</div>
-								</div>
+								<h4>Delivery</h4>
 							</div>
 							
 							@else
@@ -97,31 +81,65 @@
 							</div>
 
 							<div class="divisor">
+								<h4>Coupon Code</h4>
+								<div class="form-group">
+									<input style="width:79%;display: inline-block;" name="code" placeholder="Code Here" class="form-control"></input>
+									<span id="code" class="btn btn-success" style="width: 20%">Use</span>
+									<label style="font-size: .9em; font-weight: 100;" class="text-muted">if you have a code I put it here to receive a discount.</label>
+								</div>
+
+							</div>
+
+							<div class="divisor">
 								<div class="totales">
 								<?php
 
 									$total_cart = (float)$total_in_cart;
-									
-									$total_to_pay = $total_cart;
-
 									$tax = (float)$tax;
-									$taxs = $total_cart * $tax / 100;
-
+									$fee = (float)$fee->Pf_Charge;
+									
 									if($delivery){
-										$total_to_pay += (float)$delivery_val->G_Value;
+										$delivery_val = (float)$delivery_val->G_Value;
 									}
 
-									$fee = (float)$fee->Pf_Charge;
+									$taxs = $total_cart * $tax / 100;
 
-									$total_to_pay += $taxs;
+									$total_to_pay = $total_cart + $taxs;
 								?>
-									<h4><b>Sub-Total: </b>${{round($total_cart, 2)}}</h4>
-									<h4><b>Tax: </b>${{round($taxs, 2)}}</h4>
+									<h4>
+										<b>Sub-Total: </b>
+										<span class="old-sub">
+											$
+											<span class="sub_total-price">{{round($total_cart, 2)}}</span>
+											
+										</span>
+										<b class="discount"></b>
+										
+									</h4>
+									<div class="mid-messages">
+										<h4>
+											<b>Coupon: </b>
+											$<span class="cupon-vprice">0.00</span>
+										</h4>
+									</div>
+									<h4>
+										<b>Tax: </b>$
+										<span data-tax="{{$tax}}" class="tax-price">{{round($taxs, 2)}}</span>
+									</h4>
 									@if($delivery)
-										<h4><b>Delivery: </b>${{round($delivery_val, 2)}}</h4>
+										<h4>
+											<b>Delivery: </b>$
+											<span class="delivery-price">{{round($delivery_val, 2)}}</span>
+										</h4>
 									@endif
-									<h4><b>Credit Card Processing Fee: </b>${{round($fee, 2)}}</h4>
-									<h3><b>Total: </b>${{round($total_to_pay, 2)}}</h3>
+									<h4 class="hide ccfee">
+										<b>Credit Card Processing Fee: </b>$
+										<span class="fee-price text-muted">{{round($fee, 2)}}</span>
+									</h4>
+									<h3 >
+										<b>Total: </b>$
+										<span class="total-price">{{round($total_to_pay, 2)}}</span>
+									</h3>
 								</div>
 							</div>
 
@@ -145,7 +163,7 @@
 							<br>
 							<div>
 								<a href="{{url('cart')}}" class="btn btn-default">Back to cart</a>
-								<a href="{{url('order_now')}}" class="btn btn-success">Order Now</a>
+								<a class="btn order_now btn-success">Order Now</a>
 							</div>
 						</div>
 					</div>
@@ -246,6 +264,7 @@
 		</div>
 	</div>
 </div>
+{!!Form::token()!!}
 <style type="text/css">
 	.prices p{
 		margin: 5px !important;
@@ -307,8 +326,133 @@
 		background: rgba(226, 145, 75, 0.62);
 	}
 
+	.super-discount{
+		text-decoration: line-through;
+	}
+
+	.discount{
+		padding-left: .3em;
+		color: red;
+	}
+	.old-sub{
+		transition: text-decoration .8s;
+	}
+
 </style>
 <script type="text/javascript">
+
+var disc = 0;
+var credit_card = false;
+
+
+function calcular(){
+	
+	var sub = Number( $('.sub_total-price').html() );
+	var delivery = 0
+	var fee = 0;
+	var total = 0;
+	var discount = 0;
+
+	if( $('.delivery-price').length )
+	{
+		delivery = Number( $('.delivery-price').html() );
+	}
+
+
+	if( !$('.fee-price').hasClass('text-muted') )
+	{
+		fee = Number( $('.fee-price').html() );
+	}
+
+	/*
+	$('.old-sub')
+	$('.mid-messages')
+	*/
+
+	console.log(delivery);
+
+	if(disc)
+	{
+		//$('.old-sub').addClass('super-discount');
+		discount = sub * disc / 100;
+		
+		$('.cupon-vprice').html(discount.toFixed(2) );
+		//append("<h3><b>Now: </b>"+);
+	}
+
+	var new_tax = ( sub - discount ) * Number( $('.tax-price').attr('data-tax') ) / 100;
+
+	total = ( sub - discount ) + new_tax + delivery + fee;
+	
+	$('.sub_total-price').html(sub);
+	$('.tax-price').html( new_tax.toFixed(2) );
+	$('.total-price').html( total.toFixed(2) );
+}
+
+
+
+$(function(){
+
+	$('.order_now').click(function(){
+
+		var card = credit_card;
+		var delivery = false;
+		var tips = false;
+
+
+		$.ajax(
+		{
+			url:'order_now',
+			type: 'POST',
+			dataType: 'json',
+			headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
+
+			data:{
+				card: card,
+				delivery: delivery,
+				tips: tips,
+			},
+
+		})
+		.done(function(data) {
+			if(data.status=="correct")
+			{
+				location.href="cart";
+			}
+		});
+	});
+
+
+
+	$('#code').click(function(){
+		
+		var code = $('[name=code]').val();
+
+		if(code)
+		{
+			$.get('/coupon/'+code, function(data) {
+				console.log(data);
+
+				if(data.discount)
+				{
+					disc = data.discount;
+					calcular();
+					$('[name=code]').val("");
+				}
+				else
+				{
+					alert('Code Invalid');
+				}
+			});
+			
+		}
+	});
+
+
+});
+
+
+
 	$('.glyphicon-usd').click(function(){
 		$('.glyphicon-usd')
 				.addClass('select-pay')
@@ -319,6 +463,11 @@
 				.removeClass('select-pay')
 				.parent()
 				.removeClass('select-pay');
+
+		$('.fee-price').addClass('text-muted');
+		$('.ccfee').addClass('hide');
+		calcular();
+		credit_card = false;
 
 			
 	});
@@ -333,6 +482,11 @@
 				.addClass('select-pay')
 				.parent()
 				.addClass('select-pay');
+
+		$('.fee-price').removeClass('text-muted');
+		$('.ccfee').removeClass('hide');
+		calcular();
+		credit_card = true;
 	});
 </script>
 

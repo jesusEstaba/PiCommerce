@@ -10,7 +10,8 @@ use DB;
 use Auth;
 use Carbon\Carbon;
 use Mail;
-
+use Session;
+use Input;
 
 class OrderCTRL extends Controller
 {
@@ -20,7 +21,37 @@ class OrderCTRL extends Controller
 	 */
     public static function create()
     {
-    	
+
+    	$hd_charge = 0;
+		$hd_tips = 0;
+		$hd_delivery = 0;
+		$hd_payform = 1;
+
+		if( Input::get('card') ){
+			
+			$fee = DB::table('payform')->select('Pf_Charge')->where('Pf_Id', 2)->first();
+
+			$hd_charge = (float)$fee->Pf_Charge;
+			$hd_payform = 2;
+		}
+
+		if( Input::get('delivery') ){
+			$hd_delivery = Input::get('delivery');
+		}
+
+		if( Input::get('tips') ){
+			$hd_tips = Input::get('tips');
+		}
+
+
+    	/*
+    	DEBERIA CARGAR ESTO POR AJAX
+    	 
+    	$hd_charge
+		$hd_tips
+		$hd_delivery
+		*/
+
     	$mytime = Carbon::now();
     	
     	$cart = CartCTRL::busq_cart();//sesion en vez de llamar al controller
@@ -44,7 +75,6 @@ class OrderCTRL extends Controller
     			->orderBy('cart.id')
     			->get();
 
-
     		if($total_cart2)
     			$total_cart2 = $total_cart2[0]->pizza;
     		else
@@ -56,10 +86,25 @@ class OrderCTRL extends Controller
     	{
     		$sub_total = 0.00;
     	}
-    	//
-    	#$total// es el sub total
     	
+    	#$total// es el sub total
 		$hd_discount = 0;
+		
+
+		if( Session::has('coupon_discount') )
+		{
+			$coupon_disc = (float) Session::get('coupon_discount');
+
+			$hd_discount = $sub_total * $coupon_disc / 100;
+
+			Session::forget('coupon_discount');
+		}
+		else
+		{
+			$coupon_disc = 0;
+		}
+
+
 
 		$tax = DB::table('taxes')->first();
 		$tax = (float)$tax->Tx_Base;
@@ -67,13 +112,9 @@ class OrderCTRL extends Controller
 		$hd_tax = ($sub_total-$hd_discount) * $tax/100;
 		$hd_tax = round($hd_tax, 2);
 
-		$hd_charge = 0;
-		$hd_tips = 0;
-		$hd_delivery = 0;
+		
     	
-    	$total_de_la_Orden = $sub_total + $hd_discount + $hd_tax + $hd_charge + $hd_tips + $hd_delivery;
-
-    	$total_de_la_Orden = round($total_de_la_Orden, 2);
+    	$total_de_la_Orden = ($sub_total - $hd_discount) + $hd_tax + $hd_charge + $hd_tips + $hd_delivery;
 
 		
 		if($total_de_la_Orden)
@@ -84,22 +125,22 @@ class OrderCTRL extends Controller
 				'Hd_Time' => $mytime,
 				'Hd_Customers' => Auth::user()->phone,
 				'Hd_User' => 96,#CAMBIAR//REGISTRO NO. 81 DE LA TABLA PASSWORD1
-				'Hd_Payform' => 1,#CAMBIAR//RELACION CON LA TABLA PAYFORM (1=CASH, 2=CARD) POR AHORA SOLO 2
-
+				'Hd_Payform' => $hd_payform,#CAMBIAR//RELACION CON LA TABLA PAYFORM (1=CASH, 2=CARD) POR AHORA SOLO 2
 				'Hd_Subtotal' => $sub_total,
-				
-				'Hd_Discount' => $hd_discount,
-				
+				'Hd_Discount' => round($hd_discount, 2),
 				'Hd_Tax' => $hd_tax,
-				
-				#'Hd_Charge' => $hd_charge,//CREDIT CARD PROCESSING FEE EL REGISTRO 2 DE LA TABLA PAYFORM EN EL CAMPO Pf_Charge
-				
-				#'Hd_Tips' => $hd_tips,//Tips over credit card, after sales
-				
-				#'Hd_Delivery' => $hd_delivery,DELIVERY CHARGE (LO QUE VENGA EN EL REGISTRO 5 DE LA TABLA PASSWORD1) O LO QUE VENGA EN EL REGISTRO DEL CLIENTE DENTRO DE LA TABLA CUSTOMERS > 0
-				
-				'Hd_Total' => $total_de_la_Orden,//TOTAL (LA SUMA DE Todos LOS CAMPOS ANTERIORES)
+				'Hd_Charge' => $hd_charge,//CREDIT CARD PROCESSING FEE
+				'Hd_Tips' => $hd_tips,//Tips over credit card, after sales
+				'Hd_Delivery' => $hd_delivery,//DELIVERY CHARGE
+				'Hd_Total' => round($total_de_la_Orden, 2),//TOTAL (LA SUMA DE Todos LOS CAMPOS ANTERIORES)
 			]);
+
+			if( Session::has('coupon_id') )
+			{
+
+				CouponsCTRL::use_coupon($id, Session::get('coupon_id'));
+				Session::forget('coupon_id');
+			}
 	    	
 	    	
 	    	foreach ($cart as $c_key => $product)
@@ -191,6 +232,8 @@ class OrderCTRL extends Controller
     	if( !isset($errors) )
     		$errors = "todo correcto <a href='cart'>Cart</a>";
 		
-		return $errors;
+		return response()->json(['status'=>'correct']);
     }
+
+
 }
