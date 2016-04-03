@@ -76,8 +76,11 @@
 											@endif
 											
 										</p>
+										
+									</div>
+									<div class="col-xs-12">
 										<span href="{{url('product/'.$name_cat_url.'/'.$valor->Sz_item)}}" class="btn btn-success price-abs">
-										{{$valor->Sz_Price}}$
+										${{$valor->Sz_Price}}
 										</span>
 									</div>
 								</div>

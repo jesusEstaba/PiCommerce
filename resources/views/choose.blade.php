@@ -41,17 +41,11 @@
 												{{$valor->It_Descrip}}
 											@endif
 										</h3>
-										<p>
-											@if( !empty($valor->description) )
-												{{$valor->description}}
-											@endif
-											
-										</p>
 										
 									</div>
 									<div class="col-xs-12">
 										<span href="{{url('product/feature/'.$valor->Sz_item)}}" class="btn btn-success price-abs">
-										{{$valor->Sz_Price}}$
+										${{$valor->Sz_Price}}
 										</span>
 									</div>
 								</div>
@@ -143,6 +137,13 @@
 	}
 	.title-type{
 		text-align: center;
+		margin-top: .3em;
+		margin-bottom: .5em;
+		height: 1em;
+
+		white-space: nowrap;
+	    overflow: hidden;
+	    text-overflow: ellipsis;
 	}
 </style>
 @stop
