@@ -271,6 +271,17 @@ class ItemCTRL extends Controller
             $respuesta = ['state'=>'Changed'];
         }
 
+        if( isset($request['item_feature']) )
+        {
+            $status  = (int)$request['status'];
+            
+            DB::table('items')
+                ->where('It_Id', $id)
+                ->update(['It_Feature'=>$status]);
+            
+            $respuesta = ['state'=>'Feat Changed'];
+        }
+
         if( isset($request['change_visible']) )
         {
             $status  = (int)$request['status'];
