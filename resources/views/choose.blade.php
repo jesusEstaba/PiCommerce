@@ -143,7 +143,7 @@
 		text-align: center;
 		margin-top: .3em;
 		margin-bottom: .5em;
-		height: 1em;
+		height: 1.2em;
 
 		white-space: nowrap;
 	    overflow: hidden;
