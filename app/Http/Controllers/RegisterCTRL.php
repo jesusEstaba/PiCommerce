@@ -32,6 +32,7 @@ class RegisterCTRL extends Controller
             !empty($request['first_name']) &&
             !empty($request['last_name']) &&
             !empty($request['street_number']) &&
+            !empty($request['zip_code']) &&
             !empty($request['street_name'])
     		)
     	{
@@ -67,11 +68,10 @@ class RegisterCTRL extends Controller
                     '' => $request['aparment_complex'], 
                     '' => $request['complex_name'], 
                     '' => $request['city'], 
-
-                    'Cs_ZipCode' => $request['zip_code'], 
-                    'Cs_Notes' => $request['special_directions'],
                     */
-                   'Cs_Birthday'=>$request['birthday']
+                    'Cs_ZipCode' => $request['zip_code'],
+                    'Cs_Notes' => $request['special_directions'],
+                    'Cs_Birthday'=>$request['birthday']
                 ]);
 
 

@@ -269,16 +269,25 @@ var streets = [
 			
 			if( !$('[name=email]').val() )
 				message += "<li>Email Empty</li>"; 
+			
 			if( !$('[name=phone]').val() )
 				message += "<li>Phone Empty</li>"; 
+			
 			if( !$('[name=first_name]').val() )
 				message += "<li>First name Empty</li>"; 
+			
 			if( !$('[name=last_name]').val() )
 				message += "<li>Last Name Empty</li>"; 
+			
 			if( !$('[name=street_number]').val() )
 				message += "<li>Street Number Empty</li>"; 
+			
 			if( !$('[name=street_name]').val() )
-				message += "<li>Street Name Empty</li>"; 
+				message += "<li>Street Name Empty</li>";
+
+			if( !$('[ name=zip_code]').val() )
+				message += "<li>Zip Code</li>"; 
+			
 			if(!$("[name=terms]:checked").length)
 				message += "<li>Accept the Terms and Conditions</li>"; 
 

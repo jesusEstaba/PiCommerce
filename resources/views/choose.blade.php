@@ -2,13 +2,41 @@
 
 @section('title', 'Choose')
 @section('content')
-<div class="container space">
+
+
+
+
+<section class="image-category"></section>
+	
+	<section class="name-category">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+					<ul class="hidden-xs">
+						@if($categorys)
+							@foreach($categorys as $category => $val)
+								<a href="{{url('category/'.$val->name_cat)}}"><li>{{$val->name}}</li></a>
+							@endforeach
+						@endif
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+
+
+
+
+<div class="container">
 	<div class="row">
 
 <div class="col-md-10 col-md-offset-1">
 
 
 @if($items)
+<h3 class="tab">Features Products</h3>
 <div class="well">
 <div class="elements">
 <div class="row">
@@ -66,8 +94,9 @@
 
 
 
-
+@if($categories)
 		<div class="col-md-10 col-md-offset-1">
+		<h3 class="tab">Categories</h3>
 			<div class="row">
 				
 				@foreach($categories as $arra => $cat)
@@ -90,10 +119,22 @@
 				
 			</div>
 		</div>
+	@endif
 	</div>
 </div>
 
 <style type="text/css">
+	.tab{
+		background: #008723;
+		border-radius: 3px;
+		box-shadow:0 2px 5px rgba(0,0,0,.3);
+		color:white;
+		padding-top: .3em;
+		padding-bottom: .3em;
+		text-align: center;
+		text-shadow: 1px 2px 5px rgba(0,0,0,.2);
+	}
+
 	.contenedor-image{
 		max-width: 300px;
 		margin-left: auto;
