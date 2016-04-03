@@ -21,36 +21,36 @@ class OrderCTRL extends Controller
 	 */
     public static function create()
     {
-
     	$hd_charge = 0;
 		$hd_tips = 0;
 		$hd_delivery = 0;
 		$hd_payform = 1;
 
-		if( Input::get('card') ){
-			
-			$fee = DB::table('payform')->select('Pf_Charge')->where('Pf_Id', 2)->first();
+		if( Input::get('card')==='true' )
+		{	
+			$fee = DB::table('payform')
+				->select('Pf_Charge')
+				->where('Pf_Id', 2)
+				->first();
 
 			$hd_charge = (float)$fee->Pf_Charge;
 			$hd_payform = 2;
 		}
 
-		if( Input::get('delivery') ){
-			$hd_delivery = Input::get('delivery');
+		if( Input::get('delivery')==='true' ){
+			$delivery_val = DB::table('password1')
+				->select('G_Value')
+				->where('G_Id', 5)
+				->first();
+			
+			$hd_delivery = (float)$delivery_val->G_Value;
 		}
 
-		if( Input::get('tips') ){
-			$hd_tips = Input::get('tips');
+		if( Input::get('tips')==='true' ){
+			$tip = (float)Input::get('tip');
+			$tip = round($tip, 2);
+			$hd_tips = $tip;
 		}
-
-
-    	/*
-    	DEBERIA CARGAR ESTO POR AJAX
-    	 
-    	$hd_charge
-		$hd_tips
-		$hd_delivery
-		*/
 
     	$mytime = Carbon::now();
     	
