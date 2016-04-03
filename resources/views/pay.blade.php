@@ -224,7 +224,7 @@
 									
 									$delivery_value = 0;
 
-									if($delivery){
+									if($delivery && $select=='delivery'){
 										$delivery_value = (float)$delivery_val->G_Value;
 									}
 
@@ -252,10 +252,14 @@
 										<b>Tax: </b>$
 										<span data-tax="{{$tax}}" class="tax-price">{{round($taxs, 2)}}</span>
 									</h4>
-									@if($delivery)
+									@if($select=='delivery' && $delivery)
 										<h4>
 											<b>Delivery: </b>$
 											<span class="delivery-price">{{round($delivery_value, 2)}}</span>
+										</h4>
+										<h4>
+											<b>Gruatity: </b>$
+											<input style="width:20%;display: inline-block;" name="tips" placeholder="tip" class="form-control"></input>
 										</h4>
 									@endif
 									<h4 class=" ccfee">
@@ -503,7 +507,9 @@ var credit_card = true;
 var pay = false;
 var good_card = false;
 
+
 var DELIVERY = false;
+
 if( $('.delivery-price').length )
 {
 	DELIVERY = true;
@@ -514,14 +520,15 @@ if( $('.delivery-price').length )
 function calcular(){
 	
 	var sub = Number( $('.sub_total-price').html() );
-	var delivery = 0;
+	var delivery_price = 0;
 	var fee = 0;
 	var total = 0;
 	var discount = 0;
+	var tip = 0;
 
 	if( $('.delivery-price').length )
 	{
-		delivery = Number( $('.delivery-price').html() );
+		delivery_price = Number( $('.delivery-price').html() );
 	}
 
 
@@ -535,7 +542,13 @@ function calcular(){
 	$('.mid-messages')
 	*/
 
-	console.log(delivery);
+	if( $('[name=tips]').length ){
+		if( Number( $('[name=tips]').val() ) > 0)
+		{
+			tip = Number( Number( $('[name=tips]').val() ).toFixed(2) );
+		}
+		
+	}
 
 	if(disc)
 	{
@@ -548,17 +561,21 @@ function calcular(){
 
 	var new_tax = ( sub - discount ) * Number( $('.tax-price').attr('data-tax') ) / 100;
 
-	total = ( sub - discount ) + new_tax + delivery + fee;
+	total = ( sub - discount ) + new_tax + delivery_price + fee + tip;
 	
 	$('.sub_total-price').html(sub);
 	$('.tax-price').html( new_tax.toFixed(2) );
 	$('.total-price').html( total.toFixed(2) );
+	debugger;
 }
 
 
 
 $(function(){
 
+	$('[name=tips]').change(function(){
+		calcular();
+	});
 
 	$('.verify').click(function(){
 		if(
@@ -569,6 +586,7 @@ $(function(){
 			$("[name=cvv]").val()
 		){
 			good_card = true;
+			pay = true;
 			alert('verified credit card');
 		}
 		else
@@ -615,13 +633,25 @@ $(function(){
 	});
 
 	$('.order_now').click(function(){
+		calcular();
 
 		var card = credit_card;
 		var delivery = DELIVERY;
 		var tips = false;
+		var tip = 0;
+
+		if( $('[name=tips]').length )
+		{
+			if( Number( $('[name=tips]').val() ) > 0)
+			{
+				tip = Number( Number( $('[name=tips]').val() ).toFixed(2) );
+				tips = true;
+			}
+		}
 
 		if(pay)
 		{
+			debugger;
 			$.ajax(
 			{
 				url:'/order_now',
@@ -633,6 +663,7 @@ $(function(){
 					card: card,
 					delivery: delivery,
 					tips: tips,
+					tip:tip,
 				},
 
 			})
@@ -659,7 +690,6 @@ $(function(){
 		if(code)
 		{
 			$.get('/coupon/'+code, function(data) {
-				console.log(data);
 
 				if(data.discount)
 				{

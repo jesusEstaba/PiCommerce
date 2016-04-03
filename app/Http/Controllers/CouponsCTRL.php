@@ -44,7 +44,7 @@ class CouponsCTRL extends Controller
     {
         $cupon = DB::table('coupons')
             ->where('code', 'like',$code_coupon)
-            ->where('rot', '>=', \Carbon\Carbon::now()->format('d-m-Y'))
+            ->where('rot', '>=', \Carbon\Carbon::now())
             ->first();
         return $cupon;
     }
@@ -87,14 +87,14 @@ class CouponsCTRL extends Controller
      */
     public function index()
     {
-        $coupons = DB::table('coupons_logs')
-            ->join('coupons', 'coupons_logs.coupon_id', '=', 'coupons.id')
+        $coupons = DB::table('coupons')
+            ->leftJoin('coupons_logs', 'coupons_logs.coupon_id', '=', 'coupons.id')
             ->select(
                 'coupons.id' ,
                 'coupons.code' ,
                 'coupons.discount' ,
                 'coupons.rot',
-                 DB::raw('coupons_logs.coupon_id, count(*) used')
+                 DB::raw('count(coupons_logs.coupon_id) used')
             )
             ->groupBy('coupons_logs.coupon_id')
             ->paginate(15);
@@ -124,13 +124,15 @@ class CouponsCTRL extends Controller
     {
         if( !empty($request['code']) && !empty($request['disc']) && !empty($request['date']) )
         {
-            DB::table('coupons')->insert([
+            $id_cupon = DB::table('coupons')->insertGetId([
                 'code' => $request['code'],
                 'discount' => $request['disc'],
                 'rot' => $request['date'],
                 'created_at' => \Carbon\Carbon::now(),
             ]);
-            return response()->json("New Coupon");
+            if($id_cupon)
+                return response()->json("New Coupon");
+            return response()->json("Coupon Error");
         }
 
         return response()->json("error");
