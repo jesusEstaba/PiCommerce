@@ -9,6 +9,7 @@
 
 
 @if($items)
+<div class="well">
 <div class="elements">
 <div class="row">
 @foreach($items as $item => $valor)
@@ -55,7 +56,9 @@
 				@endforeach
 			</div>
 		</div>
-		@endif
+	</div>
+@endif
+
 </div>
 
 
@@ -68,8 +71,9 @@
 			<div class="row">
 				
 				@foreach($categories as $arra => $cat)
-					<div class="col-xs-12 col-sm-6 col-md-3 category-choose">
-						<a href="{{url('category/'.$cat->name_cat)}}">
+					<div class="col-xs-12 col-sm-6 col-md-3 ">
+						<div class="category-choose">
+							<a href="{{url('category/'.$cat->name_cat)}}">
 							<div class="contenedor-image">
 								<!-- class="text-choose" -->
 								<h3>{{$cat->name}}</h3>
@@ -80,6 +84,7 @@
 								<img src="{{asset('images/category/'.$cat->image)}}" alt="choose" class="img-responsive choose">
 							</div>
 						</a>
+						</div>
 					</div>
 				@endforeach
 				
@@ -90,7 +95,6 @@
 
 <style type="text/css">
 	.contenedor-image{
-		height: 200px;
 		max-width: 300px;
 		margin-left: auto;
 		margin-right: auto;
