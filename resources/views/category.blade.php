@@ -9,6 +9,9 @@
 		background:url("{{asset('images/banners/'.$banner)}}") center center fixed no-repeat;
 		background-size:cover; 
 	}
+	h2.title{
+		padding-top: 1.2em;
+	}
 </style>
 @endif
 

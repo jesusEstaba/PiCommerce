@@ -17,7 +17,10 @@
 			?>
 		<div class="container">
 			@if($config->logo)
-				<img src="{{asset('images/logos/'.$config->logo)}}" alt="logo" class="logo">
+				<a href="{{url('choose')}}">
+					<img src="{{asset('images/logos/'.$config->logo)}}" alt="logo" class="logo">
+				</a>
+				
 			@endif
 		</div>
 	</nav>

@@ -50,9 +50,16 @@ class ChooseCTRL extends Controller
 
 
 
+                    $categorys = DB::table('category')
+            ->where('Status', 0)
+            ->select('name', 'name_cat')
+            ->get();
 
 
-
-        return view('choose')->with(['categories'=>$categories, 'items'=>$items]);
+        return view('choose')->with([
+            'categories'=>$categories, 
+            'items'=>$items,
+            'categorys'=>$categorys
+            ]);
     }
 }

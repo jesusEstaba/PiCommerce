@@ -17,7 +17,7 @@ class PayCTRL extends Controller
 	 * [index description]
 	 * @return [type] [description]
 	 */
-    public function index()
+    public function index($select='')
     {
     	$cart = CartCTRL::busq_cart();//Session = $cart -> to OrderCTRL
     	
@@ -49,9 +49,9 @@ class PayCTRL extends Controller
 
         $arrival_date = Carbon::now();
 
-        $arrival_date;
 
     	return view('pay')->with([
+            'select'=>$select,
             'arrival_date'=>$arrival_date,
             'fee'=>$fee,
             'delivery_val'=>$delivery_val,
