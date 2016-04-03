@@ -13,12 +13,19 @@
 			<div class="col-xs-12">
 				<h2 id="id_item" id-item="{{$item->It_Id}}">
 				<span class="title-item">{{$item->It_Descrip}}</span>
-				<span class="glyphicon edit-item glyphicon-pencil btn btn-default"></span>
+				<span class="glyphicon edit-item glyphicon-pencil btn btn-primary"></span>
 				
 				@if(!$item->It_Status)
 				<span class="glyphicon visible-sta item-status glyphicon-eye-open btn btn-info"></span>
 				@else
 				<span class="glyphicon visible-sta item-status glyphicon-eye-close btn btn-danger"></span>
+				@endif
+
+
+				@if($item->It_Feature)
+					<span class="btn btn-warning glyphicon item-feature glyphicon glyphicon-star"></span>
+				@else
+					<span class="btn btn-default glyphicon item-feature glyphicon glyphicon-star"></span>
 				@endif
 				</h2>
 			</div>
@@ -402,6 +409,17 @@
 		}
 	});
 
+
+	$('.item-feature').click(function(){
+		$(this)
+			.toggleClass('btn-default')
+			.toggleClass('btn-warning')
+	});
+
+
+
+	
+
 	$('.status').click(function(){
 		var status = 0;
 
@@ -436,12 +454,23 @@
 			dataType: 'json',
 			headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
 			data: {item_visible: "visible", status:status},
-		})
-		.done(function(data) {
+		});
+		
+	});
 
-		})
-		.fail(function() {
-			console.log("error");
+
+	$('.item-feature').click(function(){
+		var status = 0;
+
+		if( $(this).hasClass('btn-warning') )
+			status = 1
+
+		$.ajax({
+			url: $('#id_item').attr('id-item'),
+			type: 'PUT',
+			dataType: 'json',
+			headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
+			data: {item_feature: "visible", status:status},
 		});
 		
 	});
