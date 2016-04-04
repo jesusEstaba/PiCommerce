@@ -25,9 +25,9 @@ class ResetPasswordCTRL extends Controller
 	    return 'invalid token';	
 	}
 
-	public function index()
+	public function index($user_mail)
 	{
-		$user_mail = Auth::user()->email;
+		//$user_mail = Auth::user()->email;
 	    $day = Carbon::now();
 	    $token_reset = md5( $user_mail . $day  );
 
