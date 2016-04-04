@@ -17,11 +17,12 @@ class SendMailCTRL extends Controller
      */
     public function send_mail()
     {
-    	       
-        $variables_correo = ['me_le_ponen'=>'gas del bueno'];
-
+    	    /*   
+    
         $correos = ['jeec.estaba@gmail.com', 'estaba_jesus@hotmail.com'];
-
+        
+        $variables_correo = ['me_le_ponen'=>'gas del bueno'];
+        
         Mail::send('template_mail.prueba', $variables_correo, function($msj) use ($correos)
         {
             $msj->subject('Order');
@@ -41,6 +42,6 @@ class SendMailCTRL extends Controller
         if( !isset($errors) )
             $errors = "todo correcto <a href='cart'>Cart</a>";
 
-        return $errors;
+        return $errors;*/
     }
 }

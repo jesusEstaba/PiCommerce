@@ -200,26 +200,37 @@ class OrderCTRL extends Controller
 			//AÑADIENDO LOG DE LA IP
 			LogCTRL::addToLog(5);
 			
+			
 			//ENVIAR CORREOS
-			/*
-			$variables_correo = ['me_le_ponen'=>'gas del bueno'];
+			$correos = DB::table('emails_admin')->get();
+			$mail_user = Auth::user()->email;
 
-			Mail::send('template_mail.prueba', $variables_correo, function($msj)
-			{
-            	$msj->subject('Order');
-            	$msj->from(env('MAIL_ADDRESS'), env('MAIL_NAME'));
-            	$msj->to('jeec.estaba@gmail.com');
-            });
-            
-            if(count(Mail::failures()))
-            {
-            	$errors = 'Failed to send password reset email, please try again.';
-            }
-			*/
-		}
+	        
+	        $variables_correo = [];
+	        
+	        //$cart
+	        
+	        Mail::send('mail_template.order', $variables_correo, function($msj) use ($correos, $mail_user)
+	        {
+	            $msj->subject('Order');
+	            $msj->from(env('MAIL_ADDRESS'), env('MAIL_NAME'));
+	            
+	            $msj->to($mail_user);
 
-    	if( !isset($errors) )
-    		$errors = "todo correcto <a href='cart'>Cart</a>";
+	            foreach($correos as $array => $admin)
+	            {
+	                $msj->to($admin->email);
+	            }
+	        });
+
+	        if( $error_num_mail = count( Mail::failures() ) )
+	        {
+	            $errors = 'Failed to send ('.$error_num_mail.') email.';
+	        }
+	        
+	        if( !isset($errors) )
+	            $errors = "todo correcto <a href='cart'>Cart</a>";
+			}
 		
 		return response()->json(['status'=>'correct']);
     }

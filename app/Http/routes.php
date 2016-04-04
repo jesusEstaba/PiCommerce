@@ -17,16 +17,38 @@ Route::get('/', function ()
     return redirect()->to('login');
 });
 
+/*
+
+Route::get('/template/order', function ()
+{
+
+    return view('mail_template.order')->with([
+
+    ]);
+});
+
+Route::get('/template/reset', function ()
+{
+    $config = DB::table('config')->first();
+
+    return view('mail_template.reset_password')->with([
+        'logo' => $config->logo,
+        'footer'=> $config->footer,
+        'title'=>'Reset Password',
+        'token_reset'=> md5('123456789'),
+    ]);
+});
+
+*/
+
+#Route::get('/sendmail', 'SendMailCTRL@send_mail')
 
 Route::get('/now', 'CloseCTRL@now');
 
 
 Route::get('/closed', 'CloseCTRL@index');
 
-//middleware Hora
-
-Route::get('/sendmail', 'SendMailCTRL@send_mail');
-
+;
 
 Route::group(['middleware'=>'hora'], function()
 {
@@ -66,7 +88,8 @@ Route::group(['middleware'=>'hora'], function()
         Route::get('/total_price_cart', 'CartCTRL@total_price');
         Route::get('/delete/item/{id}', 'CartCTRL@delete');
         
-        
+        Route::get('/reset/{token_pass}', 'ResetPasswordCTRL@tokenPass');
+        Route::get('/reset', 'ResetPasswordCTRL@index');
 
         Route::get('/checkout/{select?}', 'PayCTRL@index');
         Route::post('/order_now', 'OrderCTRL@create');
