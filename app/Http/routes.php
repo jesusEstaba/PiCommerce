@@ -126,5 +126,6 @@ Route::group(['prefix'=>'kitchen'], function()
         Route::resource('coupons', 'CouponsCTRL');
         Route::resource('config', 'ConfigCTRL');
         Route::resource('logs', 'LogCTRL');
+        Route::resource('emails', 'EmailAdminCTRL');
     });
 });
