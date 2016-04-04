@@ -92,15 +92,15 @@
 
       	<div class="form-group">
       		<label>Code: </label>
-	      <input type="text" class="form-control" name="code" placeholder="Name Group" autocomplete="off">
+	      <input type="text" class="form-control" name="code" placeholder="Code" autocomplete="off">
 	    </div>
     <div class="form-group">
       		<label>Discount:</label>
-	      <input type="text" class="form-control" name="disc" placeholder="Name Group" autocomplete="off">
+	      <input type="text" class="form-control" name="disc" placeholder="%" autocomplete="off">
 	    </div>
 	    <div class="form-group">
       		<label>Expiration Date:</label>
-	      <input type="text" class="form-control" name="date" placeholder="Name Group" autocomplete="off">
+	      <input type="text" class="form-control" name="date" placeholder="Y-m-d" autocomplete="off">
 	    </div>
 
         
