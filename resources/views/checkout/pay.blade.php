@@ -566,7 +566,7 @@ function calcular(){
 	$('.sub_total-price').html(sub);
 	$('.tax-price').html( new_tax.toFixed(2) );
 	$('.total-price').html( total.toFixed(2) );
-	debugger;
+	
 }
 
 
@@ -651,7 +651,7 @@ $(function(){
 
 		if(pay)
 		{
-			debugger;
+			
 			$.ajax(
 			{
 				url:'/order_now',

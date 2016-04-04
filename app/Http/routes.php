@@ -17,7 +17,7 @@ Route::get('/', function ()
     return redirect()->to('login');
 });
 
-/*
+
 
 Route::get('/template/order', function ()
 {
@@ -26,7 +26,7 @@ Route::get('/template/order', function ()
 
     ]);
 });
-
+/*
 Route::get('/template/reset', function ()
 {
     $config = DB::table('config')->first();
