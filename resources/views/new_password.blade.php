@@ -36,9 +36,11 @@
 						pass:$('[name=pass]').val()
 					},
 				})
-				.done(function() {
-					alert('success');
-					console.log("success");
+				.done(function(data) {
+					if(data == 'Password Changed!')
+					{
+						window.location.href = "/";
+					}
 				});
 				
 			}	

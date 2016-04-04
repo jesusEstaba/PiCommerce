@@ -200,7 +200,7 @@ class OrderCTRL extends Controller
 			//AÑADIENDO LOG DE LA IP
 			LogCTRL::addToLog(5);
 			
-			
+
 			//ENVIAR CORREOS
 			$correos = DB::table('emails_admin')->get();
 			$mail_user = Auth::user()->email;
@@ -209,8 +209,16 @@ class OrderCTRL extends Controller
 	        $variables_correo = [];
 	        
 	        //$cart
+	        //
+	        Mail::send('mail_template.order', $variables_correo, function($msj) use ($mail_user)
+	        {
+	            $msj->subject('Order');
+	            $msj->from(env('MAIL_ADDRESS'), env('MAIL_NAME'));
+	            
+	            $msj->to($mail_user);    
+	        });
 	        
-	        Mail::send('mail_template.order', $variables_correo, function($msj) use ($correos, $mail_user)
+	        Mail::send('mail_template.order', $variables_correo, function($msj) use ($correos)
 	        {
 	            $msj->subject('Order');
 	            $msj->from(env('MAIL_ADDRESS'), env('MAIL_NAME'));
