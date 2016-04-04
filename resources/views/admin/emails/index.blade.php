@@ -8,7 +8,7 @@
 		<h2>Emails Admin <span class="glyphicon glyphicon-plus btn btn-success new"></span></h2>
 	</div>
 	<div class="box-body">
-		@if( count($mails) )
+		@if( count($emails) )
 		<div class="row">
 			<div class="col-sm-12">
 				<table class="table table-bordered table-striped dataTable">
@@ -20,7 +20,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						@foreach($mails as $arra => $admin)
+						@foreach($emails as $arra => $admin)
 						<tr>
 							<td>
 								{{$admin->email}}
