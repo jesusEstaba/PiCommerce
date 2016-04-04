@@ -167,6 +167,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </a>
             </li>
 
+            <li id="email">
+              <a href="{{url('kitchen/emails')}}">
+                <i  class="fa fa-envelope-o">
+                </i>
+                <span>Emails
+                </span>
+              </a>
+            </li>
+
             <li id="logs">
               <a href="{{url('kitchen/logs')}}">
                 <i  class="fa fa-book">
