@@ -9,21 +9,32 @@ use Pizza\Http\Controllers\Controller;
 use DB;
 
 
-class LogsCTRL extends Controller
+class LogCTRL extends Controller
 {
     /**
      * [add_to_log description]
      * @param [type] $action [description]
      */
-    public static function add_to_log($action)
+    public static function addToLog($action)
     {
         if( \Auth::check() )
         {
+            $ip = $_SERVER['REMOTE_ADDR'];
+            $query = @unserialize(file_get_contents('http://ip-api.com/php/'.$ip));
+            
+            $ISP = '';
+
+            if($query && $query['status'] == 'success')
+            {
+              $ISP = $query['isp'];
+            }
+
             DB::table('ip_logs_user')->insert([
                 'id_user'=> \Auth::user()->id,
-                'ip'=> $_SERVER['REMOTE_ADDR'],
+                'ip'=> $ip,
                 'created_at'=>\Carbon\Carbon::now(),
-                'action'=>$action
+                'action'=>$action,
+                'ISP'=>$ISP,
             ]);
         }
     }

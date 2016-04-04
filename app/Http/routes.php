@@ -51,27 +51,27 @@ Route::group(['middleware'=>'hora'], function()
         return redirect()->back();
     });
 
+    Route::get('/select', 'PayCTRL@select');
+    
+    Route::get('/checkout/quick', function(){
+        return "quick";
+    });
 
     //Rutas Sesion
 
     Route::group(['middleware'=>'auth'], function()
     {
-
-
+        //Route::get('/select', 'PayCTRL@select');//borrar vista y metodo()
         Route::get('/cart', 'CartCTRL@index');
         Route::get('/total_price_cart', 'CartCTRL@total_price');
         Route::get('/delete/item/{id}', 'CartCTRL@delete');
         
-        Route::get('/select', 'PayCTRL@select');//borrar vista y metodo()
+        
 
         Route::get('/checkout/{select?}', 'PayCTRL@index');
         Route::post('/order_now', 'OrderCTRL@create');
         Route::get('/order_now', function(){
             return redirect()->back();
-        });
-
-        Route::get('/select', function(){
-            return view('selection');
         });
 
         Route::get('/coupon/{coupon}', 'CouponsCTRL@return_discount');
