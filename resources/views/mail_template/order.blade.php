@@ -181,7 +181,7 @@ Version: 1.0
 		<!-- end header -->
 		<!-- 1/1 Content -->
 	<div>
-		{{$data_n}}
+		<h1>Data</h1>
 	</div>
 		<!-- end 1/1 Content -->
 		
