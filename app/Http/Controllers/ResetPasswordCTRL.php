@@ -54,7 +54,7 @@ class ResetPasswordCTRL extends Controller
 
 		Mail::send('mail_template.reset_password', $variables_correo, function($msj) use ($user_mail)
         {
-            $msj->subject('Order');
+            $msj->subject('Reset Password');
             $msj->from(env('MAIL_ADDRESS'), env('MAIL_NAME'));
             
             $msj->to($user_mail);
