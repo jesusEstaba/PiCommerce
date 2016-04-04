@@ -206,7 +206,7 @@ class OrderCTRL extends Controller
 			$mail_user = Auth::user()->email;
 
 	        
-	        $variables_correo = [];
+	        $variables_correo = ['cart'=>$cart ];
 	        
 	        //$cart
 	        //

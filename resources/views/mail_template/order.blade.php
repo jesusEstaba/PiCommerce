@@ -180,39 +180,55 @@ Version: 1.0
 		</table>
 		<!-- end header -->
 		<!-- 1/1 Content -->
-		<table bgcolor="#FFFFFF" align="center" width="100%" border="0" cellspacing="0" cellpadding="0">
-			<tr>
-				<td align="center">
-					<table align="center" class="table600" width="600" border="0" cellspacing="0" cellpadding="0">
-						<tr>
-							<td height="60"></td>
-						</tr>
-						<tr>
-							<td style="border-top:1px dotted #000000" height="20"></td>
-						</tr>
-						<!-- title -->
-						<tr>
-							<td align="left" style="font-family: 'Open Sans', Arial, sans-serif; color:#3b3b3b; font-size:18px; font-weight: bold; line-height:28px;">{headline}</td>
-						</tr>
-						<!-- end title -->
-						<tr>
-							<td height="10"></td>
-						</tr>
-						<!-- content -->
-						<tr>
-							<td align="left" style="font-family: 'Open Sans', Arial, sans-serif; color:#7f8c8d; font-size:13px; line-height:28px;">
-								<multi label="content">{content}</multi>
-								<br>
-								<multi label="notification">{notification}</multi>
-								<br>
-								<multi label="copyright">{copyright}</multi>
-							</td>
-						</tr>
-						<!-- end content -->
-					</table>
-				</td>
-			</tr>
-		</table>
+	<div>
+		@foreach($cart as $array => $campo)
+						<h4 class="titulo-product">
+
+							<div class="row">
+								<div class="col-xs-2">
+									<b class="text-descrip-product">{{ $campo->quantity }}</b>
+								</div>
+								<div class="col-xs-7">
+									<span> {{$campo->It_Descrip or $campo->Sz_Abrev}}</span>
+								</div>
+								<div class="col-xs-3">
+									<span class="pull-right">${{$campo->Sz_Price}}</span>
+								</div>
+							</div>							
+							
+						</h4>
+						
+						<div class="row">
+							<div class="col-xs-10 col-xs-offset-2">
+								<?php //$total_price_top = 0;?>
+								@foreach($campo->toppings_list as $tab => $val)
+									<?php
+									if($val->size==1)
+										$size_topping = "";
+									elseif($val->size==2)
+										$size_topping = " [left]";
+									elseif($val->size==3)
+										$size_topping = " [rigth]";
+									elseif($val->size==4)
+										$size_topping = " [extra]";
+									elseif($val->size==5)
+										$size_topping = " [lite]";
+									else
+										$size_topping = "";
+									?>
+
+									<h5 class="text-muted">
+										<span><b>{{strtolower($val->Tp_Descrip).$size_topping}}</b></span>
+										<span class="pull-right">
+											@if($val->price > 0)
+												${{$val->price}}
+											@endif
+										</span>
+									</h5>
+									<?php //$total_price_top += $val->price;?>
+
+								@endforeach
+	</div>
 		<!-- end 1/1 Content -->
 		
 		<!-- footer -->
