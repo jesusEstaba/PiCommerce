@@ -29,7 +29,7 @@ class SendMailCTRL extends Controller
             
             foreach($correos as $email)
             {
-                $message->to($email);
+                $msj->to($email);
             }
         });
 
