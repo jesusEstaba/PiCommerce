@@ -35,10 +35,9 @@
 		footer a{
 			text-decoration: none;
 			color:#587D20;
-			margin-bottom: 2em;
 		}
 		header{
-			padding-top: 1em;
+			margin-top: 4em;
 		}
 		header>img{
 			display: block;
@@ -68,18 +67,17 @@
 			font-size: .8em;
 		}
 
-
-
 	</style>
 </head>
 <body>
-	<div style="background: #91C444;width: 100%;
-			max-width: 500px;
-			margin-left: auto;
-			margin-right: auto;">
+	<div style="background: #91C444;">
 		<header>
 		<img src="{{asset('images/logos/'.$logo)}}" alt="logo">
 	</header>
+	<div style="width: 100%;
+			max-width: 500px;
+			margin-left: auto;
+			margin-right: auto;">
 		
 		<section>
 			<h1>Reset Your Password</h1>
@@ -102,11 +100,8 @@
 		<footer>
 			{!!$footer!!}
 		</footer>
-
 	</div>
 	</div>
-	<div style="width: 100%;height: 50px;">
-		
-	</div>
+	
 </body>
 </html>
