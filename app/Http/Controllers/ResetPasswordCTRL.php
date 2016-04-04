@@ -9,6 +9,7 @@ use Pizza\Http\Controllers\Controller;
 use Auth;
 use DB;
 use Carbon\Carbon;
+use Mail;
 
 class ResetPasswordCTRL extends Controller
 {
