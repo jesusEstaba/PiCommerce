@@ -17,7 +17,7 @@ class EmailAdminCTRL extends Controller
      */
     public function index()
     {
-        $groups = DB::table('emails_admin')
+        $emails = DB::table('emails_admin')
             ->orderBy('id', 'desc')
             ->get();
         
