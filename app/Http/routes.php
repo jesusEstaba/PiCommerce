@@ -67,19 +67,21 @@ Route::group(['middleware'=>'hora'], function()
 
     Route::get('/product/{cat}/{id}/{sub?}', 'ProductCTRL@index');
 
-
     Route::post('/add_to_cart_ajax', 'CartCTRL@add_ajax');
     Route::get('/add_to_cart_ajax', function(){
         return redirect()->back();
     });
-
     Route::get('/select', 'PayCTRL@select');
-    
     Route::get('/checkout/quick', function(){
         return "quick";
     });
 
-    //Rutas Sesion
+    Route::group(['prefix'=>'reset'], function()
+    {
+        Route::get('/{token_pass}', 'ResetPasswordCTRL@tokenPass');
+        Route::get('/to/{user_mail}', 'ResetPasswordCTRL@index');
+    });
+    
 
     Route::group(['middleware'=>'auth'], function()
     {
@@ -88,8 +90,7 @@ Route::group(['middleware'=>'hora'], function()
         Route::get('/total_price_cart', 'CartCTRL@total_price');
         Route::get('/delete/item/{id}', 'CartCTRL@delete');
         
-        Route::get('/reset/{token_pass}', 'ResetPasswordCTRL@tokenPass');
-        Route::get('/reset', 'ResetPasswordCTRL@index');
+        
 
         Route::get('/checkout/{select?}', 'PayCTRL@index');
         Route::post('/order_now', 'OrderCTRL@create');
