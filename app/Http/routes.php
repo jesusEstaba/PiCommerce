@@ -99,6 +99,6 @@ Route::group(['prefix'=>'kitchen'], function()
         Route::resource('orders', 'OrdersCTRL');
         Route::resource('coupons', 'CouponsCTRL');
         Route::resource('config', 'ConfigCTRL');
-        Route::resource('logs', 'LogsCTRL');
+        Route::resource('logs', 'LogCTRL');
     });
 });

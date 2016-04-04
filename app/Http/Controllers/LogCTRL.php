@@ -88,6 +88,7 @@ class LogCTRL extends Controller
     {
         $logs = DB::table('ip_logs_user')
             ->where('id_user', $id)
+            ->orderBy('id', 'desc')
             ->paginate(5);
 
         $user = DB::table('users')
