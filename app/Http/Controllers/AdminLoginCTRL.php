@@ -24,7 +24,7 @@ class AdminLoginCTRL extends Controller
 
     		if( Auth::attempt(['email'=>$request['email'], 'password'=>$request['password'] ]) )
 	    	{
-                LogsCTRL::add_to_log('Login Admin');
+                LogCTRL::addToLog(3);
 				return Redirect::to('kitchen');	
 	    	}
 
@@ -40,7 +40,7 @@ class AdminLoginCTRL extends Controller
      */
     public function logout()
     {
-        LogsCTRL::add_to_log('Logout Admin');
+        LogCTRL::addToLog(4);
     	Auth::logout();
         return Redirect::to('kitchen/login');
     }

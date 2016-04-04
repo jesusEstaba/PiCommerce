@@ -39,7 +39,7 @@ class LoginCTRL extends Controller
     {
     	if( Auth::attempt(['email'=>$request['email'], 'password'=>$request['password'] ]) )
     	{
-            LogsCTRL::add_to_log('Login');
+            LogCTRL::addToLog(1);
 			return Redirect::to('cart');	
     	}
 
@@ -53,7 +53,7 @@ class LoginCTRL extends Controller
      */
     public function logout()
     {
-        LogsCTRL::add_to_log('Logout');
+        LogCTRL::addToLog(2);
     	Auth::logout();
         return Redirect::to('login');
     }
