@@ -22,11 +22,15 @@ class SendMailCTRL extends Controller
 
         $correos = ['jeec.estaba@gmail.com', 'estaba_jesus@hotmail.com'];
 
-        Mail::send('template_mail.prueba', $variables_correo, function($msj)
+        Mail::send('template_mail.prueba', $variables_correo, function($msj) use ($correos)
         {
             $msj->subject('Order');
             $msj->from(env('MAIL_ADDRESS'), env('MAIL_NAME'));
-            $msj->to($correos);
+            
+            foreach($correos as $email)
+            {
+                $message->to($email);
+            }
         });
 
         if(count(Mail::failures()))
