@@ -97,7 +97,7 @@ $(function(){
 			if("New Mail"==data)
 			{
 				console.log(data);
-				$('tbody').prepend('<tr><td>'+$("[name=name]").val()+'</td><td>0</td></tr>');
+				$('tbody').prepend('<tr><td>'+$("[name=name]").val()+'</td></tr>');
 				
 				$("[name=name]").val("");
 			}
