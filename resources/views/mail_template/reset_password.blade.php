@@ -37,7 +37,7 @@
 			color:#587D20;
 		}
 		header{
-			margin-top: 10em;
+			margin-top: 4em;
 		}
 		header>img{
 			display: block;
@@ -70,7 +70,8 @@
 	</style>
 </head>
 <body>
-	<header>
+	<div style="background: #91C444;">
+		<header>
 		<img src="{{asset('images/logos/'.$logo)}}" alt="logo">
 	</header>
 	<div class="container">
@@ -82,7 +83,13 @@
 			</p>
 			
 			<div>
-				<a class="btn pull-right" target="_blank" href="{{url('/reset/'.$token_reset)}}">Reset</a>
+				<a style="display: inline-block;
+			background:#91c444;
+			color:white;
+			padding: 1em 2em 1em 2em;
+			border-radius: 10px;
+			text-decoration: none !important;
+			font-weight: bolder;float: right;" class="btn pull-right" target="_blank" href="{{url('/reset/'.$token_reset)}}">Reset</a>
 			</div>
 			
 			
@@ -90,6 +97,7 @@
 		<footer>
 			{!!$footer!!}
 		</footer>
+	</div>
 	</div>
 	
 </body>
