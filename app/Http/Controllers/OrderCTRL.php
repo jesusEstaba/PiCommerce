@@ -206,7 +206,7 @@ class OrderCTRL extends Controller
 			$mail_user = Auth::user()->email;
 
 	        
-	        $variables_correo = ['cart'=>$cart ];
+	        $variables_correo = ['cart'=>$cart, 'data_n' => 'Diginos Products'];
 	        
 	        //$cart
 	        //
