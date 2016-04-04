@@ -79,6 +79,8 @@ Route::group(['middleware'=>'hora'], function()
     Route::group(['prefix'=>'reset'], function()
     {
         Route::get('/{token_pass}', 'ResetPasswordCTRL@tokenPass');
+        Route::post('/{token_pass}', 'ResetPasswordCTRL@changePass');
+
         Route::get('/to/{user_mail}', 'ResetPasswordCTRL@index');
     });
     

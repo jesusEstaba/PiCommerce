@@ -10,9 +10,31 @@ use Auth;
 use DB;
 use Carbon\Carbon;
 use Mail;
+use Session;
+use Input;
+
 
 class ResetPasswordCTRL extends Controller
 {
+	public function changePass()
+	{
+		
+		if( Session::has('token_reset_password') && Session::has('email_reset') )
+		{
+			DB::table('users')
+			->where('email', Session::get('email_reset'))
+			->update([
+				'password'=>bcrypt(Input::get('pass'))
+
+			]);
+			DB::table('password_resets')->where('token',  Session::get('token_reset_password'))->delete();
+
+			return response()->json('Password Changed!');
+		}
+		return response()->json('Error Access');
+	}
+
+
     public function tokenPass($token_pass='')
 	{
 
@@ -20,7 +42,10 @@ class ResetPasswordCTRL extends Controller
 
 	    if($data)
 	    {
-			return 'password changed';
+	    	Session::put('email_reset', $data->email);
+	    	Session::put('token_reset_password', $token_pass);
+			
+			return view('new_password');
 	    }
 
 	    return 'invalid token';	
