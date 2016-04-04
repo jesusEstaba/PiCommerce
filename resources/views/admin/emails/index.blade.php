@@ -1,5 +1,5 @@
 @extends('admin.layout')
-@section('title', 'Groups')
+@section('title', 'Emails')
 @section('content')
 	
 
