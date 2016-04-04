@@ -74,7 +74,10 @@
 		<header>
 		<img src="{{asset('images/logos/'.$logo)}}" alt="logo">
 	</header>
-	<div class="container">
+	<div style="width: 100%;
+			max-width: 500px;
+			margin-left: auto;
+			margin-right: auto;">
 		
 		<section>
 			<h1>Reset Your Password</h1>
