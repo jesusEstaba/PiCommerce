@@ -24,6 +24,9 @@
 								Ip
 							</th>
 							<th>
+								ISP
+							</th>
+							<th>
 								Action
 							</th>
 							<th>
@@ -38,7 +41,22 @@
 									{{$data->ip}}
 								</td>
 								<td>
-									{{$data->action}}
+									{{$data->ISP}}
+								</td>
+								<td>
+									@if($data->action==1)
+										<p>Login User</p>
+									@elseif($data->action==2)
+										<p>Logout User</p>
+									@elseif($data->action==3)
+										<p>Login Admin</p>
+									@elseif($data->action==4)
+										<p>Logout Admin</p>
+									@elseif($data->action==5)
+										<p>Order User</p>
+									@else
+										<p>Unknown</p>
+									@endif
 								</td>
 								<td>
 									{{$data->created_at}}
