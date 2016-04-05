@@ -273,7 +273,7 @@ class QuickPayCTRL extends Controller
 			        //
 			        Mail::send('mail_template.order', $variables_correo, function($msj) use ($mail_user)
 			        {
-			            $msj->subject('Order');
+			            $msj->subject('Quick Order');
 			            $msj->from(env('MAIL_ADDRESS'), env('MAIL_NAME'));
 			            
 			            $msj->to($mail_user);    
@@ -281,7 +281,7 @@ class QuickPayCTRL extends Controller
 			        
 			        Mail::send('mail_template.order', $variables_correo, function($msj) use ($correos)
 			        {
-			            $msj->subject('Order');
+			            $msj->subject('Quick Order');
 			            $msj->from(env('MAIL_ADDRESS'), env('MAIL_NAME'));
 
 			            foreach($correos as $array => $admin)
@@ -308,7 +308,7 @@ class QuickPayCTRL extends Controller
 		}
 
 
-		if( !isset($errors) )
+		if( !isset($errors) && $id_order_for_temp_user)
 		{		            
 			$errors = ['status'=>'correct'];
 			
@@ -321,6 +321,11 @@ class QuickPayCTRL extends Controller
 				'created_at' => Carbon::now()
 			]);
 		}
+		if($id_order_for_temp_user==0)
+		{
+			$errors = "Soory, We could not process your order";
+		}
+
 
 		return response()->json($errors);
     }
