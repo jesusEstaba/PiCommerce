@@ -37,7 +37,12 @@
 						@foreach($ip_log as $arr => $data)
 							<tr>
 								<td>
-									<a href="{{url('kitchen/logs/'.$data->id_user)}}">{{$data->email}}</a>
+									@if($data->email)
+										<a href="{{url('kitchen/logs/'.$data->id_user)}}">{{$data->email}}</a>
+									@else
+										Unknown
+									@endif
+									
 								</td>
 								<td>
 									{{$data->ip}}

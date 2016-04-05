@@ -58,7 +58,7 @@ class LogCTRL extends Controller
     public function index()
     {
         $ip_log = DB::table('ip_logs_user')
-            ->join('users', 'users.id', '=', 'ip_logs_user.id_user')
+            ->leftJoin('users', 'users.id', '=', 'ip_logs_user.id_user')
             ->select('users.email', 'ip_logs_user.*')
             ->orderBy('id', 'desc')
             ->paginate(15);
