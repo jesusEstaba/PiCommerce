@@ -287,6 +287,9 @@
 <p>
 	<b>IP Address:</b> {{$_SERVER['REMOTE_ADDR']}}
 </p>
+@if($ISP)
+<b>ISP:</b> {{$ISP}}
+@endif
 
 </div>
 

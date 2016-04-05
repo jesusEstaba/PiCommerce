@@ -33,7 +33,7 @@
 		nav{
 			box-shadow: 0 -2px 4px rgba(0,0,0,.26);
 			background: #D41F26;
-			min-height: 50px;
+			height: 50px;
 		}
 		section{
 			min-height: 400px;
