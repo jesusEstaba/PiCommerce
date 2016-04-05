@@ -69,7 +69,7 @@ class QuickPayCTRL extends Controller
 		    		->join('cart_top', 'cart_top.id_cart', '=', 'cart.id')
 		    		->where('id', $id_cart_go)
 		    		->selectRaw('sum(cart_top.price*cart.quantity) as toppings')
-		    		->orderBy('cart_top.id_cart')
+		    		->groupBy('cart_top.id_cart')
 		    		->first();
 
 		    	if($total_cart)
@@ -78,7 +78,6 @@ class QuickPayCTRL extends Controller
 		    			->join('size', 'size.Sz_Id', '=', 'cart.product_id')
 		    			->where('id', $id_cart_go)
 		    			->selectRaw('size.Sz_Price*cart.quantity as pizza')
-		    			->orderBy('cart.id')
 		    			->first();
 
 		    		if($total_cart2){
