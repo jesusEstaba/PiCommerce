@@ -60,6 +60,7 @@ Route::get('/template/order', function ()
         'delivery'=>true,
         'discount' => true,
         'charge' => true,
+        'tip'=>true,
 
         'cart'=>$cart,
         'title'=>'Order',

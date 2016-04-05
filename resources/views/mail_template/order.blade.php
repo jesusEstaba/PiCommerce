@@ -226,7 +226,17 @@ hr{
 	border:0;
 	border-bottom: 1px solid #eee;
 }
+ul{
+	list-style: none;
+}
 
+ul>li{
+	color: #757575;
+}
+
+ul>li>span{
+	color: #bbb;
+}
 
  @media only screen and (max-width: 800px){
 	article>aside div,article>aside+table+aside div{
