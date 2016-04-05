@@ -101,7 +101,9 @@ Route::get('/now', 'CloseCTRL@now');
 
 Route::get('/closed', 'CloseCTRL@index');
 
-;
+
+Route::get('/checkout/quick', 'QuickPayCTRL@index');
+Route::post('/checkout/quick/order', 'QuickPayCTRL@createOrderQuick');
 
 Route::group(['middleware'=>'hora'], function()
 {
@@ -125,9 +127,7 @@ Route::group(['middleware'=>'hora'], function()
         return redirect()->back();
     });
     Route::get('/select', 'PayCTRL@select');
-    Route::get('/checkout/quick', function(){
-        return "quick";
-    });
+    
 
     Route::group(['prefix'=>'reset'], function()
     {

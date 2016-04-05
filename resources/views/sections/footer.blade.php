@@ -16,12 +16,12 @@
 <footer>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-8">
+			<div class="col-md-offset-3 col-md-6">
 				@if($footer)
 				{!!$footer!!}
 				@endif
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-3">
 				
 				{!!Html::style('css/style_techandall.css')!!}
 				<link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
