@@ -22,8 +22,60 @@ Route::get('/', function ()
 Route::get('/template/order', function ()
 {
 
-    return view('mail_template.order')->with([
+    $size =function ($size)
+    {
+        if($size==1)
+            $size_topping = '(All)';
+        elseif($size==2)
+            $size_topping = '(Left)';
+        elseif($size==3)
+            $size_topping = '(Rigth)';
+        elseif($size==4)
+            $size_topping = '(Extra)';
+        elseif($size==5)
+            $size_topping = '(Lite)';
+        
+        return $size_topping;
+    };
 
+    $cart = Pizza\Http\Controllers\CartCTRL::busq_cart();
+    
+    $config = DB::table('config')->first();
+    
+    $order_id = 567;
+
+    $order = DB::table('hd_tticket')->where('Hd_Ticket', $order_id)->first();
+    
+
+    /*
+    $order_ticket = DB::table('dt_tticket')->where('Dt_Ticket', $order_id)->get();
+    $order_topping = DB::table('dt_topping')->where('hd_ticket', $order_id)->get();
+    */
+
+
+    return view('mail_template.order')->with([
+        'order' => $order,
+        'now' => \Carbon\Carbon::now()->format('d-m-Y'),
+
+        'delivery'=>true,
+        'discount' => true,
+        'charge' => true,
+
+        'cart'=>$cart,
+        'title'=>'Order',
+        'size'=>$size,
+        'logo' => $config->logo,
+        'footer'=> $config->footer,
+        'num_order'=>567,
+        
+
+        'phone' => 4567894,
+        'name'=>'jesus',
+        'email'=>'gg@mail.com',
+
+        'street_num' => 34564,
+        'street_name' => 'Aguacate',
+        'zip_code' => 36478,
     ]);
 });
 /*
