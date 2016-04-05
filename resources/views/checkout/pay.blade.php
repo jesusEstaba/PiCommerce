@@ -236,7 +236,7 @@
 										<b>Sub-Total: </b>
 										<span class="old-sub">
 											$
-											<span class="sub_total-price">{{round($total_cart, 2)}}</span>
+											<span class="sub_total-price">{{number_format( round($total_cart, 2) ,2)}}</span>
 											
 										</span>
 										<b class="discount"></b>
@@ -250,12 +250,12 @@
 									</div>
 									<h4>
 										<b>Tax: </b>$
-										<span data-tax="{{$tax}}" class="tax-price">{{round($taxs, 2)}}</span>
+										<span data-tax="{{$tax}}" class="tax-price">{{number_format( round($taxs, 2) ,2)}}</span>
 									</h4>
 									@if($select=='delivery' && $delivery)
 										<h4>
 											<b>Delivery: </b>$
-											<span class="delivery-price">{{round($delivery_value, 2)}}</span>
+											<span class="delivery-price">{{number_format( round($delivery_value, 2) ,2)}}</span>
 										</h4>
 										<h4>
 											<b>Gruatity: </b>$
@@ -264,11 +264,11 @@
 									@endif
 									<h4 class=" ccfee">
 										<b>Credit Card Processing Fee: </b>$
-										<span class="fee-price">{{round($fee, 2)}}</span>
+										<span class="fee-price">{{number_format( round($fee, 2) ,2)}}</span>
 									</h4>
 									<h3 >
 										<b>Total: </b>$
-										<span class="total-price">{{round($total_to_pay, 2)}}</span>
+										<span class="total-price">{{number_format( round($total_to_pay, 2) ,2)}}</span>
 									</h3>
 								</div>
 							</div>
@@ -337,7 +337,7 @@
 									<span> {{$campo->It_Descrip or $campo->Sz_Abrev}}</span>
 								</div>
 								<div class="col-xs-3">
-									<span class="pull-right">${{$campo->Sz_Price}}</span>
+									<span class="pull-right">${{number_format($campo->Sz_Price, 2)}}</span>
 								</div>
 							</div>							
 							
@@ -366,7 +366,7 @@
 										<span><b>{{strtolower($val->Tp_Descrip).$size_topping}}</b></span>
 										<span class="pull-right">
 											@if($val->price > 0)
-												${{$val->price}}
+												${{number_format($val->price, 2)}}
 											@endif
 										</span>
 									</h5>
