@@ -26,6 +26,10 @@ class OrderCTRL extends Controller
 		$hd_tips = 0;
 		$hd_delivery = 0;
 		$hd_payform = 1;
+		$or_delivery = false;
+		$or_discount = false;
+		$or_charge = false;
+		$or_tip = false;
 
 		if( Input::get('card')==='true' ){	
 			$fee = DB::table('payform')
@@ -35,6 +39,8 @@ class OrderCTRL extends Controller
 
 			$hd_charge = (float)$fee->Pf_Charge;
 			$hd_payform = 2;
+
+			$or_charge = true;
 		}
 
 		if( Input::get('delivery')==='true' ){
@@ -45,12 +51,14 @@ class OrderCTRL extends Controller
 
 			$hd_sell = 1;
 			$hd_delivery = (float)$delivery_val->G_Value;
+			$or_delivery = true;
 		}
 
 		if( Input::get('tips')==='true' ){
 			$tip = (float)Input::get('tip');
 			$tip = round($tip, 2);
 			$hd_tips = $tip;
+			$or_tip = true;
 		}
 
     	$mytime = Carbon::now();
@@ -96,6 +104,7 @@ class OrderCTRL extends Controller
 			$hd_discount = $sub_total * $coupon_disc / 100;
 
 			Session::forget('coupon_discount');
+			$or_discount = true;
 		}
 		else
 		{
@@ -204,9 +213,58 @@ class OrderCTRL extends Controller
 			//ENVIAR CORREOS
 			$correos = DB::table('emails_admin')->get();
 			$mail_user = Auth::user()->email;
+			$config = DB::table('config')->first();
 
+			$order = DB::table('hd_tticket')->where('Hd_Ticket', $id)->first();
 	        
-	        $variables_correo = ['cart'=>$cart];
+			$size =function ($size)
+		    {
+		        if($size==1)
+		            $size_topping = '(All)';
+		        elseif($size==2)
+		            $size_topping = '(Left)';
+		        elseif($size==3)
+		            $size_topping = '(Rigth)';
+		        elseif($size==4)
+		            $size_topping = '(Extra)';
+		        elseif($size==5)
+		            $size_topping = '(Lite)';
+		        
+		        return $size_topping;
+		    };
+
+		    $user = DB::table('users')
+	    		->leftJoin('customers', 'customers.Cs_Phone', '=', 'users.phone')
+	    		->where('users.phone', Auth::user()->phone)
+	    		->select('Cs_Number', 'Cs_Street', 'Cs_ZipCode', 'Cs_Notes', 'Cs_Name', 'Cs_Phone', 'email')
+	    		->first();
+
+
+	        $variables_correo = [
+		        'order' => $order,
+		        'now' => Carbon::now()->format('d-m-Y'),
+
+		        'delivery'=>$or_delivery,
+		        'discount' => $or_discount,
+		        'charge' => $or_charge,
+		        'tip'=>$or_tip,
+
+		        'cart'=>$cart,
+		        'title'=>'Order',
+		        'size'=>$size,
+		        'logo' => $config->logo,
+		        'footer'=> $config->footer,
+		        'num_order'=>$id,
+		        
+
+		        'phone' => Auth::user()->phone,
+		        'name'=> $user->Cs_Name,
+		        'email'=>$mail_user,
+
+		        'street_num' => $user->Cs_Number,
+		        'street_name' => $user->Cs_Street,
+		        'zip_code' => $user->Cs_ZipCode,
+	        ];
 	        
 	        //$cart
 	        //
