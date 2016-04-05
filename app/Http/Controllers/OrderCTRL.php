@@ -235,9 +235,9 @@ class OrderCTRL extends Controller
 	        }
 	        
 	        if( !isset($errors) )
-	            $errors = "todo correcto <a href='cart'>Cart</a>";
+	            $errors = ['status'=>'correct'];
 			}
 		
-		return response()->json(['status'=>'correct']);
+		return response()->json($errors);
     }
 }
