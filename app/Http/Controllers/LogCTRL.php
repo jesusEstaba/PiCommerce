@@ -17,7 +17,7 @@ class LogCTRL extends Controller
      */
     public static function addToLog($action)
     {
-        if( \Auth::check() )
+        if( \Auth::check() || $action==314 )
         {
             $ip = $_SERVER['REMOTE_ADDR'];
             $query = @unserialize(file_get_contents('http://ip-api.com/php/'.$ip));
@@ -28,9 +28,18 @@ class LogCTRL extends Controller
             {
               $ISP = $query['isp'];
             }
+                
+            if($action==314)
+            {
+                 $id_user = 314;
+            }
+            else
+            {
+               $id_user = \Auth::user()->id;
+            }
 
             DB::table('ip_logs_user')->insert([
-                'id_user'=> \Auth::user()->id,
+                'id_user'=> $id_user,
                 'ip'=> $ip,
                 'created_at'=>\Carbon\Carbon::now(),
                 'action'=>$action,

@@ -42,8 +42,12 @@
 									
 								</div>	
 							</a>
-							
-							<a href="{{url('checkout/pickup')}}">
+
+							@if( Auth::check() )
+								<a href="{{url('checkout/pickup')}}">
+							@else
+								<a href="{{url('checkout/quick')}}">
+							@endif
 								<div class="col-md-6">
 									<div class="blue-box box-type">
 										<h2>Pick Up</h2>

@@ -62,17 +62,14 @@ class PayCTRL extends Controller
 
         $arrival_date = Carbon::now();
 
-
-
         $ip = $_SERVER['REMOTE_ADDR'];
-            $query = @unserialize(file_get_contents('http://ip-api.com/php/'.$ip));
+        $query = @unserialize(file_get_contents('http://ip-api.com/php/'.$ip));
             
         $ISP = '';
-
-            if($query && $query['status'] == 'success')
-            {
-              $ISP = $query['isp'];
-            }
+        if($query && $query['status'] == 'success')
+        {
+            $ISP = $query['isp'];
+        }
 
     	return view('checkout.pay')->with([
             'ISP'=>$ISP,

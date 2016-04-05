@@ -56,6 +56,8 @@
 										<p>Logout Admin</p>
 									@elseif($data->action==5)
 										<p>Order User</p>
+									@elseif($data->action==314)
+										<p>Quick Order</p>
 									@else
 										<p>Unknown</p>
 									@endif

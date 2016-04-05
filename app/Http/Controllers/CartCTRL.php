@@ -120,7 +120,7 @@ class CartCTRL extends Controller
      * @param  string $asc [description]
      * @return [type]      [description]
      */
-    public static function busq_cart($asc='')
+    public static function busq_cart($asc='', $id_cart='')
     {
         if($asc==='asc')
         {
@@ -131,10 +131,26 @@ class CartCTRL extends Controller
            $order_by_cart = 'desc'; 
         }
 
+        if($id_cart == '')
+        {
+            $id_user_tem = Auth::user()->id;
+        }
+        else
+        {
+            $id_user_tem = 314;
+        }
+
+
         $cart = DB::table('cart')
             ->join('size', 'size.Sz_Id', '=','cart.product_id')
             ->join('items', 'items.It_Id', '=', 'size.Sz_Item')
-            ->where('cart.id_user', Auth::user()->id)
+            ->where('cart.id_user', $id_user_tem)
+            ->where(function($query) use ($id_cart){
+                if($id_cart)
+                {
+                    $query->where('id', $id_cart);
+                }
+            })
             ->select(
                 'items.It_Descrip',
                 'cart.product_id',
@@ -223,19 +239,30 @@ class CartCTRL extends Controller
      * @param  [type] $quantity             [description]
      * @return [type]                       [description]
      */
-    private function cargar_producto($size, $toppings, $top_size, $cooking_instructions, $quantity)
+    public static function cargar_producto($size, $toppings, $top_size, $cooking_instructions, $quantity, $quick=false)
     {
+        $id_cart = 0;
+
         $quantity = (int)$quantity;
 
         if(!$quantity){
             $quantity = 1;
         }
 
+        if($quick)
+        {
+            $user_id_cart = 314;
+        }
+        else
+        {
+            $user_id_cart = Auth::user()->id;
+        }
+
         $id_cart = DB::table('cart')->insertGetId([
-            'id_user' => Auth::user()->id,
+            'id_user' => $user_id_cart,
             'product_id' => $size,
             'cooking_instructions' => $cooking_instructions,
-            'quantity' => $quantity
+            'quantity' => $quantity,
         ]);
 
         $size_price = DB::table('size')
@@ -304,6 +331,12 @@ class CartCTRL extends Controller
                     'size' => $size_top_id
                 ]);
             }
+        }
+
+
+        if($quick)
+        {
+            return $id_cart;
         }
     }
 }
