@@ -222,8 +222,6 @@ class OrderCTRL extends Controller
 	        {
 	            $msj->subject('Order');
 	            $msj->from(env('MAIL_ADDRESS'), env('MAIL_NAME'));
-	            
-	            $msj->to($mail_user);
 
 	            foreach($correos as $array => $admin)
 	            {
