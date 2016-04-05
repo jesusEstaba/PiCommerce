@@ -67,7 +67,7 @@ class QuickPayCTRL extends Controller
 		    	//Calculando total del carrito
 		    	$total_cart = DB::table('cart')
 		    		->join('cart_top', 'cart_top.id_cart', '=', 'cart.id')
-		    		->where('id', $id_cart_go)
+		    		->where('cart.id', $id_cart_go)
 		    		->selectRaw('sum(cart_top.price*cart.quantity) as toppings')
 		    		->groupBy('cart_top.id_cart')
 		    		->first();
@@ -76,7 +76,7 @@ class QuickPayCTRL extends Controller
 		    	{
 		    		$total_cart2 = DB::table('cart')
 		    			->join('size', 'size.Sz_Id', '=', 'cart.product_id')
-		    			->where('id', $id_cart_go)
+		    			->where('cart.id', $id_cart_go)
 		    			->selectRaw('size.Sz_Price*cart.quantity as pizza')
 		    			->first();
 
