@@ -311,11 +311,15 @@ ul>li>span{
 								Product
 							</th>
 							<th>
+								Cooking Description
+							</th>
+							<th>
 								Subtotal
 							</th>
 						</tr>
 					</thead>
 					<tbody>
+					
 						@foreach($cart as $array => $campo)
 						<tr>
 							<td>
@@ -334,6 +338,9 @@ ul>li>span{
 									@endforeach
 								</ul>
 								@endif
+							</td>
+							<td>
+								{{ $campo->cooking_instructions }}
 							</td>
 							<td>
 								${{ number_format( ( $campo->Sz_Price + $total_price_top ) * $campo->quantity , 2) }}

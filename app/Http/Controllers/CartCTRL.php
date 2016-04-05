@@ -261,7 +261,7 @@ class CartCTRL extends Controller
         $id_cart = DB::table('cart')->insertGetId([
             'id_user' => $user_id_cart,
             'product_id' => $size,
-            'cooking_instructions' => $cooking_instructions,
+            'cooking_instructions' => trim($cooking_instructions),
             'quantity' => $quantity,
         ]);
 
