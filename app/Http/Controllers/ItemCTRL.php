@@ -38,7 +38,7 @@ class ItemCTRL extends Controller
                     $query->where('groups.Gr_ID', $category);
                 }
             })
-            ->select('items.It_Id', 'items.It_Descrip', 'items.description', 'items.It_Status', 'groups.Gr_Descrip')
+            ->select('items.It_Id', 'items.It_Descrip', 'items.description', 'items.It_Status', 'groups.Gr_Descrip', 'items.It_Feature')
             ->paginate(15);
 
         $groups = DB::table('groups')->get();

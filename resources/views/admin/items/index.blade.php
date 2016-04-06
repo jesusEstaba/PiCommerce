@@ -87,6 +87,11 @@
 									@else
 									<span class="glyphicon glyphicon-eye-close text-danger"></span>
 									@endif
+
+									@if($item->It_Feature)
+
+										<span style="margin-left: .5em;color:#FFA100;" class="glyphicon-star glyphicon"></span>
+									@endif
 								</td>
 								<td>
 									<a href="{{url('kitchen/items/'.$item->It_Id)}}" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span></a>
@@ -161,7 +166,9 @@
 </div><!-- /.modal -->
 {!!Form::token()!!}
 
+
 @stop
+
 
 
 @section('script')
