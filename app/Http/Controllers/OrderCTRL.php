@@ -219,18 +219,25 @@ class OrderCTRL extends Controller
 	        
 			$size =function ($size)
 		    {
-		        if($size==1)
-		            $size_topping = '(All)';
-		        elseif($size==2)
-		            $size_topping = '(Left)';
-		        elseif($size==3)
-		            $size_topping = '(Rigth)';
-		        elseif($size==4)
-		            $size_topping = '(Extra)';
-		        elseif($size==5)
-		            $size_topping = '(Lite)';
-		        
-		        return $size_topping;
+		        $size_topping = '';
+
+				        if($size==1){
+				            $size_topping = '(All)';
+				        }
+				        elseif($size==2){
+				            $size_topping = '(Left)';
+				        }
+				        elseif($size==3){
+				            $size_topping = '(Rigth)';
+				        }
+				        elseif($size==4){
+				            $size_topping = '(Extra)';
+				        }
+				        elseif($size==5){
+				            $size_topping = '(Lite)';
+				        }
+				        
+				return $size_topping;
 		    };
 
 		    $user = DB::table('users')
