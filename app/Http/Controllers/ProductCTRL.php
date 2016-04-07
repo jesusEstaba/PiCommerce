@@ -19,7 +19,7 @@ class ProductCTRL extends Controller
      * @return view      [description]
      */
     public function index($cat, $id, $sub="")
-    {	
+    {
         $it_groups = false;
 
         if($sub=="sub")
@@ -66,15 +66,17 @@ class ProductCTRL extends Controller
                 ->where('Status', 0)
                 ->select('builder_id', 'image', 'tp_kind')
                 ->first();
-            
+
             if($builder_data)
             {
                 $id_builder = $builder_data->builder_id;
                 $image = $builder_data->image;
                 $tp_kind = $builder_data->tp_kind;
-                
+
                 if(!$image)
+                {
                     $image = "recipe-no-photo.jpg";
+                }
             }
             else
             {
@@ -91,8 +93,12 @@ class ProductCTRL extends Controller
                 ->orderBy('Tp_Cat')
                 ->orderBy('Tp_special')
                 ->get();
-        
-           
+
+            $cooking_instructions = DB::table('toppings')
+                ->where('Tp_Kind', 4)
+                ->orderBy('Tp_Special')
+                ->get();
+
             if($id_builder == 1){
                 $vista = 'builder.pizza';
             }
@@ -108,16 +114,18 @@ class ProductCTRL extends Controller
                 $cart = false;
                 $total_cart = 0.00;
 
-                if( Auth::check() ){
+                if( Auth::check() )
+                {
                     $cart = CartCTRL::busq_cart('asc');
                     $total_cart = CartCTRL::total_price(true);
                 }
 
                 return view($vista)->with([
-                        'name'=>$name, 
-                        'size'=>$size_t, 
-                        'toppings'=>$toppings, 
-                        'item'=>$items, 
+                        'cooking_instructions' => $cooking_instructions,
+                        'name'=>$name,
+                        'size'=>$size_t,
+                        'toppings'=>$toppings,
+                        'item'=>$items,
                         'description'=>$description,
                         'image_category'=>$image,
                         'tp_kind'=>$tp_kind,
@@ -127,6 +135,6 @@ class ProductCTRL extends Controller
             }
         }
 
-        return view('builder.generic_builder');   
+        return view('builder.generic_builder');
 	}
 }

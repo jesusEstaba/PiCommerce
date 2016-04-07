@@ -108,114 +108,14 @@
 		</div>
 		<div class="col-xs-4">
 			<h4>Cooking Instructions</h4>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox">
-					<span>No Pasta</span>
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox">
-					<span>No Sauce</span>
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox">
-					<span>No Cheese</span>
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox">
-					<span>Crispy</span>
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox">
-					<span>Extra Crispy</span>
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox">
-					<span>Lite Pasta</span>
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox">
-					<span>Lite Sauce</span>
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox">
-					<span>Lite Cheese</span>
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox">
-					<span>Lite Cook</span>
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox">
-					<span>Well Done</span>
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox">
-					<span>Extra Sauce</span>
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox">
-					<span>No Parm</span>
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox">
-					<span>Pasta on Side</span>
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox">
-					<span>Sauce on Side</span>
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox">
-					<span>Double Cut</span>
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox">
-					<span>Square Cut</span>
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox">
-					<span>Cold</span>
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox">
-					<span>Hot</span>
-				</label>
-			</div>
+			@foreach($cooking_instructions as $array => $instruction)
+				<div class="checkbox">
+					<label>
+						<input data-top-id="{{$instruction->Tp_Id}}" class="instruction" type="checkbox">
+						<span>{{ucwords( strtolower($instruction->Tp_Descrip) )}}</span>
+					</label>
+				</div>
+			@endforeach
 		</div>
 	</div>
 </div>
