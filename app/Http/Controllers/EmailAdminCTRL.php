@@ -93,6 +93,15 @@ class EmailAdminCTRL extends Controller
      */
     public function destroy($id)
     {
-        //
+        $res = 'Error';
+
+        if ($id) {
+            DB::table('emails_admin')->delete($id);
+            
+            $res = "Deleted";
+        }
+
+
+        return response()->json($res);
     }
 }
