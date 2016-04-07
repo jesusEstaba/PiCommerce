@@ -128,7 +128,7 @@ class CartCTRL extends Controller
         }
         else
         {
-           $order_by_cart = 'desc'; 
+           $order_by_cart = 'desc';
         }
 
         if($id_cart == '')
@@ -292,36 +292,44 @@ class CartCTRL extends Controller
             {
                 $topping = DB::table('toppings')
                     ->where('Tp_Id', $id_top)
-                    ->select('Tp_Topprice', 'Tp_Double')
+                    ->select('Tp_Topprice', 'Tp_Double', 'Tp_Kind')
                     ->first();
 
-                $Tp_Topprice =  $topping->Tp_Topprice;
-                $Tp_Double =  $topping->Tp_Double;
-                $price_top_new = 0;
-
-                if( $Tp_Topprice>0 )
+                if($topping->Tp_Kind != 4)
                 {
-                    $price_top_new = (float)$Tp_Topprice;
+                    $Tp_Topprice =  $topping->Tp_Topprice;
+                    $Tp_Double =  $topping->Tp_Double;
+                    $price_top_new = 0;
+
+                    if( $Tp_Topprice>0 )
+                    {
+                        $price_top_new = (float)$Tp_Topprice;
+                    }
+                    else
+                    {
+                        if($Tp_Double=='N')
+                            $price_top_new = (float)$topping_price;
+                        else
+                            $price_top_new = (float)$topping_price_2;
+                    }
+
+                    if($size_top_id==1 ||  $size_top_id==5)
+                    {
+                        $price_top_new *= 1;
+                    }
+                    else if($size_top_id==2 ||  $size_top_id==3)
+                    {
+                        $price_top_new *= 1/2;
+                    }
+                    else if($size_top_id==4)
+                    {
+                        $price_top_new *= 2;
+                    }
                 }
                 else
                 {
-                    if($Tp_Double=='N')
-                        $price_top_new = (float)$topping_price;
-                    else
-                        $price_top_new = (float)$topping_price_2;
-                }
-
-                if($size_top_id==1 ||  $size_top_id==5)
-                {
-                    $price_top_new *= 1;
-                }
-                else if($size_top_id==2 ||  $size_top_id==3)
-                {
-                    $price_top_new *= 1/2;
-                }
-                else if($size_top_id==4)
-                {
-                    $price_top_new *= 2;
+                    $size_top_id = 6;
+                    $price_top_new = 0;
                 }
 
                 DB::table('cart_top')->insert([
