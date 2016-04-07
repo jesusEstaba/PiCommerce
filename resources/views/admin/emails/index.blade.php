@@ -1,8 +1,6 @@
 @extends('admin.layout')
 @section('title', 'Emails')
 @section('content')
-	
-
 <div class="box">
 	<div class="box-header">
 		<h2>Emails Admin <span class="glyphicon glyphicon-plus btn btn-success new"></span></h2>
@@ -23,6 +21,7 @@
 						@foreach($emails as $arra => $admin)
 						<tr>
 							<td>
+								<i data-email-id="{{$admin->id}}" style="margin-right: .5em;color:#6B6B6B;" class="fa fa-times delete-mail-admin"></i>
 								{{$admin->email}}
 							</td>
 						</tr>
@@ -38,76 +37,79 @@
 		@endif
 	</div>
 </div>
-
-
 <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Add Mail</h4>
-      </div>
-      <div class="modal-body">
-
-      	<div class="form-group">
-      		<label>Email</label>
-	      <input type="text" class="form-control" name="name" placeholder="Email" autocomplete="off">
-	    </div>
-    
-        
-      </div>
-      <div class="modal-footer">
-      	<button type="button" class="btn btn-primary save" data-dismiss="modal">Save</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-  {!!Form::token()!!}
-</div><!-- /.modal -->
-
-
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Add Mail</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label>Email</label>
+					<input type="text" class="form-control" name="name" placeholder="Email" autocomplete="off">
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary save" data-dismiss="modal">Save</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+	{!!Form::token()!!}
+</div>
 @stop
 
 
 @section('script')
 <script type="text/javascript">
+$(function() {
+    $('#email').addClass('active');
 
+    $('.new').click(function() {
+        $('#myModal').modal();
+    });
 
-$(function(){
-	$('#email').addClass('active');
+    $('.save').click(function() {
+        $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                headers: { 'X-CSRF-TOKEN': $('[name=_token]').val() },
+                data: {
+                    name: $("[name=name]").val(),
+                },
+            })
+            .done(function(data) {
+                if ("New Mail" == data) {
+                    if ($('.box-body table').length) {
+                        $('tbody').prepend('<tr><td>' + $("[name=name]").val() + '</td></tr>');
+                        $("[name=name]").val("");
+                    } else {
+                        document.location.reload();
+                    }
+                }
+            });
+    });
 
-	$('.new').click(function(){
-		$('#myModal').modal();
-	});
+    $('.delete-mail-admin').click(function() {
+        var id_mail_delete = $(this).attr('data-email-id');
+        var route_to_delete = window.location.href + '/' + id_mail_delete;
 
-	$('.save').click(function(){
-
-		$.ajax({
-			//url: $('#id_item').attr('id-item'),
-			type: 'POST',
-			dataType: 'json',
-			headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
-			data:
-			{
-				name: $("[name=name]").val(),
-			},
-		})
-		.done(function(data)
-		{
-			if("New Mail"==data)
-			{
-				console.log(data);
-				$('tbody').prepend('<tr><td>'+$("[name=name]").val()+'</td></tr>');
-				
-				$("[name=name]").val("");
-			}
-		})
-		.fail(function()
-		{
-			console.log("error");
-		});
-	});
-
+        $.ajax({
+                url: route_to_delete,
+                type: 'DELETE',
+                headers: { 'X-CSRF-TOKEN': $('[name=_token]').val() },
+            })
+            .done(function(data) {
+                $('[data-email-id=' + id_mail_delete + ']').parent('td').parent('tr').fadeOut('slow', function() {
+                    $(this).remove();
+                });
+               
+                if ( !($('.box-body table tr').length>2) ) {
+                    document.location.reload();
+                }
+            });
+    });
 
 });
 </script>
