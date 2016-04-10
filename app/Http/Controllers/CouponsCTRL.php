@@ -21,9 +21,10 @@ class CouponsCTRL extends Controller
         $cupon = CouponsCTRL::query_coupon($coupon);
         if($cupon)
         {
-            $resp = ['discount'=>(float)$cupon->discount]; 
+            $resp = ['discount'=>(float)$cupon->discount, 'type'=>$cupon->Cp_Type]; 
             
             Session::put('coupon_discount', $cupon->discount);
+            Session::put('coupon_type', $cupon->Cp_Type);
             
             Session::put('coupon_id', CouponsCTRL::valid_coupon($coupon) );
         }
@@ -45,6 +46,7 @@ class CouponsCTRL extends Controller
         $cupon = DB::table('coupons')
             ->where('code', 'like',$code_coupon)
             ->where('rot', '>=', \Carbon\Carbon::now())
+            ->where('Cp_Status', 0)
             ->first();
         return $cupon;
     }
@@ -87,17 +89,16 @@ class CouponsCTRL extends Controller
      */
     public function index()
     {
-        $coupons = DB::table('coupons')
-            ->leftJoin('coupons_logs', 'coupons_logs.coupon_id', '=', 'coupons.id')
-            ->select(
-                'coupons.id' ,
-                'coupons.code' ,
-                'coupons.discount' ,
-                'coupons.rot',
-                 DB::raw('count(coupons_logs.coupon_id) used')
-            )
-            ->groupBy('coupons_logs.coupon_id')
-            ->paginate(15);
+        $coupons = DB::table('coupons')->paginate(15);
+
+        foreach($coupons as $arr => $data)
+        {
+            $num_coupon_used = DB::table('coupons_logs')
+                ->where('coupon_id', $data->id)
+                ->count();
+
+            $data->{'used'} = $num_coupon_used;
+        }
 
         return view('admin.coupons.index')->with([
             'coupons'=>$coupons
@@ -128,6 +129,7 @@ class CouponsCTRL extends Controller
                 'code' => $request['code'],
                 'discount' => $request['disc'],
                 'rot' => $request['date'],
+                'Cp_Type' => $request['type_disc'],
                 'created_at' => \Carbon\Carbon::now(),
             ]);
             if($id_cupon)

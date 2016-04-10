@@ -30,6 +30,9 @@
 								Discount
 							</th>
 							<th>
+								Type
+							</th>
+							<th>
 								End Date
 							</th>
 						</tr>
@@ -44,7 +47,14 @@
 									{{$data->used}}
 								</td>
 								<td>
-									{{$data->discount}}%
+									{{$data->discount}}
+								</td>
+								<td>
+									@if($data->Cp_Type===1)
+										%
+									@else
+										$
+									@endif
 								</td>
 								<td>
 									{{$data->rot}}
@@ -96,7 +106,14 @@
 	    </div>
     <div class="form-group">
       		<label>Discount:</label>
-	      <input type="text" class="form-control" name="disc" placeholder="%" autocomplete="off">
+	      <input type="text" class="form-control" name="disc" placeholder="Amount" autocomplete="off">
+	    </div>
+	    <div class="form-group">
+	    	<select name="type_disc" class="form-control">
+	    		<option>Type</option>
+	    		<option value="1">%</option>
+	    		<option value="2">$</option>
+	    	</select>
 	    </div>
 	    <div class="form-group">
       		<label>Expiration Date:</label>
@@ -142,6 +159,7 @@ $(function()
 					code: $("[name=code]").val(),
 					disc: $("[name=disc]").val(),
 					date: $("[name=date]").val(),
+					type_disc: $("[name=type_disc]").val(),
 				},
 			})
 			.done(function(data)

@@ -15,14 +15,15 @@ use Input;
 
 class OrderCTRL extends Controller
 {
-	/**
-	 * [create description]
-	 * @return [type] [description]
-	 */
+    /**
+     * @author Jesus estaba <jeec.estaba@gmail.com>
+     *
+     * @return [type]
+     */
     public static function create()
     {
-    	$hd_sell = 2;#PICKUP//poner un mensaje en caso de que estaba en delivery y no se pudo
-    	$hd_charge = 0;
+        $hd_sell = 2;#PICKUP//poner un mensaje en caso de que estaba en delivery y no se pudo
+        $hd_charge = 0;
 		$hd_tips = 0;
 		$hd_delivery = 0;
 		$hd_payform = 1;
@@ -101,9 +102,19 @@ class OrderCTRL extends Controller
 		if( Session::has('coupon_discount') )
 		{
 			$coupon_disc = (float) Session::get('coupon_discount');
-			$hd_discount = $sub_total * $coupon_disc / 100;
+			$coupon_type = (int) Session::get('coupon_type');
+			
+			if($coupon_type===1)
+			{
+				$hd_discount = $sub_total * $coupon_disc / 100;
+			}
+			else
+			{
+				$hd_discount = $coupon_disc;
+			}
 
 			Session::forget('coupon_discount');
+			Session::forget('coupon_type');
 			$or_discount = true;
 		}
 		else
@@ -111,12 +122,19 @@ class OrderCTRL extends Controller
 			$coupon_disc = 0;
 		}
 
+        $subtotal_discount = $sub_total-$hd_discount;
+
+        if($subtotal_discount<0)
+        {
+            $subtotal_discount = 0;
+        }
+
 		$tax = DB::table('taxes')->first();
 		$tax = (float)$tax->Tx_Base;
-		$hd_tax = ($sub_total-$hd_discount) * $tax/100;
+		$hd_tax = $subtotal_discount * $tax/100;
 		$hd_tax = round($hd_tax, 2);
     	
-    	$total_de_la_Orden = ($sub_total - $hd_discount) + $hd_tax + $hd_charge + $hd_tips + $hd_delivery;
+    	$total_de_la_Orden = $subtotal_discount + $hd_tax + $hd_charge + $hd_tips + $hd_delivery;
 
 		if($total_de_la_Orden)
 		{
@@ -275,13 +293,20 @@ class OrderCTRL extends Controller
 	        
 	        //$cart
 	        //
-	        Mail::send('mail_template.order', $variables_correo, function($msj) use ($mail_user)
-	        {
-	            $msj->subject('Order');
-	            $msj->from(env('MAIL_ADDRESS'), env('MAIL_NAME'));
-	            
-	            $msj->to($mail_user);    
-	        });
+
+            try {
+                Mail::send('mail_template.order', $variables_correo, function($msj) use ($mail_user)
+            {
+                $msj->subject('Order');
+                $msj->from(env('MAIL_ADDRESS'), env('MAIL_NAME'));
+                
+                $msj->to($mail_user);    
+            });
+                
+            } catch (Exception $e) {
+                
+            }
+	        
 	        
 	        Mail::send('mail_template.order', $variables_correo, function($msj) use ($correos)
 	        {
@@ -299,10 +324,22 @@ class OrderCTRL extends Controller
 	            $errors = 'Failed to send ('.$error_num_mail.') email.';
 	        }
 	        
-	        if( !isset($errors) )
-	            $errors = ['status'=>'correct'];
+	        
+		}
+
+		if( !isset($errors) ){
+			$errors = ['status'=>'correct'];
 		}
 		
 		return response()->json($errors);
+    }
+
+
+    /**
+     * 
+     */
+    public function back()
+    {
+    	return redirect()->back();
     }
 }
