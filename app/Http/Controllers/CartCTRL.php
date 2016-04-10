@@ -115,6 +115,12 @@ class CartCTRL extends Controller
     }
 
 
+    public function back()
+    {
+        return redirect()->back();
+    }
+
+
     /**
      * [busq_cart description]
      * @param  string $asc [description]
@@ -185,9 +191,13 @@ class CartCTRL extends Controller
 
 
     /**
-     * [total_price description]
-     * @param  boolean $res [description]
-     * @return [type]       [description]
+     * [Devuelve el total del precio del carrito]
+     * 
+     * @param  boolean $res 
+     * void:devuelve la respuesta en json.
+     * true:devuelve el precio en número.
+     * 
+     * @return [json || float]
      */
     public static function total_price($res=false)
     {

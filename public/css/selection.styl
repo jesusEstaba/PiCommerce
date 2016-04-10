@@ -2,44 +2,41 @@ body
 	background url('../images/backgrounds/5.jpg') center center no-repeat fixed
 	background-size cover
 	display flex
-	min-height 100vh
 	flex-direction column
-    
+	min-height 100vh
+
 footer
-	z-index 6
-	color white
 	background #17733A
-	width 100%
-	min-height 60px
 	box-shadow 0 0 15px rgba(black, .4)
-	
+	color white
+	min-height 60px
+	width 100%
+	z-index 6
 	p
 		text-align center
-	
 	a
 		color #FFD914 !important
 	img
 		display block
 		margin-left auto
 		margin-right auto
-	
+
 .center-center
-	display inline-block
-	position absolute
-	width 100%
-	height 200px
-	top 0
 	bottom 0
+	display inline-block
+	height 200px
 	left 0
-	right 0
 	margin auto
-	
+	position absolute
+	right 0
+	top 0
+	width 100%
 	.box
 		margin 0 !important
 
 .orange-box
 	background orange
-	
+
 .blue-box
 	background #2E7BDC
 
@@ -49,14 +46,13 @@ footer
 	margin-right auto
 
 .box-type
+	border-radius 5px
+	color white
 	margin-bottom 1em
 	padding .5em
 	position relative
-	border-radius 5px
-	color white
 	text-shadow 0 0 2px rgba(black, .26)
 	transition .8s box-shadow
-	
 	&:hover
 		box-shadow 0 0 15px rgba(black, .9)
 		z-index 2
@@ -66,18 +62,15 @@ footer
 		margin-right auto
 	h2
 		text-align center
-		
+
 .separator-fix-footer
 	flex 1 0 auto
-	
 
 @media (max-width: 991px){
 	.center-center
 	{
 		display block !important
-		position initial !important
 		height initial !important
+		position initial !important
 	}
-		
-		
 }
