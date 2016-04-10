@@ -22,8 +22,6 @@
 	
 </div>
 
-
-
 <div class="center-center">
 	<div class="container">
 		<div class="row">
@@ -36,14 +34,10 @@
 					@endif
 				</a>
 				
-				{!!Form::open(['url'=>'login'])!!}
 					<div class="row">
 						<div class="col-xs-12">
 							<div class="form-group">
-								<input name="first_name" type="text" class="form-control" placeholder="First Name">
-							</div>
-							<div class="form-group">
-								<input name="last_name" type="text" class="form-control" placeholder="Last Name">
+								<input name="name" type="text" class="form-control" placeholder="First Name">
 							</div>
 							<div class="form-group">
 								<input name="phone" type="text" class="form-control" placeholder="Phone Number">
@@ -70,7 +64,6 @@
 						</div>				
 					</div>
 					{!!Form::token()!!}
-				{!!Form::close()!!}
 			</div>
 
 		</div>
@@ -80,82 +73,57 @@
 
 <script type="text/javascript">
 	
-function message_alert(class_alert, text){
-	$('.messages').children().remove();
-
-	var mess = '<strong>'+text+'</strong>.';
-
-	var alerta = '<div class="alert '+class_alert+' alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button>'+mess+'</div>';
-
-	$('.messages').append(alerta);
+function message_alert(class_alert, text) {
+    $('.messages').children().remove();
+    var mess = '<strong>' + text + '</strong>.';
+    var alerta = '<div class="alert ' + class_alert + ' alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button>' + mess + '</div>';
+    $('.messages').append(alerta);
 }
 
-	$(function(){
+$(function() {
+    $('.order_now').click(function() {
+        if (
+            $('[name=name]').val() &&
+            $('[name=phone]').val() &&
+            $('[name=email]').val()
+        ) {
 
+            $.ajax({
+                    url: '/checkout/quick/order',
+                    type: 'POST',
+                    dataType: 'json',
+                    headers: { 'X-CSRF-TOKEN': $('[name=_token]').val() },
+                    data: {
+                        name: $('[name=name]').val(),
+                        phone: $('[name=phone]').val(),
+                        email: $('[name=email]').val(),
+                    },
+                })
+                .done(function(data) {
+                    if (data.status == 'correct') {
+                        message_alert('alert-success', 'Order Success');
 
+                        $('[name=name]').val('');
+                        $('[name=phone]').val('');
+                        $('[name=email]').val('');
 
-$('.order_now').click(function(){
+                        window.setTimeout(function() {
+                            window.location.href = "/choose";
+                        }, 6000);
+                    } else {
+                        message_alert('alert-warning', data);
+                    }
+                })
+                .error(function() {
+                    message_alert('alert-danger', 'Error Conection, Refresh and try Again');
+                });
 
-		if(
-			$('[name=first_name]').val() &&
-			$('[name=last_name]').val() &&
-			$('[name=phone]').val() &&
-			$('[name=email]').val()
-		)
-		{
-			//$('[name=]').val();
-			
-			$.ajax(
-			{
-				url:'/checkout/quick/order',
-				type: 'POST',
-				dataType: 'json',
-				headers:{'X-CSRF-TOKEN' : $('[name=_token]').val()},
+        } else {
+            alert('Empty Field');
+        }
 
-				data:{
-					first_name: $('[name=first_name]').val(),
-					last_name: $('[name=last_name]').val(),
-					phone: $('[name=phone]').val(),
-					email:$('[name=email]').val(),
-				},
-
-			})
-			.done(function(data) {
-				if(data.status=='correct')
-				{
-					message_alert('alert-success', 'Order Success');
-					
-					$('[name=first_name]').val('');
-					$('[name=last_name]').val('');
-					$('[name=phone]').val('');
-					$('[name=email]').val('');
-					
-					window.setTimeout(function(){
-				        window.location.href = "/choose";
-				    }, 6000);
-				}
-				else
-				{
-					message_alert('alert-warning', data);
-				}
-			})
-			.error(function(){
-				message_alert('alert-danger', 'Error Conection, Refresh and try Again');
-			});
-
-			
-		}
-		else
-		{
-			alert('Empty Field');
-		}
-		
-	});
-
-
-	});
-
-
+    });
+});
 
 </script>
 

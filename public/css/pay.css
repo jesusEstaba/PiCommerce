@@ -1,0 +1,87 @@
+
+.prices p{
+	margin: 5px !important;
+}
+.divisor>h4, .title-orange{
+	color:#E1543B;
+}
+.text-danger{
+	text-align: center;
+}
+
+.title-orange{
+	font-weight: bolder;
+}
+.white{
+	background: white;
+	border-radius: 3px;
+	border:solid #b2b2b2 1px;
+	padding: 1em;
+}
+.topping-list{
+	list-style: none;
+}
+.space-bottom{
+	margin-bottom: 1em;
+}
+div.divisor{
+	margin-bottom: .5em;
+}
+.divisor{
+	border-radius: 2px;
+	border:solid #eee 1px;
+	padding: .5em;
+}
+.btn-pay{
+	border-radius: 2px;
+	display: inline-block;
+	margin-right: .5em;
+	padding: .5em;
+	transition: .8s background, .5s border;
+}
+.btn-pay.select-pay{
+	background: #eee;
+	border:#b2b2b2 1px solid;
+	
+}
+.btn-pay .glyphicon{
+	font-size: 4em;
+	padding: .5em;
+}
+.glyphicon-usd.select-pay{
+	color: #157038;
+}
+.glyphicon-credit-card.select-pay{
+	color: #E6831D;
+}
+.note{
+	background: rgba(226, 145, 75, 0.62);
+}
+.super-discount{
+	text-decoration: line-through;
+}
+.discount{
+	color: red;
+	padding-left: .3em;
+}
+.old-sub{
+	transition: text-decoration .8s;
+}
+
+/*******************************************/
+.spinner {
+	-moz-transition: opacity 0.25s, width 0.25s;
+	-o-transition: opacity 0.25s, width 0.25s;
+	-webkit-transition: opacity 0.25s, width 0.25s;
+	display: inline-block;
+	opacity: 0;
+	transition: opacity 0.25s, width 0.25s;
+	width: 0;
+}
+.has-spinner.active {
+	cursor:progress;
+}
+.has-spinner.active .spinner{
+	opacity: 1;
+	width: auto;
+}

@@ -11,12 +11,19 @@ use Input;
 use Mail;
 use Session;
 use Carbon\Carbon;
+use Auth;
 
 class QuickPayCTRL extends Controller
 {
-    public function index(){
-    	 $config = DB::table('config')->first();
-        return view('checkout.quick')->with(['config'=>$config]);
+    public function index()
+    {
+		if( Auth::check() ){
+			return redirect()->to('checkout/pickup');
+		}
+		
+		$config = DB::table('config')->first();
+
+		return view('checkout.quick')->with(['config'=>$config]);
     }
 
     public function createOrderQuick(){
@@ -320,8 +327,7 @@ class QuickPayCTRL extends Controller
 			$errors = ['status'=>'correct'];
 			
 			DB::table('temp_user_order')->insert([
-				'first_name' => Input::get('first_name'),
-				'last_name' => Input::get('last_name'),
+				'name' => Input::get('name'),
 				'phone' => Input::get('phone'),
 				'email' => Input::get('email'),
 				'order_id' => $id_order_for_temp_user,
