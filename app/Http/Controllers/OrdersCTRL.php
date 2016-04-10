@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Cumple el Estándar PSR-2
+ */
 namespace Pizza\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -19,15 +21,16 @@ class OrdersCTRL extends Controller
     public function index()
     {
         $num = Input::get('num');
-            
+
         $orders = DB::table('hd_tticket')
             ->leftJoin('customers', 'customers.Cs_Phone', '=', 'hd_tticket.Hd_Customers')
-            ->where(function($query) use ($num){
-                if($num)
-                {
-                    $query->where('hd_tticket.Hd_Ticket', $num);
+            ->where(
+                function ($query) use ($num) {
+                    if ($num) {
+                        $query->where('hd_tticket.Hd_Ticket', $num);
+                    }
                 }
-            })
+            )
             ->select(
                 'customers.Cs_Name',
                 'hd_tticket.Hd_Ticket',
@@ -37,7 +40,7 @@ class OrdersCTRL extends Controller
             )
             ->orderBy('hd_tticket.Hd_Ticket', 'desc')
             ->paginate(15);
-        
+
         return view('admin.orders.index')->with(['orders'=>$orders]);
     }
 
@@ -72,15 +75,14 @@ class OrdersCTRL extends Controller
     {
         $order = DB::table('hd_tticket')
             ->leftJoin('customers', 'customers.Cs_Phone', '=', 'hd_tticket.Hd_Customers')
-            ->leftJoin('users', 'users.phone','=', 'hd_tticket.Hd_Customers')
+            ->leftJoin('users', 'users.phone', '=', 'hd_tticket.Hd_Customers')
             ->join('payform', 'payform.Pf_Id', '=', 'Hd_Payform')
             ->where('Hd_Ticket', $id)
             ->first();
 
         $products = false;
 
-        if($order)
-        {
+        if ($order) {
             $products = DB::table('dt_tticket')
             ->join('size', 'size.Sz_Id', '=', 'dt_tticket.Dt_Size')
             ->join('food', 'food.F_Abrev', '=', 'dt_tticket.Dt_FArea')
@@ -98,19 +100,17 @@ class OrdersCTRL extends Controller
             )
             ->get();
 
-            foreach ($products as $key => $product)
-            {
+            foreach ($products as $key => $product) {
                 $toppings = DB::table('dt_topping')
                     ->where('DTt_SzId', $product->Dt_Id)
                     ->get();
 
                 $product->{'topppings'} =  $toppings;
             }
-        
         }
 
         return view('admin.orders.order')->with([
-            'order'=>$order, 
+            'order'=>$order,
             'products'=>$products
         ]);
     }
@@ -137,12 +137,10 @@ class OrdersCTRL extends Controller
     {
         $respuesta = 'Error';
 
-        if( isset($request['change_visible']) )
-        {
+        if (isset($request['change_visible'])) {
             $id = (int)$id;
-            
-            if( $id != 0 )
-            {
+
+            if ($id != 0) {
                 $status  = (int)$request['status'];
 
                 DB::table('hd_tticket')
@@ -150,10 +148,10 @@ class OrdersCTRL extends Controller
                     ->update(['Hd_Status'=>$status]);
 
                 $respuesta = ['state'=>'Changed', $status];
-            }
-            else
+            } else {
                 $respuesta ="empty";
-        } 
+            }
+        }
 
         return response()->json($respuesta);
     }

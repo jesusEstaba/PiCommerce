@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Cumple el Estándar PSR-2
+ */
 namespace Pizza\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -23,30 +25,34 @@ class ItemCTRL extends Controller
 
         $items = DB::table('items')
             ->join('groups', 'items.It_Groups', '=', 'groups.Gr_Id')
-            ->where(function($query) use ($search, $category){
-                if($search && $category)
-                {
-                    $query->where('items.It_Descrip', 'like', '%'.$search.'%')
+            ->where(
+                function ($query) use ($search, $category) {
+                    if ($search && $category) {
+                        $query->where('items.It_Descrip', 'like', '%'.$search.'%')
                         ->where('groups.Gr_ID', $category);
+                    } elseif ($search) {
+                        $query->where('items.It_Descrip', 'like', '%'.$search.'%');
+                    } elseif ($category) {
+                        $query->where('groups.Gr_ID', $category);
+                    }
                 }
-                else if($search)
-                {
-                    $query->where('items.It_Descrip', 'like', '%'.$search.'%');
-                }
-                else if($category)
-                {
-                    $query->where('groups.Gr_ID', $category);
-                }
-            })
-            ->select('items.It_Id', 'items.It_Descrip', 'items.description', 'items.It_Status', 'groups.Gr_Descrip', 'items.It_Feature')
+            )
+            ->select(
+                'items.It_Id',
+                'items.It_Descrip',
+                'items.description',
+                'items.It_Status',
+                'groups.Gr_Descrip',
+                'items.It_Feature'
+            )
             ->paginate(15);
 
         $groups = DB::table('groups')->get();
-        
+
         return view('admin.items.index')->with([
-            'items'=>$items, 
-            'search'=>$search, 
-            'category'=>$category, 
+            'items'=>$items,
+            'search'=>$search,
+            'category'=>$category,
             'groups'=>$groups
         ]);
     }
@@ -71,10 +77,8 @@ class ItemCTRL extends Controller
      */
     public function store(Request $request)
     {
-        if( isset($request['add']) )
-        {
-            if( !empty($request['name']) && !empty($request['category']) && !empty($request['descrip']) )
-            {
+        if (isset($request['add'])) {
+            if (!empty($request['name']) && !empty($request['category']) && !empty($request['descrip'])) {
                 DB::table('items')->insert([
                     'It_Descrip'=> $request['name'],
                     'It_Abrev' =>$request['name'],
@@ -82,21 +86,19 @@ class ItemCTRL extends Controller
                     'It_Status'=>1,
                     'description'=>$request['descrip'],
                 ]);
+
                 return response()->json("New Item");
             }
         }
 
-        if( isset($request['new_size']) )
-        {
-            if(
-                !empty($request['descrip']) &&
+        if (isset($request['new_size'])) {
+            if (!empty($request['descrip']) &&
                 !empty($request['abrev']) &&
                 !empty($request['price']) &&
                 !empty($request['top_price']) &&
                 !empty($request['top_price2']) &&
-                !empty($request['area']) 
-            )
-            {
+                !empty($request['area'])
+            ) {
                 $id_item = (int) $request['id_item'];
                 $price = (float)$request['price'];
                 $top = (float)$request['top_price'];
@@ -120,27 +122,25 @@ class ItemCTRL extends Controller
             }
         }
 
-        if ( isset($request['edit_item']) )
-        {
+        if (isset($request['edit_item'])) {
             $update = [];
 
-            if($request['name']!=""){
+            if ($request['name']!="") {
                 $update['It_Descrip'] = $request['name'];
             }
-            
-            if($request['descrip']!=""){
+
+            if ($request['descrip']!="") {
                 $update['description'] = $request['descrip'];
             }
-            
-            if($request['category']!=""){
+
+            if ($request['category']!="") {
                 $update['It_Groups'] = (int)$request['category'];
             }
-            
-            if( !empty( Input::file('imagen') ) )
-            {
-                $name = CategoriesCTRL::upload_image_sys(Input::file('imagen'), 'public_images_item');
-                
-                if($name){
+
+            if (!empty(Input::file('imagen'))) {
+                $name = CategoriesCTRL::uploadImageServer(Input::file('imagen'), 'public_images_item');
+
+                if ($name) {
                     $update['It_ImagePre'] = $name;
                 }
 
@@ -149,7 +149,7 @@ class ItemCTRL extends Controller
 
             $id = (int)$request['id'];
 
-            if( count($update) && $id ){
+            if (count($update) && $id) {
                 DB::table('items')
                     ->where('It_Id', $id)
                     ->update($update);
@@ -177,9 +177,8 @@ class ItemCTRL extends Controller
             ->get();
 
         $sizes = "";
-        
-        if($item)
-        {
+
+        if ($item) {
             $item = $item[0];
             $item_id = $item->It_Id;
             $sizes = DB::table('size')
@@ -189,11 +188,11 @@ class ItemCTRL extends Controller
 
         $groups = DB::table('groups')->get();
         $food = DB::table('food')->get();
-        
+
         return view('admin.items.show')->with([
-            'item'=>$item, 
-            'sizes'=>$sizes, 
-            'groups'=>$groups, 
+            'item'=>$item,
+            'sizes'=>$sizes,
+            'groups'=>$groups,
             'food'=>$food
         ]);
     }
@@ -222,35 +221,34 @@ class ItemCTRL extends Controller
     {
         //$respuesta=[];
 
-        if ( isset($request['id']) )
-        {
+        if (isset($request['id'])) {
             $update = [];
 
-            if($request['descrip']!=""){
+            if ($request['descrip']!="") {
                 $update['Sz_Descrip'] = $request['descrip'];
             }
 
-            if($request['size_abrev']!=""){
+            if ($request['size_abrev']!="") {
                 $update['Sz_Abrev'] = $request['size_abrev'];
             }
-            
-            if($request['price']!=""){
+
+            if ($request['price']!="") {
                 $update['Sz_Price'] = (float)$request['price'];
             }
-            
-            if($request['top_price']!=""){
+
+            if ($request['top_price']!="") {
                 $update['Sz_Topprice'] = (float)$request['top_price'];
             }
 
-            if($request['top_price2']!=""){
+            if ($request['top_price2']!="") {
                 $update['Sz_Topprice2'] = $request['top_price2'];
             }
 
-            if($request['size_area_change']!=""){
+            if ($request['size_area_change']!="") {
                 $update['Sz_FArea'] = $request['size_area_change'];
-            } 
-            
-            if( count($update) ){
+            }
+
+            if (count($update)) {
                 DB::table('size')
                     ->where('Sz_Id', $request['id'])
                     ->update($update);
@@ -260,45 +258,41 @@ class ItemCTRL extends Controller
         }
 
 
-        if( isset($request['item_visible']) )
-        {
+        if (isset($request['item_visible'])) {
             $status  = (int)$request['status'];
-            
+
             DB::table('items')
                 ->where('It_Id', $id)
                 ->update(['It_Status'=>$status]);
-            
+
             $respuesta = ['state'=>'Changed'];
         }
 
-        if( isset($request['item_feature']) )
-        {
+        if (isset($request['item_feature'])) {
             $status  = (int)$request['status'];
-            
+
             DB::table('items')
                 ->where('It_Id', $id)
                 ->update(['It_Feature'=>$status]);
-            
+
             $respuesta = ['state'=>'Feat Changed'];
         }
 
-        if( isset($request['change_visible']) )
-        {
+        if (isset($request['change_visible'])) {
             $status  = (int)$request['status'];
-            
+
             DB::table('size')
                 ->where('Sz_Id', $request['change_visible'])
                 ->update(['Sz_Status'=>$status]);
-            
+
             $respuesta = ['state'=>'Changed'];
         }
 
-        if( !count($respuesta) ){
+        if (!count($respuesta)) {
             $respuesta = ['state'=>'No'];
         }
-        
+
         return response()->json($respuesta);
-        
     }
 
 

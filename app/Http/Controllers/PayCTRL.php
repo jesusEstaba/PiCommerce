@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Cumple el Estándar PSR-2
+ */
 namespace Pizza\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -10,27 +12,24 @@ use DB;
 use Auth;
 use Carbon\Carbon;
 
-
 class PayCTRL extends Controller
 {
-	/**
-	 * [index description]
-	 * @return [type] [description]
-	 */
-    public function index($select='')
+    /**
+     * [index description]
+     * @return [type] [description]
+     */
+    public function index($select = '')
     {
         /**
          * Revisar las condiciones cuando sea Quick, Delivery o Pickup
          */
 
         //ver si hay errores con la session
-        if(Auth::check())
-        {
-            $cart = CartCTRL::busq_cart();#podria cargarlo desde un Session
-        
-            if($cart)
-            {
-                $total_in_cart = CartCTRL::total_price(true);
+        if (Auth::check()) {
+            $cart = CartCTRL::searchCartItems();#podria cargarlo desde un Session
+
+            if ($cart) {
+                $total_in_cart = CartCTRL::totalCostCart(true);
 
                 $user = DB::table('users')
                     ->leftJoin('customers', 'customers.Cs_Phone', '=', 'users.phone')
@@ -57,42 +56,36 @@ class PayCTRL extends Controller
                 $valid_zip_code = DB::table('street')
                     ->where('St_ZipCode', $user->Cs_ZipCode)
                     ->first();
-                
+
                 $delivery = false;
-                
-                if($valid_zip_code){
+
+                if ($valid_zip_code) {
                     $delivery = true;
                 }
 
                 $ip_user = $_SERVER['REMOTE_ADDR'];
                 $query = @unserialize(file_get_contents('http://ip-api.com/php/'.$ip_user));
-                    
+
                 $isp_user = '';
-                if($query && $query['status'] == 'success')
-                {
+                if ($query && $query['status'] == 'success') {
                     $isp_user = $query['isp'];
                 }
 
-                $size = function($size)
-                {
+                $size = function ($size) {
                     $size_topping = '';
-                    
-                    if($size==1){
+
+                    if ($size==1) {
                         $size_topping = '(All)';
-                    }
-                    elseif($size==2){
+                    } elseif ($size==2) {
                         $size_topping = '(Left)';
-                    }
-                    elseif($size==3){
+                    } elseif ($size==3) {
                         $size_topping = '(Rigth)';
-                    }
-                    elseif($size==4){
+                    } elseif ($size==4) {
                         $size_topping = '(Extra)';
-                    }
-                    elseif($size==5){
+                    } elseif ($size==5) {
                         $size_topping = '(Lite)';
                     }
-                            
+
                     return $size_topping;
                 };
 
@@ -103,10 +96,10 @@ class PayCTRL extends Controller
                 $fee = (float)$fee->Pf_Charge;
                 $delivery_value = 0;
 
-                if($delivery && $select=='delivery'){
+                if ($delivery && $select=='delivery') {
                     $delivery_value = (float)$delivery_val->G_Value;
                 }
-                
+
                 $taxs = $total_cart * $tax / 100;
                 $total_to_pay = $total_cart + $taxs + $delivery_value + $fee;
                 #EndCalculos
@@ -114,11 +107,10 @@ class PayCTRL extends Controller
                 $total_cart = number_format($total_cart, 2);
                 $taxs = number_format($taxs, 2);
                 $delivery_value = number_format($delivery_value, 2);
-                $fee = number_format($fee ,2);
-                $total_to_pay = number_format($total_to_pay ,2);
+                $fee = number_format($fee, 2);
+                $total_to_pay = number_format($total_to_pay, 2);
 
                 $delivery_date = Carbon::now()->format('m-d-Y');
-                
 
                 return view('checkout.pay')->with([
                     'cart' => $cart,
@@ -128,35 +120,31 @@ class PayCTRL extends Controller
                     'delivery'=> $delivery,
                     'ip_user' => $ip_user,
                     'tax' => $tax,
-                    'total_cart' => $total_cart, 
-                    'taxs' => $taxs, 
-                    'delivery_value' => $delivery_value, 
-                    'fee' => $fee, 
-                    'total_to_pay' => $total_to_pay, 
-                    'delivery_date' => $delivery_date, 
+                    'total_cart' => $total_cart,
+                    'taxs' => $taxs,
+                    'delivery_value' => $delivery_value,
+                    'fee' => $fee,
+                    'total_to_pay' => $total_to_pay,
+                    'delivery_date' => $delivery_date,
                     'isp_user' => $isp_user,
                 ]);
             }
-
-            
         }
-        
-        if($select=='quick')
-        {
+
+        if ($select=='quick') {
             return redirect()->to('checkout/quick');
         }
 
         return view('checkout.empty');
     }
-	
 
-	/**
-	 * [select description]
-	 * @return [type] [description]
-	 */
-	public function select()
-	{
-		return view('checkout.selection');
-	}
 
+    /**
+    * [select description]
+    * @return [type] [description]
+    */
+    public function select()
+    {
+        return view('checkout.selection');
+    }
 }

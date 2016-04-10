@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Cumple el Estándar PSR-2
+ */
 namespace Pizza\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -20,7 +22,7 @@ class GroupCTRL extends Controller
         $groups = DB::table('groups')
             ->orderBy('Gr_Special')
             ->get();
-        
+
         return view('admin.groups.index')->with(['groups'=>$groups]);
     }
 
@@ -42,12 +44,12 @@ class GroupCTRL extends Controller
      */
     public function store(Request $request)
     {
-        if( !empty($request['name']) )
-        {
+        if (!empty($request['name'])) {
             DB::table('groups')->insert([
                 'Gr_Descrip'=> $request['name'],
                 'Gr_Abrevi' =>$request['name']
             ]);
+
             return response()->json("New Group");
         }
 

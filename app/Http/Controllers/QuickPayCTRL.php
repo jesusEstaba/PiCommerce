@@ -40,7 +40,7 @@ class QuickPayCTRL extends Controller
             $quantity = Session::get('quantity');
 
             //funcion que carga el producto a la db
-            $id_cart_go = CartCTRL::cargar_producto(
+            $id_cart_go = CartCTRL::loadItemToCart(
                 $size,
                 $toppings,
                 $top_size,
@@ -69,7 +69,7 @@ class QuickPayCTRL extends Controller
 	    	
 	    	if($id_cart_go)
 	    	{
-	    		$cart = CartCTRL::busq_cart('asc', $id_cart_go);//se deberia Cargar desde la sesion en vez de llamar al controller
+	    		$cart = CartCTRL::searchCartItems('asc', $id_cart_go);//se deberia Cargar desde la sesion en vez de llamar al controller
 
 		    	//Calculando total del carrito
 		    	$total_cart = DB::table('cart')
@@ -148,7 +148,7 @@ class QuickPayCTRL extends Controller
 
 					if( Session::has('coupon_id') )
 					{
-						CouponsCTRL::use_coupon($id, Session::get('coupon_id'));
+						CouponsCTRL::useDiscountCoupon($id, Session::get('coupon_id'));
 						Session::forget('coupon_id');
 					}
 			    	

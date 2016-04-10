@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Cumple el Estándar PSR-2
+ */
 namespace Pizza\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -14,8 +16,17 @@ use Input;
 
 use Carbon\Carbon;
 
+/**
+ * Esta clase es de la categorias y tal
+ * @category Categorias
+ * @license license url license name
+ * @author Jesus Estaba <jeec.estaba@gmail.com>
+ * @link url text
+ */
 class CategoriesCTRL extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      *
@@ -24,21 +35,25 @@ class CategoriesCTRL extends Controller
     public function index()
     {
         $categories = DB::table('category')
-        	->join('groups', 'groups.Gr_ID', '=', 'category.group_id')
-        	->select(
-        		'category.id',
-        		'category.name', 
-        		'category.name_cat', 
-        		'groups.Gr_Descrip', 
-        		'category.Status'
-        	)
-        	->paginate(15);
-
+            ->join('groups', 'groups.Gr_ID', '=', 'category.group_id')
+            ->select(
+                'category.id',
+                'category.name',
+                'category.name_cat',
+                'groups.Gr_Descrip',
+                'category.Status'
+            )
+            ->paginate(15);
 
         $groups = DB::table('groups')->get();
 
-        return view('admin.categories.index')->with(['categories'=>$categories, 'groups'=>$groups]);
-    }
+        return view('admin.categories.index')->with([
+            'categories' => $categories,
+            'groups' => $groups
+        ]);
+
+    }//end index()
+
 
     /**
      * Show the form for creating a new resource.
@@ -47,8 +62,9 @@ class CategoriesCTRL extends Controller
      */
     public function create()
     {
-        //
-    }
+
+    }//end create()
+
 
     /**
      * Store a newly created resource in storage.
@@ -58,10 +74,8 @@ class CategoriesCTRL extends Controller
      */
     public function store(Request $request)
     {
-
-        if($request['name'] && $request['url'] && $request['group'])
-        {
-            $insert_to_db = [
+        if ($request['name'] && $request['url'] && $request['group']) {
+            $insertToCategory = [
                 'name' => $request['name'],
                 'name_cat' => str_slug($request['url']),
                 'group_id' => $request['group'],
@@ -69,71 +83,70 @@ class CategoriesCTRL extends Controller
                 'Status' => 1
             ];
 
-            if( !empty( Input::file('imagen') ) )
-            {
-                $name = $this->upload_image_sys(Input::file('imagen'), 'public_images_category');
-                
-                if($name){
-                    $insert_to_db['image'] = $name;
-                }
+            if (!empty(Input::file('imagen'))) {
+                $name = $this->uploadImageServer(
+                    Input::file('imagen'),
+                    'public_images_category'
+                );
 
+                if ($name) {
+                    $insertToCategory['image'] = $name;
+                }
                 //delete dthe old element #Storage::delete('file.jpg');
             }
 
-            DB::table('category')->insert($insert_to_db);
-
+            DB::table('category')->insert($insertToCategory);
             return response()->json("created");
         }
-          
 
         $respuesta = [
-            "Empty",
+            'Empty',
             'name' => $request['name'],
             'url' => $request['url'],
             'group' => $request['group'],
         ];
 
-        if($request['cambios'])
-        {
+        if ($request['cambios']) {
             $id = (int)$request['id'];
             $update=[];
-            
-            if( !empty($request['category']) ){
+
+            if (!empty($request['category'])) {
                 $update['group_id'] = $request['category'];
             }
 
-            if( !empty($request['url']) ){
+            if (!empty($request['url'])) {
                 $update['name_cat'] = str_slug($request['url']);
             }
 
-            if( !empty($request['name_category']) ){
+            if (!empty($request['name_category'])) {
                 $update['name'] = $request['name_category'];
             }
-           
-            if( !empty( Input::file('imagen') ) )
-            {
-                $image = $this->upload_image_sys(Input::file('imagen'), 'public_images_category');
-                
-                if($image){
+
+            if (!empty(Input::file('imagen'))) {
+                $image = $this->uploadImageServer(
+                    Input::file('imagen'),
+                    'public_images_category'
+                );
+
+                if ($image) {
                     $update['image'] = $image;
                 }
-
                 //delete dthe old element #Storage::delete('file.jpg');
             }
 
-            if( !empty( Input::file('imagen_cat') ) )
-            {
-                $image = $this->upload_image_sys(Input::file('imagen_cat'), 'public_images_banner');
-               
-                if($image){
+            if (!empty(Input::file('imagen_cat'))) {
+                $image = $this->uploadImageServer(
+                    Input::file('imagen_cat'),
+                    'public_images_banner'
+                );
+
+                if ($image) {
                     $update['image_cat'] = $image;
                 }
-
                 //delete dthe old element #Storage::delete('file.jpg');
             }
 
-            if( count($update) )
-            {
+            if (count($update)) {
                 DB::table('category')
                     ->where('id', $id)
                     ->update($update);
@@ -154,51 +167,59 @@ class CategoriesCTRL extends Controller
     public function show($id)
     {
         $category = DB::table('category')
-            ->join('groups', 'groups.Gr_ID', '=', 'category.group_id')
+            ->join(
+                'groups',
+                'groups.Gr_ID',
+                '=',
+                'category.group_id'
+            )
             ->where('id', $id)
+            ->select(
+                'category.group_id as groupId',
+                'submenu_cat as submenuCat'
+            )
             ->first();
 
         $groups = DB::table('groups')->get();
 
         $products = false;
-        $submenu_cat = 0;
+        $submenuCat = 0;
 
-        if($category)
-        {
-            if(!$category->submenu_cat)
-            {
+        if ($category) {
+            if (!$category->submenuCat) {
                 $products = DB::table('items')
-                            ->where('It_Groups', $category->group_id)
+                            ->where('It_Groups', $category->groupId)
                             ->orderBy('It_Special')
                             ->get();
-            }
-            else
-            {
-                $id_item_group = DB::table('items')
-                            ->where('It_Groups', $category->group_id)
+            } else {
+                $idItemGroup = DB::table('items')
+                            ->where('It_Groups', $category->groupId)
                             ->orderBy('It_Special')
                             ->first()
                             ->It_Id;
 
                 $products = DB::table('size')
-                            ->where('Sz_Item', $id_item_group)
+                            ->where('Sz_Item', $idItemGroup)
                             ->orderBy('Sz_Special')
                             ->get();
-                
-                $submenu_cat = 1;
+
+                $submenuCat = 1;
             }
         }
-        
 
-        if( !isset($category) )
+
+        if (!isset($category)) {
             $category = "";
+        }
 
-        return view('admin.categories.category')->with([
-            'submenu_cat'=>$submenu_cat,
+        return view('admin.categories.category')->with(
+            [
+            'submenu_cat'=>$submenuCat,
             'products'=>$products,
-            'category'=>$category, 
+            'category'=>$category,
             'groups'=>$groups
-        ]);
+            ]
+        );
     }
 
     /**
@@ -221,11 +242,10 @@ class CategoriesCTRL extends Controller
      */
     public function update(Request $request, $id)
     {
-        if( isset($request['change_visible']) )
-        {
+        if (isset($request['change_visible'])) {
             $id = (int)$id;
-            if( $id != 0 )
-            {
+
+            if ($id != 0) {
                 $status  = (int)$request['status'];
 
                 DB::table('category')
@@ -233,28 +253,22 @@ class CategoriesCTRL extends Controller
                 ->update(['Status'=>$status]);
 
                 $respuesta = ['state'=>'Changed'];
-            }
-            else
+            } else {
                 $respuesta ="empty";
-        }        
+            }
+        }
 
-        if($request['order_change'])
-        {
-            $all_count = count($request['order_items']);
-            
-            $sub_menus = (int)$request['sub'];
+        if ($request['order_change']) {
+            $allCount = count($request['order_items']);
 
-            for ($i=0; $i < $all_count; $i++)
-            { 
+            $subMenus = (int)$request['sub'];
 
-                if($sub_menus)
-                {
+            for ($i = 0; $i < $allCount; $i++) {
+                if ($subMenus) {
                     DB::table('size')
                         ->where('Sz_Id', $request['order_items'][$i])
                         ->update(['Sz_Special'=> $i+1]);
-                }
-                else
-                {
+                } else {
                     DB::table('items')
                         ->where('It_Id', $request['order_items'][$i])
                         ->update(['It_Special'=> $i+1]);
@@ -264,28 +278,30 @@ class CategoriesCTRL extends Controller
             $respuesta = ['state'=>'Order Change'];
         }
 
-    	return response()->json($respuesta);
+        return response()->json($respuesta);
     }
 
 
-    public static function upload_image_sys($image_file, $disk_driver)
+    public static function uploadImageServer($imageFile, $diskDriver)
     {
         //if( $imagen_file->isValid() )
-        
+
         $update = false;
-        $name = $image_file->getClientOriginalName();
-        $ext_img = $image_file->getClientOriginalExtension();
-        $name = md5( Carbon::now() . $name . rand(1024, 1280) ) . '.' . $ext_img;
-        
-        try{
-            Storage::disk($disk_driver)->put( $name, File::get( $image_file->getRealPath() ) );
-            
+        $name = $imageFile->getClientOriginalName();
+        $extImg = $imageFile->getClientOriginalExtension();
+        $name = md5(Carbon::now() . $name . rand(1024, 1280)) . '.' . $extImg;
+
+        try {
+            Storage::disk($diskDriver)->put(
+                $name,
+                File::get($imageFile->getRealPath())
+            );
+
             $update = $name;
-        }
-        catch(Execption $e){
+        } catch (Execption $e) {
             //
         }
-        
+
         return $update;
     }
 

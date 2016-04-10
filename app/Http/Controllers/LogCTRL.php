@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Cumple el Estándar PSR-2
+ */
 namespace Pizza\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use Illuminate\Http\Request;
 use Pizza\Http\Requests;
 use Pizza\Http\Controllers\Controller;
 use DB;
-
+use Auth;
 
 class LogCTRL extends Controller
 {
@@ -17,25 +19,19 @@ class LogCTRL extends Controller
      */
     public static function addToLog($action)
     {
-        if( \Auth::check() || $action==314 )
-        {
+        if (Auth::check() || $action==314) {
             $ip = $_SERVER['REMOTE_ADDR'];
             $query = @unserialize(file_get_contents('http://ip-api.com/php/'.$ip));
-            
-            $ISP = '';
+            $isp = '';
 
-            if($query && $query['status'] == 'success')
-            {
-              $ISP = $query['isp'];
+            if ($query && $query['status'] == 'success') {
+                $isp = $query['isp'];
             }
-                
-            if($action==314)
-            {
+
+            if ($action==314) {
                  $id_user = 314;
-            }
-            else
-            {
-               $id_user = \Auth::user()->id;
+            } else {
+                $id_user = Auth::user()->id;
             }
 
             DB::table('ip_logs_user')->insert([
@@ -43,7 +39,7 @@ class LogCTRL extends Controller
                 'ip'=> $ip,
                 'created_at'=>\Carbon\Carbon::now(),
                 'action'=>$action,
-                'ISP'=>$ISP,
+                'ISP'=>$isp,
             ]);
         }
     }

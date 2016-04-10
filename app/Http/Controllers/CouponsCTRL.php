@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Cumple el Estándar PSR-2
+ */
 namespace Pizza\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -8,6 +10,7 @@ use Pizza\Http\Requests;
 use Pizza\Http\Controllers\Controller;
 use DB;
 use Session;
+use Carbon\Carbon;
 
 class CouponsCTRL extends Controller
 {
@@ -16,20 +19,16 @@ class CouponsCTRL extends Controller
      * @param  [type] $coupon [description]
      * @return [type]         [description]
      */
-    public static function return_discount($coupon)
+    public static function returnDiscountCoupon($coupon)
     {
-        $cupon = CouponsCTRL::query_coupon($coupon);
-        if($cupon)
-        {
-            $resp = ['discount'=>(float)$cupon->discount, 'type'=>$cupon->Cp_Type]; 
-            
+        $cupon = CouponsCTRL::queryDiscountCoupon($coupon);
+        if ($cupon) {
             Session::put('coupon_discount', $cupon->discount);
             Session::put('coupon_type', $cupon->Cp_Type);
-            
-            Session::put('coupon_id', CouponsCTRL::valid_coupon($coupon) );
-        }
-        else
-        {
+            Session::put('coupon_id', CouponsCTRL::validDiscountCoupon($coupon));
+
+            $resp = ['discount'=>(float)$cupon->discount, 'type'=>$cupon->Cp_Type];
+        } else {
             $resp = ['discount'=>0];
         }
 
@@ -41,13 +40,14 @@ class CouponsCTRL extends Controller
      * @param  [type] $code_coupon [description]
      * @return [type]              [description]
      */
-    public static function query_coupon($code_coupon)
+    public static function queryDiscountCoupon($code_coupon)
     {
         $cupon = DB::table('coupons')
-            ->where('code', 'like',$code_coupon)
-            ->where('rot', '>=', \Carbon\Carbon::now())
+            ->where('code', 'like', $code_coupon)
+            ->where('rot', '>=', Carbon::now())
             ->where('Cp_Status', 0)
             ->first();
+
         return $cupon;
     }
 
@@ -58,25 +58,23 @@ class CouponsCTRL extends Controller
      * @param  [type] $id_order    [description]
      * @return [type]              [description]
      */
-    public static function valid_coupon($code_coupon)
+    public static function validDiscountCoupon($code_coupon)
     {
-        $cupon = CouponsCTRL::query_coupon($code_coupon);
-        
-        if($cupon)
-        {
+        $cupon = CouponsCTRL::queryDiscountCoupon($code_coupon);
+
+        if ($cupon) {
             return (int)$cupon->id;
-        }    
+        }
         return 0;
     }
 
-    public static function use_coupon($id_order, $coupon_id)
+    public static function useDiscountCoupon($id_order, $coupon_id)
     {
-        if($coupon_id)
-        {
+        if ($coupon_id) {
             DB::table('coupons_logs')->insert([
                 'coupon_id'=> $coupon_id,
                 'order_id'=> $id_order,
-                'used'=> \Carbon\Carbon::now(),
+                'used'=> Carbon::now(),
             ]);
         }
     }
@@ -91,8 +89,7 @@ class CouponsCTRL extends Controller
     {
         $coupons = DB::table('coupons')->paginate(15);
 
-        foreach($coupons as $arr => $data)
-        {
+        foreach ($coupons as $arr => $data) {
             $num_coupon_used = DB::table('coupons_logs')
                 ->where('coupon_id', $data->id)
                 ->count();
@@ -123,17 +120,19 @@ class CouponsCTRL extends Controller
      */
     public function store(Request $request)
     {
-        if( !empty($request['code']) && !empty($request['disc']) && !empty($request['date']) )
-        {
+        if (!empty($request['code']) && !empty($request['disc']) && !empty($request['date'])) {
             $id_cupon = DB::table('coupons')->insertGetId([
                 'code' => $request['code'],
                 'discount' => $request['disc'],
                 'rot' => $request['date'],
                 'Cp_Type' => $request['type_disc'],
-                'created_at' => \Carbon\Carbon::now(),
+                'created_at' => Carbon::now(),
             ]);
-            if($id_cupon)
+
+            if ($id_cupon) {
                 return response()->json("New Coupon");
+            }
+
             return response()->json("Coupon Error");
         }
 
@@ -148,7 +147,6 @@ class CouponsCTRL extends Controller
      */
     public function show($id)
     {
-
         $data = DB::table('coupons')
             ->where('id', $id)
             ->first();
