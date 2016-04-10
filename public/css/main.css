@@ -1,21 +1,21 @@
 nav {
   background: #fff;
-  position: relative;
-  height: 65px;
   box-shadow: 0 0 8px rgba(0,0,0,0.26);
+  height: 65px;
+  position: relative;
 }
 body {
   background: #eee;
   display: flex;
-  min-height: 100vh;
   flex-direction: column;
+  min-height: 100vh;
 }
 footer {
-  color: #fff;
   background: #17733a;
-  width: 100%;
-  min-height: 60px;
   box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  color: #fff;
+  min-height: 60px;
+  width: 100%;
 }
 footer p {
   text-align: center;
@@ -25,52 +25,52 @@ footer a {
 }
 footer img {
   display: block;
+  margin-bottom: 0.5em;
   margin-left: auto;
   margin-right: auto;
   margin-top: 0.5em;
-  margin-bottom: 0.5em;
 }
 .separator-fix-footer {
   flex: 1 0 auto;
 }
 .logo {
-  margin-right: auto;
-  margin-left: auto;
-  position: absolute;
   left: 0;
+  margin-left: auto;
+  margin-right: auto;
+  position: absolute;
   right: 0;
 }
 .space {
   margin-top: 100px;
 }
 .category-choose {
-  margin-bottom: 10px;
   height: auto;
+  margin-bottom: 10px;
   margin-bottom: 1em;
   position: relative;
 }
 .image-category {
-  width: 100%;
   background: url("../images/banners/3fbef54e0b946103d3b0bea136304ce9.png") center center fixed no-repeat;
   background-size: cover;
   height: 160px;
+  width: 100%;
 }
 .name-category {
   background: #d42027;
   color: #fff;
 }
 .name-category ul li {
-  color: #fff;
+  background: #95161b;
   border-radius: 5px;
+  color: #fff;
+  display: inline-block;
   margin: 5px;
   padding: 10px;
-  display: inline-block;
-  background: #95161b;
   transition: 0.8s box-shadow, 0.8s background;
 }
 .name-category ul li:hover {
-  box-shadow: 0 0 15px rgba(0,0,0,0.36);
   background: #e23e44;
+  box-shadow: 0 0 15px rgba(0,0,0,0.36);
 }
 .name-category ul li a {
   color: #fff;
@@ -85,27 +85,27 @@ footer img {
 }
 .elements .type {
   background: #fff;
-  margin-bottom: 1em;
   border-radius: 5px;
+  margin-bottom: 1em;
   transition: 1s box-shadow ease;
 }
 .elements .type:hover {
   box-shadow: 0 0 15px rgba(0,0,0,0.3);
 }
 .choose {
-  margin-left: auto;
-  margin-right: auto;
   border-radius: 5px;
   display: block;
+  margin-left: auto;
+  margin-right: auto;
   transition: 0.8s box-shadow;
 }
 .choose:hover {
   box-shadow: 0 0 10px rgba(0,0,0,0.4);
 }
 .text-choose {
+  color: #fff;
   left: 2em;
   position: absolute;
-  color: #fff;
   text-shadow: 0 0 3px rgba(0,0,0,0.7);
   z-index: 3;
 }
@@ -125,10 +125,10 @@ footer img {
   margin-bottom: 50px;
 }
 .btn-lg {
-  font-size: 2em;
   display: block;
-  padding-top: 1em;
+  font-size: 2em;
   padding-bottom: 1em;
+  padding-top: 1em;
 }
 .actions-cart div {
   margin-bottom: 1em;

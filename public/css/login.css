@@ -1,8 +1,6 @@
 body {
-  
   background: url("../images/backgrounds/wood.jpg") center center no-repeat fixed;
   background-size: cover;
-  background-color: #1C0C08;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -40,26 +38,24 @@ footer img {
 .login-box {
   background: rgba(0,0,0,0.6);
   border-radius: 5px;
-  padding-top: 3em;
   padding: 2em;
+  padding-top: 3em;
   position: relative;
-  top:-150px;
 }
 .logo {
-  position: absolute;
   display: block;
+  left: 0;
   margin-left: auto;
   margin-right: auto;
-  left: 0;
+  position: absolute;
   right: 0;
   top: -100px;
   z-index: 3;
-  height: 129px;
 }
 .btn {
   display: block !important;
-  width: 100% !important;
   margin-top: 1em;
+  width: 100% !important;
 }
 .input-group {
   margin-bottom: 0.5em;
@@ -67,9 +63,7 @@ footer img {
 .separator-fix-footer {
   flex: 1 0 auto;
 }
-
 @media (max-width: 991px) {
-
   .center-center {
     display: block !important;
     height: initial !important;
@@ -82,6 +76,5 @@ footer img {
   }
   .login-box {
     background: none;
-    top:0;
   }
 }

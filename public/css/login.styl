@@ -2,86 +2,79 @@ body
 	background url('../images/backgrounds/wood.jpg') center center no-repeat fixed
 	background-size cover
 	display flex
-	min-height 100vh
 	flex-direction column
-    
+	min-height 100vh
+
 footer
-	z-index 6
-	color white
 	background #17733A
-	width 100%
-	min-height 60px
 	box-shadow 0 0 15px rgba(black, .4)
-	
+	color white
+	min-height 60px
+	width 100%
+	z-index 6
 	p
 		text-align center
-	
 	a
 		color #FFD914 !important
 	img
 		display block
 		margin-left auto
 		margin-right auto
-	
+
 .center-center
-	display inline-block
-	position absolute
-	width 100%
-	height 100px
-	top 0
 	bottom 0
+	display inline-block
+	height 100px
 	left 0
-	right 0
 	margin auto
-	
+	position absolute
+	right 0
+	top 0
+	width 100%
 
 .login-box
-	position relative
 	background rgba(black, .6)
 	border-radius 5px
 	padding 2em
 	padding-top 3em
-	
+	position relative
+
 .logo
-	position absolute
 	display block
+	left 0
 	margin-left auto
 	margin-right auto
-	left 0
+	position absolute
 	right 0
 	top -100px
 	z-index 3
-	
+
 .btn
 	display block !important
-	width 100% !important
 	margin-top 1em
+	width 100% !important
 
 .input-group
 	margin-bottom .5em
 
 .separator-fix-footer
 	flex 1 0 auto
-	
-
 
 @media (max-width: 991px){
 	.center-center
 	{
 		display block !important
-		position initial !important
 		height initial !important
+		position initial !important
 	}
 	.logo
 	{
+		margin-bottom 1em
 		position relative
 		top 0
-		margin-bottom 1em
 	}
 	.login-box
 	{
 		background none
 	}
-		
-		
 }

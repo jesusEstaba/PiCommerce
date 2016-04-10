@@ -24,6 +24,7 @@ class LoginCTRL extends Controller
     {
         if( !Auth::check() ){
             $config = DB::table('config')->select('logo', 'background')->first();
+            
             return view('login')->with(['config'=>$config]);
         }
 
@@ -40,7 +41,12 @@ class LoginCTRL extends Controller
     	if( Auth::attempt(['email'=>$request['email'], 'password'=>$request['password'] ]) )
     	{
             LogCTRL::addToLog(1);
-			return Redirect::to('cart');	
+
+            if( CartCTRL::total_price(true) ){
+                return Redirect::to('cart');
+            }
+
+            return Redirect::to('choose');
     	}
 
     	Session::flash('message-error', 'Bad Login');
