@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Cumple el Estándar PSR-2
+ */
 namespace Pizza\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -19,17 +21,18 @@ class UserCTRL extends Controller
     public function index()
     {
         $search = Input::get('search');
-        
+
         $users = DB::table('users')
             ->leftJoin('customers', 'customers.Cs_Phone', '=', 'users.phone')
-            ->where(function($query) use ($search){
-                if ($search)
-                {
-                    $query->where('Cs_Name', 'like', '%'.$search.'%');
+            ->where(
+                function ($query) use ($search) {
+                    if ($search) {
+                        $query->where('Cs_Name', 'like', '%'.$search.'%');
+                    }
                 }
-            })
+            )
             ->paginate(15);
-        
+
         return view('admin.users.index')
             ->with(['users'=>$users, 'search'=>$search]);
     }

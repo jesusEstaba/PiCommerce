@@ -64,7 +64,7 @@ class OrderCTRL extends Controller
 
     	$mytime = Carbon::now();
     	
-    	$cart = CartCTRL::busq_cart();//se deberia Cargar desde la sesion en vez de llamar al controller
+    	$cart = CartCTRL::searchCartItems();//se deberia Cargar desde la sesion en vez de llamar al controller
 
     	//Calculando total del carrito
     	$total_cart = DB::table('cart')
@@ -156,7 +156,7 @@ class OrderCTRL extends Controller
 
 			if( Session::has('coupon_id') )
 			{
-				CouponsCTRL::use_coupon($id, Session::get('coupon_id'));
+				CouponsCTRL::useDiscountCoupon($id, Session::get('coupon_id'));
 				Session::forget('coupon_id');
 			}
 	    	

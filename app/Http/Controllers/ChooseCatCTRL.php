@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Cumple el Estándar PSR-2
+ */
 namespace Pizza\Http\Controllers;
 
 use Illuminate\Http\Request;

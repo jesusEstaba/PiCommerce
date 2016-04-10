@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Cumple el Estándar PSR-2
+ */
 namespace Pizza\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -18,35 +20,30 @@ class ProductCTRL extends Controller
      * @param  string $sub [description]
      * @return view      [description]
      */
-    public function index($cat, $id, $sub="")
+    public function index($cat, $id, $sub = '')
     {
         $it_groups = false;
 
-        if($sub=="sub")
-        {
+        if ($sub=='sub') {
             $size_t = DB::table('size')
                 ->join('items', 'items.It_Id', '=', 'size.Sz_Item')
                 ->where('size.Sz_Id', $id)
                 ->first();
 
-            if($size_t)
-            {
+            if ($size_t) {
                 $items = true;
                 $name = $size_t->Sz_Descrip;
                 $description = '';
                 $it_groups = $size_t->It_Groups;
             }
-        }
-        else
-        {
+        } else {
             $items = DB::table('items')
                 ->where('It_Id', $id)
                 ->where('It_Status', 0)
                 ->select('items.It_Groups', 'items.It_Descrip', 'items.It_Id', 'items.description')
                 ->first();
 
-            if($items)
-            {
+            if ($items) {
                 $name = $items->It_Descrip;
                 $id_item = $items->It_Id;
                 $description = $items->description;
@@ -59,27 +56,22 @@ class ProductCTRL extends Controller
             }
         }
 
-        if($it_groups)
-        {
+        if ($it_groups) {
             $builder_data = DB::table('category')
                 ->where('group_id', $it_groups)
                 ->where('Status', 0)
                 ->select('builder_id', 'image', 'tp_kind')
                 ->first();
 
-            if($builder_data)
-            {
+            if ($builder_data) {
                 $id_builder = $builder_data->builder_id;
                 $image = $builder_data->image;
                 $tp_kind = $builder_data->tp_kind;
 
-                if(!$image)
-                {
+                if (!$image) {
                     $image = "recipe-no-photo.jpg";
                 }
-            }
-            else
-            {
+            } else {
                 $id_builder = 0;
                 $image = "";
                 $tp_kind = 0;
@@ -99,25 +91,21 @@ class ProductCTRL extends Controller
                 ->orderBy('Tp_Special')
                 ->get();
 
-            if($id_builder == 1){
+            if ($id_builder == 1) {
                 $vista = 'builder.pizza';
-            }
-            else if($id_builder == 2){
+            } elseif ($id_builder == 2) {
                 $vista = 'builder.salad';
-            }
-            else if($id_builder == 3){
+            } elseif ($id_builder == 3) {
                 $vista = 'builder.simple';
             }
 
-            if ( isset($vista) )
-            {
+            if (isset($vista)) {
                 $cart = false;
                 $total_cart = 0.00;
 
-                if( Auth::check() )
-                {
-                    $cart = CartCTRL::busq_cart('asc');
-                    $total_cart = CartCTRL::total_price(true);
+                if (Auth::check()) {
+                    $cart = CartCTRL::searchCartItems('asc');
+                    $total_cart = CartCTRL::totalCostCart(true);
                 }
 
                 return view($vista)->with([
@@ -136,5 +124,5 @@ class ProductCTRL extends Controller
         }
 
         return view('builder.generic_builder');
-	}
+    }
 }

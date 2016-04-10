@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Cumple el Estándar PSR-2
+ */
 namespace Pizza\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -22,9 +24,9 @@ class LoginCTRL extends Controller
      */
     public function index()
     {
-        if( !Auth::check() ){
+        if (!Auth::check()) {
             $config = DB::table('config')->select('logo', 'background')->first();
-            
+
             return view('login')->with(['config'=>$config]);
         }
 
@@ -38,21 +40,26 @@ class LoginCTRL extends Controller
      */
     public function login(LoginRequest $request)
     {
-    	if( Auth::attempt(['email'=>$request['email'], 'password'=>$request['password'] ]) )
-    	{
+        $credentials = [
+            'email'=>$request['email'],
+            'password'=>$request['password']
+        ];
+
+        if (Auth::attempt($credentials)) {
             LogCTRL::addToLog(1);
 
-            if( CartCTRL::total_price(true) ){
+            if (CartCTRL::totalCostCart(true)) {
                 return Redirect::to('cart');
             }
 
             return Redirect::to('choose');
-    	}
+        }
 
-    	Session::flash('message-error', 'Bad Login');
-    	return Redirect::to('login');
+        Session::flash('message-error', 'Bad Login');
+
+        return Redirect::to('login');
     }
-    
+
     /**
      * [logout description]
      * @return [type] [description]
@@ -60,7 +67,7 @@ class LoginCTRL extends Controller
     public function logout()
     {
         LogCTRL::addToLog(2);
-    	Auth::logout();
+        Auth::logout();
         return Redirect::to('login');
     }
 }

@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Cumple el Estándar PSR-2
+ */
 namespace Pizza\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -18,7 +20,7 @@ class EmailAdminCTRL extends Controller
     public function index()
     {
         $emails = DB::table('emails_admin')->get();
-        
+
         return view('admin.emails.index')->with(['emails'=>$emails]);
     }
 
@@ -40,11 +42,11 @@ class EmailAdminCTRL extends Controller
      */
     public function store(Request $request)
     {
-        if( !empty($request['name']) )
-        {
+        if (!empty($request['name'])) {
             DB::table('emails_admin')->insert([
                 'email'=> $request['name'],
             ]);
+
             return response()->json("New Mail");
         }
 
@@ -97,10 +99,8 @@ class EmailAdminCTRL extends Controller
 
         if ($id) {
             DB::table('emails_admin')->delete($id);
-            
             $res = "Deleted";
         }
-
 
         return response()->json($res);
     }

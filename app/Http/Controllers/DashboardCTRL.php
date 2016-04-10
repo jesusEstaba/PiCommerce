@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Cumple el Estándar PSR-2
+ */
 namespace Pizza\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -17,8 +19,7 @@ class DashboardCTRL extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
-    public function profit_month($ano, $mes)
+    public function profitMonth($ano, $mes)
     {
         $min_month = Carbon::create($ano, $mes, 1, 0);
         $max_month = Carbon::create($ano, $mes, 1, 0)->endOfMonth();
@@ -34,11 +35,21 @@ class DashboardCTRL extends Controller
         $times = Carbon::now();
         //$hora = $times->toTimeString();
         //$dia = $times->format('l');
-        $min_month = Carbon::create($times->format('Y'), $times->format('m'), 1, 0);
-        $max_month = Carbon::create($times->format('Y'), $times->format('m'), 1, 0)->endOfMonth();        
-        
-  
-        $profit_month = $this->profit_month($times->format('Y'), $times->format('m'));
+        $min_month = Carbon::create(
+            $times->format('Y'),
+            $times->format('m'),
+            1,
+            0
+        );
+
+        $max_month = Carbon::create(
+            $times->format('Y'),
+            $times->format('m'),
+            1,
+            0
+        )->endOfMonth();
+
+        $profit_month = $this->profitMonth($times->format('Y'), $times->format('m'));
 
 
         $today = $times->format('l jS \of F Y');
@@ -46,34 +57,31 @@ class DashboardCTRL extends Controller
 
         $num = Input::get('num');
 
-        if( isset($num) and !empty($num) )
-        {
+        if (!empty($num)) {
             $orders = DB::table('hd_tticket')
             ->leftJoin('customers', 'customers.Cs_Phone', '=', 'hd_tticket.Hd_Customers')
             ->where('hd_tticket.Hd_Ticket', $num)
             ->where('Hd_Ticket', '!=', '1')
             ->where('Hd_Date', '>=', $date)
             ->select(
-                'customers.Cs_Name', 
-                'hd_tticket.Hd_Ticket', 
-                'hd_tticket.Hd_Date', 
-                'hd_tticket.Hd_Total', 
+                'customers.Cs_Name',
+                'hd_tticket.Hd_Ticket',
+                'hd_tticket.Hd_Date',
+                'hd_tticket.Hd_Total',
                 'Hd_Status'
             )
             ->orderBy('hd_tticket.Hd_Ticket', 'desc')
             ->paginate(5);
-        }
-        else
-        {
+        } else {
             $orders = DB::table('hd_tticket')
             ->leftJoin('customers', 'customers.Cs_Phone', '=', 'hd_tticket.Hd_Customers')
             ->where('Hd_Ticket', '!=', '1')
             ->where('Hd_Date', '>=', $date)
             ->select(
-                'customers.Cs_Name', 
-                'hd_tticket.Hd_Ticket', 
-                'hd_tticket.Hd_Date', 
-                'hd_tticket.Hd_Total', 
+                'customers.Cs_Name',
+                'hd_tticket.Hd_Ticket',
+                'hd_tticket.Hd_Date',
+                'hd_tticket.Hd_Total',
                 'Hd_Status'
             )
             ->orderBy('hd_tticket.Hd_Ticket', 'desc')
@@ -84,10 +92,11 @@ class DashboardCTRL extends Controller
 
         $pendientes = DB::table('hd_tticket')
             ->whereBetween('Hd_Date', [$min_month, $max_month])
-            ->where(function($query){
-                $query->where('Hd_Status', 0)
-                    ->orWhere('Hd_Status', null);
-            })
+            ->where(
+                function ($query) {
+                    $query->where('Hd_Status', 0)->orWhere('Hd_Status', null);
+                }
+            )
             ->count();
 
         $new_orders = DB::table('hd_tticket')
@@ -95,19 +104,14 @@ class DashboardCTRL extends Controller
             ->where('Hd_Status', '1')
             ->count();
 
-
-        //$final_anual = Carbon::now()->startOfYear();
-        //dd($times, $final_anual);
-
         $data_month = [];
         $number_months = [];
 
-        for ($i=1; $i <= $times->format('m'); $i++)
-        { 
-            $data_month[] = $this->profit_month($times->format('Y'), $i);
+        for ($i = 1; $i <= $times->format('m'); $i++) {
+            $data_month[] = $this->profitMonth($times->format('Y'), $i);
             $number_months[] = $i-1;
         }
-        
+
         return view('admin.home')->with([
             'number_months'=>$number_months,
             'data_month'=>$data_month,
