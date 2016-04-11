@@ -13,6 +13,7 @@ use Redirect;
 use Session;
 use DB;
 use Auth;
+use GuzzleHttp\Client;
 
 class RegisterCTRL extends Controller
 {
@@ -26,12 +27,35 @@ class RegisterCTRL extends Controller
 
     public function register(Request $request)
     {
+        $secretKey = '6LdrFB0TAAAAAGKvs-WNMXulyCbpB81xFaM0jj5k';
+
+
+        $client = new Client();
+        $res = $client->request('POST', 'https://www.google.com/recaptcha/api/siteverify', [
+            'form_params' => [
+                'secret' => $secretKey,
+                'response' => $request['g-recaptcha-response'],
+            ]
+        ]);
+
+        $result = $res->getBody();
+        dd($result);
+
+
+        /*
+        $request = Request::create(
+            'https://www.google.com/recaptcha/api/siteverify',
+            'POST',
+            ['secret' => $secretKey, 'response' => $request['g-recaptcha-response']]
+        );
+
+        dd($request);
+        */
 
         if (!empty($request['password']) &&
             !empty($request['email']) &&
             !empty($request['phone']) &&
-            !empty($request['first_name']) &&
-            !empty($request['last_name']) &&
+            !empty($request['name']) &&
             !empty($request['street_number']) &&
             !empty($request['zip_code']) &&
             !empty($request['street_name'])
@@ -57,7 +81,7 @@ class RegisterCTRL extends Controller
                 DB::table('customers')->insert([
                     'Cs_Email1' => $request['email'],
                     'Cs_Phone'=> $request['phone'],
-                    'Cs_Name' => $request['first_name'].' '.$request['last_name'],
+                    'Cs_Name' => $request['name'],
 
                     'Cs_Company' => $request['company'],
                     'Cs_Number' => $request['street_number'],
