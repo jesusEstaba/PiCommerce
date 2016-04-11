@@ -4,153 +4,136 @@
 @section('content')
 
 <div class="container space">
-
 	@if( Session::has('message') )
-		<div class="alert alert-success alert-dismissable">
-		  <button type="button" class="close" data-dismiss="alert">&times;</button>
-		  <strong>Success!</strong> {{Session::get('message')}}.
-		</div>
+	<div class="alert alert-success alert-dismissable">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		<strong>Success!</strong> {{Session::get('message')}}.
+	</div>
 	@endif
-
 	@if( Session::has('message-error') )
-		<div class="alert alert-warning alert-dismissable">
-		  <button type="button" class="close" data-dismiss="alert">&times;</button>
-		  <strong>Error!</strong> {{Session::get('message-error')}}.
-		</div>
+	<div class="alert alert-warning alert-dismissable">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		<strong>Error!</strong> {{Session::get('message-error')}}.
+	</div>
 	@endif
-
 	<div class="row bg-white">
 		<div class="col-xs-12">
 			<h2>Register</h2>
 			{!!Form::open(['url'=>'register'])!!}
+			<div class="row">
+				
+				<div class="col-md-6">
+					<h3 class="title-register">Your Personal or Business Contact Information</h3>
+					<div class="input-form">
+						<label>Name:</label>
+						<input type="text" class="form-control" name="name" placeholder="Name" />
+					</div>
+					<div class="input-form">
+						<label>Email:</label>
+						<input type="email" class="form-control" name="email" placeholder="Email" />
+					</div>
+					<div class="input-form">
+						<label>Phone:</label>
+						<input type="text" name="phone" placeholder="Phone" class="form-control" />
+					</div>
+					<div id="from-datepicker">
+						<label>Birthdate: <span class="optional">Optional</span></label>
+						<div class="input-group">
+							<input placeholder="Birthdate(optional)" aria-describedby="basic-addon1" class="form-control" data-format="dd/MM/yyyy" type="text" name="birthday"></input>
+							<span class="input-group-addon add-on" id="basic-addon1"><span class="glyphicon glyphicon-calendar"></span></span>
+						</div>
+					</div>
+					<h3 class="title-register">Your Password</h3>
+					<div class="input-form">
+						<label>Password:</label>
+						<input type="password" class="form-control" name="password" placeholder="Password" />
+					</div>
+					<div class="input-form">
+						<label>Repeat Password:</label>
+						<input type="password" class="form-control" name="confirm" placeholder="Confirm Password" />
+					</div>
+					<h3 class="title-register">
+					Company Information (Office Delivery Only)
+					</h3>
+					<div class="input-form">
+						<label>Company: <span class="optional">Optional</span></label>
+						<input type="text" name="company" placeholder="Company" class="form-control" />
+					</div>
+				</div>
+				
+				<div class="col-md-6">
+					
+					
+					<h3 class="title-register">Your Address</h3>
+					<div class="input-form">
+						<label>Zip Code:</label>
+						<input type="text" name="zip_code" placeholder="Zipe Code" class="form-control"/>
+					</div>
+					
+					<div class="input-form">
+						<label>Street Number:</label>
+						<input type="text" name="street_number" placeholder="eg. 2400" class="form-control"/>
+					</div>
+					<div class="input-form">
+						<label>Street Name:</label>
+						<input type="text" name="street_name" placeholder="eg. Forsyth Rd" class="form-control" id="tags" />
+					</div>
+					<div class="input-form">
+						<label>Aparment/Suite #: </label>
+						<input type="text" name="aparment" placeholder="Aparment or Suite Number" class="form-control"/>
+					</div>
+					<div class="input-form">
+						<label>Aparment Complex: </label>
+						<input type="text" name="aparment_complex" placeholder="Aparment Complex" class="form-control"/>
+					</div>
+					
+					<div class="input-form">
+						<label>City:</label>
+						<input type="text" name="city" placeholder="City" class="form-control"/>
+					</div>
+					<div class="input-form">
+						<label>Special Directions: <span class="optional">Optional</span></label>
+						<input type="text" name="special_directions" placeholder="eg. Enter gate code 555" class="form-control"/>
+					</div>
+					
+				</div>
 				<div class="row">
-					
-					<div class="col-md-6">
-						<h3 class="title-register">Your Personal or Business Contact Information</h3>
-
-						<div class="input-form">
-							<label>Fisrt Name:</label>
-							<input type="text" class="form-control" name="first_name" placeholder="First Name" />
-						</div>
-
-						<div class="input-form">
-							<label>Last Name:</label>
-							<input type="text" class="form-control" name="last_name" placeholder="Last Name" />
-						</div>
-
-						<div class="input-form">
-							<label>Email:</label>	
-							<input type="email" class="form-control" name="email" placeholder="Email" />
-						</div>
-						<div class="input-form">
-							<label>Phone:</label>
-							<input type="text" name="phone" placeholder="Phone" class="form-control" />	
-						</div>
-
-						
-
-						<div id="from-datepicker">
-							<label>Dirthdate:</label>
-							<div class="input-group">
-								<input placeholder="Birthdate(optional)" aria-describedby="basic-addon1" class="form-control" data-format="dd/MM/yyyy" type="text" name="birthday"></input>
-								<span class="input-group-addon add-on" id="basic-addon1"><span class="glyphicon glyphicon-calendar"></span></span>
-							</div>
-						</div>
-
-
-
-						<h3 class="title-register">Your Password</h3>
-						<div class="input-form">
-							<label>Password:</label>	
-							<input type="password" class="form-control" name="password" placeholder="Password" />
-						</div>
-						<div class="input-form">
-							<label>Repeat Password:</label>	
-							<input type="password" class="form-control" name="confirm" placeholder="Confirm Password" />
-						</div>
-
-						<h3 class="title-register">
-							Company Information (Office Delivery Only)
-						</h3>
-						<div class="input-form">
-							<label>Company:</label>
-							<input type="text" name="company" placeholder="Company" class="form-control" />	
-						</div>
+					<div class="col-xs-12">
+						<div class="g-recaptcha" data-sitekey="6LdrFB0TAAAAADb9YOSXwEPmtpJHzK0qkytc5aP5"></div>
 					</div>
-					
-					<div class="col-md-6">
-						
-	
-						<h3 class="title-register">Your Address</h3>
-						<div class="input-form">
-							<label>Zip Code:</label>
-							<input type="text" name="zip_code" placeholder="Zipe Code" class="form-control"/>
+				</div>
+				<div class="reg-data-check">
+					<div class="row">
+						<div class="col-xs-12">
+							<p>
+								Receive special offers & coupons by email:
+								<input name="newsletter" type="checkbox">
+							</p>
 						</div>
-						
-						<div class="input-form">
-							<label>Street Number:</label>
-							<input type="text" name="street_number" placeholder="eg. 2400" class="form-control"/>
-						</div>
-						<div class="input-form">
-							<label>Street Name:</label>
-							<input type="text" name="street_name" placeholder="eg. Forsyth Rd" class="form-control" id="tags" />
-						</div>
-						<div class="input-form">
-							<label>Aparment/Suite #:</label>
-							<input type="text" name="aparment" placeholder="Aparment or Suite Number" class="form-control"/>
-						</div>
-						<div class="input-form">
-							<label>Aparment Complex:</label>
-							<input type="text" name="aparment_complex" placeholder="Aparment Complex" class="form-control"/>
-						</div>
-						<div class="input-form">
-							<label>Complex Name:</label>
-							<input type="text" name="complex_name" placeholder="Complex Name" class="form-control"/>
-						</div>
-						
-						<div class="input-form">
-							<label>City:</label>
-							<input type="text" name="city" placeholder="City" class="form-control"/>
-						</div>
-
-						<div class="input-form">
-							<label>Special Directions:</label>
-							<input type="text" name="special_directions" placeholder="eg. Enter gate code 555" class="form-control"/>
-						</div>
-						
-					</div>
-					<div class="reg-data-check">
-						<div class="row">
-							<div class="col-xs-12">
-								<p>
-									Receive special offers & coupons by email:
-									<input name="newsletter" type="checkbox">
-								</p>
-							</div>
-
-							<div class="col-xs-12">
-								<p>
-									<b>
-										I have read the terms and conditions notice and I agree to it:
-									</b>
-									<input name="terms" type="checkbox">
-								</p>
-								<a href="#">Terms and Conditions.</a>
-								
-							</div>
-						</div>
-					</div>
-					
-					<div class="col-xs-offset-4 col-xs-4">
-						<div class="input-form">
-							<a class="send form-control btn btn-primary">Register</a>
+						<div class="col-xs-12">
+							<p>
+								<b>
+								I have read the terms and conditions notice and I agree to it:
+								</b>
+								<input name="terms" type="checkbox">
+							</p>
+							<a href="#">Terms and Conditions.</a>
 							
 						</div>
 					</div>
 				</div>
 				
-				<input type="submit" class="hide sending" value="reg" />
-				{!!Form::token()!!}
+				<div class="col-xs-offset-4 col-xs-4">
+					<div class="input-form">
+						<a class="send form-control btn btn-primary">Register</a>
+						
+					</div>
+				</div>
+			</div>
+			
+			<input type="submit" class="hide sending" value="reg" />
+			<script src='https://www.google.com/recaptcha/api.js'></script>
+			{!!Form::token()!!}
 			{!!Form::close()!!}
 		</div>
 	</div>
@@ -200,6 +183,11 @@
 	}
 	.send{
 		margin-bottom: 3em;
+	}
+	.optional{
+		font-size: .8em;
+		color: #ccc;
+		font-style: italic;
 	}
 </style>
 
@@ -273,11 +261,8 @@ var streets = [
 			if( !$('[name=phone]').val() )
 				message += "<li>Phone Empty</li>"; 
 			
-			if( !$('[name=first_name]').val() )
-				message += "<li>First name Empty</li>"; 
-			
-			if( !$('[name=last_name]').val() )
-				message += "<li>Last Name Empty</li>"; 
+			if( !$('[name=name]').val() )
+				message += "<li>Name Empty</li>"; 
 			
 			if( !$('[name=street_number]').val() )
 				message += "<li>Street Number Empty</li>"; 
