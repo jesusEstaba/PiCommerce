@@ -28,96 +28,79 @@ class RegisterCTRL extends Controller
     public function register(Request $request)
     {
         $secretKey = '6LdrFB0TAAAAAGKvs-WNMXulyCbpB81xFaM0jj5k';
-/*
-        $client = new Client();
-        $res = $client->request('POST', 'https://www.google.com/recaptcha/api/siteverify', [
-            'form_params' => [
-                'secret' => $secretKey,
-                'response' => $request['g-recaptcha-response'],
-            ]
-        ]);
+        $gReCaptcha = $request['g-recaptcha-response'];
 
-        $result = $res->getBody();*/
+        $url = 'https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$gReCaptcha;
+        $jsonObj = file_get_contents($url);
+        $json = json_decode($jsonObj, true);
 
-        $url      = 'https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$request['g-recaptcha-response'];
-    $jsonObj  = file_get_contents($url);
-    $json     = json_decode($jsonObj, true);
-        dd($json);
+        if ($json['success']) {
+            if (!empty($request['password']) &&
+                !empty($request['email']) &&
+                !empty($request['phone']) &&
+                !empty($request['name']) &&
+                !empty($request['street_number']) &&
+                !empty($request['zip_code']) &&
+                !empty($request['street_name'])
+            ) {
+                $datos = DB::table('users')
+                    ->where('email', $request['email'])
+                    ->select('users.id')
+                    ->get();
 
+                $datos_phone = DB::table('customers')
+                    ->where('Cs_Phone', $request['phone'])
+                    ->select('Cs_Phone')
+                    ->get();
 
-        /*
-        $request = Request::create(
-            'https://www.google.com/recaptcha/api/siteverify',
-            'POST',
-            ['secret' => $secretKey, 'response' => $request['g-recaptcha-response']]
-        );
+                if (!$datos && !$datos_phone) {
+                    DB::table('users')->insert([
+                        'password' => bcrypt($request['password']),
+                        'email' => $request['email'],
+                        'phone'=> $request['phone'],
+                        'dir_ip'=> $_SERVER['REMOTE_ADDR'],
+                    ]);
 
-        dd($request);
-        */
+                    DB::table('customers')->insert([
+                        'Cs_Email1' => $request['email'],
+                        'Cs_Phone'=> $request['phone'],
+                        'Cs_Name' => $request['name'],
 
-        if (!empty($request['password']) &&
-            !empty($request['email']) &&
-            !empty($request['phone']) &&
-            !empty($request['name']) &&
-            !empty($request['street_number']) &&
-            !empty($request['zip_code']) &&
-            !empty($request['street_name'])
-        ) {
-            $datos = DB::table('users')
-                ->where('email', $request['email'])
-                ->select('users.id')
-                ->get();
-
-            $datos_phone = DB::table('customers')
-                ->where('Cs_Phone', $request['phone'])
-                ->select('Cs_Phone')
-                ->get();
-
-            if (!$datos && !$datos_phone) {
-                DB::table('users')->insert([
-                    'password' => bcrypt($request['password']),
-                    'email' => $request['email'],
-                    'phone'=> $request['phone'],
-                    'dir_ip'=> $_SERVER['REMOTE_ADDR'],
-                ]);
-
-                DB::table('customers')->insert([
-                    'Cs_Email1' => $request['email'],
-                    'Cs_Phone'=> $request['phone'],
-                    'Cs_Name' => $request['name'],
-
-                    'Cs_Company' => $request['company'],
-                    'Cs_Number' => $request['street_number'],
-                    'Cs_Street' => $request['street_name'],
-                    /*
-                    '' => $request['aparment'],
-                    '' => $request['aparment_complex'],
-                    '' => $request['complex_name'],
-                    '' => $request['city'],
-                    */
-                    'Cs_ZipCode' => $request['zip_code'],
-                    'Cs_Notes' => $request['special_directions'],
-                    'Cs_Birthday'=>$request['birthday']
-                ]);
+                        'Cs_Company' => $request['company'],
+                        'Cs_Number' => $request['street_number'],
+                        'Cs_Street' => $request['street_name'],
+                        /*
+                        '' => $request['aparment'],
+                        '' => $request['aparment_complex'],
+                        '' => $request['complex_name'],
+                        '' => $request['city'],
+                        */
+                        'Cs_ZipCode' => $request['zip_code'],
+                        'Cs_Notes' => $request['special_directions'],
+                        'Cs_Birthday'=>$request['birthday']
+                    ]);
 
 
-                Session::flash('message', 'User Registered!');
+                    Session::flash('message', 'User Registered!');
 
-                $credentials = [
-                    'email'=>$request['email'],
-                    'password'=>$request['password']
-                ];
+                    $credentials = [
+                        'email'=>$request['email'],
+                        'password'=>$request['password']
+                    ];
 
-                if (Auth::attempt($credentials)) {
-                    LogCTRL::addToLog(6);
-                    return Redirect::to('cart');
+                    if (Auth::attempt($credentials)) {
+                        LogCTRL::addToLog(6);
+                        return Redirect::to('cart');
+                    }
+                } else {
+                    Session::flash('message-error', 'This user is already register');
                 }
             } else {
-                Session::flash('message-error', 'This user is already register');
+                Session::flash('message-error', 'Field Empty');
             }
-        } else {
-            Session::flash('message-error', 'Field Empty');
         }
+
+        
 
         return Redirect::to('register');
     }
