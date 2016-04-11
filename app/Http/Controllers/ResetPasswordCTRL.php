@@ -49,42 +49,53 @@ class ResetPasswordCTRL extends Controller
         return 'invalid token';
     }
 
-    public function index($user_mail)
+    public function index($userMail)
     {
-        //$user_mail = Auth::user()->email;
-        $day = Carbon::now();
-        $token_reset = md5($user_mail . $day);
+        $isEmailExist = DB::table('users')->where('email', $userMail)->first();
 
-        DB::table('password_resets')->where('email', $user_mail)->delete();
+        if ($isEmailExist) {
+            $day = Carbon::now();
+            $token_reset = md5($userMail . $day);
 
-        DB::table('password_resets')->insert([
-            'email'=>$user_mail,
-            'token'=> $token_reset,
-            'created_at' => $day,
-        ]);
+            DB::table('password_resets')->where('email', $userMail)->delete();
 
-        $config = DB::table('config')->first();
+            DB::table('password_resets')->insert([
+                'email'=>$userMail,
+                'token'=> $token_reset,
+                'created_at' => $day,
+            ]);
 
-        $variables_correo = [
-            'logo' => $config->logo,
-            'footer'=> $config->footer,
-            'title'=>'Reset Password',
-            'token_reset'=> $token_reset,
-        ];
+            $config = DB::table('config')->first();
+
+            $variables_correo = [
+                'logo' => $config->logo,
+                'footer'=> $config->footer,
+                'title'=>'Reset Password',
+                'token_reset'=> $token_reset,
+            ];
 
 
-        $errors = 'Mail Send';
+            $errors = 'Mail Send';
 
-        Mail::send('mail_template.reset_password', $variables_correo, function ($msj) use ($user_mail) {
-            $msj->subject('Reset Password');
-            $msj->from(env('MAIL_ADDRESS'), env('MAIL_NAME'));
-            $msj->to($user_mail);
-        });
+            Mail::send('mail_template.reset_password', $variables_correo, function ($msj) use ($userMail) {
+                $msj->subject('Reset Password');
+                $msj->from(env('MAIL_ADDRESS'), env('MAIL_NAME'));
+                $msj->to($userMail);
+            });
 
-        if (count(Mail::failures())) {
-            $errors = 'Failed to send password reset email, please try again.';
+            if (count(Mail::failures())) {
+                $errors = 'Failed to send password reset email, please try again.';
+            }
+
+            if ($errors==='Mail Send') {
+                $response = ['message' => 'Email Send! Please check your email'];
+            } else {
+                $response = ['message' => 'Error to Send email'];
+            }
+        } else {
+            $response = ['message' => 'Email No Exist'];
         }
 
-        return $errors;
+        return response()->json($response);
     }
 }

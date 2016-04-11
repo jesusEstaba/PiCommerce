@@ -41,6 +41,7 @@ footer img {
   padding: 2em;
   padding-top: 3em;
   position: relative;
+  top: -150px;
 }
 .logo {
   display: block;

@@ -31,7 +31,7 @@ class QuickPayCTRL extends Controller
     	$day_now = Carbon::now()->format('d-m-Y');
     	
     	
-    	if( Session::has('size') && Input::has('first_name') && Input::has('phone') && Input::has('email') )
+    	if( Session::has('size') && Input::has('name') && Input::has('phone') && Input::has('email') )
     	{
 			$size = Session::get('size');
 			$toppings = Session::get('topping');
@@ -334,9 +334,10 @@ class QuickPayCTRL extends Controller
 				'created_at' => Carbon::now()
 			]);
 		}
+
 		if($id_order_for_temp_user==0)
 		{
-			$errors = "Soory, We could not process your order";
+			$errors = "Sorry, We could not process your order";
 		}
 
 
