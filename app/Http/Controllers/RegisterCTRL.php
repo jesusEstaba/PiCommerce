@@ -28,8 +28,7 @@ class RegisterCTRL extends Controller
     public function register(Request $request)
     {
         $secretKey = '6LdrFB0TAAAAAGKvs-WNMXulyCbpB81xFaM0jj5k';
-
-
+/*
         $client = new Client();
         $res = $client->request('POST', 'https://www.google.com/recaptcha/api/siteverify', [
             'form_params' => [
@@ -38,8 +37,12 @@ class RegisterCTRL extends Controller
             ]
         ]);
 
-        $result = $res->getBody();
-        dd($result);
+        $result = $res->getBody();*/
+
+        $url      = 'https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$request['g-recaptcha-response'];
+    $jsonObj  = file_get_contents($url);
+    $json     = json_decode($jsonObj, true);
+        dd($json);
 
 
         /*
