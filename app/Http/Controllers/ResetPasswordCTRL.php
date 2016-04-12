@@ -104,7 +104,7 @@ class ResetPasswordCTRL extends Controller
         return response()->json($response);
     }
 
-    public function sendEmailToNewUser($userMail)
+    public static function sendEmailToNewUser($userMail)
     {
         $config = DB::table('config')->first();
 
