@@ -37,7 +37,9 @@ class ResetPasswordCTRL extends Controller
     public function tokenPass($token_pass = '')
     {
 
-        $data = DB::table('password_resets')->where('token', $token_pass)->first();
+        $data = DB::table('password_resets')
+            ->where('token', $token_pass)
+            ->first();
 
         if ($data) {
             Session::put('email_reset', $data->email);
@@ -57,7 +59,9 @@ class ResetPasswordCTRL extends Controller
             $day = Carbon::now();
             $token_reset = md5($userMail . $day);
 
-            DB::table('password_resets')->where('email', $userMail)->delete();
+            DB::table('password_resets')
+                ->where('email', $userMail)
+                ->delete();
 
             DB::table('password_resets')->insert([
                 'email'=>$userMail,
@@ -77,13 +81,14 @@ class ResetPasswordCTRL extends Controller
 
             $errors = 'Mail Send';
 
-            Mail::send('mail_template.reset_password', $variables_correo, function ($msj) use ($userMail) {
-                $msj->subject('Reset Password');
-                $msj->from(env('MAIL_ADDRESS'), env('MAIL_NAME'));
-                $msj->to($userMail);
-            });
+            $isErrorEmail = SendMailCTRL::sendNow(
+                'mail_template.reset_password',
+                $variables_correo,
+                $userMail,
+                'Reset Password'
+            );
 
-            if (count(Mail::failures())) {
+            if ($isErrorEmail) {
                 $errors = 'Failed to send password reset email, please try again.';
             }
 
@@ -97,5 +102,59 @@ class ResetPasswordCTRL extends Controller
         }
 
         return response()->json($response);
+    }
+
+    public function sendEmailToNewUser($userMail)
+    {
+        $config = DB::table('config')->first();
+
+        $day = Carbon::now();
+        $token_active = md5($userMail . $day);
+
+        $variables_correo = [
+            'logo' => $config->logo,
+            'footer'=> $config->footer,
+            'title'=>'Active Your Account',
+            'token_active'=> $token_reset,
+        ];
+
+        $isErrorEmail = SendMailCTRL::sendNow(
+            'mail_template.reset_password',
+            $variables_correo,
+            $userMail,
+            'Reset Password'
+        );
+
+        if ($isErrorEmail===0) {
+            DB::table('verified_accounts')->insert([
+                'email'=>$userMail,
+                'remember_token'=> $token_active,
+                'created_at' => $day,
+            ]);
+        }
+
+        return $isErrorEmail;
+    }
+
+
+    public function activeAccount($token)
+    {
+        $data = DB::table('verified_accounts')
+            ->where('remember_token', $token)
+            ->first();
+
+        if ($data) {
+            DB::table('verified_accounts')
+                ->where('remember_token', $token)
+                ->delete();
+
+            DB::table('users')
+                ->where('email', $data->email)
+                ->update(['account_verify'=>1]);
+
+            return view('account_activated');
+        }
+
+        return 'invalid token';
     }
 }

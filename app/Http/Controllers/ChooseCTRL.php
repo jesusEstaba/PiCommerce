@@ -18,11 +18,17 @@ class ChooseCTRL extends Controller
             ->join('category', 'category.id', '=', 'choose_category.cat_id')
             ->where('Status', 0)
             ->get();
-        $items = DB::table('items')
-            ->where('It_Feature', '=', 1)
+
+        $items = DB::table('products_features')
+            ->join('items', 'items.It_Id', '=', 'products_features.item_id')
             ->where('It_Status', '=', '0')
-            ->select('description', 'It_Id', 'It_Descrip', 'It_ImagePre')
-            ->orderBy('It_Special')
+            ->select(
+                'items.description',
+                'items.It_Id',
+                'items.It_Descrip',
+                'items.It_ImagePre'
+            )
+            ->orderBy('products_features.special_order')
             ->get();
 
         foreach ($items as $key => $item) {

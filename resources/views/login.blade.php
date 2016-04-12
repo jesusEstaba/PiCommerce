@@ -30,10 +30,14 @@
 		<strong>Warning!</strong> {{Session::get('message-error')}}.
 	</div>
 @endif
+@if( Session::has('normal-error') )
+	<div class="alert alert-info alert-dismissable">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		<strong>Info!</strong> {{Session::get('normal-error')}}.
+	</div>
+@endif
 
-<div class="messages">
-	
-</div>
+<div class="messages"></div>
 
 
 <div class="center-center">
