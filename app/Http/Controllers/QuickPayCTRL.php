@@ -17,13 +17,26 @@ class QuickPayCTRL extends Controller
 {
     public function index()
     {
-		if( Auth::check() ){
+		if (Auth::check()) {
 			return redirect()->to('checkout/pickup');
 		}
-		
+
 		$config = DB::table('config')->first();
 
-		return view('checkout.quick')->with(['config'=>$config]);
+		$termsAndServices = DB::table('terms_service')
+            ->where('section', 2)
+            ->first();
+
+        if ($termsAndServices) {
+            $termsAndServices = $termsAndServices->terms;
+        } else {
+            $termsAndServices = '';
+        }
+
+		return view('checkout.quick')->with([
+			'config'=>$config,
+			'termsAndServices' => $termsAndServices
+		]);
     }
 
     public function createOrderQuick(){

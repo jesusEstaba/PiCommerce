@@ -9,20 +9,43 @@ use Illuminate\Http\Request;
 use Pizza\Http\Requests;
 use Pizza\Http\Controllers\Controller;
 use Pizza\User;
-use Redirect;
 use Session;
 use DB;
-use Auth;
-use GuzzleHttp\Client;
+use Validator;
+use Carbon\Carbon;
 
 class RegisterCTRL extends Controller
 {
     public function index()
     {
+        /*
         $codes = DB::select('SELECT * from street where St_City = ?', ['Orlando']);
         $streets = DB::select('SELECT distinct St_ZipCode from street');
+        */
+        $codes = DB::table('street')
+            ->select('St_Name')
+            ->get();
 
-        return view('register')->with(['codes'=>$codes, 'streets'=>$streets]);
+        $streets = DB::table('street')
+            ->distinct()
+            ->select('St_ZipCode')
+            ->get();
+
+        $termsAndServices = DB::table('terms_service')
+            ->where('section', 1)
+            ->first();
+
+        if ($termsAndServices) {
+            $termsAndServices = $termsAndServices->terms;
+        } else {
+            $termsAndServices = '';
+        }
+
+        return view('register')->with([
+            'codes' => $codes,
+            'streets' => $streets,
+            'termsAndServices' => $termsAndServices,
+            ]);
     }
 
     public function register(Request $request)
@@ -35,14 +58,19 @@ class RegisterCTRL extends Controller
         $json = json_decode($jsonObj, true);
 
         if ($json['success']) {
-            if (!empty($request['password']) &&
-                !empty($request['email']) &&
-                !empty($request['phone']) &&
-                !empty($request['name']) &&
-                !empty($request['street_number']) &&
-                !empty($request['zip_code']) &&
-                !empty($request['street_name'])
-            ) {
+            $rules = [
+                'password' => 'required|min:6',
+                'email' => 'required|email',
+                'phone' => 'required|numeric|digits:10',
+                'name' => 'required',
+                'street_number' => 'required',
+                'zip_code' => 'required|numeric|integer',
+                'street_name' => 'required',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()==0) {
                 $datos = DB::table('users')
                     ->where('email', $request['email'])
                     ->select('users.id')
@@ -54,56 +82,75 @@ class RegisterCTRL extends Controller
                     ->get();
 
                 if (!$datos && !$datos_phone) {
-                    DB::table('users')->insert([
-                        'password' => bcrypt($request['password']),
-                        'email' => $request['email'],
-                        'phone'=> $request['phone'],
-                        'dir_ip'=> $_SERVER['REMOTE_ADDR'],
-                    ]);
+                    $errorToSend = ResetPasswordCTRL::sendEmailToNewUser($request['email']);
 
-                    DB::table('customers')->insert([
-                        'Cs_Email1' => $request['email'],
-                        'Cs_Phone'=> $request['phone'],
-                        'Cs_Name' => $request['name'],
+                    if ($errorToSend) {
+                        DB::table('users')->insert([
+                            'password' => bcrypt($request['password']),
+                            'email' => $request['email'],
+                            'phone'=> $request['phone'],
+                        ]);
 
-                        'Cs_Company' => $request['company'],
-                        'Cs_Number' => $request['street_number'],
-                        'Cs_Street' => $request['street_name'],
-                        /*
-                        '' => $request['aparment'],
-                        '' => $request['aparment_complex'],
-                        '' => $request['complex_name'],
-                        '' => $request['city'],
-                        */
-                        'Cs_ZipCode' => $request['zip_code'],
-                        'Cs_Notes' => $request['special_directions'],
-                        'Cs_Birthday'=>$request['birthday']
-                    ]);
+                        if (!empty($request['day_birthday']) &&
+                            !empty($request['month_birthday']) &&
+                            !empty($request['year_birthday'])
+                        ) {
+                            $birthdayCustomer = Carbon::createFromDate(
+                                $request['year_birthday'],
+                                $request['month_birthday'],
+                                $request['day_birthday']
+                            );
+                        } else {
+                            $birthdayCustomer = null;
+                        }
 
+                        DB::table('customers')->insert([
+                            'Cs_Email1' => $request['email'],
+                            'Cs_Phone'=> $request['phone'],
+                            'Cs_Name' => $request['name'],
+                            'Cs_Company' => $request['company'],
+                            'Cs_Number' => $request['street_number'],
+                            'Cs_Street' => $request['street_name'],
+                            'Cs_Date' => Carbon::now(),
+                            'Cs_Ap_Suite' => $request['aparment'],
+                            'Cs_ZipCode' => $request['zip_code'],
+                            'Cs_Notes' => $request['special_directions'],
+                            'Cs_Birthday'=>$birthdayCustomer,
+                            /*
+                            '' => $request['aparment_complex'],
+                            '' => $request['city'],
+                            */
+                        ]);
 
-                    Session::flash('message', 'User Registered!');
-
-                    $credentials = [
-                        'email'=>$request['email'],
-                        'password'=>$request['password']
-                    ];
-
-                    if (Auth::attempt($credentials)) {
-                        LogCTRL::addToLog(6);
-                        return Redirect::to('cart');
+                        return redirect()->to('active-your-acount');
                     }
+
+                    Session::flash('message-error', 'Failed to create user.');
                 } else {
-                    Session::flash('message-error', 'This user is already register');
+                    if ($datos_phone && $datos) {
+                        $messageUsedData = 'This email and phone has already been used';
+                    } elseif ($datos_phone) {
+                        $messageUsedData = 'This phone has already been used.';
+                    } else {
+                        $messageUsedData = 'This email has already been used.';
+                    }
+                    Session::flash('message-error', $messageUsedData);
                 }
             } else {
-                Session::flash('message-error', 'Field Empty');
+                $validationErros = '';
+
+                $validtr = $validator->messages()->toArray();
+
+                foreach ($validtr as $key => $value) {
+                     $validationErros .= $value[0].'<br>';
+                }
+
+                Session::flash('message-error', $validationErros);
             }
         } else {
-            Session::flash('message-error', 'Invalid reCAPTCHA');
+            Session::flash('message-error', 'Invalid reCAPTCHA.');
         }
 
-        
-
-        return Redirect::to('register');
+        return redirect()->back()->withInput($request->except('password'));;
     }
 }

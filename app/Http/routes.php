@@ -94,6 +94,12 @@ Route::group(['middleware'=>'hora'], function () {
     Route::get('/register', 'RegisterCTRL@index');
     Route::post('/register', 'RegisterCTRL@register');
 
+    Route::get('/active-your-acount', function () {
+        return view('success_mail');
+    });
+
+    Route::get('/activated/{token}', 'ResetPasswordCTRL@activeAccount');
+
     Route::get('/add_to_cart_ajax', 'CartCTRL@back');
     Route::post('/add_to_cart_ajax', 'CartCTRL@addAjax');
 

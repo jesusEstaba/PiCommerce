@@ -52,7 +52,7 @@
 									</b>
 									<input name="terms" type="checkbox">
 								</p>					
-								<a href="#">Terms and Conditions.</a>
+								<a class="activate_terms">Terms and Conditions.</a>
 							</div>
 
 						</div>
@@ -69,17 +69,49 @@
 		</div>
 	</div>
 </div>
+
+<div id="terms" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Terms and Services</h4>
+      </div>
+      <div class="modal-body">
+        @if($termsAndServices)
+            {!! $termsAndServices !!}
+        @else
+            <em>No Terms for now.</em>
+        @endif
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 {!!Html::script('assets/jquery/jquery.min.js')!!}
+<script src="{{asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
+
+<style type="text/css">
+	.activate_terms{
+		cursor: pointer;
+	}
+</style>
 
 <script type="text/javascript">
-	
+
 function message_alert(class_alert, text) {
     $('.messages').children().remove();
     var mess = '<strong>' + text + '</strong>.';
     var alerta = '<div class="alert ' + class_alert + ' alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button>' + mess + '</div>';
     $('.messages').append(alerta);
 }
-
+$('.activate_terms').click(function(){
+        $('#terms').modal('show');
+    });
 $(function() {
     $('.order_now').click(function() {
         if (

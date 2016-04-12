@@ -42,7 +42,8 @@ class LoginCTRL extends Controller
     {
         $credentials = [
             'email'=>$request['email'],
-            'password'=>$request['password']
+            'password'=>$request['password'],
+            'account_verify' => 1
         ];
 
         if (Auth::attempt($credentials)) {
@@ -55,7 +56,19 @@ class LoginCTRL extends Controller
             return Redirect::to('choose');
         }
 
-        Session::flash('message-error', 'Bad Login');
+        $userExist = DB::table('users')
+            ->where('email', $request['email'])
+            ->where('account_verify', 0)
+            ->get();
+
+        if ($userExist) {
+            Session::flash('normal-error', 'Please activate your account');
+        } else {
+            Session::flash(
+                'message-error',
+                'Bad Login, User or Password is Incorrect!'
+            );
+        }
 
         return Redirect::to('login');
     }
