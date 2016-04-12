@@ -84,7 +84,7 @@ class RegisterCTRL extends Controller
                 if (!$datos && !$datos_phone) {
                     $errorToSend = ResetPasswordCTRL::sendEmailToNewUser($request['email']);
 
-                    if ($errorToSend) {
+                    if ($errorToSend===0) {
                         DB::table('users')->insert([
                             'password' => bcrypt($request['password']),
                             'email' => $request['email'],
@@ -123,9 +123,9 @@ class RegisterCTRL extends Controller
                         ]);
 
                         return redirect()->to('active-your-acount');
+                    } else {
+                        Session::flash('message-error', 'Failed to create user.');
                     }
-
-                    Session::flash('message-error', 'Failed to create user.');
                 } else {
                     if ($datos_phone && $datos) {
                         $messageUsedData = 'This email and phone has already been used';

@@ -90,7 +90,6 @@
                             </select>
                             <select value="{{Input::old('year_birthday')}}" name="year_birthday" style="width: auto;display: inline-block;" class="form-control">
                                 <option>Year</option>
-                                <option>2016</option>
                             </select>
                         </div>
                         <div class="hide input-group">
@@ -319,6 +318,7 @@ for (var i = anno_actual; i > anno_cien; i--) {
     option_years += '<option value="'+ i +'">' + i + '</option>';
 }
 
+$('[name=year_birthday]').append(option_years);
 /*
 var startDate = new Date((fecha_act.getFullYear() - 100) + '-01-01');
 var endDate = new Date(fecha_act.getFullYear() + "-" + (fecha_act.getMonth() + 1) + "-" + fecha_act.getDate());
@@ -331,7 +331,7 @@ $(document).ready(function() {
         }
     });
 
-    $('[name=year_birthday]').append(option_years);
+   
 
     /*$('#from-datepicker').datetimepicker({
     pickTime: false,
