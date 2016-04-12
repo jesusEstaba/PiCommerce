@@ -242,8 +242,6 @@
 	      	<div>
 				<div id="open" class="calendar-time">
 					<select class="hourselect"><!-- <option value="6" selected="selected">6 -->
-						<option value="1">1
-						</option>
 						<option value="1">1</option>
 						<option value="2">2</option>
 						<option value="3">3</option>

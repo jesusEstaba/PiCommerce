@@ -135,7 +135,7 @@ class ConfigCTRL extends Controller
         } elseif ($id==2) {
             $numberDay = (int)$request['day'];
 
-            if ($numberDay>0) {
+            if ($numberDay>0 && $numberDay<=7) {
                 $daysOfTheWeek = [
                     'mon',
                     'tue',
@@ -145,13 +145,13 @@ class ConfigCTRL extends Controller
                     'sat',
                     'sun',
                 ];
-                $nameDay = $daysOfTheWeek[$numberDay];
+                $nameDay = $daysOfTheWeek[$numberDay-1];
 
-                if ($request['open']) {
+                if (!($request['open'] === 'null:null')) {
                     $update[$nameDay.'_open'] = $request['open'];
                 }
 
-                if ($request['close']) {
+                if (!($request['close'] === 'null:null')) {
                     $update[$nameDay.'_close'] = $request['close'];
                 }
             }
@@ -177,7 +177,7 @@ class ConfigCTRL extends Controller
 
         if (count($update)) {
             DB::table('config')->update($update);
-            return response()->json("change!");
+            return response()->json(["change"=>$update]);
         }
 
         return response()->json("empty");

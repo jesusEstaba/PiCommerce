@@ -98,6 +98,8 @@ class RegisterCTRL extends Controller
             } else {
                 Session::flash('message-error', 'Field Empty');
             }
+        } else {
+            Session::flash('message-error', 'Invalid reCAPTCHA');
         }
 
         

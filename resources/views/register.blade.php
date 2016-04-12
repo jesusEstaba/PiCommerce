@@ -38,7 +38,18 @@
 					</div>
 					<div id="from-datepicker">
 						<label>Birthdate: <span class="optional">Optional</span></label>
-						<div class="input-group">
+						<div style="width: auto;" class="form-group">
+							<select style="width: auto;display: inline-block;" class="form-control">
+								<option>1</option>
+							</select>
+							<select style="width: auto;display: inline-block;" class="form-control">
+								<option>1</option>
+							</select>
+							<select style="width: auto;display: inline-block;" class="form-control">
+								<option>2016</option>
+							</select>
+						</div>
+						<div class="hide input-group">
 							<input placeholder="Birthdate(optional)" aria-describedby="basic-addon1" class="form-control" data-format="dd/MM/yyyy" type="text" name="birthday"></input>
 							<span class="input-group-addon add-on" id="basic-addon1"><span class="glyphicon glyphicon-calendar"></span></span>
 						</div>
@@ -99,7 +110,10 @@
 				</div>
 				<div class="row">
 					<div class="col-xs-12">
-						<div class="g-recaptcha" data-sitekey="6LdrFB0TAAAAADb9YOSXwEPmtpJHzK0qkytc5aP5"></div>
+						<div class="reCAPTCHA">
+							<div class="g-recaptcha" data-sitekey="6LdrFB0TAAAAADb9YOSXwEPmtpJHzK0qkytc5aP5"></div>
+						</div>
+						
 					</div>
 				</div>
 				<div class="reg-data-check">
@@ -188,6 +202,9 @@
 		font-size: .8em;
 		color: #ccc;
 		font-style: italic;
+	}
+	.reCAPTCHA{
+		padding: 1em;
 	}
 </style>
 
