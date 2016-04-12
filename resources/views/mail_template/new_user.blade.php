@@ -92,7 +92,7 @@
 			padding: 1em 2em 1em 2em;
 			border-radius: 10px;
 			text-decoration: none !important;
-			font-weight: bolder;float: right;" class="btn pull-right" target="_blank" href="{{url('/activate/'.$token_active)}}">Activate</a>
+			font-weight: bolder;float: right;" class="btn pull-right" target="_blank" href="{{url('/activated/'.$token_active)}}">Activate</a>
 			</div>
 			
 			

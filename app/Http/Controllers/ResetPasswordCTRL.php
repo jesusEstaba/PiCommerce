@@ -115,11 +115,11 @@ class ResetPasswordCTRL extends Controller
             'logo' => $config->logo,
             'footer'=> $config->footer,
             'title'=>'Active Your Account',
-            'token_active'=> $token_reset,
+            'token_active'=> $token_active,
         ];
 
         $isErrorEmail = SendMailCTRL::sendNow(
-            'mail_template.reset_password',
+            'mail_template.new_user',
             $variables_correo,
             $userMail,
             'Reset Password'
