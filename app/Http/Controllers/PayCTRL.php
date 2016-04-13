@@ -11,6 +11,7 @@ use Pizza\Http\Controllers\Controller;
 use DB;
 use Auth;
 use Carbon\Carbon;
+use Session;
 
 class PayCTRL extends Controller
 {
@@ -25,17 +26,47 @@ class PayCTRL extends Controller
          */
 
         //ver si hay errores con la session
-        if (Auth::check()) {
-            $cart = CartCTRL::searchCartItems();#podria cargarlo desde un Session
+        if (Auth::check() || (Session::has('id_cart') && Session::has('email'))) {
+            $cart = '';
+            if (Auth::check()) {
+                $cart = CartCTRL::searchCartItems();#podria cargarlo desde un Session
+            }
+
+
+            if(!$cart) {
+                $idCartSession = (int)Session::get('id_cart');
+                $cart = CartCTRL::searchCartItems('asc', $idCartSession);
+            }
 
             if ($cart) {
-                $total_in_cart = CartCTRL::totalCostCart(true);
+                if (Session::has('id_cart')) {
+                    $idCartSession = (int)Session::get('id_cart');
 
-                $user = DB::table('users')
-                    ->leftJoin('customers', 'customers.Cs_Phone', '=', 'users.phone')
-                    ->where('users.phone', Auth::user()->phone)
-                    ->select('Cs_Number', 'Cs_Street', 'Cs_ZipCode', 'Cs_Notes', 'Cs_Name', 'Cs_Phone', 'email')
-                    ->first();
+                    $total_in_cart = CartCTRL::totalCostCart(true, $idCartSession);
+
+                    $user = new \stdClass();
+                    $user->Cs_Name = Session::get('name');
+                    $user->Cs_Phone = Session::get('phone');
+                    $user->email = Session::get('email');
+                    $user->Cs_ZipCode = 0;
+
+                } else {
+                    $total_in_cart = CartCTRL::totalCostCart(true);
+
+                    $user = DB::table('users')
+                        ->leftJoin('customers', 'customers.Cs_Phone', '=', 'users.phone')
+                        ->where('users.phone', Auth::user()->phone)
+                        ->select(
+                            'Cs_Number',
+                            'Cs_Street',
+                            'Cs_ZipCode',
+                            'Cs_Notes',
+                            'Cs_Name',
+                            'Cs_Phone',
+                            'email'
+                        )
+                        ->first();
+                }
 
                 $tax = DB::table('taxes')
                     ->select('Tx_Base')

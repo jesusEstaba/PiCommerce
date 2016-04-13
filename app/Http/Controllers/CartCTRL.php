@@ -182,21 +182,40 @@ class CartCTRL extends Controller
      * true:devuelve el precio en número.
      * @return [json || float]
      */
-    public static function totalCostCart($res = false)
+    public static function totalCostCart($res = false, $userIdCart = '')
     {
+        if ($userIdCart === '') {
+            $userIdCart = Auth::user()->id;
+            $idCartTemp = 0;
+        } else {
+            $idCartTemp = $userIdCart;
+        }
+
         $totalCart = DB::table('cart')
             ->join('cart_top', 'cart_top.id_cart', '=', 'cart.id')
-            ->where('cart.id_user', Auth::user()->id)
+            ->where(function ($query) use ($userIdCart, $idCartTemp) {
+                    if ($idCartTemp) {
+                        $query->where('cart.id', $idCartTemp);
+                    } else {
+                        $query->where('cart.id_user', $userIdCart);
+                    }
+                }
+            )
             ->selectRaw('sum(cart_top.price*cart.quantity) as toppings')
-            ->orderBy('cart_top.id_cart')
             ->get();
 
         if ($totalCart) {
             $totalCartTwo = DB::table('cart')
                 ->join('size', 'size.Sz_Id', '=', 'cart.product_id')
-                ->where('cart.id_user', Auth::user()->id)
+                ->where(function ($query) use ($userIdCart, $idCartTemp) {
+                        if ($idCartTemp) {
+                            $query->where('cart.id', $idCartTemp);
+                        } else {
+                            $query->where('cart.id_user', $userIdCart);
+                        }
+                    }
+                )
                 ->selectRaw('sum(size.Sz_Price*cart.quantity) as pizza')
-                ->orderBy('cart.id')
                 ->get();
 
             if ($totalCartTwo) {

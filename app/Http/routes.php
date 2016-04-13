@@ -88,6 +88,7 @@ Route::group(['middleware'=>'hora'], function () {
     Route::get('/checkout/pickup', 'PayCTRL@index');
 
     Route::get('/checkout/quick', 'QuickPayCTRL@index');
+
     Route::post('/checkout/quick/order', 'QuickPayCTRL@createOrderQuick');
 
 
@@ -106,6 +107,12 @@ Route::group(['middleware'=>'hora'], function () {
     Route::get('/login', 'LoginCTRL@index');
     Route::post('/login', 'LoginCTRL@login');
 
+    Route::get('/checkout/{select?}', 'PayCTRL@index');
+    Route::get('/coupon/{coupon}', 'CouponsCTRL@return_discount');
+
+    Route::get('/order_now', 'OrderCTRL@back');
+    Route::post('/order_now', 'OrderCTRL@create');
+
     Route::group(['prefix'=>'reset'], function () {
         Route::get('/to/{user_mail}', 'ResetPasswordCTRL@index');
 
@@ -115,13 +122,8 @@ Route::group(['middleware'=>'hora'], function () {
 
     Route::group(['middleware'=>'auth'], function () {
         Route::get('/cart', 'CartCTRL@index');
-        Route::get('/total_price_cart', 'CartCTRL@total_price');
+        Route::get('/total_price_cart', 'CartCTRL@totalCostCart');
         Route::get('/delete/item/{id}', 'CartCTRL@delete');
-        Route::get('/checkout/{select?}', 'PayCTRL@index');
-        Route::get('/coupon/{coupon}', 'CouponsCTRL@return_discount');
-
-        Route::get('/order_now', 'OrderCTRL@back');
-        Route::post('/order_now', 'OrderCTRL@create');
     });
 
 });
