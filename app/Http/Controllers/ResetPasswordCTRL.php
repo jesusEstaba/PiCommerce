@@ -109,7 +109,7 @@ class ResetPasswordCTRL extends Controller
         $config = DB::table('config')->first();
 
         $day = Carbon::now();
-        $token_active = md5($userMail . $day);
+        $token_active = md5($userMail . $day . rand());
 
         $variables_correo = [
             'logo' => $config->logo,
@@ -136,6 +136,57 @@ class ResetPasswordCTRL extends Controller
         return $isErrorEmail;
     }
 
+    public function reactivate($email)
+    {
+
+        $userExist = DB::table('users')
+            ->where('email', $email)
+            ->where('account_verify', 0)
+            ->get();
+
+        if ($userExist) {
+            $config = DB::table('config')->first();
+
+            $day = Carbon::now();
+            $token_active = md5($email . $day . rand());
+
+            $variables_correo = [
+                'logo' => $config->logo,
+                'footer'=> $config->footer,
+                'title'=>'Active Your Account',
+                'token_active'=> $token_active,
+            ];
+
+            $isErrorEmail = SendMailCTRL::sendNow(
+                'mail_template.new_user',
+                $variables_correo,
+                $email,
+                'Reset Password'
+            );
+
+            if ($isErrorEmail===0) {
+                DB::table('verified_accounts')
+                    ->where('email', $email)
+                    ->delete();
+
+                DB::table('verified_accounts')->insert([
+                    'email'=>$email,
+                    'remember_token'=> $token_active,
+                    'created_at' => $day,
+                ]);
+
+                return redirect()->to('active-your-acount');
+            }
+
+            Session::flash('message-error', 'Email not valid');
+
+            return redirect()->to('login');
+        }
+
+        Session::flash('message-error', 'User does not exist');
+
+        return redirect()->to('login');
+    }
 
     public function activeAccount($token)
     {

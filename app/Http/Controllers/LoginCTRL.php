@@ -63,10 +63,11 @@ class LoginCTRL extends Controller
 
         if ($userExist) {
             Session::flash('normal-error', 'Please activate your account');
+            Session::flash('email', $request['email']);
         } else {
             Session::flash(
                 'message-error',
-                'Bad Login, User or Password is Incorrect!'
+                'User or Password is Incorrect!'
             );
         }
 

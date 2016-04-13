@@ -95,6 +95,8 @@ Route::group(['middleware'=>'hora'], function () {
     Route::get('/register', 'RegisterCTRL@index');
     Route::post('/register', 'RegisterCTRL@register');
 
+    Route::get('/reactivate/{email}', 'ResetPasswordCTRL@reactivate');
+
     Route::get('/active-your-acount', function () {
         return view('success_mail');
     });
@@ -121,6 +123,7 @@ Route::group(['middleware'=>'hora'], function () {
     });
 
     Route::group(['middleware'=>'auth'], function () {
+        Route::resource('/account', 'UserAcount');
         Route::get('/cart', 'CartCTRL@index');
         Route::get('/total_price_cart', 'CartCTRL@totalCostCart');
         Route::get('/delete/item/{id}', 'CartCTRL@delete');
