@@ -117,11 +117,10 @@
 	<script type="text/javascript">
 
 $(document).ready(function() {
+	if ($('.nav').length) {
     var stickyNavTop = $('.nav').offset().top;
-
     var stickyNav = function() {
         var scrollTop = $(window).scrollTop();
-
         if (scrollTop > stickyNavTop) {
             $('.nav').addClass('sticky');
         } else {
@@ -130,10 +129,11 @@ $(document).ready(function() {
     };
 
     stickyNav();
-
     $(window).scroll(function() {
         stickyNav();
     });
+}
+
 });
 
 

@@ -21,7 +21,7 @@
             <h2>Register</h2>
             {!!Form::open(['url'=>'register'])!!}
             <div class="row">
-                
+
                 <div class="col-md-6">
                     <h3 class="title-register">Your Personal or Business Contact Information</h3>
                     <div class="input-form">
