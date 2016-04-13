@@ -9,69 +9,10 @@
 		background:url("{{asset('images/banners/'.$banner)}}") center center fixed no-repeat;
 		background-size:cover; 
 	}
-	h2.title{
-		padding-top: 1.2em;
-	}
-	
-
-/*
-*/
-@media (max-width: 767px){
-	nav{
-		position: fixed;
-		z-index: 100;
-		width: 100%;
-	    left: 0;
-	    top: 0;
-	}
-	.image-category{
-		margin-top: 65px;
-	}
-}
-
-@media (min-width: 768px){
-	.sticky {
-    position: fixed;
-    width: 100%;
-    left: 0;
-    top: 0;
-    z-index: 99;
-   /* border-top: 0;*/
-	}
-}
-
-/*480px*/
-
-/*768px*/
-
-
 </style>
 @endif
 
-
-	<section class="image-category">
-		<div class="container">
-			<h2 class="title">{{$name_category}}</h2>
-		</div>
-	</section>
-	
-	<section class="name-category nav">
-		<div class="container">
-			<div class="row">
-				<div class="col-xs-12">
-					<ul class="hidden-xs">
-						@if($categorys)
-							@foreach($categorys as $category => $val)
-								<a href="{{url('category/'.$val->name_cat)}}"><li>{{$val->name}}</li></a>
-							@endforeach
-						@else
-							<li><a href="{{url('choose')}}">No Categories</a></li>
-						@endif
-					</ul>
-				</div>
-			</div>
-		</div>
-	</section>
+@include('sections.categories_and_banner')
 
 	<div class="container">
 		<div class="row elements">
@@ -86,7 +27,6 @@
 							<div class="type">
 								<div class="row">
 									<div class="col-md-5 col-sm-6 col-xs-12">
-										
 										@if( isset($valor->It_ImagePre) )
 											@if($valor->It_ImagePre)
 												<img width="200" height="200" src="{{asset('images/items/'.$valor->It_ImagePre)}}" class="item" alt="item-type">
@@ -168,24 +108,6 @@
 	<script type="text/javascript">
 		
 
-		$(document).ready(function() {
-var stickyNavTop = $('.nav').offset().top;
- 
-var stickyNav = function(){
-var scrollTop = $(window).scrollTop();
-      
-if (scrollTop > stickyNavTop) { 
-    $('.nav').addClass('sticky');
-} else {
-    $('.nav').removeClass('sticky'); 
-}
-};
- 
-stickyNav();
- 
-$(window).scroll(function() {
-    stickyNav();
-});
-});
+
 	</script>
 @stop

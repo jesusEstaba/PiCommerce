@@ -9,6 +9,40 @@
 	{!!Html::style('css/main.css')!!}
 	{!!Html::script('assets/jquery/jquery.min.js')!!}
 	<script src="{{asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
+<style type="text/css">
+	h2.title{
+		padding-top: 1.2em;
+	}
+
+/*
+*/
+@media (max-width: 767px){
+	nav{
+		position: fixed;
+		width: 100%;
+		z-index: 100;
+		left: 0;
+		top: 0;
+	}
+	.image-category{
+		margin-top: 65px;
+	}
+}
+
+@media (min-width: 768px){
+	.sticky {
+		left: 0;
+		position: fixed;
+		top: 0;
+		width: 100%;
+		z-index: 99;
+	}
+	.sticky+.container{
+		margin-top: 63px;
+	}
+}
+</style>
+
 
 
 </head>
@@ -35,12 +69,10 @@
 							</a>
 						</li>
 					@endif
-					
+					<hr>
 					<?php
 						$categorys = DB::table('category')->get();
 					?>
-					
-					<hr>
 
 					@if($categorys)
 						@foreach($categorys as $category => $val)
@@ -83,6 +115,27 @@
 	
 	@include('sections.footer')
 	<script type="text/javascript">
+
+$(document).ready(function() {
+    var stickyNavTop = $('.nav').offset().top;
+
+    var stickyNav = function() {
+        var scrollTop = $(window).scrollTop();
+
+        if (scrollTop > stickyNavTop) {
+            $('.nav').addClass('sticky');
+        } else {
+            $('.nav').removeClass('sticky');
+        }
+    };
+
+    stickyNav();
+
+    $(window).scroll(function() {
+        stickyNav();
+    });
+});
+
 
 	$(document).ready(function(){
 

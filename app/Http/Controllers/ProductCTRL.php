@@ -22,6 +22,11 @@ class ProductCTRL extends Controller
      */
     public function index($cat, $id, $sub = '')
     {
+        $categorys = DB::table('category')
+            ->where('Status', 0)
+            ->select('name', 'name_cat')
+            ->get();
+        
         $it_groups = false;
 
         if ($sub=='sub') {
@@ -119,10 +124,11 @@ class ProductCTRL extends Controller
                         'tp_kind'=>$tp_kind,
                         'cart'=>$cart,
                         'total_cart'=>$total_cart,
+                        'categorys' => $categorys
                     ]);
             }
         }
 
-        return view('builder.generic_builder');
+        return view('builder.generic_builder')->with(['categorys' => $categorys]);
     }
 }

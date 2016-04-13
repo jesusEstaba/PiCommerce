@@ -6,26 +6,8 @@
 
 
 
-<section class="image-category"></section>
-	
-	<section class="name-category">
-		<div class="container">
-			<div class="row">
-				<div class="col-xs-12">
-					<ul class="hidden-xs">
-						@if($categorys)
-							@foreach($categorys as $category => $val)
-								<a href="{{url('category/'.$val->name_cat)}}"><li>{{$val->name}}</li></a>
-							@endforeach
-						@endif
-					</ul>
-				</div>
-			</div>
-		</div>
-	</section>
 
-
-
+@include('sections.categories_and_banner')
 
 
 
