@@ -62,6 +62,10 @@ $(function() {
         calcular();
     });
 
+    $('.add-tip').click(function(){
+        calcular();
+    });
+
     $('.verify').click(function() {
         if (
             $("[name=card-holder-name]").val() &&
