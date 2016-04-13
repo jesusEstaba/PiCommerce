@@ -267,8 +267,10 @@ ul>li>span{
 			<article>
 				<aside>
 					<div>
-							<b>Order Id: </b>{{$num_order}}
-							<span>{{$now}}</span>
+						<div style="width: 49%; display: inline-block;"><b>Order Id: </b>{{$num_order}}</div>
+						<div style="width: 49%; display: inline-block;"><span style="float: right;">{{$now}}</span></div>
+							
+							
 					</div>
 					<hr>
 
