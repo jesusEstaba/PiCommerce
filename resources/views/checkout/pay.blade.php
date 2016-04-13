@@ -214,7 +214,7 @@
 										</h4>
 										<h4>
 										<b>Gruatity: </b>$
-										<input style="width:20%;display: inline-block;" name="tips" placeholder="tip" class="form-control"></input>
+										<input style="width:20%;display: inline-block;" name="tips" placeholder="tip" class="form-control"></input><div class="add-tip btn btn-warning">Add tip</div>
 										</h4>
 									@endif
 									<h4 class=" ccfee">
