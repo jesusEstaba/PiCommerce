@@ -8,6 +8,9 @@
 	{!!Html::style('assets/bootstrap/css/bootstrap.min.css')!!}
 	{!!Html::style('css/login.css')!!}
 
+	<script src="{{asset('assets/jquery/jquery.min.js')}}"></script>
+	<script src="{{asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
+
 	<style type="text/css">
 	body{
 		background: url("{{asset('images/backgrounds/'.$config->background)}}") center center no-repeat fixed !important;
@@ -34,6 +37,9 @@
 	<div class="alert alert-info alert-dismissable">
 		<button type="button" class="close" data-dismiss="alert">&times;</button>
 		<strong>Info!</strong> {{Session::get('normal-error')}}.
+		@if(Session::has('email'))
+			<a style="color:#B76B33 !important;" href="/reactivate/{{Session::get('email')}}"> Send email again</a>.
+		@endif
 	</div>
 @endif
 
