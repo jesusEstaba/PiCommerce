@@ -32,7 +32,7 @@ class OrderCTRL extends Controller
         $or_charge = false;
         $or_tip = false;
 
-        if( Input::get('card')==='true' ){  
+        if (Input::get('card')==='true' ) {
             $fee = DB::table('payform')
                 ->select('Pf_Charge')
                 ->where('Pf_Id', 2)
@@ -44,7 +44,7 @@ class OrderCTRL extends Controller
             $or_charge = true;
         }
 
-        if( Input::get('delivery')==='true' ){
+        if (Input::get('delivery')==='true' ) {
             $delivery_val = DB::table('password1')
                 ->select('G_Value')
                 ->where('G_Id', 5)
@@ -55,7 +55,7 @@ class OrderCTRL extends Controller
             $or_delivery = true;
         }
 
-        if( Input::get('tips')==='true' ){
+        if (Input::get('tips')==='true') {
             $tip = (float)Input::get('tip');
             $tip = round($tip, 2);
             $hd_tips = $tip;
@@ -63,53 +63,32 @@ class OrderCTRL extends Controller
         }
 
         $mytime = Carbon::now();
-        
-        $cart = CartCTRL::searchCartItems();//se deberia Cargar desde la sesion en vez de llamar al controller
 
-        //Calculando total del carrito
-        $total_cart = DB::table('cart')
-            ->join('cart_top', 'cart_top.id_cart', '=', 'cart.id')
-            ->where('cart.id_user', Auth::user()->id)
-            ->selectRaw('sum(cart_top.price*cart.quantity) as toppings')
-            ->orderBy('cart_top.id_cart')
-            ->first();
 
-        if($total_cart)
-        {
-            $total_cart2 = DB::table('cart')
-                ->join('size', 'size.Sz_Id', '=', 'cart.product_id')
-                ->where('cart.id_user', Auth::user()->id)
-                ->selectRaw('sum(size.Sz_Price*cart.quantity) as pizza')
-                ->orderBy('cart.id')
-                ->first();
+        if (Auth::check()) {
+            $cart = CartCTRL::searchCartItems();
+            //Calculando total del carrito
+            $sub_total = CartCTRL::totalCostCart(true);
 
-            if($total_cart2){
-                $total_cart2 = $total_cart2->pizza;
-            }
-            else{
-                $total_cart2 = 0;
-            }
+            $hdOrderUser = Auth::user()->phone;
+        } else {
+            $idCartSession = (int)Session::get('id_cart');
+            $cart = CartCTRL::searchCartItems('asc', $idCartSession);
+            //Calculando total del carrito
+            $sub_total = CartCTRL::totalCostCart(true, $idCartSession);
 
-            $sub_total = $total_cart->toppings + $total_cart2;
+            $hdOrderUser = 314;
         }
-        else
-        {
-            $sub_total = 0.00;
-        }
-        
+
         $hd_discount = 0;
 
-        if( Session::has('coupon_discount') )
-        {
+        if (Session::has('coupon_discount')) {
             $coupon_disc = (float) Session::get('coupon_discount');
             $coupon_type = (int) Session::get('coupon_type');
-            
-            if($coupon_type===1)
-            {
+
+            if ($coupon_type===1) {
                 $hd_discount = $sub_total * $coupon_disc / 100;
-            }
-            else
-            {
+            } else {
                 $hd_discount = $coupon_disc;
             }
 
@@ -136,14 +115,15 @@ class OrderCTRL extends Controller
 
         $total_de_la_Orden = $subtotal_discount + $hd_tax + $hd_charge + $hd_tips + $hd_delivery;
 
+
         if ($total_de_la_Orden) {
-            $id = $this->createOrder(
+            $id = OrderCTRL::createOrder(
                 $cart,
                 [
                     'Hd_Sell' => $hd_sell,
                     'Hd_Date' => $mytime,
                     'Hd_Time' => $mytime,
-                    'Hd_Customers' => Auth::user()->phone,
+                    'Hd_Customers' => $hdOrderUser,
                     'Hd_User' => 96,#CAMBIAR//REGISTRO NO. 81 DE LA TABLA PASSWORD1
                     'Hd_Payform' => $hd_payform,
                     'Hd_Subtotal' => $sub_total,
@@ -156,17 +136,13 @@ class OrderCTRL extends Controller
                 ]
             );
 
-            if( Session::has('coupon_id') )
-            {
+            if (Session::has('coupon_id')) {
                 CouponsCTRL::useDiscountCoupon($id, Session::get('coupon_id'));
                 Session::forget('coupon_id');
             }
 
-
-
             //VACIAR CARRITO
             foreach ($cart as $key => $value) {
-                
                 DB::table('cart_top')
                     ->where('id_cart', $value->id)
                     ->delete();
@@ -177,45 +153,64 @@ class OrderCTRL extends Controller
             }
 
             //AÑADIENDO LOG DE LA IP
-            LogCTRL::addToLog(5);
-            
+            if (Auth::check()) {
+                LogCTRL::addToLog(5);
+
+                $user = DB::table('users')
+                    ->leftJoin('customers', 'customers.Cs_Phone', '=', 'users.phone')
+                    ->where('users.phone', Auth::user()->phone)
+                    ->select(
+                        'Cs_Number',
+                        'Cs_Street',
+                        'Cs_ZipCode',
+                        'Cs_Notes',
+                        'Cs_Name',
+                        'Cs_Phone',
+                        'email'
+                    )
+                    ->first();
+
+                $mail_user = Auth::user()->email;
+                $titleMail = 'Order';
+            } else {
+                LogCTRL::addToLog(314);
+
+                $user = new \stdClass();
+                $user->Cs_Name = Session::get('name');
+                $user->Cs_Phone = Session::get('phone');
+                $mail_user = Session::get('email');
+                $user->Cs_ZipCode = '';
+                $user->Cs_Number = '';
+                $user->Cs_Street = '';
+                $user->Cs_Notes = '';
+
+                $titleMail = 'Quick Order';
+                Session::forget('id_cart');
+            }
+
 
             //ENVIAR CORREOS
             $correos = DB::table('emails_admin')->get();
-            $mail_user = Auth::user()->email;
             $config = DB::table('config')->first();
-
             $order = DB::table('hd_tticket')->where('Hd_Ticket', $id)->first();
-            
-            $size =function ($size)
-            {
+
+            $size = function ($size) {
                 $size_topping = '';
 
-                        if($size==1){
-                            $size_topping = '(All)';
-                        }
-                        elseif($size==2){
-                            $size_topping = '(Left)';
-                        }
-                        elseif($size==3){
-                            $size_topping = '(Rigth)';
-                        }
-                        elseif($size==4){
-                            $size_topping = '(Extra)';
-                        }
-                        elseif($size==5){
-                            $size_topping = '(Lite)';
-                        }
-                        
+                if ($size==1) {
+                    $size_topping = '(All)';
+                } elseif ($size==2) {
+                    $size_topping = '(Left)';
+                } elseif ($size==3) {
+                    $size_topping = '(Rigth)';
+                } elseif ($size==4) {
+                    $size_topping = '(Extra)';
+                } elseif ($size==5) {
+                    $size_topping = '(Lite)';
+                }
+
                 return $size_topping;
             };
-
-            $user = DB::table('users')
-                ->leftJoin('customers', 'customers.Cs_Phone', '=', 'users.phone')
-                ->where('users.phone', Auth::user()->phone)
-                ->select('Cs_Number', 'Cs_Street', 'Cs_ZipCode', 'Cs_Notes', 'Cs_Name', 'Cs_Phone', 'email')
-                ->first();
-
 
             $variables_correo = [
                 'order' => $order,
@@ -227,14 +222,13 @@ class OrderCTRL extends Controller
                 'tip'=>$or_tip,
 
                 'cart'=>$cart,
-                'title'=>'Order',
+                'title'=>$titleMail,
                 'size'=>$size,
                 'logo' => $config->logo,
                 'footer'=> $config->footer,
                 'num_order'=>$id,
-                
 
-                'phone' => Auth::user()->phone,
+                'phone' => $user->Cs_Phone,
                 'name'=> $user->Cs_Name,
                 'email'=>$mail_user,
 
@@ -242,54 +236,35 @@ class OrderCTRL extends Controller
                 'street_name' => $user->Cs_Street,
                 'zip_code' => $user->Cs_ZipCode,
             ];
-            
-            //$cart
-            //
 
-            try {
-                Mail::send('mail_template.order', $variables_correo, function($msj) use ($mail_user)
-            {
-                $msj->subject('Order');
-                $msj->from(env('MAIL_ADDRESS'), env('MAIL_NAME'));
-                
-                $msj->to($mail_user);    
-            });
-                
-            } catch (Exception $e) {
-                
-            }
-            
-            
-            Mail::send('mail_template.order', $variables_correo, function($msj) use ($correos)
-            {
-                $msj->subject('Order');
+            $isErrorToSend = SendMailCTRL::sendNow(
+                'mail_template.order',
+                $variables_correo,
+                $mail_user,
+                $titleMail
+            );
+
+            Mail::send('mail_template.order', $variables_correo, function ($msj) use ($correos, $titleMail) {
+                $msj->subject($titleMail);
                 $msj->from(env('MAIL_ADDRESS'), env('MAIL_NAME'));
 
-                foreach($correos as $array => $admin)
-                {
+                foreach ($correos as $array => $admin) {
                     $msj->to($admin->email);
                 }
             });
 
-            if( $error_num_mail = count( Mail::failures() ) )
-            {
-                $errors = 'Failed to send ('.$error_num_mail.') email.';
+            if ($isErrorToSend) {
+                $errors = 'Failed to send email.';
             }
-            
-            
         }
 
-        if( !isset($errors) ){
+        if (!isset($errors)) {
             $errors = ['status'=>'correct'];
         }
-        
+
         return response()->json($errors);
     }
 
-
-    /**
-     * 
-     */
     public function back()
     {
         return redirect()->back();

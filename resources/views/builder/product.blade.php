@@ -3,7 +3,11 @@
 @section('title', 'Build')
 @section('content')
 
-<div class="container space bottom-space">
+
+@include('sections.categories_and_banner')
+
+
+<div class="container bottom-space">
 	@if($item)
 <div class="row">
 	

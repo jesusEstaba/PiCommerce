@@ -132,18 +132,10 @@ $(function() {
                     },
                 })
                 .done(function(data) {
-                    if (data.status == 'correct') {
-                        message_alert('alert-success', 'Order Success');
-
-                        $('[name=name]').val('');
-                        $('[name=phone]').val('');
-                        $('[name=email]').val('');
-
-                        window.setTimeout(function() {
-                            window.location.href = "/choose";
-                        }, 6000);
+                    if (data == 'correct') {
+                        window.location.href = "/checkout/pickup";
                     } else {
-                        message_alert('alert-warning', data);
+                        message_alert('alert-warning', 'Errror to create product');
                     }
                 })
                 .error(function() {
