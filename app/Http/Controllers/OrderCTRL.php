@@ -214,7 +214,7 @@ class OrderCTRL extends Controller
 
             $variables_correo = [
                 'order' => $order,
-                'now' => Carbon::now()->format('d-m-Y'),
+                'now' => Carbon::now()->format('m-d-Y'),
 
                 'delivery'=>$or_delivery,
                 'discount' => $or_discount,
