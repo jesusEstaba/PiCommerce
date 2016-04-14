@@ -64,6 +64,11 @@
 
 					@if( Auth::check() )	
 						<li role="presentation">
+							<a role="menuitem" tabindex="-1" href="{{url('account')}}">
+								My Account
+							</a>
+						</li>
+						<li role="presentation">
 							<a role="menuitem" tabindex="-1" href="{{url('logout')}}">
 								Logout
 							</a>
@@ -101,8 +106,11 @@
 					<span class="glyphicon glyphicon-shopping-cart"></span>
 					<span>$<span class="total-in_cart">0.00</span></span>
 				</a>
-				<a class="btn btn-cart hidden-xs" href="{{url('logout')}}">
+				<a style="margin-right: .3em;" class="btn btn-default btn-cart hidden-xs" href="{{url('logout')}}">
 					Logout
+				</a>
+				<a style="margin-right: .3em;" class="btn btn-primary btn-cart hidden-xs" href="{{url('account')}}">
+					My Account
 				</a>
 			@else
 				<a href="{{url('login')}}" class="btn btn-default btn-cart">Login</a>
