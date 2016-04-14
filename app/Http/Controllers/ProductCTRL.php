@@ -86,7 +86,14 @@ class ProductCTRL extends Controller
                 ->where('Tp_Kind', $tp_kind)
                 ->where('Tp_Abrev', '!=', '.')
                 ->where('Tp_Cat', '!=', 0)
-                ->select('Tp_Id', 'TP_Descrip', 'Tp_Cat', 'Tp_Double', 'Tp_Topprice')
+                ->where('Tp_Status', 0)
+                ->select(
+                    'Tp_Id',
+                    'TP_Descrip',
+                    'Tp_Cat',
+                    'Tp_Double',
+                    'Tp_Topprice'
+                )
                 ->orderBy('Tp_Cat')
                 ->orderBy('Tp_special')
                 ->get();
