@@ -84,7 +84,7 @@ class PayCTRL extends Controller
                     ->first();
 
                 if ($minValue) {
-                    $minValue = $minValue->G_Description;
+                    $minValue = $minValue->G_Value;
                 } else {
                     $minValue = 0;
                 }
