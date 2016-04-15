@@ -83,6 +83,12 @@ class PayCTRL extends Controller
                     ->where('G_Description', 'Minimun_order')
                     ->first();
 
+                if ($minValue) {
+                    $minValue = $minValue->G_Description;
+                } else {
+                    $minValue = 0;
+                }
+
                 //pasar a la condicion del delivery
                 $fee = DB::table('payform')
                     ->select('Pf_Charge')
