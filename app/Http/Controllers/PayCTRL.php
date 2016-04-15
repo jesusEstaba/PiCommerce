@@ -78,6 +78,11 @@ class PayCTRL extends Controller
                     ->where('G_Id', 5)
                     ->first();
 
+                $minValue = DB::table('password1')
+                    ->select('G_Value')
+                    ->where('G_Description', 'Minimun_order')
+                    ->first();
+
                 //pasar a la condicion del delivery
                 $fee = DB::table('payform')
                     ->select('Pf_Charge')
@@ -158,6 +163,7 @@ class PayCTRL extends Controller
                     'total_to_pay' => $total_to_pay,
                     'delivery_date' => $delivery_date,
                     'isp_user' => $isp_user,
+                    'minValue'=> $minValue,
                 ]);
             }
         }

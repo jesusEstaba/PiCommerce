@@ -115,8 +115,13 @@ class OrderCTRL extends Controller
 
         $total_de_la_Orden = $subtotal_discount + $hd_tax + $hd_charge + $hd_tips + $hd_delivery;
 
+        if ($minValue) {
+            $minValue = $minValue->G_Description;
+        } else {
+            $minValue = 0;
+        }
 
-        if ($total_de_la_Orden) {
+        if ($sub_total >= $minValue) {
             $id = OrderCTRL::createOrder(
                 $cart,
                 [
@@ -256,6 +261,8 @@ class OrderCTRL extends Controller
             if ($isErrorToSend) {
                 $errors = 'Failed to send email.';
             }
+        } else {
+            $errors = 'No is Min Order';
         }
 
         if (!isset($errors)) {

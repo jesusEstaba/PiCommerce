@@ -13,7 +13,7 @@
 				<div class="row">
 					<div class="col-md-8">
 						<div class="white space-bottom">
-							
+
 							@if($select=='delivery')
 							@if(!$delivery)
 							<div class="divisor">
@@ -23,7 +23,7 @@
 							</div>
 							@endif
 							@endif
-							
+
 							<div class="row">
 								@if($select=='delivery' && $delivery)
 								<div class="col-md-6">
@@ -59,9 +59,7 @@
 										@endif
 									</div>
 								</div>
-								
 								@else
-								
 								<div class="col-xs-12">
 									<div class="divisor">
 										<h4>Customers Details</h4>
@@ -80,7 +78,6 @@
 							</div>
 							<div class="divisor">
 								<h4>Payment Method</h4>
-								
 								<div class="hide icons-pay">
 									<span class="pf pf-cash"></span>
 									<span class="pf pf-maestro"></span>
@@ -88,19 +85,15 @@
 									<span class="pf pf-paypal"></span>
 									<span class="pf pf-stripe"></span>
 								</div>
-								
-								
 								<form class="form-horizontal" role="form">
 									<fieldset>
 										<legend>
 											<div>
 												<input name="mtpay" value="2" type="radio" checked/>
 												<img src="{{asset('images/extras/paymethods.png')}}">
-												
 												<input name="mtpay" value="1" type="radio"/>
 												Cash
 											</div>
-											
 										</legend>
 										<div class="frame-pay">
 											<div class="form-group">
@@ -195,7 +188,7 @@
 										<span class="sub_total-price">{{$total_cart}}</span>
 									</span>
 									<b class="discount"></b>
-									
+
 									</h4>
 									<div class="mid-messages">
 										<h4>
@@ -259,7 +252,6 @@
 						</div>
 					</div>
 					<div class="col-md-4">
-						
 						<div class="white space-bottom">
 							@if($cart)
 							<h4 class="title-orange">
@@ -276,7 +268,7 @@
 									<span class="pull-right">Price</span>
 								</div>
 							</div>
-							
+
 							</h4>
 							<div class="cart-actual">
 								@foreach($cart as $array => $campo)
@@ -292,9 +284,9 @@
 										<span class="pull-right">${{number_format($campo->Sz_Price, 2)}}</span>
 									</div>
 								</div>
-								
+
 								</h4>
-								
+
 								<div class="row">
 									<div class="col-xs-10 col-xs-offset-2">
 										@foreach($campo->toppings_list as $tab => $val)
@@ -312,9 +304,9 @@
 										@endforeach
 									</div>
 								</div>
-								
+
 								@endforeach
-								
+
 							</div>
 							@endif
 						</div>
@@ -325,6 +317,23 @@
 	</div>
 </div>
 {!!Form::token()!!}
+
+<div id="min-ord" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Info</h4>
+      </div>
+      <div class="modal-body">
+        the minimum order is $<span id="min-value">{{number_format($minValue, 2)}}</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <link rel="stylesheet" href="{{asset('css/pay.css')}}">
 
