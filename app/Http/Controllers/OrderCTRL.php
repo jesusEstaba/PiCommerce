@@ -116,7 +116,7 @@ class OrderCTRL extends Controller
         $total_de_la_Orden = $subtotal_discount + $hd_tax + $hd_charge + $hd_tips + $hd_delivery;
 
         if ($minValue) {
-            $minValue = $minValue->G_Description;
+            $minValue = $minValue->G_Value;
         } else {
             $minValue = 0;
         }
