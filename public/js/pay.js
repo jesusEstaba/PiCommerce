@@ -115,45 +115,49 @@ $(function() {
     });
     
     $('.order_now').click(function() {
-        if (!$('.order_now').hasClass('active')) {
-            $('.order_now').addClass('active')
-            calcular();
-            var card = credit_card;
-            var delivery = is_delivery;
-            var tips = false;
-            var tip = 0;
-            
-            if ($('[name=tips]').length) {
-                if (Number($('[name=tips]').val()) > 0) {
-                    tip = Number(Number($('[name=tips]').val()).toFixed(2));
-                    tips = true;
+        if (Number($('.sub_total-price').html()) >= Number($('#min-value').html())) {
+            if (!$('.order_now').hasClass('active')) {
+                calcular();
+                var card = credit_card;
+                var delivery = is_delivery;
+                var tips = false;
+                var tip = 0;
+
+                if ($('[name=tips]').length) {
+                    if (Number($('[name=tips]').val()) > 0) {
+                        tip = Number(Number($('[name=tips]').val()).toFixed(2));
+                        tips = true;
+                    }
+                }
+
+                if (pay) {
+                    $('.order_now').addClass('active')
+                    $.ajax({
+                            url: '/order_now',
+                            type: 'POST',
+                            dataType: 'json',
+                            headers: { 'X-CSRF-TOKEN': $('[name=_token]').val() },
+                            data: {
+                                card: card,
+                                delivery: delivery,
+                                tips: tips,
+                                tip: tip,
+                            },
+                        })
+                        .done(function(data) {
+                            if (data.status == "correct") {
+                                window.location.href = "/choose";
+                            }
+                        });
+                } else {
+                    alert('Empty payment method');
                 }
             }
-            
-            if (pay) {
-                $.ajax({
-                        url: '/order_now',
-                        type: 'POST',
-                        dataType: 'json',
-                        headers: { 'X-CSRF-TOKEN': $('[name=_token]').val() },
-                        data: {
-                            card: card,
-                            delivery: delivery,
-                            tips: tips,
-                            tip: tip,
-                        },
-                    })
-                    .done(function(data) {
-                        if (data.status == "correct") {
-                            window.location.href = "/choose";
-                        }
-                    });
-            } else {
-                alert('Empty payment method');
-            }
+        } else {
+            $('#min-ord').modal();
         }
     });
-    
+
     $('#code').click(function() {
         var code = $('[name=code]').val();
         
