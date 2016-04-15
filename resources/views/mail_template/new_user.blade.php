@@ -77,10 +77,14 @@
 				margin-left: auto;
 				margin-right: auto;">
 				<section>
-					<h1>Welcome, activate your account</h1>
+					<h1>Welcome {{$name}}!</h1>
 					<p>
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque malesuada cursus turpis non rhoncus. Donec non libero tortor. Donec convallis felis sagittis erat eleifend accumsan. Duis lobortis dignissim justo, vel sollicitudin purus ornare at. Nunc metus purus, placerat a semper at, euismod ut nunc
 					</p>
+					<p>
+						<b>Your Password: </b>{{$password}}
+					</p>
+
 					<div>
 						<a style="display: inline-block;
 							background:#91c444;
@@ -88,7 +92,7 @@
 							padding: 1em 2em 1em 2em;
 							border-radius: 10px;
 							text-decoration: none !important;
-						font-weight: bolder;float: right;" class="btn pull-right" target="_blank" href="{{url('/activated/'.$token_active)}}">Activate</a>
+						font-weight: bolder;float: right;" class="btn pull-right" target="_blank" href="{{url('/login')}}">Login!</a>
 					</div>
 				</section>
 				<footer>

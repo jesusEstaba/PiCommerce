@@ -104,7 +104,7 @@ class ResetPasswordCTRL extends Controller
         return response()->json($response);
     }
 
-    public static function sendEmailToNewUser($userMail)
+    public static function sendEmailToNewUser($userMail, $name, $pass)
     {
         $config = DB::table('config')->first();
 
@@ -115,7 +115,8 @@ class ResetPasswordCTRL extends Controller
             'logo' => $config->logo,
             'footer'=> $config->footer,
             'title'=>'Active Your Account',
-            'token_active'=> $token_active,
+            'name' => $name,
+            'pass' => $pass,
         ];
 
         $isErrorEmail = SendMailCTRL::sendNow(
@@ -124,14 +125,6 @@ class ResetPasswordCTRL extends Controller
             $userMail,
             'Reset Password'
         );
-
-        if ($isErrorEmail===0) {
-            DB::table('verified_accounts')->insert([
-                'email'=>$userMail,
-                'remember_token'=> $token_active,
-                'created_at' => $day,
-            ]);
-        }
 
         return $isErrorEmail;
     }

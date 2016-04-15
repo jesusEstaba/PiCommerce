@@ -95,7 +95,7 @@ Route::group(['middleware'=>'hora'], function () {
     Route::get('/register', 'RegisterCTRL@index');
     Route::post('/register', 'RegisterCTRL@register');
 
-    Route::get('/reactivate/{email}', 'ResetPasswordCTRL@reactivate');
+    //Route::get('/reactivate/{email}', 'ResetPasswordCTRL@reactivate');
 
     Route::get('/active-your-acount', function () {
         return view('success_mail');

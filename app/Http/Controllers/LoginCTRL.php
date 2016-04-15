@@ -43,7 +43,6 @@ class LoginCTRL extends Controller
         $credentials = [
             'email'=>$request['email'],
             'password'=>$request['password'],
-            'account_verify' => 1
         ];
 
         if (Auth::attempt($credentials)) {
@@ -56,20 +55,7 @@ class LoginCTRL extends Controller
             return Redirect::to('choose');
         }
 
-        $userExist = DB::table('users')
-            ->where('email', $request['email'])
-            ->where('account_verify', 0)
-            ->get();
-
-        if ($userExist) {
-            Session::flash('normal-error', 'Please activate your account');
-            Session::flash('email', $request['email']);
-        } else {
-            Session::flash(
-                'message-error',
-                'User or Password is Incorrect!'
-            );
-        }
+        Session::flash('message-error','User or Password is Incorrect!');
 
         return Redirect::to('login');
     }

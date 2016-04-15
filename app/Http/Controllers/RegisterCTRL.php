@@ -82,7 +82,11 @@ class RegisterCTRL extends Controller
                     ->get();
 
                 if (!$datos && !$datos_phone) {
-                    $errorToSend = ResetPasswordCTRL::sendEmailToNewUser($request['email']);
+                    $errorToSend = ResetPasswordCTRL::sendEmailToNewUser(
+                        $request['email'],
+                        $request['name'],
+                        $request['password']
+                    );
 
                     if ($errorToSend===0) {
                         DB::table('users')->insert([
@@ -134,6 +138,7 @@ class RegisterCTRL extends Controller
                     } else {
                         $messageUsedData = 'This email has already been used.';
                     }
+
                     Session::flash('message-error', $messageUsedData);
                 }
             } else {
