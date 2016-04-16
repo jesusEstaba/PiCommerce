@@ -71,9 +71,7 @@
 
 //Route::get('/sendmail', 'SendMailCTRL@send_mail')
 
-Route::get('testmail/{email}', function($email){
-    SendMailCTRL::sendNow('welcome', ['data'=>'data'], $email, 'Test Mail');
-});
+Route::get('testmail/{email}', 'SendMailCTRL@test');
 
 
 Route::get('/', function () {

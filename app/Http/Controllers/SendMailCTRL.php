@@ -27,4 +27,14 @@ class SendMailCTRL extends Controller
 
         return $error;
     }
+
+    public function test($email)
+    {
+		$error = SendMailCTRL::sendNow('welcome', ['data'=>'data'], $email, 'Test Mail');
+		if ($error===0) {
+			return "enviado :)";
+		} else {
+			return "hubo un error";
+		}
+    }
 }
