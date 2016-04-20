@@ -99,13 +99,17 @@ class RegisterCTRL extends Controller
                             !empty($request['month_birthday']) &&
                             !empty($request['year_birthday'])
                         ) {
+                            $yearBirthday = (int) $request['year_birthday'];
+                            $monthBirthday = (int) $request['month_birthday'];
+                            $dayBirthday = (int) $request['day_birthday'];
+
                             $birthdayCustomer = Carbon::createFromDate(
-                                $request['year_birthday'],
-                                $request['month_birthday'],
-                                $request['day_birthday']
+                                $yearBirthday,
+                                $monthBirthday,
+                                $dayBirthday
                             );
                         } else {
-                            $birthdayCustomer = null;
+                            $birthdayCustomer = '.';
                         }
 
                         DB::table('customers')->insert([
