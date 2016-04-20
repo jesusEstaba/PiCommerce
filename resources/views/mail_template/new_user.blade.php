@@ -82,7 +82,7 @@
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque malesuada cursus turpis non rhoncus. Donec non libero tortor. Donec convallis felis sagittis erat eleifend accumsan. Duis lobortis dignissim justo, vel sollicitudin purus ornare at. Nunc metus purus, placerat a semper at, euismod ut nunc
 					</p>
 					<p>
-						<b>Your Password: </b>{{$password}}
+						<b>Your Password: </b>{{$pass}}
 					</p>
 
 					<div>

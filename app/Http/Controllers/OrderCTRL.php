@@ -95,16 +95,13 @@ class OrderCTRL extends Controller
             Session::forget('coupon_discount');
             Session::forget('coupon_type');
             $or_discount = true;
-        }
-        else
-        {
+        } else {
             $coupon_disc = 0;
         }
 
         $subtotal_discount = $sub_total-$hd_discount;
 
-        if($subtotal_discount<0)
-        {
+        if ($subtotal_discount<0) {
             $subtotal_discount = 0;
         }
 
@@ -114,6 +111,11 @@ class OrderCTRL extends Controller
         $hd_tax = round($hd_tax, 2);
 
         $total_de_la_Orden = $subtotal_discount + $hd_tax + $hd_charge + $hd_tips + $hd_delivery;
+
+        $minValue = DB::table('password1')
+            ->select('G_Value')
+            ->where('G_Description', 'Minimun_order')
+            ->first();
 
         if ($minValue) {
             $minValue = $minValue->G_Value;
