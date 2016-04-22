@@ -128,6 +128,15 @@ class RegisterCTRL extends Controller
                             '' => $request['aparment_complex'],
                             '' => $request['city'],
                             */
+                           'Cs_Building' => '.',
+                            'Cs_StreetPost' => '.',
+                            'Cs_Across' => '.',
+                            'Cs_NC' => '.',
+                            'Cs_Gates' => '.',
+                            'Cs_Email2'=>'.',
+                            'Cs_Status' => 0,
+                            'Cs_Tax' => 0,
+                            'Cs_Mail' => 0,
                         ]);
 
                         return redirect()->to('active-your-acount');

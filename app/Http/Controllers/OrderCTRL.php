@@ -140,6 +140,10 @@ class OrderCTRL extends Controller
                     'Hd_Tips' => $hd_tips,//Tips over credit card, after sales
                     'Hd_Delivery' => $hd_delivery,
                     'Hd_Total' => round($total_de_la_Orden, 2),
+                    'Hd_Status' => 0,
+                    'Hd_Observac' => 0,
+                    'Hd_Observac1' => 0,
+                    'Hd_StatusTip' => 0,
                 ]
             );
 
