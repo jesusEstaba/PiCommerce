@@ -7,7 +7,7 @@
 <style type="text/css">
 	.image-category{
 		background:url("{{asset('images/banners/'.$banner)}}") center center fixed no-repeat;
-		background-size:cover; 
+		background-size:cover;
 	}
 </style>
 @endif
@@ -33,7 +33,6 @@
 											@else
 												<img src="{{asset('images/items/nopicture.jpg')}}" class="item" alt="item-type">
 											@endif
-											
 										@else
 											<img src="{{asset('images/items/nopicture.jpg')}}" class="item" alt="item-type">
 										@endif

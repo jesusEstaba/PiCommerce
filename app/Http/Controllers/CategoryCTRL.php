@@ -20,10 +20,15 @@ class CategoryCTRL extends Controller
     public function category($name_category)
     {
         $name_category = strtolower($name_category);
-        $consulta = DB::table('category')
-            ->where('name_cat', $name_category)
-            ->where('Status', 0)
-            ->select('name', 'image_cat', 'group_id', 'submenu_cat')
+        $consulta = DB::table('groups')
+            ->where('Gr_Url', $name_category)
+            ->where('Gr_Status', 0)
+            ->select(
+                'Gr_Descrip AS name',
+                'Gr_Banner AS image_cat',
+                'Gr_ID AS group_id',
+                'Gr_Sub AS submenu_cat'
+            )
             ->first();
 
         if ($consulta) {
@@ -83,20 +88,20 @@ class CategoryCTRL extends Controller
             $name_cat = "";
         }
 
+        /*
         $categorys = DB::table('category')
             ->where('Status', 0)
             ->select('name', 'name_cat')
             ->get();
-
-        return view('category')->with(
-            [
+        */
+        $categorys = $consulta;
+        return view('category')->with([
             'categorys'=>$categorys,
             'name_category'=>$name_cat,
             'name_cat_url'=>$name_category,
             'banner'=>$banner,
             'items'=>$items,
             'sub'=>$submenu_cat
-            ]
-        );
+        ]);
     }
 }

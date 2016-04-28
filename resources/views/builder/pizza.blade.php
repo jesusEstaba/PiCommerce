@@ -25,7 +25,6 @@
 						<span class="name-size-top">Left/Right</span>
 					</div>
 					<div class="btn-semi-right-size topping-size" data-size-top="3" title="Right Half">
-						
 					</div>
 					<div class="btn-double-size topping-size" data-size-top="4" title="Extra">
 						<span class="name-size-top">Extra</span>
@@ -57,37 +56,24 @@
 
 <!-- TOPPINGS CATEGORY -->
 <div class="topping_category">
-	<?php
-		if($tp_kind==1)
-			$categoria = ['cheese'=>1,  'meats'=>2,  'vegetables'=>3, 'Specialty'=>4];
-		else
-			$categoria = ['dressing and sauces'=>-1];
-	?>
+
 	<div class="row">
-		
-		@foreach($categoria as $name_category => $id_cat_top)
-		
-		@if( isset($categoria['dressing and sauces']) )
+
+
+
 			<div class="col-md-12">
-		@else
-			<div class="col-md-6">
-		@endif	
-			<h4 class="{{snake_case($name_category)}}">{{ucwords($name_category)}}</h4>
-			
+
+
 			<div class="toppings-btns">
 				@foreach($toppings as $data => $top)
-				
-					@if($id_cat_top==$top->Tp_Cat)
 						<div class="box-drag">
-							<a data-id-top="{{$top->Tp_Id}}" class="btn drag" data-double="{{$top->Tp_Double}}" data-price="{{$top->Tp_Topprice}}">
+							<a style="color:#000;background:#{{$top->Tp_Color or "fff"}};" data-id-top="{{$top->Tp_Id}}" class="btn drag" data-double="{{$top->Tp_Double}}" data-price="{{$top->Tp_Topprice}}">
 								{{ucwords( strtolower($top->TP_Descrip) )}}
 							</a>
 						</div>
-					@endif
 				@endforeach
 			</div>
 		</div>
-		@endforeach
 
 	</div>
 </div>
