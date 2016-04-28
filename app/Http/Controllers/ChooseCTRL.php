@@ -15,8 +15,13 @@ class ChooseCTRL extends Controller
     public function index()
     {
         $categories = DB::table('choose_category')
-            ->join('category', 'category.id', '=', 'choose_category.cat_id')
-            ->where('Status', 0)
+            ->join('groups', 'groups.Gr_ID', '=', 'choose_category.cat_id')
+            ->where('Gr_Status', 0)
+            ->select(
+                'Gr_Url AS name_cat',
+                'Gr_Image AS image',
+                'Gr_Descrip AS name'
+            )
             ->get();
 
         $items = DB::table('products_features')
@@ -48,15 +53,9 @@ class ChooseCTRL extends Controller
             }
         }
 
-        $categorys = DB::table('category')
-            ->where('Status', 0)
-            ->select('name', 'name_cat')
-            ->get();
-
         return view('choose')->with([
             'categories'=>$categories,
             'items'=>$items,
-            'categorys'=>$categorys
         ]);
     }
 }

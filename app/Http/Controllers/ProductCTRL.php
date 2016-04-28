@@ -22,11 +22,14 @@ class ProductCTRL extends Controller
      */
     public function index($cat, $id, $sub = '')
     {
-        $categorys = DB::table('category')
-            ->where('Status', 0)
-            ->select('name', 'name_cat')
+        $categorys = DB::table('groups')
+            ->where('Gr_Status', 0)
+            ->select(
+                'Gr_Descrip AS name',
+                'Gr_Url AS name_cat'
+            )
             ->get();
-        
+
         $it_groups = false;
 
         if ($sub=='sub') {
@@ -40,6 +43,7 @@ class ProductCTRL extends Controller
                 $name = $size_t->Sz_Descrip;
                 $description = '';
                 $it_groups = $size_t->It_Groups;
+                $size_Id = $id;
             }
         } else {
             $items = DB::table('items')
@@ -58,44 +62,58 @@ class ProductCTRL extends Controller
                     ->where('Sz_Item', $id_item)
                     ->where('Sz_Status', 0)
                     ->get();
+
+                $size_Id = $size_t[0]->Sz_Id;
             }
         }
 
         if ($it_groups) {
-            $builder_data = DB::table('category')
-                ->where('group_id', $it_groups)
-                ->where('Status', 0)
-                ->select('builder_id', 'image', 'tp_kind')
+            $builder_data = DB::table('groups')
+                ->where('Gr_ID', $it_groups)
+                ->where('Gr_Status', 0)
+                ->select(
+                    'Gr_Builder AS builder_id',
+                    'Gr_Image AS image',
+                    'Gr_Banner AS banner'
+                )
                 ->first();
 
             if ($builder_data) {
                 $id_builder = $builder_data->builder_id;
                 $image = $builder_data->image;
-                $tp_kind = $builder_data->tp_kind;
+                $banner = $builder_data->banner;
 
                 if (!$image) {
                     $image = "recipe-no-photo.jpg";
                 }
+
+                if (!$banner) {
+                    $banner = "7838a2f8-fb2d-48e8-abc9-f7db942d3ede.jpg";
+                }
             } else {
                 $id_builder = 0;
                 $image = "";
-                $tp_kind = 0;
+                $banner = "7838a2f8-fb2d-48e8-abc9-f7db942d3ede.jpg";
             }
 
+            $tp_kind = DB::table('sizetopp')
+                ->where('SzTp_Size', $size_Id)
+                ->where('SzTp_Status', 0)
+                ->first()
+                ->SzTp_GroupTP;
+
             $toppings = DB::table('toppings')
+                ->leftJoin('color_toppings', 'color_toppings.color_number', '=', 'toppings.Tp_Color')
                 ->where('Tp_Kind', $tp_kind)
-                ->where('Tp_Abrev', '!=', '.')
-                ->where('Tp_Cat', '!=', 0)
                 ->where('Tp_Status', 0)
                 ->select(
                     'Tp_Id',
                     'TP_Descrip',
-                    'Tp_Cat',
+                    'color_hex AS Tp_Color',
                     'Tp_Double',
                     'Tp_Topprice'
                 )
-                ->orderBy('Tp_Cat')
-                ->orderBy('Tp_special')
+                ->orderBy('Tp_Special')
                 ->get();
 
             $cooking_instructions = DB::table('toppings')
@@ -131,7 +149,8 @@ class ProductCTRL extends Controller
                         'tp_kind'=>$tp_kind,
                         'cart'=>$cart,
                         'total_cart'=>$total_cart,
-                        'categorys' => $categorys
+                        'categorys' => $categorys,
+                        'banner' => $banner,
                     ]);
             }
         }

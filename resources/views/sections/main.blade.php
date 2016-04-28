@@ -76,13 +76,15 @@
 					@endif
 					<hr>
 					<?php
-						$categorys = DB::table('category')->get();
+						$categorys = DB::table('groups')
+							->where('Gr_Status', 0)
+							->get();
 					?>
 
 					@if($categorys)
 						@foreach($categorys as $category => $val)
 							<li role="presentation">
-								<a role="menuitem" tabindex="-1" href="{{url('category/'.$val->name_cat)}}">{{$val->name}}</a>
+								<a role="menuitem" tabindex="-1" href="{{url('category/'.$val->Gr_Url)}}">{{$val->Gr_Descrip}}</a>
 							</li>
 						@endforeach
 					@endif
@@ -93,9 +95,9 @@
 
 			<?php
 				$logo = DB::table('config')
-	                ->where('Cfg_Descript', 'logo')
-	                ->first()
-	                ->Cfg_Message;
+					->where('Cfg_Descript', 'logo')
+					->first()
+					->Cfg_Message;
 			?>
 
 			<a href="{{url('choose')}}">
@@ -123,7 +125,7 @@
 
 
 	@yield('content')
-	
+
 	@include('sections.footer')
 	<script type="text/javascript">
 
