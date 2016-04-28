@@ -25,9 +25,18 @@ class LoginCTRL extends Controller
     public function index()
     {
         if (!Auth::check()) {
-            $config = DB::table('config')->select('logo', 'background')->first();
 
-            return view('login')->with(['config'=>$config]);
+            $logo = DB::table('config')
+                ->where('Cfg_Descript', 'logo')
+                ->first();
+            $background = DB::table('config')
+                ->where('Cfg_Descript', 'Background Login')
+                ->first();
+
+            return view('login')->with([
+                'logo'=> $logo->Cfg_Message,
+                'background'=> $background->Cfg_Message,
+            ]);
         }
 
         return Redirect::to('cart');

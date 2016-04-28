@@ -106,14 +106,22 @@ class ResetPasswordCTRL extends Controller
 
     public static function sendEmailToNewUser($userMail, $name, $pass)
     {
-        $config = DB::table('config')->first();
+        $logo = DB::table('config')
+            ->where('Cfg_Descript', 'logo')
+            ->first()
+            ->Cfg_Message;
+
+        $footer = DB::table('config')
+            ->where('Cfg_Descript', 'footer')
+            ->first()
+            ->Cfg_Message;
 
         $day = Carbon::now();
         $token_active = md5($userMail . $day . rand());
 
         $variables_correo = [
-            'logo' => $config->logo,
-            'footer'=> $config->footer,
+            'logo' => $logo,
+            'footer'=> $footer,
             'title'=>'Active Your Account',
             'name' => $name,
             'pass' => $pass,

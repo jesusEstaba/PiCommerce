@@ -1,16 +1,25 @@
 <div class="separator-fix-footer"></div>
 
 <?php
-				
-	$config = DB::table('config')
-		->select('facebook', 'gplus', 'instagram', 'twitter', 'footer')
-		->first();
-				
-	$facebook = $config->facebook;
-	$gplus = $config->gplus;
-	$insta = $config->instagram;
-	$twitter = $config->twitter;
-	$footer = $config->footer;
+
+	$gplus = '';
+	$facebook = DB::table('config')
+		->where('Cfg_Descript', 'facebook')
+		->first()
+		->Cfg_Message;
+	$insta = DB::table('config')
+		->where('Cfg_Descript', 'instagram')
+		->first()
+		->Cfg_Message;
+	$twitter = DB::table('config')
+		->where('Cfg_Descript', 'twitter')
+		->first()
+		->Cfg_Message;
+
+	$footer = DB::table('config')
+		->where('Cfg_Descript', 'footer')
+		->first()
+		->Cfg_Message;
 ?>
 
 <footer>
@@ -22,10 +31,10 @@
 				@endif
 			</div>
 			<div class="col-md-3">
-				
+
 				{!!Html::style('css/style_techandall.css')!!}
 				<link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-				
+
 				<style type="text/css">
 				.social-links a{
 					color: white !important;

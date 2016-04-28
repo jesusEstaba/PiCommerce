@@ -38,12 +38,10 @@
 			
 			<div class="col-md-offset-4 col-md-4">
 			<div class="login-box">
-			<?php
-				$config = DB::table('config')->select('logo')->first();
-			?>
+
 				<a href="{{url('/')}}">
-					@if($config->logo)
-						<img src="{{asset('images/logos/'.$config->logo)}}" alt="logo" class="logo">
+					@if($logo)
+						<img src="{{asset('images/logos/'.$logo)}}" alt="logo" class="logo">
 					@endif
 				</a>
 				<div class="text-cerrado">

@@ -90,18 +90,21 @@
 				</ul>
 
 			<a href="{{url('/choose')}}" class="btn btn-infosite btn-info hidden-xs"><span class="glyphicon glyphicon-home"></span> Home</a>
-			
+
 			<?php
-				$config = DB::table('config')->select('logo')->first();
+				$logo = DB::table('config')
+	                ->where('Cfg_Descript', 'logo')
+	                ->first()
+	                ->Cfg_Message;
 			?>
 
 			<a href="{{url('choose')}}">
-				@if($config->logo)
-					<img src="{{asset('images/logos/'.$config->logo)}}" alt="logo" class="logo">
+				@if($logo)
+					<img src="{{asset('images/logos/'.$logo)}}" alt="logo" class="logo">
 				@endif
 			</a>
-			
-			@if( Auth::check() )	
+
+			@if( Auth::check() )
 				<a class="btn btn-warning btn-cart" href="{{url('cart')}}">
 					<span class="glyphicon glyphicon-shopping-cart"></span>
 					<span>$<span class="total-in_cart">0.00</span></span>
