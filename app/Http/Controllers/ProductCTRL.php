@@ -99,8 +99,13 @@ class ProductCTRL extends Controller
             $tp_kind = DB::table('sizetopp')
                 ->where('SzTp_Size', $size_Id)
                 ->where('SzTp_Status', 0)
-                ->first()
-                ->SzTp_GroupTP;
+                ->first();
+            
+            if ($tp_kind) {
+                $tp_kind = $tp_kind->SzTp_GroupTP
+            } else {
+                $tp_kind = 0;
+            }
 
             $toppings = DB::table('toppings')
                 ->leftJoin('color_toppings', 'color_toppings.color_number', '=', 'toppings.Tp_Color')
