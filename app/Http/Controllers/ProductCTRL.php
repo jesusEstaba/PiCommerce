@@ -102,7 +102,7 @@ class ProductCTRL extends Controller
                 ->first();
             
             if ($tp_kind) {
-                $tp_kind = $tp_kind->SzTp_GroupTP
+                $tp_kind = $tp_kind->SzTp_GroupTP;
             } else {
                 $tp_kind = 0;
             }
