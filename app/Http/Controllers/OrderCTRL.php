@@ -202,7 +202,17 @@ class OrderCTRL extends Controller
 
             //ENVIAR CORREOS
             $correos = DB::table('emails_admin')->get();
-            $config = DB::table('config')->first();
+
+            $logo = DB::table('config')
+                ->where('Cfg_Descript', 'logo')
+                ->first()
+                ->Cfg_Message;
+
+            $footer = DB::table('config')
+                ->where('Cfg_Descript', 'footer')
+                ->first()
+                ->Cfg_Message;
+
             $order = DB::table('hd_tticket')->where('Hd_Ticket', $id)->first();
 
             $size = function ($size) {
@@ -235,8 +245,8 @@ class OrderCTRL extends Controller
                 'cart'=>$cart,
                 'title'=>$titleMail,
                 'size'=>$size,
-                'logo' => $config->logo,
-                'footer'=> $config->footer,
+                'logo' => $logo,
+                'footer'=> $footer,
                 'num_order'=>$id,
 
                 'phone' => $user->Cs_Phone,

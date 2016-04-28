@@ -13,7 +13,7 @@
 
 	<style type="text/css">
 	body{
-		background: url("{{asset('images/backgrounds/'.$config->background)}}") center center no-repeat fixed !important;
+		background: url("{{asset('images/backgrounds/'.$background)}}") center center no-repeat fixed !important;
 		background-size: cover !important;
 	}
 	.restore{
@@ -51,8 +51,8 @@
 		<div class="row">
 			<div class="col-md-offset-4 col-md-4 login-box">
 				<a href="{{url('/')}}">
-					@if($config->logo)
-						<img src="{{asset('images/logos/'.$config->logo)}}" alt="logo" class="logo">
+					@if($logo)
+						<img src="{{asset('images/logos/'.$logo)}}" alt="logo" class="logo">
 					@endif
 				</a>
 				{!!Form::open(['url'=>'login'])!!}

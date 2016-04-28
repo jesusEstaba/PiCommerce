@@ -13,12 +13,15 @@
 <body>
 	<nav>
 		<?php
-				$config = DB::table('config')->select('logo')->first();
-			?>
+				$logo = DB::table('config')
+	                ->where('Cfg_Descript', 'logo')
+	                ->first()
+	                ->Cfg_Message;
+		?>
 		<div class="container">
-			@if($config->logo)
+			@if($logo)
 				<a href="{{url('choose')}}">
-					<img src="{{asset('images/logos/'.$config->logo)}}" alt="logo" class="logo">
+					<img src="{{asset('images/logos/'.$logo)}}" alt="logo" class="logo">
 				</a>
 				
 			@endif

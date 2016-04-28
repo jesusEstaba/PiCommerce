@@ -21,7 +21,10 @@ class QuickPayCTRL extends Controller
             return redirect()->to('checkout/pickup');
         }
 
-        $config = DB::table('config')->first();
+        $logo = DB::table('config')
+            ->where('Cfg_Descript', 'logo')
+            ->first()
+            ->Cfg_Message;
 
         $termsAndServices = DB::table('terms_service')
             ->where('section', 2)
@@ -34,7 +37,7 @@ class QuickPayCTRL extends Controller
         }
 
         return view('checkout.quick')->with([
-            'config'=>$config,
+            'logo' => $logo,
             'termsAndServices' => $termsAndServices
         ]);
     }
