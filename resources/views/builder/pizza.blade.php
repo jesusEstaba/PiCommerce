@@ -42,7 +42,7 @@
 	<br>
 	<div class="row">
 		<div class="col-xs-8">
-			@if($toppings)
+			@if($allToppings)
 			<div class="row">
 				<div class="col-xs-12">
 					<p class="text-drag-drop-desc">
@@ -59,19 +59,41 @@
 
 	<div class="row">
 
+		<div class="col-md-12">
 
-
-			<div class="col-md-12">
-
-
-			<div class="toppings-btns">
-				@foreach($toppings as $data => $top)
-						<div class="box-drag">
-							<a style="color:#000;background:#{{$top->Tp_Color or "fff"}};" data-id-top="{{$top->Tp_Id}}" class="btn drag" data-double="{{$top->Tp_Double}}" data-price="{{$top->Tp_Topprice}}">
-								{{ucwords( strtolower($top->TP_Descrip) )}}
-							</a>
+			<div class="tab-content">
+				@if( count($allToppings) )
+					<?php
+						$indice = 1;
+						$classActive = ' active';
+					?>
+					@foreach($allToppings as $arra => $toppings)
+						<div role="tabpanel" class="tab-pane{{$classActive}}" id="tabsize-{{$indice}}">
+							@if( count($toppings) )
+								{{--TOPPINGS LOAD--}}
+									<div class="toppings-btns">
+										@foreach($toppings as $data => $top)
+												<div class="box-drag">
+													<a style="color:#000;background:#{{$top->Tp_Color or "fff"}};" data-id-top="{{$top->Tp_Id}}" class="btn drag" data-double="{{$top->Tp_Double}}" data-price="{{$top->Tp_Topprice}}">
+														{{ucwords( strtolower($top->TP_Descrip) )}}
+													</a>
+												</div>
+										@endforeach
+									</div>
+								{{--TOPPINGS LOAD--}}
+							@else
+								<b>NO toppings for this size</b>
+							@endif
+							<?php
+								$indice++;
+								$classActive = '';
+							?>
 						</div>
-				@endforeach
+					@endforeach
+
+				@else
+					<b>NO toppings for this item</b>
+				@endif
 			</div>
 		</div>
 

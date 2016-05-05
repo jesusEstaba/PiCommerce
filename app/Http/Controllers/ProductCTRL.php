@@ -43,7 +43,7 @@ class ProductCTRL extends Controller
                 $name = $size_t->Sz_Descrip;
                 $description = '';
                 $it_groups = $size_t->It_Groups;
-                $size_Id = $id;
+                $size_Id = [(int)$id];
             }
         } else {
             $items = DB::table('items')
@@ -63,7 +63,13 @@ class ProductCTRL extends Controller
                     ->where('Sz_Status', 0)
                     ->get();
 
-                $size_Id = $size_t[0]->Sz_Id;
+                $sizes_t = [];
+
+                foreach ($size_t as $key => $value) {
+                    $sizes_t[] = $value->Sz_Id;
+                }
+
+                $size_Id = $sizes_t;
             }
         }
 
@@ -95,32 +101,38 @@ class ProductCTRL extends Controller
                 $image = "";
                 $banner = "7838a2f8-fb2d-48e8-abc9-f7db942d3ede.jpg";
             }
+/***************************************************************************/
+            $allToppings = [];
 
-            $tp_kind = DB::table('sizetopp')
-                ->where('SzTp_Size', $size_Id)
-                ->where('SzTp_Status', 0)
-                ->first();
-            
-            if ($tp_kind) {
-                $tp_kind = $tp_kind->SzTp_GroupTP;
-            } else {
-                $tp_kind = 0;
+            foreach ($size_Id as $sizeId) {
+                $tp_kind = DB::table('sizetopp')
+                    ->where('SzTp_Size', $sizeId)
+                    ->where('SzTp_Status', 0)
+                    ->first();
+
+                if ($tp_kind) {
+                    $tp_kind = $tp_kind->SzTp_GroupTP;
+                } else {
+                    $tp_kind = 0;
+                }
+
+                $allToppings[] = DB::table('toppings')
+                    ->leftJoin('color_toppings', 'color_toppings.color_number', '=', 'toppings.Tp_Color')
+                    ->where('Tp_Kind', $tp_kind)
+                    ->where('Tp_Status', 0)
+                    ->select(
+                        'Tp_Id',
+                        'TP_Descrip',
+                        'color_hex AS Tp_Color',
+                        'Tp_Double',
+                        'Tp_Topprice'
+                    )
+                    ->orderBy('Tp_Special')
+                    ->get();
             }
 
-            $toppings = DB::table('toppings')
-                ->leftJoin('color_toppings', 'color_toppings.color_number', '=', 'toppings.Tp_Color')
-                ->where('Tp_Kind', $tp_kind)
-                ->where('Tp_Status', 0)
-                ->select(
-                    'Tp_Id',
-                    'TP_Descrip',
-                    'color_hex AS Tp_Color',
-                    'Tp_Double',
-                    'Tp_Topprice'
-                )
-                ->orderBy('Tp_Special')
-                ->get();
-
+            //dd($allToppings);
+/*****************************************************************************/
             $cooking_instructions = DB::table('toppings')
                 ->where('Tp_Kind', 4)
                 ->orderBy('Tp_Special')
@@ -147,7 +159,8 @@ class ProductCTRL extends Controller
                         'cooking_instructions' => $cooking_instructions,
                         'name'=>$name,
                         'size'=>$size_t,
-                        'toppings'=>$toppings,
+                        //'toppings'=>$toppings,
+                        'allToppings' => $allToppings,
                         'item'=>$items,
                         'description'=>$description,
                         'image_category'=>$image,

@@ -34,24 +34,37 @@
 					
 					<div class="row">
 						<div class="col-xs-12">
-							
-							<div class="sizes">
-								@if($item===true)
-									<a class="btn btn-default size" data-id-size="{{$size->Sz_Id}}" data-price="{{$size->Sz_Price}}" data-top-price="{{$size->Sz_Topprice}}" data-top-price-two="{{$size->Sz_Topprice2}}">
-										{{$size->Sz_Abrev}}
-									</a>
-								@elseif($size)
-									@foreach($size as $table => $val)
-									<a class="btn btn-default size" data-id-size="{{$val->Sz_Id}}" data-price="{{$val->Sz_Price}}" data-top-price="{{$val->Sz_Topprice}}" data-top-price-two="{{$val->Sz_Topprice2}}">
-										{{$val->Sz_Abrev}}
-									</a>
-									@endforeach
-								@else
-								<p>No Hay Tamaños</p>
-								@endif
-							</div>
-							
+{{--SIZE BUTTONS TABS--}}
+	<div class="sizes">
+		@if($item===true)
+			<a class="btn btn-default size" data-id-size="{{$size->Sz_Id}}" data-price="{{$size->Sz_Price}}" data-top-price="{{$size->Sz_Topprice}}" data-top-price-two="{{$size->Sz_Topprice2}}">
+				{{$size->Sz_Abrev}}
+			</a>
+		@elseif($size)
+			<?php
+				$num_tab = 1;
+			?>
+			@foreach($size as $table => $val)
+				<a class="btn btn-default size"
+					data-id-size="{{$val->Sz_Id}}"
+					data-price="{{$val->Sz_Price}}"
+					data-top-price="{{$val->Sz_Topprice}}"
+					data-top-price-two="{{$val->Sz_Topprice2}}"
+					href="#tabsize-{{$num_tab}}" aria-controls="tabsize-{{$num_tab}}" role="tab" data-toggle="tab"
+					>
+					{{$val->Sz_Abrev}}
+				</a>
+				<?php
+					$num_tab++;
+				?>
+			@endforeach
+		@else
+			<p>No Hay Tamaños</p>
+		@endif
+	</div>
+{{--SIZE BUTTONS TABS--}}
 						</div>
+					
 					</div>
 
 				</div>
