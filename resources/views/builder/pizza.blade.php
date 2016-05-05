@@ -15,7 +15,7 @@
 			<h2>Add Topping</h2>
 		</div>
 
-		@if($tp_kind==1)
+		@if($sizeToPizza==1)
 			<div class="col-md-8">
 				<div class="btn-sizes">
 					<div class="btn-complete-size topping-size" data-size-top="1" title="Complete">
