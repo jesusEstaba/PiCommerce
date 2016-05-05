@@ -104,6 +104,8 @@ class ProductCTRL extends Controller
 /***************************************************************************/
             $allToppings = [];
 
+            $sizeToPizza = 0;
+
             foreach ($size_Id as $sizeId) {
                 $tp_kind = DB::table('sizetopp')
                     ->where('SzTp_Size', $sizeId)
@@ -112,9 +114,13 @@ class ProductCTRL extends Controller
 
                 if ($tp_kind) {
                     $tp_kind = $tp_kind->SzTp_GroupTP;
+                    if ($tp_kind===1) {
+                        $sizeToPizza = 1;
+                    }
                 } else {
                     $tp_kind = 0;
                 }
+
 
                 $allToppings[] = DB::table('toppings')
                     ->leftJoin('color_toppings', 'color_toppings.color_number', '=', 'toppings.Tp_Color')
@@ -164,7 +170,7 @@ class ProductCTRL extends Controller
                         'item'=>$items,
                         'description'=>$description,
                         'image_category'=>$image,
-                        'tp_kind'=>$tp_kind,
+                        'sizeToPizza'=>$sizeToPizza,
                         'cart'=>$cart,
                         'total_cart'=>$total_cart,
                         'categorys' => $categorys,
