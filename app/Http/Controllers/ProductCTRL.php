@@ -114,7 +114,7 @@ class ProductCTRL extends Controller
 
                 if ($tp_kind) {
                     $tp_kind = $tp_kind->SzTp_GroupTP;
-                    if ($tp_kind===1) {
+                    if ($tp_kind==1) {
                         $sizeToPizza = 1;
                     }
                 } else {
