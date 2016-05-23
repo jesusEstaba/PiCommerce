@@ -73,6 +73,9 @@
 
 Route::get('testmail/{email}', 'SendMailCTRL@test');
 
+Route::get('ssl', function(){
+    return view('ssl');
+});
 
 Route::get('/', function () {
     return redirect()->to('login');
