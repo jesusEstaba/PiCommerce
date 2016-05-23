@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7de21a2b35267feac6d5efc0dc40e722",
-    "content-hash": "ede36fafa5b38f0340f3e401ae631672",
+    "hash": "4616e4a57ebecff3b1ff6195c39b6f94",
+    "content-hash": "1e35a595ca51635756807a1db9d30782",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -1220,6 +1220,55 @@
                 "shell"
             ],
             "time": "2015-11-12 16:18:56"
+        },
+        {
+            "name": "shin1x1/laravel-force-https-url-scheme",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/shin1x1/laravel-force-https-url-scheme.git",
+                "reference": "cf20de3fcf2270ff752296ea3cebe4431f8a248b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/shin1x1/laravel-force-https-url-scheme/zipball/cf20de3fcf2270ff752296ea3cebe4431f8a248b",
+                "reference": "cf20de3fcf2270ff752296ea3cebe4431f8a248b",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/container": "~5.0",
+                "illuminate/http": "~5.0",
+                "php": ">5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "dev-master",
+                "phpunit/phpunit": "@stable"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Shin1x1\\ForceHttpsUrlScheme\\": "src",
+                    "Shin1x1\\ForceHttpsUrlScheme\\Test\\": "tests"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Masashi Shinbara",
+                    "email": "shin1x1@gmail.com",
+                    "homepage": "https://github.com/shin1x1"
+                }
+            ],
+            "description": "Force https url schema middleware for Laravel 5",
+            "homepage": "https://github.com/shin1x1/laravel-force-https-url-scheme",
+            "keywords": [
+                "laravel",
+                "middleware"
+            ],
+            "time": "2016-04-30 04:21:47"
         },
         {
             "name": "swiftmailer/swiftmailer",

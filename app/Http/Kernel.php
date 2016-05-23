@@ -18,6 +18,7 @@ class Kernel extends HttpKernel
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \Pizza\Http\Middleware\VerifyCsrfToken::class,
+
     ];
 
     /**
@@ -31,5 +32,6 @@ class Kernel extends HttpKernel
         'guest' => \Pizza\Http\Middleware\RedirectIfAuthenticated::class,
         'hora' => \Pizza\Http\Middleware\hora::class,
         'admin_panel' => \Pizza\Http\Middleware\AdminPanel::class,
+         'force_https_url_scheme' => Shin1x1\ForceHttpsUrlScheme\ForceHttpsUrlScheme::class, // <---added 
     ];
 }
