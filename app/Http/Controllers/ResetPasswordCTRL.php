@@ -71,9 +71,14 @@ class ResetPasswordCTRL extends Controller
 
             $config = DB::table('config')->first();
 
+            $logo = DB::table('config')
+                    ->where('Cfg_Descript', 'logo')
+                    ->first()
+                    ->Cfg_Message;
+
             $variables_correo = [
-                'logo' => $config->logo,
-                'footer'=> $config->footer,
+                'logo' => $logo,
+                'footer'=> '',
                 'title'=>'Reset Password',
                 'token_reset'=> $token_reset,
             ];
