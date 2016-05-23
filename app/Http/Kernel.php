@@ -32,6 +32,6 @@ class Kernel extends HttpKernel
         'guest' => \Pizza\Http\Middleware\RedirectIfAuthenticated::class,
         'hora' => \Pizza\Http\Middleware\hora::class,
         'admin_panel' => \Pizza\Http\Middleware\AdminPanel::class,
-         'force_https_url_scheme' => Shin1x1\ForceHttpsUrlScheme\ForceHttpsUrlScheme::class, // <---added 
+         'force_https_url_scheme' => \Shin1x1\ForceHttpsUrlScheme\ForceHttpsUrlScheme::class, // <---added 
     ];
 }
