@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>@yield('title')</title>
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<link rel="shortcut icon" href="{{asset('images/logos/favicon.ico')}}" type="image/x-icon" />
 
 	{!!Html::style('assets/bootstrap/css/bootstrap.min.css')!!}
 	{!!Html::style('css/main.css')!!}
