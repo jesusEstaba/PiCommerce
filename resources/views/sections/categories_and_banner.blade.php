@@ -1,10 +1,4 @@
 
-<?php
-$categorys = DB::table('groups')
-            ->where('Gr_Status', 0)
-            ->get();
-?>
-
 @if(isset($banner))
 <style type="text/css">
 	.image-category{
@@ -24,9 +18,9 @@ $categorys = DB::table('groups')
 			<div class="row">
 				<div class="col-xs-12">
 					<ul class="hidden-xs">
-						@if($categorys)
-							@foreach($categorys as $category => $val)
-								<a href="{{url('category/'.$val->Gr_Url)}}"><li>{{$val->Gr_Descrip}}</li></a>
+						@if($categoryList = HelperMenu::categoryList())
+							@foreach($categoryList as $array => $category)
+								<a href="{{url('category/'.$category->url)}}"><li>{{$category->name}}</li></a>
 							@endforeach
 						@else
 							<li><a href="{{url('choose')}}">No Categories</a></li>

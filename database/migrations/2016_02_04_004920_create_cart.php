@@ -18,8 +18,14 @@ class CreateCart extends Migration
             $table->bigInteger('id_user');
             $table->bigInteger('product_id');
             $table->longText('cooking_instructions');
+        });
 
+        Schema::create('category', function (Blueprint $table) {
+            $table->text('nano');
+        });
 
+        Schema::create('flights', function (Blueprint $table) {
+            $table->text('nano');
         });
     }
 

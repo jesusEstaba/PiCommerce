@@ -11,78 +11,36 @@
 |
 */
 
-// Route::get('/template/order', function ()
-// {
-
-//     $size =function ($size)
-//     {
-//         if($size==1)
-//             $size_topping = '(All)';
-//         elseif($size==2)
-//             $size_topping = '(Left)';
-//         elseif($size==3)
-//             $size_topping = '(Rigth)';
-//         elseif($size==4)
-//             $size_topping = '(Extra)';
-//         elseif($size==5)
-//             $size_topping = '(Lite)';
-//         return $size_topping;
-//     };
-
-//     $cart = Pizza\Http\Controllers\CartCTRL::searchCartItems();
-//     $config = DB::table('config')->first();
-//     $order_id = 567;
-
-//     $order = DB::table('hd_tticket')->where('Hd_Ticket', $order_id)->first();
-//     // $order_ticket = DB::table('dt_tticket')->where('Dt_Ticket', $order_id)->get();
-//     // $order_topping = DB::table('dt_topping')->where('hd_ticket', $order_id)->get();
-//     return view('mail_template.order')->with([
-//         'order' => $order,
-//         'now' => \Carbon\Carbon::now()->format('d-m-Y'),
-//         'delivery'=>true,
-//         'discount' => true,
-//         'charge' => true,
-//         'tip'=>true,
-//         'cart'=>$cart,
-//         'title'=>'Order',
-//         'size'=>$size,
-//         'logo' => $config->logo,
-//         'footer'=> $config->footer,
-//         'num_order'=>567,
-//         'phone' => 4567894,
-//         'name'=>'jesus',
-//         'email'=>'gg@mail.com',
-//         'street_num' => 34564,
-//         'street_name' => 'Aguacate',
-//         'zip_code' => 36478,
-//     ]);
-// });
-// Route::get('/template/reset', function ()
-// {
-//     $config = DB::table('config')->first();
-
-//     return view('mail_template.reset_password')->with([
-//         'logo' => $config->logo,
-//         'footer'=> $config->footer,
-//         'title'=>'Reset Password',
-//         'token_reset'=> md5('123456789'),
-//     ]);
-// });
-
-//Route::get('/sendmail', 'SendMailCTRL@send_mail')
-
-
-
-
 
 Route::group(['middleware' => 'force_https_url_scheme'], function () {
 
-
+    #TEST ROUTES
     Route::get('testmail/{email}', 'SendMailCTRL@test');
 
-    Route::get('ssl', function(){
-        return view('ssl');
+    Route::get('geolocation', function () {
+        return view('geolocation');
     });
+
+    Route::post('calculate', function () {
+        if (Input::get('latitude') && Input::get('longitude')) {
+            $origen = Input::get('latitude') . ',' . Input::get('longitude');
+            $destino = '9.779808,-63.196956';
+
+            $url = 'https://maps.googleapis.com/maps/api/distancematrix/json?'
+            .'origins=' . $origen
+            .'&destinations=' . $destino
+            .'&key=AIzaSyA3e2Ey7BfbbgtLeRanUubsmHAn9EAPPek';
+
+            $jsonObj = file_get_contents($url);
+            $response = json_decode($jsonObj, true);
+        } else {
+            $response = ['empty'];
+        }
+
+        return response()->json($response);
+    });
+
+    #END TEST ROUTES
 
     Route::get('/', function () {
         return redirect()->to('login');
@@ -146,25 +104,27 @@ Route::group(['middleware' => 'force_https_url_scheme'], function () {
 
 
     #Admin Zone
+    /*
     Route::group(['prefix'=>'kitchen'], function () {
-        Route::get('/logout', 'AdminLoginCTRL@logout');
+        Route::get('/logout', 'admin.AdminLoginCTRL@logout');
 
-        Route::get('/login', 'AdminLoginCTRL@index');
-        Route::post('/login', 'AdminLoginCTRL@login');
+        Route::get('/login', 'admin.AdminLoginCTRL@index');
+        Route::post('/login', 'admin.AdminLoginCTRL@login');
 
         Route::group(['middleware'=>'admin_panel'], function () {
-            Route::resource('/', 'DashboardCTRL');
-            Route::resource('items', 'ItemCTRL');
-            Route::resource('users', 'UserCTRL');
-            Route::resource('categories', 'CategoriesCTRL');
-            Route::resource('groups', 'GroupCTRL');
-            Route::resource('choose_category', 'ChooseCatCTRL');
-            Route::resource('orders', 'OrdersCTRL');
-            Route::resource('coupons', 'CouponsCTRL');
-            Route::resource('config', 'ConfigCTRL');
-            Route::resource('logs', 'LogCTRL');
-            Route::resource('emails', 'EmailAdminCTRL');
+            Route::resource('/', 'admin.DashboardCTRL');
+            Route::resource('items', 'admin.ItemCTRL');
+            Route::resource('users', 'admin.UserCTRL');
+            Route::resource('categories', 'admin.CategoriesCTRL');
+            Route::resource('groups', 'admin.GroupCTRL');
+            Route::resource('choose_category', 'admin.ChooseCatCTRL');
+            Route::resource('orders', 'admin.OrdersCTRL');
+            Route::resource('coupons', 'admin.CouponsCTRL');
+            Route::resource('config', 'admin.ConfigCTRL');
+            Route::resource('logs', 'admin.LogsCTRL');
+            Route::resource('emails', 'admin.EmailAdminCTRL');
         });
     });
+    */
 
 });

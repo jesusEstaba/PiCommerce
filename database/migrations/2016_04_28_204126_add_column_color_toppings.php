@@ -14,7 +14,7 @@ class AddColumnColorToppings extends Migration
     {
         Schema::table('toppings', function (Blueprint $table) {
             $table->dropColumn('Tp_Cat');
-            $table->integer('Tp_Color')->default(1);
+            //$table->integer('Tp_Color')->default(1);
         });
     }
 
