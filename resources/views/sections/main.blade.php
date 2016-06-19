@@ -9,41 +9,38 @@
 	{!!Html::style('css/main.css')!!}
 	{!!Html::script('assets/jquery/jquery.min.js')!!}
 	<script src="{{asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
-<style type="text/css">
-	h2.title{
-		padding-top: 1.2em;
-	}
 
-/*
-*/
-@media (max-width: 767px){
-	nav{
-		position: fixed;
-		width: 100%;
-		z-index: 100;
-		left: 0;
-		top: 0;
-	}
-	.image-category{
-		margin-top: 65px;
-	}
-}
+	<style type="text/css">
+		h2.title{
+			padding-top: 1.2em;
+		}
 
-@media (min-width: 768px){
-	.sticky {
-		left: 0;
-		position: fixed;
-		top: 0;
-		width: 100%;
-		z-index: 99;
-	}
-	.sticky+.container{
-		margin-top: 63px;
-	}
-}
-</style>
+		@media (max-width: 767px){
+			nav{
+				position: fixed;
+				width: 100%;
+				z-index: 100;
+				left: 0;
+				top: 0;
+			}
+			.image-category{
+				margin-top: 65px;
+			}
+		}
 
-
+		@media (min-width: 768px){
+			.sticky {
+				left: 0;
+				position: fixed;
+				top: 0;
+				width: 100%;
+				z-index: 99;
+			}
+			.sticky+.container{
+				margin-top: 63px;
+			}
+		}
+	</style>
 
 </head>
 <body>
@@ -56,13 +53,11 @@
 				</a>
 
 				<ul class="dropdown-menu" aria-labelledby="dLabel">
-				
 					<li role="presentation">
 						<a role="menuitem" tabindex="-1" href="{{url('/choose')}}">Home</a>
 					</li>
-				
 
-					@if( Auth::check() )	
+					@if(Auth::check())
 						<li role="presentation">
 							<a role="menuitem" tabindex="-1" href="{{url('account')}}">
 								My Account
@@ -74,17 +69,13 @@
 							</a>
 						</li>
 					@endif
-					<hr>
-					<?php
-						$categorys = DB::table('groups')
-							->where('Gr_Status', 0)
-							->get();
-					?>
 
-					@if($categorys)
-						@foreach($categorys as $category => $val)
+					<hr>
+
+					@if($categoryList = HelperMenu::categoryList())
+						@foreach($categoryList as $array => $category)
 							<li role="presentation">
-								<a role="menuitem" tabindex="-1" href="{{url('category/'.$val->Gr_Url)}}">{{$val->Gr_Descrip}}</a>
+								<a role="menuitem" tabindex="-1" href="{{url('category/'.$category->url)}}">{{$category->name}}</a>
 							</li>
 						@endforeach
 					@endif
@@ -93,15 +84,9 @@
 
 			<a href="{{url('/choose')}}" class="btn btn-infosite btn-info hidden-xs"><span class="glyphicon glyphicon-home"></span> Home</a>
 
-			<?php
-				$logo = DB::table('config')
-					->where('Cfg_Descript', 'logo')
-					->first()
-					->Cfg_Message;
-			?>
 
 			<a href="{{url('choose')}}">
-				@if($logo)
+				@if($logo = HelperWebInfo::logo())
 					<img src="{{asset('images/logos/'.$logo)}}" alt="logo" class="logo">
 				@endif
 			</a>
@@ -109,7 +94,9 @@
 			@if( Auth::check() )
 				<a class="btn btn-warning btn-cart" href="{{url('cart')}}">
 					<span class="glyphicon glyphicon-shopping-cart"></span>
-					<span>$<span class="total-in_cart">0.00</span></span>
+					<span>
+						$<span class="total-in_cart">{{HelperMenu::totalInCart()}}</span>
+					</span>
 				</a>
 				<a style="margin-right: .3em;" class="btn btn-default btn-cart hidden-xs" href="{{url('logout')}}">
 					Logout
@@ -129,38 +116,28 @@
 	@include('sections.footer')
 	<script type="text/javascript">
 
-$(document).ready(function() {
-	if ($('.nav').length) {
-    var stickyNavTop = $('.nav').offset().top;
-    var stickyNav = function() {
-        var scrollTop = $(window).scrollTop();
-        if (scrollTop > stickyNavTop) {
-            $('.nav').addClass('sticky');
-        } else {
-            $('.nav').removeClass('sticky');
-        }
-    };
+		$(document).ready(function() {
+			if ($('.nav').length) {
+				var stickyNavTop = $('.nav').offset().top;
 
-    stickyNav();
-    $(window).scroll(function() {
-        stickyNav();
-    });
-}
+				var stickyNav = function() {
+					var scrollTop = $(window).scrollTop();
 
-});
+					if (scrollTop > stickyNavTop) {
+						$('.nav').addClass('sticky');
+					} else {
+						$('.nav').removeClass('sticky');
+					}
 
+				};
 
-	$(document).ready(function(){
+				stickyNav();
 
-		if( $(".btn-cart").text()!="Login" )
-		{
-			$.get('{{url("total_price_cart")}}', function(data) {
-				$('.total-in_cart').html(data.total);
-			});
-		}
-
-		
-	});
+				$(window).scroll(function() {
+					stickyNav();
+				});
+			}
+		});
 	</script>
 </body>
 </html>

@@ -43,12 +43,12 @@
 			<h2>My Account</h2>
 
 <div class="input-form">
-	<label>Name:</label>
+	<label>Name: {{$user->Cs_Name}}</label>
 	<input type="text" class="form-control" name="name" placeholder="Name" />
 </div>
 
 <div id="from-datepicker">
-	<label>Birthdate: </label>
+	<label>Birthdate: {{$user->Cs_Birthday}}</label>
 	<div style="width: auto;" class="form-group">
 		<select name="month_birthday" style="width: auto;display: inline-block;" class="form-control">
 			<option>Month</option>
@@ -113,33 +113,23 @@
 
 
 <div class="input-form">
-	<label>Zip Code:</label>
+	<label>Zip Code: {{$user->Cs_ZipCode}}</label>
 	<input type="text" name="zip_code" placeholder="Zipe Code" class="form-control"/>
 </div>
 
 <div class="input-form">
-	<label>Street Number:</label>
+	<label>Street Number: {{$user->Cs_Number}}</label>
 	<input type="text" name="street_number" placeholder="eg. 2400" class="form-control"/>
 </div>
 
 <div class="input-form">
-	<label>Street Name:</label>
+	<label>Street Name: {{$user->Cs_Street}}</label>
 	<input type="text" name="street_name" placeholder="eg. Forsyth Rd" class="form-control" id="tags" />
 </div>
 
 <div class="input-form">
-	<label>Aparment/Suite #: </label>
+	<label>Aparment/Suite #: {{$user->Cs_Ap_Suite}}</label>
 	<input type="text" name="aparment" placeholder="Aparment or Suite Number" class="form-control"/>
-</div>
-
-<div class="input-form">
-	<label>Aparment Complex: </label>
-	<input type="text" name="aparment_complex" placeholder="Aparment Complex" class="form-control"/>
-</div>
-
-<div class="input-form">
-	<label>City:</label>
-	<input type="text" name="city" placeholder="City" class="form-control"/>
 </div>
 
 <div class="input-form">

@@ -35,7 +35,6 @@
 <div class="center-center">
 	<div class="container">
 		<div class="row">
-			
 			<div class="col-md-offset-4 col-md-4">
 			<div class="login-box">
 

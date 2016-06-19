@@ -27,7 +27,7 @@ class UserAcount extends Controller
             ->where('users.phone', Auth::user()->phone)
             ->first();
 
-        return view('user_account');
+        return view('user_account')->with(['user'=>$user]);
     }
 
     /**

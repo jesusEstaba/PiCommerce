@@ -12,18 +12,11 @@
 </head>
 <body>
 	<nav>
-		<?php
-				$logo = DB::table('config')
-	                ->where('Cfg_Descript', 'logo')
-	                ->first()
-	                ->Cfg_Message;
-		?>
 		<div class="container">
-			@if($logo)
+			@if($logo = HelperWebInfo::logo())
 				<a href="{{url('choose')}}">
 					<img src="{{asset('images/logos/'.$logo)}}" alt="logo" class="logo">
 				</a>
-				
 			@endif
 		</div>
 	</nav>
@@ -32,7 +25,6 @@
 
 		<div class="center-center">
 			<div class="container">
-				
 				<div class="row">
 					<div class="col-md-offset-3 col-md-6 ">
 						<div class="row box">
@@ -42,8 +34,7 @@
 										<h2>Delivery</h2>
 										<img src="{{asset('images/logos/pizza_delivery_man.png')}}" height="100">
 									</div>
-									
-								</div>	
+								</div>
 							</a>
 
 							@if( Auth::check() )
@@ -58,17 +49,13 @@
 									</div>
 								</div>
 							</a>
-							
 						</div>
 					</div>
-				</div>	
-				
+				</div>
 		</div>
-
-			
-		</div>
+	</div>
 
 	@include('sections.footer')
-	
+
 </body>
 </html>

@@ -229,11 +229,7 @@ class CartCTRL extends Controller
             $total = 0.00;
         }
 
-        if ($res===true) {
-            return $total;
-        }
-
-        return response()->json(['total' => $total]);
+       return $total;
     }
 
 

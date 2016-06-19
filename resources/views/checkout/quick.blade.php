@@ -14,18 +14,15 @@
   		background-size: cover !important;
 	}
 	</style>--}}
-	
 </head>
 <body>
 
 <div class="messages">
-	
 </div>
 
 <div class="center-center">
 	<div class="container">
 		<div class="row">
-			
 			<div class="col-md-offset-4 col-md-4 login-box">
 
 				<a href="{{url('/')}}">
@@ -33,7 +30,6 @@
 						<img src="{{asset('images/logos/'.$logo)}}" alt="logo" class="logo">
 					@endif
 				</a>
-				
 					<div class="row">
 						<div class="col-xs-12">
 							<div class="form-group">
@@ -51,7 +47,7 @@
 										I have read the terms and conditions notice and I agree to it:
 									</b>
 									<input name="terms" type="checkbox">
-								</p>					
+								</p>
 								<a class="activate_terms">Terms and Conditions.</a>
 							</div>
 
@@ -61,7 +57,7 @@
 					<div class="row">
 						<div class="col-xs-12">
 							<a class="btn btn-primary order_now">Pay</a>
-						</div>				
+						</div>
 					</div>
 					{!!Form::token()!!}
 			</div>
