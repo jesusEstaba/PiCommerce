@@ -1,6 +1,5 @@
 <div class="separator-fix-footer"></div>
 
-
 <footer>
 	<div class="container">
 		<div class="row">
@@ -10,38 +9,6 @@
 				@endif
 			</div>
 			<div class="col-md-3">
-
-				{!!Html::style('css/style_techandall.css')!!}
-				<link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-
-				<style type="text/css">
-				.social-links a{
-					color: white !important;
-					border-color: white !important;
-				}
-				#social3{
-					margin-top: 5px;
-
-				}
-				#social3 a{
-					width: 40px;
-					height: 40px;
-					font-size: 1.5em;
-				}
-				.facebook a:hover{
-					border-color:#3b5a9b !important;
-				}
-				.googleplus a:hover{
-				border-color:#f63d26 !important;
-				}
-				.instagram a:hover{
-				border-color:#507ea4 !important;
-				}
-				.twitter a:hover{
-				border-color:#2baae1 !important;
-				}
-				</style>
-
 				<div id="social3">
 					<ul class="social-links clearfix">
 						@if($facebook = HelperWebInfo::facebookLink())

@@ -1,29 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
 	<title>Login</title>
-	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 
-	{!!Html::style('assets/bootstrap/css/bootstrap.min.css')!!}
+	@include('sections.headersCommon')
+
 	{!!Html::style('css/login.css')!!}
 
 	<script src="{{asset('assets/jquery/jquery.min.js')}}"></script>
 	<script src="{{asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
 
 	<style type="text/css">
-	body{
-		background: url("{{asset('images/backgrounds/'.$background)}}") center center no-repeat fixed !important;
-		background-size: cover !important;
-	}
-	.restore{
-		display: none;
-	}
-	.forgot{
-		cursor: pointer !important;
-	}
+		body{
+			background: url("{{asset('images/backgrounds/'.$background)}}") center center no-repeat fixed !important;
+			background-size: cover !important;
+		}
+		.restore{
+			display: none;
+		}
+		.forgot{
+			cursor: pointer !important;
+		}
 	</style>
-	
+
 </head>
 <body>
 

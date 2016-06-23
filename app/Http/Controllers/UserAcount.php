@@ -27,6 +27,13 @@ class UserAcount extends Controller
             ->where('users.phone', Auth::user()->phone)
             ->first();
 
+        /*
+        Carbon::createFromFormat('Y-m-d H', '1975-05-21 22')->toDateTimeString();
+        $user->{'birthDay'} = ;
+        $user->{'birthMonth'} = ;
+        $user->{'birthYear'} = ;
+        */
+
         return view('user_account')->with(['user'=>$user]);
     }
 
@@ -52,14 +59,28 @@ class UserAcount extends Controller
         $updates = [];//customers
         $nameUpdates = [];
 
+        /*
+        $user = DB::table('users')
+            ->leftJoin('customers', 'customers.Cs_Phone', '=', 'users.phone')
+            ->where('users.phone', Auth::user()->phone)
+            ->first();
+        */
+
+        $changesUser = $this->modifyUserInfo([
+            'Cs_Name' => [$request['name'], 'Name'],
+            'Cs_ZipCode' => [$request['zip_code'], 'Zip Code'],
+            'Cs_Number' => [$request['street_number'], 'Street Number'],
+            'Cs_Street' => [$request['street_name'], 'Street Name'],
+            'Cs_Ap_Suite' => [$request['aparment'], 'Aparment'],
+            'Cs_Notes' => [$request['special_directions'], 'Special Directions'],
+        ]);
+
+        $nameUpdates += $changesUser['nameUpdates'];
+        $updates += $changesUser['updates'];
+
         if (!empty($request['password'])){
             $changes['password'] = bcrypt($request['password']);;
             $nameUpdates[] = 'Password';
-        }
-
-        if (!empty($request['name'])){
-            $updates['Cs_Name'] = $request['name'];
-            $nameUpdates[] = 'Name';
         }
 
         if (((int)$request['month_birthday']) != 0 &&
@@ -72,39 +93,6 @@ class UserAcount extends Controller
                 $request['day_birthday']
             );
             $nameUpdates[] = 'Birthday';
-        }
-
-        if (!empty($request['zip_code'])){
-            $updates['Cs_ZipCode'] = $request['zip_code'];
-            $nameUpdates[] = 'Zip Code';
-        }
-
-        if (!empty($request['street_number'])){
-            $updates['Cs_Number'] = $request['street_number'];
-            $nameUpdates[] = 'Street Number';
-        }
-
-        if (!empty($request['street_name'])){
-            $updates['Cs_Street'] = $request['street_name'];
-            $nameUpdates[] = 'Street Name';
-        }
-
-        if (!empty($request['aparment'])){
-            $updates['Cs_Ap_Suite'] = $request['aparment'];
-            $nameUpdates[] = 'Aparment';
-        }
-
-        // if (!empty($request['aparment_complex'])){
-        //     $updates['Cs_'] = $request['aparment_complex'];
-        // }
-
-        // if (!empty($request['city'])){
-        //     $updates['Cs_'] = $request['city'];
-        // }
-
-        if (!empty($request['special_directions'])){
-            $updates['Cs_Notes'] = $request['special_directions'];
-            $nameUpdates[] = 'Special Directions';
         }
 
         if (count($updates) || count($changes)) {
@@ -123,7 +111,39 @@ class UserAcount extends Controller
             Session::flash('message-correct', 'Changes have been saved');
         }
 
-        return view('user_account')->with('nameUpdates',$nameUpdates);
+        $user = DB::table('users')
+            ->leftJoin('customers', 'customers.Cs_Phone', '=', 'users.phone')
+            ->where('users.phone', Auth::user()->phone)
+            ->first();
+
+        return redirect('/account')->with(['nameUpdates'=>$nameUpdates]);
+    }
+
+    /**
+     * [modifyUserInfo description]
+     * @param  [type] $array [description]
+     * @return [array]        [description]
+     */
+    private function modifyUserInfo($array)
+    {
+        $user = DB::table('users')
+            ->leftJoin('customers', 'customers.Cs_Phone', '=', 'users.phone')
+            ->where('users.phone', Auth::user()->phone)
+            ->first();
+
+        $nameUpdates = [];
+        $updates = [];
+
+        foreach ($array as $key => $value) {
+            $dato = $user->{$key};
+
+            if (!empty($value[0]) && $dato!=$value[0]){
+                $updates[$key] = $value[0];
+                $nameUpdates[] = $value[1];
+            }
+        }
+
+        return ['nameUpdates'=>$nameUpdates, 'updates'=>$updates];
     }
 
 

@@ -23,9 +23,9 @@
 	<div class="alert alert-success alert-dismissable">
 		<button type="button" class="close" data-dismiss="alert">&times;</button>
 		<strong>Done!</strong> {{Session::get('message-correct')}}.
-		@if(isset($nameUpdates))
+		@if(session('nameUpdates'))
 			<ul>
-				@foreach($nameUpdates as $name)
+				@foreach(session('nameUpdates') as $name)
 					<li>{{$name}}</li>
 				@endforeach
 			</ul>
@@ -43,10 +43,11 @@
 			<h2>My Account</h2>
 
 <div class="input-form">
-	<label>Name: {{$user->Cs_Name}}</label>
-	<input type="text" class="form-control" name="name" placeholder="Name" />
+	<label>Name:</label>
+	<input type="text" value="{{$user->Cs_Name}}" class="form-control" name="name" placeholder="Name" />
 </div>
 
+{{--
 <div id="from-datepicker">
 	<label>Birthdate: {{$user->Cs_Birthday}}</label>
 	<div style="width: auto;" class="form-group">
@@ -104,7 +105,7 @@
 		</select>
 	</div>
 </div>
-
+--}}
 
 <div class="input-form">
 	<label>Password:</label>
@@ -113,28 +114,28 @@
 
 
 <div class="input-form">
-	<label>Zip Code: {{$user->Cs_ZipCode}}</label>
-	<input type="text" name="zip_code" placeholder="Zipe Code" class="form-control"/>
+	<label>Zip Code:</label>
+	<input type="text" value="{{$user->Cs_ZipCode}}" name="zip_code" placeholder="Zipe Code" class="form-control"/>
 </div>
 
 <div class="input-form">
-	<label>Street Number: {{$user->Cs_Number}}</label>
-	<input type="text" name="street_number" placeholder="eg. 2400" class="form-control"/>
+	<label>Street Number:</label>
+	<input type="text" value="{{$user->Cs_Number}}" name="street_number" placeholder="eg. 2400" class="form-control"/>
 </div>
 
 <div class="input-form">
-	<label>Street Name: {{$user->Cs_Street}}</label>
-	<input type="text" name="street_name" placeholder="eg. Forsyth Rd" class="form-control" id="tags" />
+	<label>Street Name:</label>
+	<input type="text" value="{{$user->Cs_Street}}" name="street_name" placeholder="eg. Forsyth Rd" class="form-control" id="tags" />
 </div>
 
 <div class="input-form">
-	<label>Aparment/Suite #: {{$user->Cs_Ap_Suite}}</label>
-	<input type="text" name="aparment" placeholder="Aparment or Suite Number" class="form-control"/>
+	<label>Aparment/Suite #:</label>
+	<input type="text" value="{{$user->Cs_Ap_Suite}}" name="aparment" placeholder="Aparment or Suite Number" class="form-control"/>
 </div>
 
 <div class="input-form">
 	<label>Special Directions: </label>
-	<input type="text" name="special_directions" placeholder="eg. Enter gate code 555" class="form-control"/>
+	<input type="text" value="{{$user->Cs_Notes}}" name="special_directions" placeholder="eg. Enter gate code 555" class="form-control"/>
 </div>
 
 
@@ -155,14 +156,14 @@
 
 <script type="text/javascript">
 	var fecha_act = new Date();
-var anno_actual = fecha_act.getFullYear();
-var anno_cien = anno_actual - 150;
-var option_years;
+	var anno_actual = fecha_act.getFullYear();
+	var anno_cien = anno_actual - 150;
+	var option_years;
 
-for (var i = anno_actual; i > anno_cien; i--) {
-    option_years += '<option value="'+ i +'">' + i + '</option>';
-}
+	for (var i = anno_actual; i > anno_cien; i--) {
+		option_years += '<option value="'+ i +'">' + i + '</option>';
+	}
 
-$('[name=year_birthday]').append(option_years);
+	$('[name=year_birthday]').append(option_years);
 </script>
 @stop
