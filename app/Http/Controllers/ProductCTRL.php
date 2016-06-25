@@ -104,7 +104,7 @@ class ProductCTRL extends Controller
 /***************************************************************************/
             $allToppings = [];
 
-            $sizeToPizza = 0;
+            $pizzaBuilderSize = false;
 
             foreach ($size_Id as $sizeId) {
                 $tp_kind = DB::table('sizetopp')
@@ -114,13 +114,18 @@ class ProductCTRL extends Controller
 
                 if ($tp_kind) {
                     $tp_kind = $tp_kind->SzTp_GroupTP;
-                    if ($tp_kind==1) {
-                        $sizeToPizza = 1;
+
+                    $isExist = DB::table('config')
+                        ->where('Cfg_Descript', 'Id Group Pizza Builder')
+                        ->where('Cfg_Value1', $it_groups)
+                        ->first();
+
+                    if ($isExist) {
+                        $pizzaBuilderSize = true;
                     }
                 } else {
                     $tp_kind = 0;
                 }
-
 
                 $allToppings[] = DB::table('toppings')
                     ->leftJoin('color_toppings', 'color_toppings.color_number', '=', 'toppings.Tp_Color')
@@ -170,10 +175,10 @@ class ProductCTRL extends Controller
                         'item'=>$items,
                         'description'=>$description,
                         'image_category'=>$image,
-                        'sizeToPizza'=>$sizeToPizza,
+                        'pizzaBuilderSize'=>$pizzaBuilderSize,
                         'cart'=>$cart,
                         'total_cart'=>$total_cart,
-                        'categorys' => $categorys,
+                        'categorys' => $categorys,//UTILIZAR EL HELPER DE CATEGORY
                         'banner' => $banner,
                     ]);
             }
