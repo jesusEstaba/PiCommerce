@@ -82,7 +82,7 @@
 									</div>
 								{{--TOPPINGS LOAD--}}
 							@else
-								<b>NO toppings for this size</b>
+								<b>No toppings for this size</b>
 							@endif
 							<?php
 								$indice++;
