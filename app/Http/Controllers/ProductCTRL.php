@@ -85,8 +85,13 @@ class ProductCTRL extends Controller
                         ->where('Sz_Item', $item->It_Id)
                         ->where('Sz_Status', 0)
                         ->get();
-
+                    
                     $item->sizes = $sizes;
+                    $item->sizeToppings = [];
+
+                    foreach ($sizes as $arry => $size) {
+                        $item->sizeToppings[] = $this->toppings($size->Sz_Id);
+                    }
                 }
 
                 return view('builder.combo')->with([
@@ -155,9 +160,9 @@ class ProductCTRL extends Controller
             }
 /***************************************************************************/
             $allToppings = [];
-
             $pizzaBuilderSize = false;
-
+            
+            /*COPY
             foreach ($size_Id as $sizeId) {
                 $tp_kind = DB::table('sizetopp')
                     ->where('SzTp_Size', $sizeId)
@@ -167,19 +172,28 @@ class ProductCTRL extends Controller
                 if ($tp_kind) {
                     $tp_kind = $tp_kind->SzTp_GroupTP;
 
-                    $isExist = DB::table('config')
-                        ->where('Cfg_Descript', 'Id Group Pizza Builder')
-                        ->where('Cfg_Value1', $it_groups)
-                        ->first();
-
-                    if ($isExist) {
-                        $pizzaBuilderSize = true;
-                    }
+                    
                 } else {
                     $tp_kind = 0;
                 }
 
                 $allToppings[] = $this->toppings($tp_kind);
+            }*/
+
+            foreach ($size_Id as $sizeId) {
+                $allToppings[] = $this->toppings($sizeId);
+            }
+
+
+            if (count($allToppings)) {// pizza qty Topping
+                $isExist = DB::table('config')
+                    ->where('Cfg_Descript', 'Id Group Pizza Builder')
+                    ->where('Cfg_Value1', $it_groups)
+                    ->first();
+                
+                if ($isExist) {
+                    $pizzaBuilderSize = true;
+                }
             }
 
 
@@ -218,20 +232,30 @@ class ProductCTRL extends Controller
     }
 
 
-    public function toppings($tp_kind)
+    public function toppings($sizeId)
     {
-        return DB::table('toppings')
+        $tp_kind = DB::table('sizetopp')
+            ->where('SzTp_Size', $sizeId)
+            ->where('SzTp_Status', 0)
+            ->first();
+        
+        $tp_kind = ($tp_kind) ? $tp_kind->SzTp_GroupTP : 0;
+        
+        $allToppings = DB::table('toppings')
             ->leftJoin('color_toppings', 'color_toppings.color_number', '=', 'toppings.Tp_Color')
             ->where('Tp_Kind', $tp_kind)
             ->where('Tp_Status', 0)
             ->select(
-            'Tp_Id',
-            'TP_Descrip',
-            'color_hex AS Tp_Color',
-            'Tp_Double',
-            'Tp_Topprice'
+                'Tp_Id',
+                'TP_Descrip',
+                'color_hex AS Tp_Color',
+                'Tp_Double',
+                'Tp_Topprice'
             )
             ->orderBy('Tp_Special')
             ->get();
+
+        
+        return ($allToppings) ? $allToppings : [];
     }
 }

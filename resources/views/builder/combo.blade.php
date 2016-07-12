@@ -16,6 +16,9 @@
 	padding-right: .5em;
 	*/
 }
+.btn-space{
+	margin-bottom: .3em;
+}
 
 </style>
 
@@ -65,13 +68,78 @@
 
 @foreach($items as $array => $item)
 	<div role="tabpanel" class="tab-pane{{$classActive}}" id="tabsize-{{$indice}}">
-		{{$item->It_Descrip}}
+		<h3>{{$item->It_Descrip}}</h3>
+		<p>Sizes</p>
+			<div class="row">
+				<div class="col-md-12">
+					@eval($indiceInt = 1)
+					@eval($classActiveInt = ' active')
+					@foreach($item->sizes as $array => $size)
+							<a 	href="#tabsizetop-{{$indice}}-{{$indiceInt}}" 
+								aria-controls="tabsizetop-{{$indice}}-{{$indiceInt}}" 
+								role="tab" 
+								data-toggle="tab"
+								class="btn btn-space btn-default" 
+							>
+								{{$size->Sz_Descrip}}
+							</a>
+						@eval($indiceInt++)
+						@eval($classActiveInt = '')
+					@endforeach
+				</div>
+				<div class="col-md-12">
+					@if(false)
+							<div class="btn-sizes">
+								<div class="btn-complete-size topping-size" data-size-top="1" title="Complete">
+									<span class="name-size-top">Complete</span>
+								</div>
+								<div class="btn-semi-left-size topping-size" data-size-top="2" title="Left Half">
+									<span class="name-size-top">Left/Right</span>
+								</div>
+								<div class="btn-semi-right-size topping-size" data-size-top="3" title="Right Half">
+								</div>
+								<div class="btn-double-size topping-size" data-size-top="4" title="Extra">
+									<span class="name-size-top">Extra</span>
+								</div>
+								<div class="btn-lite-size topping-size" data-size-top="5" title="Lite">
+									<span class="name-size-top">Lite</span>
+								</div>
+							</div>
+							<br>
+					@endif
+				</div>
+			</div>
+			
 
-		<ul>
-			@foreach($item->sizes as $array => $size)
-				<li>{{$size->Sz_Descrip}}</li>
+
+		<hr>
+		<p class="text-center">This is a drag & drop items.</p>
+
+		<div class="tab-content">
+			@eval($indiceInt = 1)
+			@eval($classActiveInt = ' active')
+			@foreach($item->sizeToppings as $array => $toppings)
+				<div role="tabpanel" class="tab-pane{{$classActiveInt}}" id="tabsizetop-{{$indice}}-{{$indiceInt}}">
+					
+					@if(count($toppings))
+						<div class="toppings-btns">
+							@foreach($toppings as $data => $top)
+							<div class="box-drag">
+								<a style="color:#000;background:#{{$top->Tp_Color or "fff"}};" data-id-top="{{$top->Tp_Id}}" class="btn drag" data-double="{{$top->Tp_Double}}" data-price="{{$top->Tp_Topprice}}">
+									{{ucwords( strtolower($top->TP_Descrip) )}}
+								</a>
+							</div>
+							@endforeach
+						</div>
+					@else
+						<b>No toppings for this size</b>
+					@endif
+
+				</div>
+				@eval($indiceInt++)
+				@eval($classActiveInt = '')
 			@endforeach
-		</ul>
+		</div>
 		
 
 
