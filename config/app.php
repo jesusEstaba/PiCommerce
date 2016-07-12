@@ -146,7 +146,7 @@ return [
         Pizza\Providers\RouteServiceProvider::class,
 
         Collective\Html\HtmlServiceProvider::class,
-
+        Pizza\Providers\BladeServiceProvider::class,
     ],
 
     /*

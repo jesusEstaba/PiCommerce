@@ -22,6 +22,33 @@ class ProductCTRL extends Controller
      */
     public function index($cat, $id, $sub = '')
     {
+        // Cart Things
+        $cart = false;
+        $total_cart = 0.00;
+
+        if (Auth::check()) {
+            $cart = CartCTRL::searchCartItems('asc');
+            $total_cart = CartCTRL::totalCostCart(true);
+        }
+
+        $sizeToppingFunc = function ($size) {
+            if($size==2) {
+                $sizeTopping = " [left]";
+            } elseif($size==3) {
+                $sizeTopping = " [rigth]";
+            } elseif($size==4) {
+                $sizeTopping = " [extra]";
+            } elseif($size==5) {
+                $sizeTopping = " [lite]";
+            } else {
+                $sizeTopping = "";
+            }
+            
+            return $sizeTopping;
+        };
+        // END Cart Things
+
+        /*
         $categorys = DB::table('groups')
             ->where('Gr_Status', 0)
             ->select(
@@ -29,7 +56,8 @@ class ProductCTRL extends Controller
                 'Gr_Url AS name_cat'
             )
             ->get();
-
+        */
+       
         $it_groups = false;
 
         if ($sub=='sub') {
@@ -46,19 +74,26 @@ class ProductCTRL extends Controller
                 $size_Id = [(int)$id];
             }
         } else {
-            $comboId = DB::table('config')->where('Cfg_Descript', 'ComboId')->first();
-            
-            if ($comboId) {
-                $comboId = $comboId->Cfg_Value1;
-            } else {
-                $comboId = 0;
-            }
+            if ($cat=='combo') {
+                $comboItems = DB::table('combo_items')
+                    ->leftJoin('items', 'items.It_Id', '=', 'combo_items.CbI_Item')
+                    ->where('CbI_Combo', $id)
+                    ->get();
 
-            if ($id==$comboId) {//if combo
-                
-                return view('builder.generic_builder')->with([
-                    'categorys' => $categorys,
-                    //'items' => $items,
+                foreach ($comboItems as $key => $item) {
+                    $sizes = DB::table('size')
+                        ->where('Sz_Item', $item->It_Id)
+                        ->where('Sz_Status', 0)
+                        ->get();
+
+                    $item->sizes = $sizes;
+                }
+
+                return view('builder.combo')->with([
+                    'items' => $comboItems,
+                    'cart'=>$cart,
+                    'total_cart'=>$total_cart,
+                    'sizeToppingFunc' => $sizeToppingFunc
                 ]);
             } else {
                 $items = DB::table('items')
@@ -144,23 +179,11 @@ class ProductCTRL extends Controller
                     $tp_kind = 0;
                 }
 
-                $allToppings[] = DB::table('toppings')
-                    ->leftJoin('color_toppings', 'color_toppings.color_number', '=', 'toppings.Tp_Color')
-                    ->where('Tp_Kind', $tp_kind)
-                    ->where('Tp_Status', 0)
-                    ->select(
-                        'Tp_Id',
-                        'TP_Descrip',
-                        'color_hex AS Tp_Color',
-                        'Tp_Double',
-                        'Tp_Topprice'
-                    )
-                    ->orderBy('Tp_Special')
-                    ->get();
+                $allToppings[] = $this->toppings($tp_kind);
             }
 
-            //dd($allToppings);
-/*****************************************************************************/
+
+            /***********************************************************/
             $cooking_instructions = DB::table('toppings')
                 ->where('Tp_Kind', 4)
                 ->orderBy('Tp_Special')
@@ -173,30 +196,6 @@ class ProductCTRL extends Controller
             }
 
             if (isset($vista)) {
-                $cart = false;
-                $total_cart = 0.00;
-
-                if (Auth::check()) {
-                    $cart = CartCTRL::searchCartItems('asc');
-                    $total_cart = CartCTRL::totalCostCart(true);
-                }
-
-                $sizeToppingFunc = function ($size) {
-                    if($size==2) {
-                        $sizeTopping = " [left]";
-                    } elseif($size==3) {
-                        $sizeTopping = " [rigth]";
-                    } elseif($size==4) {
-                        $sizeTopping = " [extra]";
-                    } elseif($size==5) {
-                        $sizeTopping = " [lite]";
-                    } else {
-                        $sizeTopping = "";
-                    }
-
-                    return $sizeTopping;
-                };
-
                 return view($vista)->with([
                         'cooking_instructions' => $cooking_instructions,
                         'name'=>$name,
@@ -209,13 +208,30 @@ class ProductCTRL extends Controller
                         'pizzaBuilderSize'=>$pizzaBuilderSize,
                         'cart'=>$cart,
                         'total_cart'=>$total_cart,
-                        'categorys' => $categorys,//UTILIZAR EL "HELPER" DE CATEGORY
                         'banner' => $banner,
                         'sizeToppingFunc' => $sizeToppingFunc,
-                    ]);
+                ]);
             }
         }
 
-        return view('builder.generic_builder')->with(['categorys' => $categorys]);
+        return view('builder.generic_builder');
+    }
+
+
+    public function toppings($tp_kind)
+    {
+        return DB::table('toppings')
+            ->leftJoin('color_toppings', 'color_toppings.color_number', '=', 'toppings.Tp_Color')
+            ->where('Tp_Kind', $tp_kind)
+            ->where('Tp_Status', 0)
+            ->select(
+            'Tp_Id',
+            'TP_Descrip',
+            'color_hex AS Tp_Color',
+            'Tp_Double',
+            'Tp_Topprice'
+            )
+            ->orderBy('Tp_Special')
+            ->get();
     }
 }
