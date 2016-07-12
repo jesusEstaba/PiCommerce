@@ -33,7 +33,7 @@
 			<div class="head-product">
 				<div class="row">
 					<div class="col-md-12">
-						<h2>Combo Items:</h2>
+						<h2>Combo {{$combo->Cb_Name}}:</h2>
 					</div>
 
 					@eval($num_tab = 1)
@@ -69,7 +69,6 @@
 @foreach($items as $array => $item)
 	<div role="tabpanel" class="tab-pane{{$classActive}}" id="tabsize-{{$indice}}">
 		<h3>{{$item->It_Descrip}}</h3>
-		<p>Sizes</p>
 			<div class="row">
 				<div class="col-md-12">
 					@eval($indiceInt = 1)
@@ -81,7 +80,7 @@
 								data-toggle="tab"
 								class="btn btn-space btn-default" 
 							>
-								{{$size->Sz_Descrip}}
+								{{$size->Sz_Abrev}}
 							</a>
 						@eval($indiceInt++)
 						@eval($classActiveInt = '')
