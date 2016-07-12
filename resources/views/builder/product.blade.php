@@ -121,33 +121,19 @@
 						
 						<div class="row">
 							<div class="col-xs-10 col-xs-offset-2">
-								<?php //$total_price_top = 0;?>
 								@foreach($campo->toppings_list as $tab => $val)
-									<?php
-									if($val->size==1)
-										$size_topping = "";
-									elseif($val->size==2)
-										$size_topping = " [left]";
-									elseif($val->size==3)
-										$size_topping = " [rigth]";
-									elseif($val->size==4)
-										$size_topping = " [extra]";
-									elseif($val->size==5)
-										$size_topping = " [lite]";
-									else
-										$size_topping = "";
-									?>
-
 									<h5 class="text-muted">
-										<span><b>{{strtolower($val->Tp_Descrip).$size_topping}}</b></span>
+										<span>
+											<b>
+												{{strtolower($val->Tp_Descrip) . $sizeToppingFunc($val->size)}}
+											</b>
+										</span>
 										<span class="pull-right">
 											@if($val->price > 0)
 												${{$val->price}}
 											@endif
 										</span>
 									</h5>
-									<?php //$total_price_top += $val->price;?>
-
 								@endforeach
 							</div>
 						</div>

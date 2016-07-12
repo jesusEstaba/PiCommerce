@@ -46,31 +46,48 @@ class ProductCTRL extends Controller
                 $size_Id = [(int)$id];
             }
         } else {
-            $items = DB::table('items')
-                ->where('It_Id', $id)
-                ->where('It_Status', 0)
-                ->select('items.It_Groups', 'items.It_Descrip', 'items.It_Id', 'items.description')
-                ->first();
-
-            if ($items) {
-                $name = $items->It_Descrip;
-                $id_item = $items->It_Id;
-                $description = $items->description;
-                $it_groups = $items->It_Groups;
-
-                $size_t = DB::table('size')
-                    ->where('Sz_Item', $id_item)
-                    ->where('Sz_Status', 0)
-                    ->get();
-
-                $sizes_t = [];
-
-                foreach ($size_t as $key => $value) {
-                    $sizes_t[] = $value->Sz_Id;
-                }
-
-                $size_Id = $sizes_t;
+            $comboId = DB::table('config')->where('Cfg_Descript', 'ComboId')->first();
+            
+            if ($comboId) {
+                $comboId = $comboId->Cfg_Value1;
+            } else {
+                $comboId = 0;
             }
+
+            if ($id==$comboId) {//if combo
+                
+                return view('builder.generic_builder')->with([
+                    'categorys' => $categorys,
+                    //'items' => $items,
+                ]);
+            } else {
+                $items = DB::table('items')
+                    ->where('It_Id', $id)
+                    ->where('It_Status', 0)
+                    ->select('items.It_Groups', 'items.It_Descrip', 'items.It_Id', 'items.description')
+                    ->first();
+
+                if ($items) {
+                    $name = $items->It_Descrip;
+                    $id_item = $items->It_Id;
+                    $description = $items->description;
+                    $it_groups = $items->It_Groups;
+
+                    $size_t = DB::table('size')
+                        ->where('Sz_Item', $id_item)
+                        ->where('Sz_Status', 0)
+                        ->get();
+
+                    $sizes_t = [];
+
+                    foreach ($size_t as $key => $value) {
+                        $sizes_t[] = $value->Sz_Id;
+                    }
+
+                    $size_Id = $sizes_t;
+                }
+            }
+            
         }
 
         if ($it_groups) {
@@ -150,10 +167,8 @@ class ProductCTRL extends Controller
                 ->get();
 
             if ($id_builder == 1) {
-                $vista = 'builder.pizza';
+                $vista = 'builder.toppings';
             } elseif ($id_builder == 2) {
-                $vista = 'builder.salad';
-            } elseif ($id_builder == 3) {
                 $vista = 'builder.simple';
             }
 
@@ -165,6 +180,22 @@ class ProductCTRL extends Controller
                     $cart = CartCTRL::searchCartItems('asc');
                     $total_cart = CartCTRL::totalCostCart(true);
                 }
+
+                $sizeToppingFunc = function ($size) {
+                    if($size==2) {
+                        $sizeTopping = " [left]";
+                    } elseif($size==3) {
+                        $sizeTopping = " [rigth]";
+                    } elseif($size==4) {
+                        $sizeTopping = " [extra]";
+                    } elseif($size==5) {
+                        $sizeTopping = " [lite]";
+                    } else {
+                        $sizeTopping = "";
+                    }
+
+                    return $sizeTopping;
+                };
 
                 return view($vista)->with([
                         'cooking_instructions' => $cooking_instructions,
@@ -178,8 +209,9 @@ class ProductCTRL extends Controller
                         'pizzaBuilderSize'=>$pizzaBuilderSize,
                         'cart'=>$cart,
                         'total_cart'=>$total_cart,
-                        'categorys' => $categorys,//UTILIZAR EL HELPER DE CATEGORY
+                        'categorys' => $categorys,//UTILIZAR EL "HELPER" DE CATEGORY
                         'banner' => $banner,
+                        'sizeToppingFunc' => $sizeToppingFunc,
                     ]);
             }
         }
