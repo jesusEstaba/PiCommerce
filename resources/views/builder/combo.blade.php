@@ -7,10 +7,14 @@
 @include('sections.categories_and_banner')
 
 <style type="text/css">
-.combo-item{
+
+.combo-item a{
+	display: block;
+	/*
 	background: #fff;
 	border-radius: 2px;
 	padding: .5em;
+	*/
 	/*
 	padding-left: .5em;
 	padding-right: .5em;
@@ -41,7 +45,12 @@
 						<div class="col-md-3">
 							<div class="combo-item">
 								<a
-									href="#tabsize-{{$num_tab}}" aria-controls="tabsize-{{$num_tab}}" role="tab" data-toggle="tab"
+									class="btn btn-default tab-items"
+									href="#tabsize-{{$num_tab}}" 
+									aria-controls="tabsize-{{$num_tab}}" 
+									role="tab" 
+									data-toggle="tab"
+									data-tab="{{$num_tab}}"
 								>
 									{{$item->It_Descrip}}
 								</a>
@@ -70,6 +79,7 @@
 	<div role="tabpanel" class="tab-pane{{$classActive}}" id="tabsize-{{$indice}}">
 		<h3>{{$item->It_Descrip}}</h3>
 			<div class="row">
+				
 				<div class="col-md-12">
 					@eval($indiceInt = 1)
 					@eval($classActiveInt = ' active')
@@ -78,7 +88,12 @@
 								aria-controls="tabsizetop-{{$indice}}-{{$indiceInt}}" 
 								role="tab" 
 								data-toggle="tab"
-								class="btn btn-space btn-default" 
+								data-tab="{{$indice}}"
+								data-id-size="{{$size->Sz_Id}}"
+								data-price="{{$size->Sz_Price}}"
+								data-top-price="{{$size->Sz_Topprice}}"
+								data-top-price-two="{{$size->Sz_Topprice2}}"
+								class="size btn btn-space btn-default" 
 							>
 								{{$size->Sz_Abrev}}
 							</a>
@@ -86,26 +101,35 @@
 						@eval($classActiveInt = '')
 					@endforeach
 				</div>
+
 				<div class="col-md-12">
-					@if(false)
+					<hr>
+					<div class="row">
+						<div class="col-md-4">
+							<h2 class="text-center">Add Topping</h2>
+						</div>
+						@if(HelperWebInfo::pizzaBuilderSize($item->It_Groups))
+						<div class="col-md-8">
 							<div class="btn-sizes">
 								<div class="btn-complete-size topping-size" data-size-top="1" title="Complete">
-									<span class="name-size-top">Complete</span>
+									<span class="name-size-top hidden-xs">Complete</span>
 								</div>
 								<div class="btn-semi-left-size topping-size" data-size-top="2" title="Left Half">
-									<span class="name-size-top">Left/Right</span>
+									<span class="name-size-top hidden-xs">Left/Right</span>
 								</div>
 								<div class="btn-semi-right-size topping-size" data-size-top="3" title="Right Half">
 								</div>
 								<div class="btn-double-size topping-size" data-size-top="4" title="Extra">
-									<span class="name-size-top">Extra</span>
+									<span class="name-size-top hidden-xs">Extra</span>
 								</div>
 								<div class="btn-lite-size topping-size" data-size-top="5" title="Lite">
-									<span class="name-size-top">Lite</span>
+									<span class="name-size-top hidden-xs">Lite</span>
 								</div>
 							</div>
 							<br>
-					@endif
+						</div>
+						@endif
+					</div>
 				</div>
 			</div>
 			
@@ -119,20 +143,34 @@
 			@eval($classActiveInt = ' active')
 			@foreach($item->sizeToppings as $array => $toppings)
 				<div role="tabpanel" class="tab-pane{{$classActiveInt}}" id="tabsizetop-{{$indice}}-{{$indiceInt}}">
-					
-					@if(count($toppings))
-						<div class="toppings-btns">
-							@foreach($toppings as $data => $top)
-							<div class="box-drag">
-								<a style="color:#000;background:#{{$top->Tp_Color or "fff"}};" data-id-top="{{$top->Tp_Id}}" class="btn drag" data-double="{{$top->Tp_Double}}" data-price="{{$top->Tp_Topprice}}">
-									{{ucwords( strtolower($top->TP_Descrip) )}}
-								</a>
+					<div class="row">
+						@if(count($toppings))
+							<div class="col-md-8">
+								<div class="toppings-btns">
+									@foreach($toppings as $data => $top)
+									<div class="box-drag">
+										<a style="color:#000;background:#{{$top->Tp_Color or "fff"}};" data-id-top="{{$top->Tp_Id}}" class="btn drag" data-double="{{$top->Tp_Double}}" data-price="{{$top->Tp_Topprice}}">
+											{{ucwords( strtolower($top->TP_Descrip) )}}
+										</a>
+									</div>
+									@endforeach
+								</div>
 							</div>
-							@endforeach
-						</div>
-					@else
-						<b>No toppings for this size</b>
-					@endif
+							<div class="col-xs-4">
+								<h4>Cooking Instructions</h4>
+								@foreach($cooking_instructions as $array => $instruction)
+									<div class="checkbox">
+										<label>
+											<input data-top-id="{{$instruction->Tp_Id}}" class="instruction" type="checkbox">
+											<span>{{ucwords( strtolower($instruction->Tp_Descrip) )}}</span>
+										</label>
+									</div>
+								@endforeach
+							</div>
+						@else
+							<b>No toppings for this size</b>
+						@endif
+					</div>
 
 				</div>
 				@eval($indiceInt++)
@@ -152,6 +190,8 @@
 
 
 					</div>
+
+					
 				</div>
 			</div>
 		</div>
@@ -228,8 +268,8 @@
 						<span class="text-descrip-product"><b class="quantity-now-product">1</b></span>
 					</div>
 					<div class="col-xs-7">
-						<b>{{'$name'}}</b>
-						<span class="pizza_size" data-id-size="0" data-price="0"></span>
+						<b id="name-item">name</b>
+						<span id="name-size"></span>
 					</div>
 					<div class="col-xs-3">
 						<span class="pull-right">$<span class="price-now-size-product"></span></span>
@@ -237,7 +277,27 @@
 				</div>
 				
 				</h4>
-				@yield('toppings')
+				
+				
+				@eval($num_tab = 1)
+				@foreach($items as $array => $item)
+						<ul class="items-toppings"
+							id="toppings-{{$num_tab}}"
+							data-id-size="0"
+							data-price="0"
+							data-topprice="0"
+							data-topprice-two="0"
+							data-qty="1"
+							data-size-top="1"
+						>
+						</ul>
+						@eval($num_tab++)
+				@endforeach
+
+
+				
+
+				
 				<div class="row">
 					<div class="col-xs-12">
 						<hr>
@@ -257,7 +317,7 @@
 				</div>
 				<div class="Subtotales">
 					<h4>Sub-Total: <span class="pull-right">$<span class="sub-total">0.00</span></span></h4>
-					<h4>Tax: <span class="pull-right">$<span class="taxes">0.00</span></span></h4>
+					<h4>Tax: <span class="pull-right">$<span data-tax={{HelperWebInfo::tax()}} class="tax">0.00</span></span></h4>
 					<h3>Total: <span class="pull-right">$<span class="total-cart">0.00</span></span></h3>
 				</div>
 				<a class="btn btn-success go-checkout-cart has-spinner">
@@ -292,6 +352,6 @@
 	
 	<link rel="stylesheet" type="text/css" href="{{asset('css/product.css')}}">
 	
-	<script src="{{asset('js/product.js')}}"></script>
+	<script src="{{asset('js/product-combo.js')}}"></script>
 
 @stop

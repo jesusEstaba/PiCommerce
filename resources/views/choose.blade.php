@@ -76,32 +76,27 @@
 
 
 
-@if($categories)
-		<div class="col-md-10 col-md-offset-1">
-		<h3 class="tab">Categories</h3>
-			<div class="row">
-				
-				@foreach($categories as $arra => $cat)
-					<div class="col-xs-12 col-sm-6 col-md-3 ">
-						<div class="category-choose">
-							<a href="{{url('category/'.$cat->name_cat)}}">
-							<div class="contenedor-image">
-								<!-- class="text-choose" -->
-								<h3>{{$cat->name}}</h3>
-								<?php
-									if(!$cat->image)
-										$cat->image = "recipe-no-photo.jpg";
-								?>
-								<img src="{{asset('images/category/'.$cat->image)}}" alt="choose" class="img-responsive choose">
-							</div>
-						</a>
-						</div>
+@if($combos)
+<div class="col-md-10 col-md-offset-1">
+	<div class="combos">
+		<h3 class="tab">Combos</h3>
+		<div class="row">
+			@foreach($combos as $arra => $combo)
+			<div class="col-xs-12 col-sm-6 col-md-3 ">
+				<a href="{{url('product/combo/' . $combo->Cb_Id)}}">
+					<div class="combo-item">
+						<p>
+							{{$combo->Cb_Name}}	
+						</p>
 					</div>
-				@endforeach
-				
+				</a>
 			</div>
+			@endforeach
 		</div>
-	@endif
+	</div>
+</div>
+@endif
+
 	</div>
 </div>
 
@@ -171,6 +166,12 @@
 		white-space: nowrap;
 	    overflow: hidden;
 	    text-overflow: ellipsis;
+	}
+	.combo-item{
+		background: #fff;
+	}
+	.combos{
+		margin-bottom: 1.5em;
 	}
 </style>
 @stop
