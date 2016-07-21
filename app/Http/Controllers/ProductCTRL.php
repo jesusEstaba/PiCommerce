@@ -48,15 +48,10 @@ class ProductCTRL extends Controller
         };
         // END Cart Things
 
-        /*
-        $categorys = DB::table('groups')
-            ->where('Gr_Status', 0)
-            ->select(
-                'Gr_Descrip AS name',
-                'Gr_Url AS name_cat'
-            )
-            ->get();
-        */
+        $cooking_instructions = DB::table('toppings')
+                ->where('Tp_Kind', 4)
+                ->orderBy('Tp_Special')
+                ->get();
        
         $it_groups = false;
 
@@ -99,6 +94,7 @@ class ProductCTRL extends Controller
                     ->first();
 
                 return view('builder.combo')->with([
+                    'cooking_instructions' => $cooking_instructions,
                     'combo' => $combo,
                     'items' => $comboItems,
                     'cart'=>$cart,
@@ -203,11 +199,12 @@ class ProductCTRL extends Controller
 
 
             /***********************************************************/
+            /*
             $cooking_instructions = DB::table('toppings')
                 ->where('Tp_Kind', 4)
                 ->orderBy('Tp_Special')
                 ->get();
-
+            */
             if ($id_builder == 1) {
                 $vista = 'builder.toppings';
             } elseif ($id_builder == 2) {

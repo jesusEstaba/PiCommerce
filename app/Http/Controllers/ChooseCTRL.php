@@ -24,6 +24,10 @@ class ChooseCTRL extends Controller
             )
             ->get();
 
+        $combos = DB::table('combo')
+            ->where('Cb_Status', 0)
+            ->get();
+
         $items = DB::table('products_features')
             ->join('items', 'items.It_Id', '=', 'products_features.item_id')
             ->where('It_Status', '=', '0')
@@ -54,8 +58,9 @@ class ChooseCTRL extends Controller
         }
 
         return view('choose')->with([
-            'categories'=>$categories,
-            'items'=>$items,
+            'categories' => $categories,
+            'items' => $items,
+            'combos' => $combos,
         ]);
     }
 }

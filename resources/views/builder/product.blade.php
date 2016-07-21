@@ -212,5 +212,4 @@
 	<link rel="stylesheet" type="text/css" href="{{asset('css/product.css')}}">
 	
 	<script src="{{asset('js/product.js')}}"></script>
-
 @stop
