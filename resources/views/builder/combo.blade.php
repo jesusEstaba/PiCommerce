@@ -37,7 +37,7 @@
 			<div class="head-product">
 				<div class="row">
 					<div class="col-md-12">
-						<h2>Combo {{$combo->Cb_Name}}:</h2>
+						<h2 id="combo" data-id="{{$combo->Cb_Id}}">Combo {{$combo->Cb_Name}}:</h2>
 					</div>
 
 					@eval($num_tab = 1)
@@ -79,7 +79,6 @@
 	<div role="tabpanel" class="tab-pane{{$classActive}}" id="tabsize-{{$indice}}">
 		<h3>{{$item->It_Descrip}}</h3>
 			<div class="row">
-				
 				<div class="col-md-12">
 					@eval($indiceInt = 1)
 					@eval($classActiveInt = ' active')
@@ -132,53 +131,54 @@
 					</div>
 				</div>
 			</div>
-			
-
 
 		<hr>
 		<p class="text-center">This is a drag & drop items.</p>
 
-		<div class="tab-content">
-			@eval($indiceInt = 1)
-			@eval($classActiveInt = ' active')
-			@foreach($item->sizeToppings as $array => $toppings)
-				<div role="tabpanel" class="tab-pane{{$classActiveInt}}" id="tabsizetop-{{$indice}}-{{$indiceInt}}">
-					<div class="row">
-						@if(count($toppings))
-							<div class="col-md-8">
-								<div class="toppings-btns">
-									@foreach($toppings as $data => $top)
-									<div class="box-drag">
-										<a style="color:#000;background:#{{$top->Tp_Color or "fff"}};" data-id-top="{{$top->Tp_Id}}" class="btn drag" data-double="{{$top->Tp_Double}}" data-price="{{$top->Tp_Topprice}}">
-											{{ucwords( strtolower($top->TP_Descrip) )}}
-										</a>
-									</div>
-									@endforeach
-								</div>
-							</div>
-							<div class="col-xs-4">
-								<h4>Cooking Instructions</h4>
-								@foreach($cooking_instructions as $array => $instruction)
-									<div class="checkbox">
-										<label>
-											<input data-top-id="{{$instruction->Tp_Id}}" class="instruction" type="checkbox">
-											<span>{{ucwords( strtolower($instruction->Tp_Descrip) )}}</span>
-										</label>
-									</div>
-								@endforeach
-							</div>
-						@else
-							<b>No toppings for this size</b>
-						@endif
-					</div>
-
+		<div class="row">
+			<div class="col-md-8">
+				<div class="tab-content">
+					@eval($indiceInt = 1)
+					@eval($classActiveInt = ' active')
+					@foreach($item->sizeToppings as $array => $toppings)
+						<div role="tabpanel" class="tab-pane{{$classActiveInt}}" id="tabsizetop-{{$indice}}-{{$indiceInt}}">
+								@if(count($toppings))
+										<div class="toppings-btns">
+											@foreach($toppings as $data => $top)
+											<div class="box-drag">
+												<a style="color:#000;background:#{{$top->Tp_Color or "fff"}};" data-id-top="{{$top->Tp_Id}}" class="btn drag" data-double="{{$top->Tp_Double}}" data-price="{{$top->Tp_Topprice}}">
+													{{ucwords( strtolower($top->TP_Descrip) )}}
+												</a>
+											</div>
+											@endforeach
+										</div>
+								@else
+									<b>No toppings for this size</b>
+								@endif
+						</div>
+						@eval($indiceInt++)
+						@eval($classActiveInt = '')
+					@endforeach
 				</div>
-				@eval($indiceInt++)
-				@eval($classActiveInt = '')
-			@endforeach
+			</div>
+
+			<div class="col-xs-4">
+				<h4>Cooking Instructions</h4>
+				<div class="cooks" data-max-cook="2">
+					@foreach($cooking_instructions as $array => $instruction)
+					<div class="checkbox" data-tab="{{$indice}}">
+						<label>
+							<input data-top-id="{{$instruction->Tp_Id}}" class="instruction" type="checkbox">
+							<span>{{ucwords( strtolower($instruction->Tp_Descrip) )}}</span>
+						</label>
+					</div>
+				@endforeach
+				</div>
+				
+			</div>
 		</div>
 		
-
+		
 
 		@eval($indice++)
 		@eval($classActive = '')
@@ -322,7 +322,7 @@
 				</div>
 				<a class="btn btn-success go-checkout-cart has-spinner">
 					<span class="spinner"><i class="icon-spin icon-refresh"></i></span>
-					<span class="text-cart">Add to Cart</span>
+					<span class="text-cart">Add Combo to Cart</span>
 				</a>
 				
 				<a class="btn btn-checkout off-check">Checkout</a>

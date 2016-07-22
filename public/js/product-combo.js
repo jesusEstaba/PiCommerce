@@ -1,31 +1,23 @@
-function addToCart() {
-    var selected = [];
-    var topings_selected = [];
-
-    $(".add-topping").not(".ui-sortable-placeholder").each(function(index) {
-        selected.push(parseInt($(this).not(".def-top").attr('data-id-top')));
-        topings_selected.push($(this).not(".def-top").attr('data-size-top'));
-    });
-
-    $(".checkbox input:checked").each(function(index, el) {
-        selected.push(Number($(this).attr('data-top-id')));
-        topings_selected.push(1);
-    });
-
-    var id_del_size = $(".pizza_size").attr('data-id-size');
-    var qty = $('.cantidad .quantity').html();
-    var instrucciones = $(".notes_instructions").val();
-
+function addComboToCart(
+    comboSize,
+    comboTopId,
+    comboTopSize,
+    comboQty
+) { 
+    var instrucciones = $(".notes_instructions").val(),
+        comboId = $("#combo").attr('data-id');
+   
     $.ajax({
             url: '/add_to_cart_ajax',
             type: 'POST',
             dataType: 'json',
             headers: { 'X-CSRF-TOKEN': $('[name=_token]').val() },
             data: {
-                id_size: id_del_size,
-                quantity: qty,
-                toppings_id: selected,
-                toppings_size: topings_selected,
+                combo_id : comboId,
+                id_size : comboSize,
+                toppings_id : comboTopId,
+                toppings_size : comboTopSize,
+                quantity : comboQty,
                 cooking_notes: instrucciones,
             },
         })
@@ -45,9 +37,57 @@ function addToCart() {
                     .removeClass('off-check')
                     .addClass('btn-success');
             }
-
-
         });
+}
+
+function sendCombo() {
+    var comboSize = [],
+        comboTopId = [],
+        comboTopSize = [],
+        comboQty = [];
+
+    $('.items-toppings').each(function(index, el) {
+        var qty = Number($(this).attr('data-qty')),
+            sizeId = Number($(this).attr('data-id-size')),
+            idTab = $(this).attr('id');
+
+        comboSize.push(sizeId);
+        comboQty.push(qty);
+
+        var itemTopId = [],
+            itemTopSize = [];
+
+        //console.log('qty=' + qty + ' sizeId=' + sizeId);
+        
+        $('#' + idTab + ' .add-topping').each(function(index, el) {
+            var idTopping = Number($(this).attr('data-id-top')),
+                sizeTopping = Number($(this).attr('data-size-top'));
+
+            itemTopId.push(idTopping);
+            itemTopSize.push(sizeTopping);
+
+            //console.log($(this).children('.descript_top').text());
+        });
+
+        //AÑADIR LOS COOKING INSTRUCTIONS ID'S
+
+        comboTopId.push(itemTopId);
+        comboTopSize.push(itemTopSize);
+    });
+
+    /*
+    console.log(comboSize);
+    console.log(comboTopId);
+    console.log(comboTopSize);
+    console.log(comboQty);
+    */
+
+    addComboToCart(
+        comboSize,
+        comboTopId,
+        comboTopSize,
+        comboQty
+    );
 }
 
 function add_toping_to_list(object, parent) {
@@ -102,7 +142,7 @@ function calc_top_price_ind(o_price, o_double, now_size, price, price2) {
     price =  parseFloat(price);
     price2 =  parseFloat(price2);
 
-    if (o_price != 0) {
+    if (o_price !== 0) {
         price_top_new = o_price;
     } else {
         if (o_double == 'N') {
@@ -215,7 +255,7 @@ function sub_tax_total() {
 
 
 $(function() {
-    
+    //Botones de los tabs Items
     $('.tab-items').on('click', function(event) {
         var tab = $(this).attr('data-tab');
 
@@ -227,8 +267,12 @@ $(function() {
 
         $("#droppable ul").hide();
         $("#droppable #toppings-" + tab).show();
+
+        $('.cantidad .quantity').html($("#toppings-" + tab).attr('data-qty'));
     });
 
+
+    //Botones size
     $('.size').on('click', function(event) {
         var tab = $(this).attr('data-tab');
 
@@ -264,39 +308,40 @@ $(function() {
         calcular_cuenta();
     });
 
+
     //Limite de los Checkbox
-    /*
 	$(".checkbox input").click(function(){
-		if($(".checkbox input:checked").length==5) {
-			$("[type=checkbox]").not('input:checked').attr('disabled',true);
+        var tab = $(this).parent().parent().attr('data-tab');
+        
+        if($(".checkbox[data-tab=" + tab + "] input:checked").length==$(".checkbox[data-tab=" + tab + "]").parent().attr('data-max-cook')) {
+			$(".checkbox[data-tab=" + tab + "] input[type=checkbox]").not('input:checked').attr('disabled',true);
 		} else {
-			$("[type=checkbox]").not('input:checked').attr('disabled',false);
+			$(".checkbox[data-tab=" + tab + "] input[type=checkbox]").not('input:checked').attr('disabled',false);
 		}
 	});
-    */
+    
 
     //Cantidad de items
-    /*
-   $('.cantidad .glyphicon-minus').click(function() {
-        var cantidad = parseInt($('.cantidad .quantity').html());
+    $('.cantidad .glyphicon-minus').click(function() {
+        var cantidad = parseInt($('.cantidad .quantity').html()),
+            tab = $('.tab-items.active').attr('data-tab');
+
         if (cantidad > 1) {
             $('.cantidad .quantity').html(cantidad - 1);
-            $('.quantity-now-product').html(cantidad - 1);
+            $('#toppings-' + tab).attr('data-qty', cantidad - 1);
         }
         calcular_cuenta();
     });
+    
     $('.cantidad .glyphicon-plus').click(function() {
-        var cantidad = parseInt($('.cantidad .quantity').html());
+        var cantidad = parseInt($('.cantidad .quantity').html()),
+            tab = $('.tab-items.active').attr('data-tab');
+
         $('.cantidad .quantity').html(cantidad + 1);
-        $('.quantity-now-product').html(cantidad + 1);
+        $('#toppings-' + tab).attr('data-qty', cantidad + 1);
         calcular_cuenta();
     });
-    */
 
-
-    //#$('ul.nav.nav-tabs li:first-child a').click();
-
-    //#hover_click_topping();
 
     //Boton de Agregar en botones drag
     $('.box-drag')
@@ -305,30 +350,32 @@ $(function() {
             },
             function() {
                 $(this).children('.glyphicon-plus').remove();
-            })
+        })
         .on('click', '.glyphicon-plus', function() {
             var tab = $('.tab-items.active').attr('data-tab');
             add_toping_to_list($(this).siblings(), $("#toppings-" + tab));
             $(this).remove();
         });
-
+    
     $('.drag').dblclick(function() {
         var tab = $('.tab-items.active').attr('data-tab');
         add_toping_to_list($(this), $("#toppings-" + tab));
     });
     
 
-
     //Botones de ir al checkout y cargar al Carrito
-    /*
     $('.btn-checkout').click(function() {
         if (!$(this).hasClass('off-check')) {
-            window.location.href = '/select'
+            window.location.href = '/select';
         }
     });
+
     $('.go-checkout-cart').click(function() {
         if ($(this).hasClass('btn-success')) {
-            addToCart(); //apara agregarlo por ajax// recuerda que simpre se sube por ajax con esta funcion
+            //apara agregarlo por ajax
+            // recuerda que simpre se sube por ajax con esta funcion
+            sendCombo();
+            
             $(this)
                 .toggleClass('active')
                 .removeClass('btn-success')
@@ -344,7 +391,7 @@ $(function() {
 
         //$('.send-to-cart').click();
     });
-    */
+
 
     //Botones que definen el tamaño del topping
     $('.topping-size').click(function() {
@@ -360,86 +407,7 @@ $(function() {
     });
 
 
-
-    //seteando valores iniciales
-    /*
-    $(".pizza_size")
-        .html($(".sizes a:first-child").html())
-        .attr('data-price', $(".sizes a:first-child").attr('data-price'))
-        .attr('data-id-size', $(".sizes a:first-child").attr('data-id-size'));
-
-    $('.total-price')
-        .html($(".sizes a:first-child")
-        .attr('data-price'));
-
-    $('.items-toppings')
-        .attr('data-topprice', $(".sizes a:first-child").attr('data-top-price'))
-        .attr('data-topprice-two', $(".sizes a:first-child").attr('data-top-price-two'));
-    */
-    
-    //Por lo visto hace muchas cosas
-    /*
-    $('.size').click(function() {
-        $('.items-toppings')
-            .attr('data-topprice', $(this).attr("data-top-price"))
-            .attr('data-topprice-two', $(this).attr("data-top-price-two"));
-
-        $(".pizza_size")
-            .attr('data-price', $(this).attr('data-price'))
-            .attr('data-id-size', $(this).attr('data-id-size'))
-            .html($(this).html());
-
-        $('.size.active').removeClass('active');
-        $(this).addClass('active');
-
-        $('.price-now-size-product').html($(this).attr('data-price'));
-
-        $('.add-topping').not(".ui-sortable-placeholder").each(function(index, el) {
-            var chan_val_top = calc_top_price_ind(
-                $(this).attr('data-t-price'),
-                $(this).attr('data-t-double'),
-                $(this).attr('data-size-top'),
-                parseFloat($('.items-toppings').attr('data-topprice')),
-                parseFloat($('.items-toppings').attr('data-topprice-two'))
-            );
-
-            if (chan_val_top > 0) {
-                $(this).children('.topp_ind').text('$' + chan_val_top.toFixed(2));
-            }
-
-        });
-
-        var idSelectTab = $(this).attr('href');
-        var allIdsProducts = [];
-
-        $(idSelectTab + ' .box-drag a').each(function(index, el) {
-            var idProduct = $(el).attr('data-id-top');
-            allIdsProducts.push(idProduct);
-        });
-
-        $('.items-toppings .add-topping').each(function(index, el) {
-            var idProduct = $(el).attr('data-id-top');
-
-            var notMatch = true;
-
-            allIdsProducts.forEach(function (ele, id) {
-                if (ele == idProduct) {
-                    notMatch = false;
-                }
-            });
-
-            if (notMatch) {
-                el.remove();
-            }
-
-            //console.log(idProduct);
-        });
-
-        //console.log(allIdsProducts);
-        calcular_cuenta();
-    });
-    */
-
+    //Objetos Jquery IU Drag and Drop
     $(".drag").draggable({
         appendTo: "body",
         helper: "clone",
@@ -478,9 +446,10 @@ $(function() {
             }
         });
 
+
     //seteando valores
     $('.tab-items').each(function(index, el) {
-        $(".size[data-tab=" + (index+1) + "]:first-child").click(); 
+        $(".size[data-tab=" + (index+1) + "]:first-child").click();
     });
 
     $(".size")[0].click();
