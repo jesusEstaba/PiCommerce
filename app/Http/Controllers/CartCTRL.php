@@ -22,23 +22,46 @@ class CartCTRL extends Controller
     public function addAjax(Request $request)
     {
         if (Auth::check()) {
-            $this->loadItemToCart(
-                $request['id_size'],
-                $request['toppings_id'],
-                $request['toppings_size'],
-                $request['cooking_notes'],
-                $request['quantity']
-            );
+            if ($request['combo_id']) {
+                $this->loadComboToCart(
+                    $request['combo_id'],
+                    $request['id_size'],
+                    $request['toppings_id'],
+                    $request['toppings_size'],
+                    $request['cooking_notes'],
+                    $request['quantity'] 
+                );
 
-            $response = ['status'=>'online'];
+                $response = ['type' => 'combo'];
+            } else {
+               $this->loadItemToCart(
+                    $request['id_size'],
+                    $request['toppings_id'],
+                    $request['toppings_size'],
+                    $request['cooking_notes'],
+                    $request['quantity']
+                );
+
+                $response = ['type' => 'item'];
+            }
+
+            $response['status'] = 'online';
+            
         } else {
-            Session::put('size', $request['id_size']);
-            Session::put('topping', $request['toppings_id']);
-            Session::put('topping_size', $request['toppings_size']);
-            Session::put('cooking_instructions', $request['cooking_notes']);
-            Session::put('quantity', $request['quantity']);
+            if ($request['combo_id']) {
 
-            $response = ['status'=>'offline'];
+                $response = ['type' => 'combo'];
+            } else {
+                Session::put('size', $request['id_size']);
+                Session::put('topping', $request['toppings_id']);
+                Session::put('topping_size', $request['toppings_size']);
+                Session::put('cooking_instructions', $request['cooking_notes']);
+                Session::put('quantity', $request['quantity']);
+
+                $response = ['type' => 'item'];
+            }
+
+            $response['status'] = 'offline';
         }
 
         return response()->json($response);
@@ -131,6 +154,7 @@ class CartCTRL extends Controller
             ->join('size', 'size.Sz_Id', '=', 'cart.product_id')
             ->join('items', 'items.It_Id', '=', 'size.Sz_Item')
             ->where('cart.id_user', $idUserTemp)
+            ->where('is_combo', 0)
             ->where(
                 function ($query) use ($idCart) {
                     if ($idCart) {
@@ -193,6 +217,7 @@ class CartCTRL extends Controller
 
         $totalCart = DB::table('cart')
             ->join('cart_top', 'cart_top.id_cart', '=', 'cart.id')
+            ->where('is_combo', 0)
             ->where(function ($query) use ($userIdCart, $idCartTemp) {
                     if ($idCartTemp) {
                         $query->where('cart.id', $idCartTemp);
@@ -207,6 +232,7 @@ class CartCTRL extends Controller
         if ($totalCart) {
             $totalCartTwo = DB::table('cart')
                 ->join('size', 'size.Sz_Id', '=', 'cart.product_id')
+                ->where('is_combo', 0)
                 ->where(function ($query) use ($userIdCart, $idCartTemp) {
                         if ($idCartTemp) {
                             $query->where('cart.id', $idCartTemp);
@@ -234,13 +260,14 @@ class CartCTRL extends Controller
 
 
     /**
-     * [loadItemToCart description]
-     * @param  [type] $size                 [description]
-     * @param  [type] $toppings             [description]
-     * @param  [type] $topSize             [description]
-     * @param  [type] $cookingInstructions [description]
-     * @param  [type] $quantity             [description]
-     * @return [type]                       [description]
+     * Carga los Size al Carrito
+     * 
+     * @param  [String || Intenger] $size
+     * @param  [String || Array] $toppings
+     * @param  [String || Array] $topSize
+     * @param  [String] $cookingInstructions
+     * @param  [String || Intenger] $quantity
+     * @return [int] [Solo si $quick es True]
      */
     public static function loadItemToCart(
         $size,
@@ -248,7 +275,8 @@ class CartCTRL extends Controller
         $topSize,
         $cookingInstructions,
         $quantity,
-        $quick = false
+        $quick = false,
+        $comboId = 0
     )
     {
         $idCart = 0;
@@ -271,11 +299,97 @@ class CartCTRL extends Controller
             'product_id' => $size,
             'cooking_instructions' => trim($cookingInstructions),
             'quantity' => $quantity,
+            'combo' => $comboId,
             ]
         );
 
+        CartCTRL::addToppingToCartTop(
+            $idCart,
+            $size,
+            $toppings,
+            $topSize
+        );
+
+
+        if ($quick) {
+            return $idCart;
+        }
+    }
+
+    /**
+     * Carga el Combo al Carrito 
+     *
+     * @param [int] $comboId
+     * @param [array] $sizeId
+     * @param [array] $toppingsId
+     * @param [array] $toppingsSize
+     * @param [string] $cookingNotes
+     * @param [array] $quantity
+     */
+    public function loadComboToCart(
+        $comboId,
+        $sizeId,
+        $toppingsId,
+        $toppingsSize,
+        $cookingNotes,
+        $quantity
+    )
+    {
+        $idCart = DB::table('cart')->insertGetId(
+            [
+                'id_user' => Auth::user()->id,
+                'product_id' => $comboId,
+                'cooking_instructions' => trim($cookingNotes),
+                'quantity' => 1,
+                'is_combo' => 1,
+            ]
+        );
+        
+        $numSizes = count($sizeId);
+
+        for ($i = 0; $i < $numSizes; $i++) {
+            if (isset($toppingsId[$i])) {
+                $topsId = $toppingsId[$i];
+            } else {
+                $topsId = [];
+            }
+
+            if (isset($toppingsSize[$i])) {
+                $topSize = $toppingsSize[$i];
+            } else {
+                $topSize = [];
+            }
+
+            CartCTRL::loadItemToCart(
+                $sizeId[$i],
+                $topsId,
+                $topSize,
+                '',
+                $quantity[$i],
+                false,
+                $idCart
+            );
+        }
+    }
+
+
+
+    /**
+     * Carga los Toppings a los toppings del Carrito
+     *
+     * @param [String || Integer] $idCart
+     * @param [String || Integer] $sizeId
+     * @param [String || Array] $toppings
+     * @param [String || Array] $topSize
+     */
+    public static function addToppingToCartTop(
+        $idCart,
+        $sizeId,
+        $toppings,
+        $topSize
+    ) {
         $sizePrice = DB::table('size')
-            ->where('Sz_Id', $size)
+            ->where('Sz_Id', $sizeId)
             ->select('Sz_Topprice as szTop', 'Sz_Topprice2 as szTopTwo')
             ->first();
 
@@ -340,10 +454,7 @@ class CartCTRL extends Controller
                 );
             }
         }
-
-
-        if ($quick) {
-            return $idCart;
-        }
     }
+
+
 }

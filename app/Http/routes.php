@@ -11,7 +11,6 @@
 |
 */
 
-
 Route::group(['middleware' => 'force_https_url_scheme'], function () {
 
     #TEST ROUTES
