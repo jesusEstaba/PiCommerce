@@ -20,24 +20,7 @@ Route::group(['middleware' => 'force_https_url_scheme'], function () {
         return view('geolocation');
     });
 
-    Route::post('calculate', function () {
-        if (Input::get('latitude') && Input::get('longitude')) {
-            $origen = Input::get('latitude') . ',' . Input::get('longitude');
-            $destino = '9.779808,-63.196956';
-
-            $url = 'https://maps.googleapis.com/maps/api/distancematrix/json?'
-            .'origins=' . $origen
-            .'&destinations=' . $destino
-            .'&key=AIzaSyA3e2Ey7BfbbgtLeRanUubsmHAn9EAPPek';
-
-            $jsonObj = file_get_contents($url);
-            $response = json_decode($jsonObj, true);
-        } else {
-            $response = ['empty'];
-        }
-
-        return response()->json($response);
-    });
+    Route::post('calculate', 'RegisterCTRL@distance');
 
     #END TEST ROUTES
 

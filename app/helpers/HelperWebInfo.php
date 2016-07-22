@@ -2,46 +2,37 @@
 
 class HelperWebInfo
 {
-    public static function logo()
+    public static function configMessage($property)
     {
-        $logo = DB::table('config')
-            ->where('Cfg_Descript', 'logo')
+        return DB::table('config')
+            ->where('Cfg_Descript', $property)
             ->first()
             ->Cfg_Message;
+    }
 
-        return $logo;
+    public static function logo()
+    {
+        return Static::configMessage('logo');
     }
 
     public static function footer()
     {
-		return DB::table('config')
-			->where('Cfg_Descript', 'footer')
-			->first()
-			->Cfg_Message;
+        return Static::configMessage('footer');
     }
 
     public static function facebookLink()
     {
-		return DB::table('config')
-			->where('Cfg_Descript', 'facebook')
-			->first()
-			->Cfg_Message;
+        return Static::configMessage('facebook');
     }
 
     public static function instagramLink()
     {
-		return DB::table('config')
-			->where('Cfg_Descript', 'instagram')
-			->first()
-			->Cfg_Message;
+        return Static::configMessage('instagram');
     }
 
     public static function twitterLink()
     {
-		return DB::table('config')
-			->where('Cfg_Descript', 'twitter')
-			->first()
-			->Cfg_Message;
+        return Static::configMessage('twitter');
     }
 
     public static function tax()
@@ -69,5 +60,10 @@ class HelperWebInfo
         }
 
         return false;
+    }
+
+    public static function coordinates()
+    {
+        return Static::configMessage('Coordinates');
     }
 }

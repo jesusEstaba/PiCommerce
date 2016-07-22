@@ -13,6 +13,7 @@ use Session;
 use DB;
 use Validator;
 use Carbon\Carbon;
+use Input;
 
 class RegisterCTRL extends Controller
 {
@@ -171,4 +172,32 @@ class RegisterCTRL extends Controller
 
         return redirect()->back()->withInput($request->except('password'));;
     }
+
+
+    public function distance()
+    {
+        if (Input::get('latitude') && Input::get('longitude')) {
+            $origen = Input::get('latitude') . ',' . Input::get('longitude');
+            
+            $coord = DB::table('config')
+                ->where('Cfg_Descript', 'Coordinates')
+                ->first();
+
+            $destino = ($coord) ? $coord->Cfg_Message : '9.779808,-63.196956';
+
+
+            $url = 'https://maps.googleapis.com/maps/api/distancematrix/json?'
+            .'origins=' . $origen
+            .'&destinations=' . $destino
+            .'&key=AIzaSyA3e2Ey7BfbbgtLeRanUubsmHAn9EAPPek';
+
+            $jsonObj = file_get_contents($url);
+            $response = json_decode($jsonObj, true);
+        } else {
+            $response = ['empty'];
+        }
+
+        return response()->json($response);
+    }
+
 }
