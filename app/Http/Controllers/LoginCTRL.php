@@ -57,7 +57,7 @@ class LoginCTRL extends Controller
         if (Auth::attempt($credentials)) {
             LogCTRL::addToLog(1);
 
-            if (CartCTRL::totalCostCart(true)) {
+            if (CartCTRL::totalCostCart(true) || Session::has('size')) {
                 return Redirect::to('cart');
             }
 
