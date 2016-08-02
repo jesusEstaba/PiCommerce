@@ -49,17 +49,17 @@ class CartCTRL extends Controller
             
         } else {
             if ($request['combo_id']) {
-
+                Session::put('combo', $request['combo_id']);
                 $response = ['type' => 'combo'];
             } else {
-                Session::put('size', $request['id_size']);
-                Session::put('topping', $request['toppings_id']);
-                Session::put('topping_size', $request['toppings_size']);
-                Session::put('cooking_instructions', $request['cooking_notes']);
-                Session::put('quantity', $request['quantity']);
-
                 $response = ['type' => 'item'];
             }
+
+            Session::put('size', $request['id_size']);
+            Session::put('topping', $request['toppings_id']);
+            Session::put('topping_size', $request['toppings_size']);
+            Session::put('cooking_instructions', $request['cooking_notes']);
+            Session::put('quantity', $request['quantity']);
 
             $response['status'] = 'offline';
         }
@@ -94,15 +94,39 @@ class CartCTRL extends Controller
      */
     public function index()
     {
+        /*
+        var_dump(Session::get('combo'));
+        
+        ,
+Session::get('size'),
+Session::get('topping'),
+Session::get('topping_size'),
+Session::get('cooking_instructions'),
+Session::get('quantity')
+        */
+
+
         if (Session::has('size')) {
-            //funcion que carga el producto a la db
-            $this->loadItemToCart(
-                Session::get('size'),
-                Session::get('topping'),
-                Session::get('topping_size'),
-                Session::get('cooking_instructions'),
-                Session::get('quantity')
-            );
+            if (Session::has('combo')) {
+                $this->loadComboToCart(
+                    Session::get('combo'),
+                    Session::get('size'),
+                    Session::get('topping'),
+                    Session::get('topping_size'),
+                    Session::get('cooking_instructions'),
+                    Session::get('quantity')
+                );
+
+                Session::forget('combo');
+            } else {
+                $this->loadItemToCart(
+                    Session::get('size'),
+                    Session::get('topping'),
+                    Session::get('topping_size'),
+                    Session::get('cooking_instructions'),
+                    Session::get('quantity')
+                );
+            }
 
             Session::forget('size');
             Session::forget('toppings');
@@ -111,7 +135,7 @@ class CartCTRL extends Controller
             Session::forget('quantity');
         }
 
-        $cart = CartCTRL::searchCartItems();
+        $cart = Static::searchCartItems();
 
         if (!isset($size)) {
             $size = "";
@@ -303,7 +327,7 @@ class CartCTRL extends Controller
             ]
         );
 
-        CartCTRL::addToppingToCartTop(
+        Static::addToppingToCartTop(
             $idCart,
             $size,
             $toppings,
@@ -324,7 +348,7 @@ class CartCTRL extends Controller
      * @param [array] $toppingsId
      * @param [array] $toppingsSize
      * @param [string] $cookingNotes
-     * @param [array] $quantity
+     * @param [String || Integer] $quantity
      */
     public function loadComboToCart(
         $comboId,
@@ -340,7 +364,7 @@ class CartCTRL extends Controller
                 'id_user' => Auth::user()->id,
                 'product_id' => $comboId,
                 'cooking_instructions' => trim($cookingNotes),
-                'quantity' => 1,
+                'quantity' => $quantity,
                 'is_combo' => 1,
             ]
         );
@@ -360,12 +384,12 @@ class CartCTRL extends Controller
                 $topSize = [];
             }
 
-            CartCTRL::loadItemToCart(
+            Static::loadItemToCart(
                 $sizeId[$i],
                 $topsId,
                 $topSize,
                 '',
-                $quantity[$i],
+                $quantity,
                 false,
                 $idCart
             );

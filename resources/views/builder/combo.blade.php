@@ -287,7 +287,6 @@
 							data-price="0"
 							data-topprice="0"
 							data-topprice-two="0"
-							data-qty="1"
 							data-size-top="1"
 						>
 						</ul>
@@ -316,7 +315,7 @@
 					</div>
 				</div>
 				<div class="Subtotales">
-					<h4>Sub-Total: <span class="pull-right">$<span class="sub-total">0.00</span></span></h4>
+					<h4>Sub-Total: <span class="pull-right">$<span class="sub-total" data-min="{{$combo->Cb_Minimum}}">0.00</span></span></h4>
 					<h4>Tax: <span class="pull-right">$<span data-tax={{HelperWebInfo::tax()}} class="tax">0.00</span></span></h4>
 					<h3>Total: <span class="pull-right">$<span class="total-cart">0.00</span></span></h3>
 				</div>
