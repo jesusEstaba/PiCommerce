@@ -91,16 +91,21 @@ class ProductCTRL extends Controller
 
                 $combo = DB::table('combo')
                     ->where('Cb_Id', $id)
+                    ->where('Cb_Status', 0)
                     ->first();
 
-                return view('builder.combo')->with([
-                    'cooking_instructions' => $cooking_instructions,
-                    'combo' => $combo,
-                    'items' => $comboItems,
-                    'cart'=>$cart,
-                    'total_cart'=>$total_cart,
-                    'sizeToppingFunc' => $sizeToppingFunc,
-                ]);
+                if ($combo) {
+                    return view('builder.combo')->with([
+                        'cooking_instructions' => $cooking_instructions,
+                        'combo' => $combo,
+                        'items' => $comboItems,
+                        'cart'=>$cart,
+                        'total_cart'=>$total_cart,
+                        'sizeToppingFunc' => $sizeToppingFunc,
+                    ]);
+                }
+
+                
             } else {
                 $items = DB::table('items')
                     ->where('It_Id', $id)

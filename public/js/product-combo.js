@@ -1,10 +1,10 @@
 function addComboToCart(
     comboSize,
     comboTopId,
-    comboTopSize,
-    comboQty
+    comboTopSize
 ) { 
     var instrucciones = $(".notes_instructions").val(),
+        comboQty = Number($('.cantidad .quantity').html()),
         comboId = $("#combo").attr('data-id');
    
     $.ajax({
@@ -43,16 +43,13 @@ function addComboToCart(
 function sendCombo() {
     var comboSize = [],
         comboTopId = [],
-        comboTopSize = [],
-        comboQty = [];
+        comboTopSize = [];
 
     $('.items-toppings').each(function(index, el) {
-        var qty = Number($(this).attr('data-qty')),
-            sizeId = Number($(this).attr('data-id-size')),
+        var sizeId = Number($(this).attr('data-id-size')),
             idTab = $(this).attr('id');
 
         comboSize.push(sizeId);
-        comboQty.push(qty);
 
         var itemTopId = [],
             itemTopSize = [];
@@ -79,14 +76,12 @@ function sendCombo() {
     console.log(comboSize);
     console.log(comboTopId);
     console.log(comboTopSize);
-    console.log(comboQty);
     */
 
     addComboToCart(
         comboSize,
         comboTopId,
-        comboTopSize,
-        comboQty
+        comboTopSize
     );
 }
 
@@ -207,11 +202,11 @@ function nameTopping($sizeNum) {
 }
 
 function calcular_cuenta() {
-    var cuenta = 0;
+    var qty = Number($('.cantidad .quantity').html()),
+        cuenta = 0;
 
     $('.items-toppings').each(function(index, el) {
         var cuentaToppingsTab = 0,
-            qty = parseFloat($(this).attr('data-qty')),
             toppingPrice = parseFloat($(this).attr('data-topprice')),
             toppingPrice2 = parseFloat($(this).attr('data-topprice-two')),
             itemPrice = parseFloat($(this).attr('data-price'));
@@ -227,8 +222,10 @@ function calcular_cuenta() {
 
             cuentaToppingsTab += topCalc;
         });
-        cuenta += (itemPrice + cuentaToppingsTab) * qty;
+        cuenta += (itemPrice + cuentaToppingsTab);
     });
+
+    cuenta *= qty;
 
     $('.total-price').html(cuenta.toFixed(2));
 
@@ -268,7 +265,7 @@ $(function() {
         $("#droppable ul").hide();
         $("#droppable #toppings-" + tab).show();
 
-        $('.cantidad .quantity').html($("#toppings-" + tab).attr('data-qty'));
+        //$('.cantidad .quantity').html($("#toppings-" + tab).attr('data-qty'));
     });
 
 
@@ -323,27 +320,29 @@ $(function() {
 
     //Cantidad de items
     $('.cantidad .glyphicon-minus').click(function() {
-        var cantidad = parseInt($('.cantidad .quantity').html()),
-            tab = $('.tab-items.active').attr('data-tab');
+        var cantidad = parseInt($('.cantidad .quantity').html());
+            //tab = $('.tab-items.active').attr('data-tab');
 
         if (cantidad > 1) {
             $('.cantidad .quantity').html(cantidad - 1);
-            $('#toppings-' + tab).attr('data-qty', cantidad - 1);
+            $('.quantity-now-product').html(cantidad - 1);
+            //$('#toppings-' + tab).attr('data-qty', cantidad - 1);
         }
         calcular_cuenta();
     });
     
     $('.cantidad .glyphicon-plus').click(function() {
-        var cantidad = parseInt($('.cantidad .quantity').html()),
-            tab = $('.tab-items.active').attr('data-tab');
+        var cantidad = parseInt($('.cantidad .quantity').html());
+            //tab = $('.tab-items.active').attr('data-tab');
 
         $('.cantidad .quantity').html(cantidad + 1);
-        $('#toppings-' + tab).attr('data-qty', cantidad + 1);
+        $('.quantity-now-product').html(cantidad + 1);
+        //$('#toppings-' + tab).attr('data-qty', cantidad + 1);
         calcular_cuenta();
     });
 
 
-    //Boton de Agregar en botones drag
+    //Boton de Agregar en botones Drag
     $('.box-drag')
         .hover(function() {
                 $(this).append('<span class="glyphicon glyphicon-plus"></span>');
@@ -371,20 +370,27 @@ $(function() {
     });
 
     $('.go-checkout-cart').click(function() {
-        if ($(this).hasClass('btn-success')) {
-            //apara agregarlo por ajax
-            // recuerda que simpre se sube por ajax con esta funcion
-            sendCombo();
-            
-            $(this)
-                .toggleClass('active')
-                .removeClass('btn-success')
-                .addClass('btn-primary')
-                .children('span.text-cart')
-                .text('Go to Cart');
+        var minimumOrderPrice = Number($('.total-price').attr('data-min')),
+            nowInCombo = Number($('.total-price').html());
+
+        if(minimumOrderPrice<nowInCombo) {
+            if ($(this).hasClass('btn-success')) {
+                //apara agregarlo por ajax
+                // recuerda que simpre se sube por ajax con esta funcion
+                sendCombo();
+                
+                $(this)
+                    .toggleClass('active')
+                    .removeClass('btn-success')
+                    .addClass('btn-primary')
+                    .children('span.text-cart')
+                    .text('Go to Cart');
+            } else {
+                if ($(this).hasClass('redirect-cart-now'))
+                    window.location.href = '/cart';
+            }
         } else {
-            if ($(this).hasClass('redirect-cart-now'))
-                window.location.href = '/cart';
+           alert('minimum order is $' + minimumOrderPrice.toFixed(2)); 
         }
 
         //$('.btn-checkout').click(function(){});
