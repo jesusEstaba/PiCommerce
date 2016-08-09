@@ -10,6 +10,12 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+Route::get('create-pay', 'PayCheckoutCtrl@index');
+//Route::get('crate-pay', '@index');
+
+Route::post('process-pay', 'PayCheckoutCtrl@transaction');
+
+//
 
 Route::group(['middleware' => 'force_https_url_scheme'], function () {
 
