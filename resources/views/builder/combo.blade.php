@@ -300,7 +300,7 @@
 				<div class="row">
 					<div class="col-xs-12">
 						<hr>
-						<h4>Price: <span class="pull-right">$<span class="total-price"></span></span></h4>
+						<h4>Price: <span class="pull-right">$<span class="total-price" data-min="{{$combo->Cb_Minimum}}"></span></span></h4>
 						<div class="input-control">
 							<textarea name="cooking_instructions" placeholder="Additional notes" class="notes_instructions form-control"></textarea>
 						</div>
@@ -315,7 +315,7 @@
 					</div>
 				</div>
 				<div class="Subtotales">
-					<h4>Sub-Total: <span class="pull-right">$<span class="sub-total" data-min="{{$combo->Cb_Minimum}}">0.00</span></span></h4>
+					<h4>Sub-Total: <span class="pull-right">$<span class="sub-total">0.00</span></span></h4>
 					<h4>Tax: <span class="pull-right">$<span data-tax={{HelperWebInfo::tax()}} class="tax">0.00</span></span></h4>
 					<h3>Total: <span class="pull-right">$<span class="total-cart">0.00</span></span></h3>
 				</div>
