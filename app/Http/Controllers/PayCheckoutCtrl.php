@@ -21,8 +21,8 @@ class PayCheckoutCtrl extends Controller
 		$requestData = [
 				"MerchantID" => $request["MerchantID"],
 				"LaneID" => '02',
-				"TranType" => $request["TranType"],
-				"TranCode" => $request["TranCode"],
+				"TranType" => $request["TranType"],//Credit
+				"TranCode" => $request["TranCode"],//Sale
 				"InvoiceNo" => $request["InvoiceNo"],
 				"RefNo" => $request["RefNo"],
 				"AcctNo" => $request["AcctNo"],
@@ -36,6 +36,7 @@ class PayCheckoutCtrl extends Controller
 		
 		$soapHelper = new PayMercuryCtrl();
 		
+		/*
 		if ($requestData["TranType"] == "PrePaid") {
 			$responseData = $soapHelper->gift_transaction($requestData, $_REQUEST["Password"]);
 		} else {
@@ -43,10 +44,55 @@ class PayCheckoutCtrl extends Controller
 			$requestData["Frequency"] = "OneTime";
 			$responseData = $soapHelper->credit_transaction($requestData, $_REQUEST["Password"]);
 		}
+		*/
+		//$soapHelper->credit_transaction($requestData, 'lalala');
 
-		return view('paytestresult')->with([
-			'requestData' => $requestData,
-			'responseData' => $responseData,
-		]);
+		$dataPayment = [
+			'MerchantID' => '778825001',
+			'LaneID' => '02',
+			'Password' => '$6a!a#aa.DHWgD9L',
+			'Invoice' => '54321',
+			'TotalAmount' => 9.9,
+			'TaxAmount' => 0.0,
+			'TranType' => 'PreAuth',
+			'Frequency' => 'OneTime',
+			'Memo' => 'InitializePaymentTest',
+			'ProcessCompleteUrl' => 'http://www.mercurypay.com',
+			'ReturnUrl' => 'http://www.mercurypay.com'
+		];
+		
+		$initPaymentResponse = $soapHelper->InitializePayment($dataPayment);
+
+
+
+
+
+		//////////////////////////////////////EXTRAS///////////////////////////////////////
+
+		echo "<pre>";
+		echo "<h1>InitializePayment Example</h1>";
+		echo "Response Code: " . $initPaymentResponse->InitializePaymentResult->ResponseCode;
+		echo "<br />Message: " . $initPaymentResponse->InitializePaymentResult->Message;
+		echo "<br /><h3>Request:</h3>";
+		
+		print_r($dataPayment);
+		echo "<br /><h3>Response:</h3>";
+		
+		
+		print_r($initPaymentResponse);
+		echo "</pre>";
+		
+		$paymentid = $initPaymentResponse->InitializePaymentResult->PaymentID;
+
+		echo "PaymentID:" . $paymentid;// Hide PaymentID from 
+
+		echo '<form action="https://hc.mercurycert.net/mobile/mCheckout.aspx" method="post">
+		<input name="PaymentID" type="hidden" value="' . $paymentid . '"\>
+	
+		<input type="submit" value="checkout"/>
+
+		</form>';
+		
+		return ;
     }
 }
