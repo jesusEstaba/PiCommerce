@@ -139,7 +139,7 @@ class OrderCTRL extends Controller
         }
 
         if ($sub_total >= $minValue) {
-            $id = OrderCTRL::createOrder(
+            $id = static::createOrder(
                 $cart,
                 [
                     'Hd_Sell' => $hd_sell,
@@ -187,16 +187,25 @@ class OrderCTRL extends Controller
                 ],
                 $hd_sell);
 
+
+
                 if ($mercuryResponse['code']!=0) {
                     $errors = $mercuryResponse['message'];
                 } else {
+
+                    DB::table('hd_tticket')
+                        ->where('Hd_Ticket', $id)
+                        ->update([
+                            'Hd_PaymentId' => $mercuryResponse['PayId'],
+                        ]);
+
                     $errors = [
                         'status'=> 1,
                         'message' => $mercuryResponse['PayId'],
+                        'url' => $mercuryResponse['urlCheckout'],
                     ];
                 }
             } else {//efectivo
-                //static::sendMailOrder($orderId)
                 
                 CartCTRL::clear($cart);
 
@@ -204,6 +213,11 @@ class OrderCTRL extends Controller
                     'status'=> 2,
                     'message' => 'cash',
                 ];
+
+                //ENVIAR CORREOS
+                if (static::sendMailOrder($id, $cart)) {
+                    $errors = 'Failed to send email.';
+                }
             }
 
             
@@ -235,9 +249,6 @@ class OrderCTRL extends Controller
         $checkouts = [1 => 'delivery', 2 => 'pickup'];
 
         $dataPayment = [
-            'MerchantID' => '778825001',
-            #'LaneID' => '02',
-            'Password' => '$6a!a#aa.DHWgD9L',
             'TaxAmount' => 0.0,
             'TranType' => 'Sale',
             'Frequency' => 'OneTime',
@@ -253,6 +264,7 @@ class OrderCTRL extends Controller
             'code' => $initPaymentResponse->ResponseCode,
             'message' => $initPaymentResponse->Message,
             'PayId' => $initPaymentResponse->PaymentID,
+            'urlCheckout' => $soapHelper->urlCheckout(),
         ];
     }
 
@@ -276,8 +288,6 @@ class OrderCTRL extends Controller
         $soapHelper = new PayMercuryCtrl();
 
         $dataVerify = [
-            'MerchantID' => '778825001',
-            'Password' => '$6a!a#aa.DHWgD9L',
             'PaymentID' => $request['PaymentID'],
         ];
         
@@ -287,10 +297,12 @@ class OrderCTRL extends Controller
             && Session::has('cart')
             #&& $mercuryResp->Status == 'Approved'
         ) {
-            //VACIAR CARRITO
-            CartCTRL::clear(Session::get('cart'));
-
+            $cart = Session::get('cart');
             Session::forget('cart');
+            
+            //VACIAR CARRITO
+            CartCTRL::clear($cart);
+            
             
             DB::table('hd_tticket')->where('Hd_Ticket', $mercuryResp->Invoice)->update([
                 'Hd_Status' => 1,
@@ -309,11 +321,10 @@ class OrderCTRL extends Controller
             ]);
 
             //ENVIAR CORREOS
-            /*
-            if (static::sendMailOrder($id)) {
+            if (static::sendMailOrder($mercuryResp->RefNo, $cart)) {
                 $errors = 'Failed to send email.';
             }
-            */
+
         }
         
         
@@ -414,43 +425,42 @@ class OrderCTRL extends Controller
      *
      * @return [numero de correos no enviados]
      */
-    protected static function sendMailOrder($orderId)
+    protected static function sendMailOrder($orderId, $cart)
     {
-        //AÑADIENDO LOG DE LA IP
-            if (Auth::check()) {
-                LogCTRL::addToLog(5);
+        if (Auth::check()) {
+            LogCTRL::addToLog(5);//AÑADIENDO LOG DE LA IP
+            
+            $user = DB::table('users')
+                ->leftJoin('customers', 'customers.Cs_Phone', '=', 'users.phone')
+                ->where('users.phone', Auth::user()->phone)
+                ->select(
+                    'Cs_Number',
+                    'Cs_Street',
+                    'Cs_ZipCode',
+                    'Cs_Notes',
+                    'Cs_Name',
+                    'Cs_Phone',
+                    'email'
+                )
+                ->first();
+            
+            $mail_user = Auth::user()->email;
+            $titleMail = 'Order';
+        } else {
+            LogCTRL::addToLog(314);//AÑADIENDO LOG DE LA IP
 
-                $user = DB::table('users')
-                    ->leftJoin('customers', 'customers.Cs_Phone', '=', 'users.phone')
-                    ->where('users.phone', Auth::user()->phone)
-                    ->select(
-                        'Cs_Number',
-                        'Cs_Street',
-                        'Cs_ZipCode',
-                        'Cs_Notes',
-                        'Cs_Name',
-                        'Cs_Phone',
-                        'email'
-                    )
-                    ->first();
-
-                $mail_user = Auth::user()->email;
-                $titleMail = 'Order';
-            } else {
-                LogCTRL::addToLog(314);
-
-                $user = new \stdClass();
-                $user->Cs_Name = Session::get('name');
-                $user->Cs_Phone = Session::get('phone');
-                $mail_user = Session::get('email');
-                $user->Cs_ZipCode = '';
-                $user->Cs_Number = '';
-                $user->Cs_Street = '';
-                $user->Cs_Notes = '';
-
-                $titleMail = 'Quick Order';
-                Session::forget('id_cart');
-            }
+            $user = new \stdClass();
+            $user->Cs_Name = Session::get('name');
+            $user->Cs_Phone = Session::get('phone');
+            $mail_user = Session::get('email');
+            $user->Cs_ZipCode = '';
+            $user->Cs_Number = '';
+            $user->Cs_Street = '';
+            $user->Cs_Notes = '';
+            $titleMail = 'Quick Order';
+           
+            Session::forget('id_cart');
+        }
 
 
 
@@ -468,7 +478,7 @@ class OrderCTRL extends Controller
             ->first()
             ->Cfg_Message;
         
-        $order = DB::table('hd_tticket')->where('Hd_Ticket', $id)->first();
+        $order = DB::table('hd_tticket')->where('Hd_Ticket', $orderId)->first();
         
         $size = function ($size) {
             $size_topping = '';
@@ -489,20 +499,22 @@ class OrderCTRL extends Controller
         
         $variables_correo = [
             'order' => $order,
+            
+            'delivery' => $order->Hd_Delivery,
+            'discount' => $order->Hd_Discount,
+            'charge' => $order->Hd_Charge,
+            'tip' => $order->Hd_Tips,
+
             'now' => Carbon::now()->format('m-d-Y'),
-            'delivery'=>$or_delivery,
-            'discount' => $or_discount,
-            'charge' => $or_charge,
-            'tip'=>$or_tip,
-            'cart'=>$cart,
-            'title'=>$titleMail,
-            'size'=>$size,
+            'cart' => $cart,
+            'title' => $titleMail,
+            'size' => $size,// function
             'logo' => $logo,
-            'footer'=> $footer,
-            'num_order'=>$id,
+            'footer' => $footer,
+            'num_order' => $orderId,
             'phone' => $user->Cs_Phone,
-            'name'=> $user->Cs_Name,
-            'email'=>$mail_user,
+            'name' => $user->Cs_Name,
+            'email' => $mail_user,
             'street_num' => $user->Cs_Number,
             'street_name' => $user->Cs_Street,
             'zip_code' => $user->Cs_ZipCode,

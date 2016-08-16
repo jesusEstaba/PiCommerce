@@ -16,6 +16,7 @@
 Route::get('create-pay', 'PayCheckoutCtrl@index');
 //Route::get('crate-pay', '@index');
 */
+
 Route::post('checkout/verify', 'PayCheckoutCtrl@transaction');
 Route::post('/checkout/mercuryVerify', 'OrderCTRL@verify');
 
@@ -47,6 +48,7 @@ Route::group(['middleware' => 'force_https_url_scheme'], function () {
         Route::get('/product/{cat}/{id}/{sub?}', 'ProductCTRL@index');
 
         Route::get('/select', 'PayCTRL@select');
+        
         Route::get('/checkout/pickup', 'PayCTRL@index');
 
         Route::get('/checkout/quick', 'QuickPayCTRL@index');
@@ -73,7 +75,7 @@ Route::group(['middleware' => 'force_https_url_scheme'], function () {
         Route::get('/login', 'LoginCTRL@index');
         Route::post('/login', 'LoginCTRL@login');
 
-        Route::get('/checkout/{select?}', 'PayCTRL@index');
+        Route::match(['GET', 'POST'], '/checkout/{select?}', 'PayCTRL@index');
         Route::get('/coupon/{coupon}', 'CouponsCTRL@return_discount');
 
         Route::get('/order_now', function () {

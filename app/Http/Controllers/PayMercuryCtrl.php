@@ -20,15 +20,17 @@ class PayMercuryCtrl extends Controller
 	 */
     protected $wsClient;
 
-
     /**
-     * @param bool $production [para indicar si esta en produccion]
+     * 
      */
-	function __construct($production = false)
+    protected $url;
+
+
+	function __construct()
 	{
-		$wsdlURL = ($production) ? 'pay.com' : 'cert.net';
-		
-		$this->wsClient = new SoapClient('https://hc.mercury' . $wsdlURL . '/hcws/HCService.asmx?WSDL');
+		$this->url = (env('MERCURY_PRODUCTION', false)) ? 'pay.com' : 'cert.net';
+
+		$this->wsClient = new SoapClient('https://hc.mercury' . $this->url . '/hcws/HCService.asmx?WSDL');
 	}
 
 
@@ -37,7 +39,15 @@ class PayMercuryCtrl extends Controller
 	 */
 	public function InitializePayment(array $paramsDataPayment)
 	{
-		$initPaymentRequest = ['request' => $paramsDataPayment];
+		$finalData = array_merge(
+			[
+				'MerchantID' => env('MERCURY_MERCHANT_ID', ''),
+	            'Password' => env('MERCURY_MERCHANT_PASSWORD', ''),
+			],
+			$paramsDataPayment 
+		);
+
+		$initPaymentRequest = ['request' => $finalData];
 
 		return $this->wsClient->InitializePayment($initPaymentRequest)->InitializePaymentResult;
 	}
@@ -48,8 +58,31 @@ class PayMercuryCtrl extends Controller
 	 */
 	public function VerifyPayment(array $paramsDataPayment)
 	{
+		$finalData = array_merge(
+			[
+				'MerchantID' => env('MERCURY_MERCHANT_ID', ''),
+	            'Password' => env('MERCURY_MERCHANT_PASSWORD', ''),
+			],
+			$paramsDataPayment 
+		);
+
+		$initPaymentRequest = ['request' => $finalData];
+		
 		$initPaymentRequest = ['request' => $paramsDataPayment];
 
 		return $this->wsClient->VerifyPayment($initPaymentRequest)->VerifyPaymentResult;
+	}
+
+
+	/**
+	 * 
+	 */
+	public function urlCheckout($type = 'web')
+	{
+		if ($type == 'mobile') {
+			return 'https://hc.mercury' . $this->url . '/mobile/mCheckout.aspx';
+		}
+
+		return 'https://hc.mercury' . $this->url . '/Checkout.aspx';
 	}
 }
