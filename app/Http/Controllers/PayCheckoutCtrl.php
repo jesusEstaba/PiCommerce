@@ -9,6 +9,7 @@ use Pizza\Http\Controllers\Controller;
 
 class PayCheckoutCtrl extends Controller
 {
+
     public function index()
     {
     	return view('paytestindex');
@@ -17,48 +18,21 @@ class PayCheckoutCtrl extends Controller
 
     public function transaction(Request $request)
     {
-		// STEP 1: Build the request array
-		$requestData = [
-				"MerchantID" => $request["MerchantID"],
-				"LaneID" => '02',
-				"TranType" => $request["TranType"],//Credit
-				"TranCode" => $request["TranCode"],//Sale
-				"InvoiceNo" => $request["InvoiceNo"],
-				"RefNo" => $request["RefNo"],
-				"AcctNo" => $request["AcctNo"],
-				"ExpDate" => $request["ExpDate"],
-				"Memo" => $request["Memo"],
-				"Purchase" => $request["Purchase"]
-		];
-
-		// STEP 2: Use helper class to process the MercuryGift Web Services transaction
-		//include_once("Mercury_Web_Services_SOAP_Helper.php");//no includ... because... laravel...
-		
+    	/*
 		$soapHelper = new PayMercuryCtrl();
 		
-		/*
-		if ($requestData["TranType"] == "PrePaid") {
-			$responseData = $soapHelper->gift_transaction($requestData, $_REQUEST["Password"]);
-		} else {
-			// Add Token request keys for Credit Transactions
-			$requestData["Frequency"] = "OneTime";
-			$responseData = $soapHelper->credit_transaction($requestData, $_REQUEST["Password"]);
-		}
-		*/
-		//$soapHelper->credit_transaction($requestData, 'lalala');
-
 		$dataPayment = [
 			'MerchantID' => '778825001',
-			'LaneID' => '02',
+			#'LaneID' => '02',
 			'Password' => '$6a!a#aa.DHWgD9L',
-			'Invoice' => '54321',
-			'TotalAmount' => 9.9,
+			'Invoice' => '54321',//Id Order
+			'TotalAmount' => $request["Purchase"],
 			'TaxAmount' => 0.0,
-			'TranType' => 'PreAuth',
+			'TranType' => 'Sale',
 			'Frequency' => 'OneTime',
-			'Memo' => 'InitializePaymentTest',
-			'ProcessCompleteUrl' => 'http://www.mercurypay.com',
-			'ReturnUrl' => 'http://www.mercurypay.com'
+			'Memo' => $request["Memo"],
+			'ProcessCompleteUrl' => url('/create-pay'),
+			'ReturnUrl' => url('/create-pay'),
 		];
 		
 		$initPaymentResponse = $soapHelper->InitializePayment($dataPayment);
@@ -86,13 +60,20 @@ class PayCheckoutCtrl extends Controller
 
 		echo "PaymentID:" . $paymentid;// Hide PaymentID from 
 
-		echo '<form action="https://hc.mercurycert.net/mobile/mCheckout.aspx" method="post">
+		echo '<form action="https://hc.mercurycert.net/Checkout.aspx" method="post">
 		<input name="PaymentID" type="hidden" value="' . $paymentid . '"\>
-	
+
+		<input name="ReturnMethod" type="hidden" value="GET"\>
+		
 		<input type="submit" value="checkout"/>
 
 		</form>';
+		*/
 		
-		return ;
+		return view('verifyPayment')->with([
+			'PaymentID' => $request['PaymentID'],
+			'ReturnCode' => $request['ReturnCode'],
+			'ReturnMessage' => $request['ReturnMessage'],
+		]);
     }
 }

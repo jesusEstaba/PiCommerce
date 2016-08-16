@@ -87,6 +87,23 @@ class CartCTRL extends Controller
         return response()->json(['state' => $deleteRespn,]);
     }
 
+    /**
+     * [Vaciar el carrito]
+     * @param array $cart
+     */
+    public static function clear($cart)
+    {
+        foreach ($cart as $key => $value) {
+            DB::table('cart_top')
+                ->where('id_cart', $value->id)
+                ->delete();
+            
+            DB::table('cart')
+                ->where('id', $value->id)
+                ->delete();
+        }
+    }
+
 
     /**
      * [index description]
@@ -94,18 +111,6 @@ class CartCTRL extends Controller
      */
     public function index()
     {
-        /*
-        var_dump(Session::get('combo'));
-        
-        ,
-Session::get('size'),
-Session::get('topping'),
-Session::get('topping_size'),
-Session::get('cooking_instructions'),
-Session::get('quantity')
-        */
-
-
         if (Session::has('size')) {
             if (Session::has('combo')) {
                 $this->loadComboToCart(
@@ -135,7 +140,7 @@ Session::get('quantity')
             Session::forget('quantity');
         }
 
-        $cart = Static::searchCartItems();
+        $cart = static::searchCartItems();
 
         if (!isset($size)) {
             $size = "";
@@ -162,8 +167,13 @@ Session::get('quantity')
      */
     public static function searchCartItems($asc = '', $idCart = '')
     {
+        $keyGroup = 'cart.id';
+        
         if ($asc==='asc') {
             $orderByCart = 'asc';
+        } elseif ($asc==='combo'){
+            $orderByCart = 'desc';
+            $keyGroup = 'cart.is_combo';
         } else {
             $orderByCart = 'desc';
         }
@@ -178,7 +188,7 @@ Session::get('quantity')
             ->join('size', 'size.Sz_Id', '=', 'cart.product_id')
             ->join('items', 'items.It_Id', '=', 'size.Sz_Item')
             ->where('cart.id_user', $idUserTemp)
-            ->where('is_combo', 0)
+            //->where('is_combo', 0)
             ->where(
                 function ($query) use ($idCart) {
                     if ($idCart) {
@@ -197,9 +207,11 @@ Session::get('quantity')
                 'size.Sz_Price',
                 'size.Sz_Topprice',
                 'size.Sz_FArea',
-                'size.Sz_Descrip'
+                'size.Sz_Descrip',
+                'cart.combo',
+                'cart.is_combo'
             )
-            ->orderBy('cart.id', $orderByCart)
+            ->orderBy($keyGroup, $orderByCart)
             ->get();
 
 
@@ -291,6 +303,8 @@ Session::get('quantity')
      * @param  [String || Array] $topSize
      * @param  [String] $cookingInstructions
      * @param  [String || Intenger] $quantity
+     *
+     *
      * @return [int] [Solo si $quick es True]
      */
     public static function loadItemToCart(
@@ -327,7 +341,7 @@ Session::get('quantity')
             ]
         );
 
-        Static::addToppingToCartTop(
+        static::addToppingToCartTop(
             $idCart,
             $size,
             $toppings,
@@ -384,7 +398,7 @@ Session::get('quantity')
                 $topSize = [];
             }
 
-            Static::loadItemToCart(
+            static::loadItemToCart(
                 $sizeId[$i],
                 $topsId,
                 $topSize,

@@ -29,7 +29,10 @@ class PayCTRL extends Controller
         if (Auth::check() || (Session::has('id_cart') && Session::has('email'))) {
             $cart = '';
             if (Auth::check()) {
-                $cart = CartCTRL::searchCartItems();#podria cargarlo desde un Session
+                Session::forget('cart');
+
+                $cart = CartCTRL::searchCartItems('combo');#podria cargarlo desde un Session
+                Session::put('cart', $cart);
             }
 
 

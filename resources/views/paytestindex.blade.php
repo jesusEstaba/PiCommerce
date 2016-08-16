@@ -4,10 +4,39 @@
 </head>
 <body>
 	<table width="400" border="0" align="center" cellpadding="0" cellspacing="1">
+		<!-- My Credit Transactions -->
+		<tr>
+			<td>
+
+				<form name="form1" method="post" action="{{url('process-pay')}}">
+					<h3>5499990123456781</h3>
+					<table width="100%" border="0" cellspacing="1" cellpadding="3">
+						<tr>
+							<td width="100%" colspan="4"><h2>Credit Transactions</h2></td>
+						</tr>
+
+						<tr>
+							<td width="15%">TotalAmount:</td>
+							<td width="30%"><input name="Purchase" type="text" id="Purchase" size="50" value="2.25"></td>
+							<td width="15%">Memo:</td>
+							<td width="30%"><input name="Memo" type="text" id="Memo" size="50" value="Test Mercury PHP"></td>
+						</tr>
+
+						<tr>
+							<td colspan="2"><input type="submit" name="Submit" value="Submit"> <input type="reset" name="reset" value="Reset"></td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+
+					</table>
+					{{ csrf_field() }}
+				</form>
+			</td>
+		</tr>
+
 		<!-- Credit Transactions -->
 		<tr>
 			<td>
-				<form name="form1" method="post" action="{{url('process-pay')}}">
+				<form style="display:none;" name="form1" method="post" action="{{url('process-pay')}}">
 					<table width="100%" border="0" cellspacing="1" cellpadding="3">
 						<tr>
 							<td width="100%" colspan="4"><h2>Credit Transactions</h2></td>

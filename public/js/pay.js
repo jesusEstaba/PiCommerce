@@ -87,20 +87,21 @@ $(function() {
             $('.frame-pay').fadeOut('fast');
 
             credit_card = false;
-            pay = true;
+            //pay = true;
             $('.fee-price').addClass('text-muted');
             $('.ccfee').addClass('hide');
         } else {
             $('.frame-pay').fadeIn('fast');
 
             credit_card = true;
-
+            /*
             if (good_card){
                 pay = true;
             }
             else{
                 pay = false;
             }
+            */
 
             $('.fee-price').removeClass('text-muted');
             $('.ccfee').removeClass('hide');
@@ -130,8 +131,8 @@ $(function() {
                     }
                 }
 
-                if (pay) {
-                    $('.order_now').addClass('active')
+                if (true) {
+                    $('.order_now').addClass('active');
                     $.ajax({
                             url: '/order_now',
                             type: 'POST',
@@ -145,9 +146,58 @@ $(function() {
                             },
                         })
                         .done(function(data) {
-                            if (data.status == "correct") {
-                                window.location.href = "/choose";
+                            if (data.status === 0) {
+                                //window.location.href = "/choose";
+                                console.info(data.message);
+                            } else if (data.status === 1) {
+                                
+                                $('.order_now')
+                                    .off()
+                                    .addClass('next-mercury')
+                                    .addClass('btn-primary')
+                                    .removeClass('btn-success')
+                                    .removeClass('has-spinner')
+                                    .removeClass('order_now')
+                                    .removeClass('active')
+                                    .html('Next');
+
+                                $('.next-mercury').on('click', function() {
+                                    var jForm = $(
+                                        '<form action="https://hc.mercurycert.net/Checkout.aspx" method="post">' +
+                                            '<input name="PaymentID" type="hidden" value="' + data.message + '"\>' +
+                                        '</form>'
+                                    );
+                                    
+                                    // Submit the form.
+                                    jForm.submit();
+                                    
+                                    
+                                });
+
+
+                                console.info(data.message);
+                            } else if (data.status === 2) {
+                                $('.order_now')
+                                    .off()
+                                    .addClass('go-home')
+                                    .addClass('btn-primary')
+                                    .removeClass('btn-success')
+                                    .removeClass('has-spinner')
+                                    .removeClass('order_now')
+                                    .removeClass('active')
+                                    .html('Go Home');
+
+                                $('.next-mercury').on('click', function() {
+                                    window.location.href = "/choose";
+                                });
+
+                                alert('go to Diginos!');
+                            } else {
+                                alert(data);
                             }
+                        })
+                        .error(function() {
+                            alert('An error has occurred, please restart the page');
                         });
                 } else {
                     alert('Empty payment method');
