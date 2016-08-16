@@ -132,12 +132,6 @@ class OrderCTRL extends Controller
         
         $minValue = ($minOrderValue) ? $minOrderValue->G_Value : 0;
 
-        if ($minValue) {
-            $minValue = $minValue->G_Value;
-        } else {
-            $minValue = 0;
-        }
-
         if ($sub_total >= $minValue) {
             $id = static::createOrder(
                 $cart,
