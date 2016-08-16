@@ -64,7 +64,7 @@ class OrderCTRL extends Controller
             $delivery_val = ($deliveryValue) ? $deliveryValue->G_Value : 0;
 
             $hd_sell = 1;
-            $hd_delivery = (float)$delivery_val->G_Value;
+            $hd_delivery = (float)$delivery_val;
             $or_delivery = true;
         }
 
