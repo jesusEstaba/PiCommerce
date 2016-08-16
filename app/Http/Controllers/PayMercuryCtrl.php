@@ -68,8 +68,6 @@ class PayMercuryCtrl extends Controller
 
 		$initPaymentRequest = ['request' => $finalData];
 		
-		$initPaymentRequest = ['request' => $paramsDataPayment];
-
 		return $this->wsClient->VerifyPayment($initPaymentRequest)->VerifyPaymentResult;
 	}
 
