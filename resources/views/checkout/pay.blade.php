@@ -78,6 +78,18 @@
 							</div>
 							<div class="divisor">
 								<h4>Payment Method</h4>
+								<div>
+									<input name="mtpay" id="credit" value="2" type="radio" checked/>
+									<label for="credit">
+										<img src="{{asset('images/extras/paymethods.png')}}">
+									</label>
+									<input name="mtpay" id="cash" value="1" type="radio"/>
+									<label for="cash">
+										<b>Cash</b>
+									</label>
+									
+									
+								</div>
 								<div class="hide icons-pay">
 									<span class="pf pf-cash"></span>
 									<span class="pf pf-maestro"></span>
@@ -85,7 +97,7 @@
 									<span class="pf pf-paypal"></span>
 									<span class="pf pf-stripe"></span>
 								</div>
-								<form class="form-horizontal" role="form">
+								<form class="hide form-horizontal" role="form">
 									<fieldset>
 										<legend>
 											<div>

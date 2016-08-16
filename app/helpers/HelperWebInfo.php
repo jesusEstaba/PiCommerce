@@ -66,4 +66,21 @@ class HelperWebInfo
     {
         return Static::configMessage('Coordinates');
     }
+
+    public static function passwords1Val(string $table)
+    {
+        return DB::table('password1')
+            ->select('G_Value')
+            ->where('G_Description', $table)
+            ->first()
+            ->G_Value;
+    }
+
+    public static function passwords1Id(int $id)
+    {
+        return DB::table('password1')
+                ->select('G_Value')
+                ->where('G_Id', $id)
+                ->first();
+    }
 }

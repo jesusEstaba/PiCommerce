@@ -10,17 +10,20 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+
+
+/*
 Route::get('create-pay', 'PayCheckoutCtrl@index');
 //Route::get('crate-pay', '@index');
+*/
+Route::post('checkout/verify', 'PayCheckoutCtrl@transaction');
+Route::post('/checkout/mercuryVerify', 'OrderCTRL@verify');
 
-Route::post('process-pay', 'PayCheckoutCtrl@transaction');
-
-//
 
 Route::group(['middleware' => 'force_https_url_scheme'], function () {
 
     #TEST ROUTES
-    Route::get('testmail/{email}', 'SendMailCTRL@test');
+    #Route::get('testmail/{email}', 'SendMailCTRL@test');
 
     Route::get('geolocation', function () {
         return view('geolocation');
@@ -62,7 +65,9 @@ Route::group(['middleware' => 'force_https_url_scheme'], function () {
 
         Route::get('/activated/{token}', 'ResetPasswordCTRL@activeAccount');
 
-        Route::get('/add_to_cart_ajax', 'CartCTRL@back');
+        Route::get('/add_to_cart_ajax', function () {
+            return redirect()->back();
+        });
         Route::post('/add_to_cart_ajax', 'CartCTRL@addAjax');
 
         Route::get('/login', 'LoginCTRL@index');
@@ -71,7 +76,9 @@ Route::group(['middleware' => 'force_https_url_scheme'], function () {
         Route::get('/checkout/{select?}', 'PayCTRL@index');
         Route::get('/coupon/{coupon}', 'CouponsCTRL@return_discount');
 
-        Route::get('/order_now', 'OrderCTRL@back');
+        Route::get('/order_now', function () {
+            return redirect()->back();
+        });
         Route::post('/order_now', 'OrderCTRL@create');
 
         Route::group(['prefix'=>'reset'], function () {
