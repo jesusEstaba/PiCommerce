@@ -36,7 +36,7 @@ var varName = function(){
 
 $(function(){
 	
-	setInterval(varName, 15000);
+	setInterval(varName, 5000);
 
 	
 });
