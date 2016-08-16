@@ -19,11 +19,32 @@ class PayCTRL extends Controller
      * [index description]
      * @return [type] [description]
      */
-    public function index($select = '')
+    public function index(Request $request, $select = '')
     {
         /**
          * Revisar las condiciones cuando sea Quick, Delivery o Pickup
          */
+
+        if (isset($request['PaymentID'])) {
+            $existOrder = DB::table('hd_tticket')
+                ->where('Hd_PaymentId', $request['PaymentID'])
+                ->where('Hd_Status', 0)
+                ->first();
+            
+            if ($existOrder) {
+                DB::table('hd_tticket')
+                    ->where('Hd_PaymentId', $request['PaymentID'])
+                    ->delete();
+
+                DB::table('dt_tticket')
+                    ->where('Dt_Ticket', $existOrder->Hd_Ticket)
+                    ->delete();
+
+                DB::table('dt_topping')
+                    ->where('DTt_Ticket', $existOrder->Hd_Ticket)
+                    ->delete();
+            }
+        } 
 
         //ver si hay errores con la session
         if (Auth::check() || (Session::has('id_cart') && Session::has('email'))) {

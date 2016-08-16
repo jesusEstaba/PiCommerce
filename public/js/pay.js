@@ -163,7 +163,7 @@ $(function() {
 
                                 $('.next-mercury').on('click', function() {
                                     var jForm = $(
-                                        '<form action="https://hc.mercurycert.net/Checkout.aspx" method="post">' +
+                                        '<form action="' + data.url + '" method="post">' +
                                             '<input name="PaymentID" type="hidden" value="' + data.message + '"\>' +
                                         '</form>'
                                     );
@@ -187,13 +187,13 @@ $(function() {
                                     .removeClass('active')
                                     .html('Go Home');
 
-                                $('.next-mercury').on('click', function() {
+                                $('.go-home').on('click', function() {
                                     window.location.href = "/choose";
                                 });
 
                                 alert('go to Diginos!');
                             } else {
-                                alert(data);
+                                console.log(data);
                             }
                         })
                         .error(function() {

@@ -15,13 +15,13 @@
 						<div class="white space-bottom">
 
 							@if($select=='delivery')
-							@if(!$delivery)
-							<div class="divisor">
-								<h3 class="text-danger">
-								Your are not in the zipcode range, This order will be ready for pickup.
-								</h3>
-							</div>
-							@endif
+								@if(!$delivery)
+									<div class="divisor">
+										<h3 class="text-danger">
+										Your are not in the zipcode range, This order will be ready for pickup.
+										</h3>
+									</div>
+								@endif
 							@endif
 
 							<div class="row">
