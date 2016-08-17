@@ -21,7 +21,7 @@
 						<b>Quantity</b>
 					</td>
 					<td>
-						<b>Price</b>
+						<b>Unit Price</b>
 					</td>
 					<td>
 						<b>Toppings</b>
@@ -29,9 +29,15 @@
 				</tr>
 				@foreach($cart as $table => $campo)
 					<?php $total_price_top = 0;?>
-					@foreach($campo->toppings_list as $tab => $val)
-						<?php $total_price_top += $val->price;?>
-					@endforeach
+					@if(isset($campo->toppings_list))
+						@foreach($campo->toppings_list as $tab => $val)
+							<?php $total_price_top += $val->price;?>
+						@endforeach
+					@else
+						@foreach($campo->subItems as $tab => $val)
+							<?php $total_price_top += $val->Sz_Price;?>
+						@endforeach
+					@endif
 
 
 				<tr id-cart="{{$campo->id}}" class="item-pay">
@@ -52,28 +58,30 @@
 					</td>
 					<td>
 						<ul class="topping-list">
-									@foreach($campo->toppings_list as $tab => $val)
-										<?php
-										if($val->size==1)
-											$size_topping = "";
-										elseif($val->size==2)
-											$size_topping = " [left]";
-										elseif($val->size==3)
-											$size_topping = " [rigth]";
-										elseif($val->size==4)
-											$size_topping = " [extra]";
-										elseif($val->size==5)
-											$size_topping = " [lite]";
-										else
-											$size_topping = "";
-										?>
-										<li>
-											<b>{{strtolower($val->Tp_Descrip).$size_topping}}</b>
-											@if($val->price > 0)
-												<span><b>:</b> ${{$val->price}}</span>
-											@endif
-										</li>
-									@endforeach
+							@if(isset($campo->toppings_list))
+								@foreach($campo->toppings_list as $tab => $val)
+								<?php
+								if($val->size==1)
+									$size_topping = "";
+								elseif($val->size==2)
+									$size_topping = " [left]";
+								elseif($val->size==3)
+									$size_topping = " [rigth]";
+								elseif($val->size==4)
+									$size_topping = " [extra]";
+								elseif($val->size==5)
+									$size_topping = " [lite]";
+								else
+									$size_topping = "";
+								?>
+								<li>
+									<b>{{strtolower($val->Tp_Descrip).$size_topping}}</b>
+									@if($val->price > 0)
+									<span><b>:</b> ${{$val->price}}</span>
+									@endif
+								</li>
+								@endforeach
+							@endif
 						</ul>
 					</td>
 				</tr>

@@ -140,7 +140,7 @@ class CartCTRL extends Controller
             Session::forget('quantity');
         }
 
-        $cart = static::searchCartItems();
+        $cart = static::searchCartItems('comboSubItems');
 
         if (!isset($size)) {
             $size = "";
@@ -190,9 +190,12 @@ class CartCTRL extends Controller
             ->where('cart.id_user', $idUserTemp)
             //->where('is_combo', 0)
             ->where(
-                function ($query) use ($idCart) {
+                function ($query) use ($idCart, $asc) {
                     if ($idCart) {
                         $query->where('id', $idCart);
+                    }
+                    if ($asc==='comboSubItems') {
+                        $query->where('combo', 0);
                     }
                 }
             )
@@ -216,19 +219,31 @@ class CartCTRL extends Controller
 
 
         foreach ($cart as $key => $value) {
-            $toppingsList = DB::table('cart_top')
-                ->join('toppings', 'toppings.Tp_Id', '=', 'cart_top.id_topping')
-                ->where('id_cart', $value->id)
-                ->orderBy('id_cart')
-                ->select(
-                    'toppings.Tp_Id',
-                    'toppings.Tp_Descrip',
-                    'cart_top.price',
-                    'cart_top.size'
-                )
-                ->get();
 
-            $value->{'toppings_list'} = $toppingsList;
+            if ($asc==='comboSubItems' && $value->is_combo==1) {
+                $subItemsCombo = DB::table('cart')
+                    ->join('size', 'size.Sz_Id', '=', 'cart.product_id')
+                    ->join('items', 'items.It_Id', '=', 'size.Sz_Item')
+                    ->where('combo', $value->id)
+                    ->get();
+
+                $value->subItems = $subItemsCombo;
+            } else {
+                $toppingsList = DB::table('cart_top')
+                    ->join('toppings', 'toppings.Tp_Id', '=', 'cart_top.id_topping')
+                    ->where('id_cart', $value->id)
+                    ->orderBy('id_cart')
+                    ->select(
+                        'toppings.Tp_Id',
+                        'toppings.Tp_Descrip',
+                        'cart_top.price',
+                        'cart_top.size'
+                    )
+                    ->get();
+
+                $value->toppings_list = $toppingsList;
+
+            }
         }
 
         return $cart;

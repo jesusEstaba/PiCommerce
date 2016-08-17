@@ -91,7 +91,7 @@ class RegisterCTRL extends Controller
                         DB::table('users')->insert([
                             'password' => bcrypt($request['password']),
                             'email' => $request['email'],
-                            'phone'=> $request['phone'],
+                            'phone'=> (int)$request['phone'],
                         ]);
 
                         if (!empty($request['day_birthday']) &&
