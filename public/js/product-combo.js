@@ -365,7 +365,7 @@ $(function() {
     //Botones de ir al checkout y cargar al Carrito
     $('.btn-checkout').click(function() {
         if (!$(this).hasClass('off-check')) {
-            window.location.href = '/select';
+            window.location.href = '/checkout';
         }
     });
 

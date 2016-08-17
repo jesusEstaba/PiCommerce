@@ -108,7 +108,7 @@
 			
 		</div>
 		<div class="col-md-offset-1 col-md-3">
-			<a href="{{url('select')}}" class="btn btn-success btn-lg pay-btn">Checkout</a>
+			<a href="{{url('checkout')}}" class="btn btn-success btn-lg pay-btn">Checkout</a>
 		</div>
 	</div>
 </div>

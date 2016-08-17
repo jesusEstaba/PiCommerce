@@ -30,10 +30,13 @@ Route::group(['middleware' => 'force_https_url_scheme'], function () {
         Route::get('/category/{name_category}', 'CategoryCTRL@category');
         Route::get('/product/{cat}/{id}/{sub?}', 'ProductCTRL@index');
 
-        Route::get('/select', 'PayCTRL@select');
+        
         
         //CHECKOUT
         Route::group(['prefix'=>'checkout'], function () {
+
+            Route::get('/', 'PayCTRL@select');
+            
             Route::match(['GET', 'POST'], '{name}', 'PayCTRL@index')
                 ->where(['name'=>'(pickup|delivery)']);
 
