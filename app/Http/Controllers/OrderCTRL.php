@@ -11,7 +11,7 @@ use Auth;
 use Carbon\Carbon;
 use Mail;
 use Session;
-use Input;
+//use Input;
 
 class OrderCTRL extends Controller
 {
@@ -30,7 +30,7 @@ class OrderCTRL extends Controller
      *      --se calculan los impuestos, descuentos y propinas
      * -se crean los registro de facturacion
      */
-    public static function create()
+    public static function create(Request $request)
     {
         $hd_sell = 2;#PICKUP//poner un mensaje en caso de que estaba en delivery y no se pudo
         $hd_charge = 0;
@@ -42,7 +42,7 @@ class OrderCTRL extends Controller
         $or_charge = false;
         $or_tip = false;
 
-        if (Input::get('card')==='true') {
+        if ($request['card']==='true') {
             $fee = DB::table('payform')
                 ->select('Pf_Charge')
                 ->where('Pf_Id', 2)
@@ -54,7 +54,7 @@ class OrderCTRL extends Controller
             $or_charge = true;
         }
 
-        if (Input::get('delivery')==='true') {
+        if ($request['delivery']==='true') {
             
             $deliveryValue = DB::table('password1')
                 ->select('G_Value')
@@ -68,8 +68,8 @@ class OrderCTRL extends Controller
             $or_delivery = true;
         }
 
-        if (Input::get('tips')==='true') {
-            $tip = (float)Input::get('tip');
+        if ($request['tips']==='true') {
+            $tip = (float)$request['tip'];
             $tip = round($tip, 2);
             $hd_tips = $tip;
             $or_tip = true;
@@ -176,6 +176,7 @@ class OrderCTRL extends Controller
                 $mercuryResponse = static::createPayment([
                     'Invoice' => $id,
                     'TotalAmount' =>  round($total_de_la_Orden, 2),
+                    'TaxAmount' => $hd_charge,
                     'CustomerCode' => $phonePurchase,
                     'Memo' => $memoPerchase,
                 ],
@@ -243,7 +244,6 @@ class OrderCTRL extends Controller
         $checkouts = [1 => 'delivery', 2 => 'pickup'];
 
         $dataPayment = [
-            'TaxAmount' => 0.0,
             'TranType' => 'Sale',
             'Frequency' => 'OneTime',
             'ProcessCompleteUrl' => url('/checkout/verify'),

@@ -11,27 +11,10 @@
 |
 */
 
-
-/*
-Route::get('create-pay', 'PayCheckoutCtrl@index');
-//Route::get('crate-pay', '@index');
-*/
-
-Route::post('checkout/verify', 'PayCheckoutCtrl@transaction');
-Route::post('/checkout/mercuryVerify', 'OrderCTRL@verify');
-
-
 Route::group(['middleware' => 'force_https_url_scheme'], function () {
 
     #TEST ROUTES
-    #Route::get('testmail/{email}', 'SendMailCTRL@test');
-
-    Route::get('geolocation', function () {
-        return view('geolocation');
-    });
-
-    Route::post('calculate', 'RegisterCTRL@distance');
-
+        #Route::get('testmail/{email}', 'SendMailCTRL@test');
     #END TEST ROUTES
 
     Route::get('/', function () {
@@ -49,11 +32,17 @@ Route::group(['middleware' => 'force_https_url_scheme'], function () {
 
         Route::get('/select', 'PayCTRL@select');
         
-        Route::get('/checkout/pickup', 'PayCTRL@index');
+        //CHECKOUT
+        Route::group(['prefix'=>'checkout'], function () {
+            Route::match(['GET', 'POST'], '{name}', 'PayCTRL@index')
+                ->where(['name'=>'(pickup|delivery)']);
 
-        Route::get('/checkout/quick', 'QuickPayCTRL@index');
-
-        Route::post('/checkout/quick/order', 'QuickPayCTRL@createOrderQuick');
+            Route::post('/verify', 'PayCTRL@verifyTransaction');
+            Route::post('/mercuryVerify', 'OrderCTRL@verify');
+            
+            Route::get('/quick', 'QuickPayCTRL@index');
+            Route::post('/quick/order', 'QuickPayCTRL@createOrderQuick');
+        });
 
 
         Route::get('/register', 'RegisterCTRL@index');
@@ -75,7 +64,7 @@ Route::group(['middleware' => 'force_https_url_scheme'], function () {
         Route::get('/login', 'LoginCTRL@index');
         Route::post('/login', 'LoginCTRL@login');
 
-        Route::match(['GET', 'POST'], '/checkout/{select?}', 'PayCTRL@index');
+        
         Route::get('/coupon/{coupon}', 'CouponsCTRL@return_discount');
 
         Route::get('/order_now', function () {

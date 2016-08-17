@@ -185,7 +185,7 @@
             
             <input type="submit" class="hide sending" value="reg" />
             <script src='https://www.google.com/recaptcha/api.js'></script>
-            {!!Form::token()!!}
+            
             {!!Form::close()!!}
         </div>
     </div>
@@ -282,133 +282,134 @@
 
 
 <script type="text/javascript">
-String.prototype.capitalizeFirstLetter = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
-}
-
-function validateFields(namesArray) {
-    var message = '';
-
-    namesArray.forEach(function(name){
-        if (!$('[name='+ name +']').val()){
-            message += '<li>' + name.capitalizeFirstLetter().replace("_", " ")  +' is required</li>';
-        }
-    });
-
-    return message;
-}
-
-var streets = [
-    @foreach($streets as $tab => $table)
-    "{{strtolower($table->St_ZipCode)}}",
-    @endforeach
-];
-var availableTags = [
-    @foreach($codes as $tab => $table)
-    "{{strtolower($table->St_Name)}}",
-    @endforeach
-];
-
-var fecha_act = new Date();
-var anno_actual = fecha_act.getFullYear();
-var anno_cien = anno_actual - 150;
-var option_years;
-
-for (var i = anno_actual; i > anno_cien; i--) {
-    option_years += '<option value="'+ i +'">' + i + '</option>';
-}
-
-$('[name=year_birthday]').append(option_years);
-/*
-var startDate = new Date((fecha_act.getFullYear() - 100) + '-01-01');
-var endDate = new Date(fecha_act.getFullYear() + "-" + (fecha_act.getMonth() + 1) + "-" + fecha_act.getDate());
-*/
-
-$(document).ready(function() {
-    $('select option').each(function(index, el) {
-        if ($(this).parent().attr('value')==$(this).val()) {
-            $(this).attr('selected', true);
-        }
-    });
-
-   
-
-    /*$('#from-datepicker').datetimepicker({
-    pickTime: false,
-    weekStart: 1,
-    todayBtn: 1,
-    autoclose: 1,
-    todayHighlight: 1,
-    startView: 4,
-    keyboardNavigation: 1,
-    minView: 1,
-    forceParse: 0,
-    startDate: startDate,
-    endDate: endDate,
-    setDate: startDate
-    });*/
-
-    $('[name=zip_code]').autocomplete({
-        source: streets,
-        search: function(oEvent, oUi) {
-            var sValue = $(oEvent.target).val();
-            var aSearch = [];
-            $(streets).each(function(iIndex, sElement) {
-                if (sElement.substr(0, sValue.length) == sValue) {
-                    aSearch.push(sElement);
-                }
-            });
-            $(this).autocomplete('option', 'source', aSearch);
-        }
-    });
-
-    $("#tags").autocomplete({
-        source: availableTags,
-        search: function(oEvent, oUi) {
-            var sValue = $(oEvent.target).val();
-            var aSearch = [];
-            $(availableTags).each(function(iIndex, sElement) {
-                if (sElement.substr(0, sValue.length) == sValue) {
-                    aSearch.push(sElement);
-                }
-            });
-            $(this).autocomplete('option', 'source', aSearch);
-        }
-    });
-
-    $('.send').click(function() {
-        var message = '';
-        message += validateFields([
-            'password',
-            'email',
-            'phone',
-            'name',
-            'street_number',
-            'street_name',
-            'zip_code',
-        ]);
-
-        if (!$("[name=terms]:checked").length) {
-            message += "<li>Accept the Terms and Conditions</li>";
-        }
-
-        if ($('[name=password]').val() != $('[name=confirm]').val()){
-            message += "<li>Passwords do not match</li>";
-        }
-
-        if (message) {
-            $("#myModal .modal-title").html('<h4>Error</h4>');
-            $("#myModal .modal-body").html('<ul>' + message + '</ul>');
-            $('#myModal').modal('show');
+    function getPositionFields() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(getDistance);
         } else {
             $('.sending').click();
         }
-    });
+    }
 
-    $('.activate_terms').click(function(){
-        $('#terms').modal('show');
+    function getDistance(position) {
+        position = position.coords;
+        if ($('[name=latitude]').length==0) {
+            $('form').append(
+                '<input type="hidden" value="' + position.latitude + '" name="latitude">' +
+                '<input type="hidden" value="' + position.longitude.toFixed(7) + '" name="longitude">'
+            );
+        }
+
+        $('.sending').click();
+    }
+
+    String.prototype.capitalizeFirstLetter = function() {
+        return this.charAt(0).toUpperCase() + this.slice(1);
+    }
+
+    function validateFields(namesArray) {
+        var message = '';
+
+        namesArray.forEach(function(name){
+            if (!$('[name='+ name +']').val()){
+                message += '<li>' + name.capitalizeFirstLetter().replace("_", " ")  +' is required</li>';
+            }
+        });
+
+        return message;
+    }
+
+    var streets = [
+        @foreach($streets as $tab => $table)
+            "{{strtolower($table->St_ZipCode)}}",
+        @endforeach
+    ];
+    var availableTags = [
+        @foreach($codes as $tab => $table)
+            "{{strtolower($table->St_Name)}}",
+        @endforeach
+    ];
+
+    var fecha_act = new Date();
+    var anno_actual = fecha_act.getFullYear();
+    var anno_cien = anno_actual - 150;
+    var option_years;
+
+    for (var i = anno_actual; i > anno_cien; i--) {
+        option_years += '<option value="'+ i +'">' + i + '</option>';
+    }
+
+    $('[name=year_birthday]').append(option_years);
+
+
+    $(document).ready(function() {
+        $('select option').each(function(index, el) {
+            if ($(this).parent().attr('value')==$(this).val()) {
+                $(this).attr('selected', true);
+            }
+        });
+
+
+        $('[name=zip_code]').autocomplete({
+            source: streets,
+            search: function(oEvent, oUi) {
+                var sValue = $(oEvent.target).val();
+                var aSearch = [];
+                $(streets).each(function(iIndex, sElement) {
+                    if (sElement.substr(0, sValue.length) == sValue) {
+                        aSearch.push(sElement);
+                    }
+                });
+                $(this).autocomplete('option', 'source', aSearch);
+            }
+        });
+
+        $("#tags").autocomplete({
+            source: availableTags,
+            search: function(oEvent, oUi) {
+                var sValue = $(oEvent.target).val();
+                var aSearch = [];
+                $(availableTags).each(function(iIndex, sElement) {
+                    if (sElement.substr(0, sValue.length) == sValue) {
+                        aSearch.push(sElement);
+                    }
+                });
+                $(this).autocomplete('option', 'source', aSearch);
+            }
+        });
+
+        $('.send').click(function() {
+            var message = '';
+            message += validateFields([
+                'password',
+                'email',
+                'phone',
+                'name',
+                'street_number',
+                'street_name',
+                'zip_code',
+            ]);
+
+            if (!$("[name=terms]:checked").length) {
+                message += "<li>Accept the Terms and Conditions</li>";
+            }
+
+            if ($('[name=password]').val() != $('[name=confirm]').val()){
+                message += "<li>Passwords do not match</li>";
+            }
+
+            if (message) {
+                $("#myModal .modal-title").html('<h4>Error</h4>');
+                $("#myModal .modal-body").html('<ul>' + message + '</ul>');
+                $('#myModal').modal('show');
+            } else {
+                getPositionFields();
+            }
+        });
+
+        $('.activate_terms').click(function(){
+            $('#terms').modal('show');
+        });
     });
-});
 </script>
 
 @stop

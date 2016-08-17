@@ -214,4 +214,17 @@ class PayCTRL extends Controller
     {
         return view('checkout.selection');
     }
+
+
+    /**
+     * 
+     */
+    public function verifyTransaction(Request $request)
+    {
+        return view('verifyPayment')->with([
+            'PaymentID' => $request['PaymentID'],
+            'ReturnCode' => $request['ReturnCode'],
+            'ReturnMessage' => $request['ReturnMessage'],
+        ]);
+    }
 }

@@ -19,10 +19,6 @@ class RegisterCTRL extends Controller
 {
     public function index()
     {
-        /*
-        $codes = DB::select('SELECT * from street where St_City = ?', ['Orlando']);
-        $streets = DB::select('SELECT distinct St_ZipCode from street');
-        */
         $codes = DB::table('street')
             ->select('St_Name')
             ->get();
@@ -51,14 +47,14 @@ class RegisterCTRL extends Controller
 
     public function register(Request $request)
     {
-        $secretKey = '6LdrFB0TAAAAAGKvs-WNMXulyCbpB81xFaM0jj5k';
+        $secretKey = env('API_GOOGLE_RECAPTCHA', '');
         $gReCaptcha = $request['g-recaptcha-response'];
 
         $url = 'https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$gReCaptcha;
         $jsonObj = file_get_contents($url);
         $json = json_decode($jsonObj, true);
 
-        if ($json['success']) {
+        if ($json['success'] || env('APP_ENV')=='local') {
             $rules = [
                 'password' => 'required|min:6',
                 'email' => 'required|email',
@@ -78,7 +74,7 @@ class RegisterCTRL extends Controller
                     ->get();
 
                 $datos_phone = DB::table('customers')
-                    ->where('Cs_Phone', $request['phone'])
+                    ->where('Cs_Phone', (int)$request['phone'])
                     ->select('Cs_Phone')
                     ->get();
 
@@ -90,6 +86,8 @@ class RegisterCTRL extends Controller
                     );
 
                     if ($errorToSend===0) {
+
+
                         DB::table('users')->insert([
                             'password' => bcrypt($request['password']),
                             'email' => $request['email'],
@@ -113,9 +111,13 @@ class RegisterCTRL extends Controller
                             $birthdayCustomer = '.';
                         }
 
+                        $distance = $this->distance($request['latitude'], $request['longitude']);
+
+                        $distance = ($distance['calc']) ? $distance['val'] : '';
+
                         DB::table('customers')->insert([
                             'Cs_Email1' => $request['email'],
-                            'Cs_Phone'=> $request['phone'],
+                            'Cs_Phone'=> (int)$request['phone'],
                             'Cs_Name' => $request['name'],
                             'Cs_Company' => $request['company'],
                             'Cs_Number' => $request['street_number'],
@@ -125,11 +127,12 @@ class RegisterCTRL extends Controller
                             'Cs_ZipCode' => $request['zip_code'],
                             'Cs_Notes' => $request['special_directions'],
                             'Cs_Birthday'=>$birthdayCustomer,
+                            'Cs_Distance' => $distance,
                             /*
                             '' => $request['aparment_complex'],
                             '' => $request['city'],
                             */
-                           'Cs_Building' => '.',
+                            'Cs_Building' => '.',
                             'Cs_StreetPost' => '.',
                             'Cs_Across' => '.',
                             'Cs_NC' => '.',
@@ -174,10 +177,18 @@ class RegisterCTRL extends Controller
     }
 
 
-    public function distance()
+    /**
+     *  Devuelve la destancia en kilometros de la ubicaion del cliente
+     *  y el restaurante
+     *  
+     *  @return array [calc true => devuelve ['value'] que tiene la distancia, false => no se pudo calcular]
+     */
+    public function distance($latilude, $longitude)
     {
-        if (Input::get('latitude') && Input::get('longitude')) {
-            $origen = Input::get('latitude') . ',' . Input::get('longitude');
+        $response = ['calc' => false];
+
+        if ($latilude && $longitude) {
+            $origen = $latilude . ',' . $longitude;
             
             $coord = DB::table('config')
                 ->where('Cfg_Descript', 'Coordinates')
@@ -189,15 +200,28 @@ class RegisterCTRL extends Controller
             $url = 'https://maps.googleapis.com/maps/api/distancematrix/json?'
             .'origins=' . $origen
             .'&destinations=' . $destino
-            .'&key=AIzaSyA3e2Ey7BfbbgtLeRanUubsmHAn9EAPPek';
+            .'&key=' . env('API_GOOGLE_MAPS_DISTANCE', '');
 
             $jsonObj = file_get_contents($url);
-            $response = json_decode($jsonObj, true);
-        } else {
-            $response = ['empty'];
+            $respJson = json_decode($jsonObj, true);
+
+
+            if ($respJson['status'] == "OK") {
+                $respuesta = $respJson['rows'][0]['elements'][0];
+                
+                if ($respuesta['status'] == "OK") {
+                    $distance = (float) $respuesta['distance']['value'];
+                    $distance /= 1000;// conversion a kilometros
+
+                    $response = [
+                        'calc' => true,
+                        'val' => $distance,
+                    ];
+                }
+            }
         }
 
-        return response()->json($response);
+        return $response;
     }
 
 }

@@ -147,10 +147,8 @@ $(function() {
                         })
                         .done(function(data) {
                             if (data.status === 0) {
-                                //window.location.href = "/choose";
-                                console.info(data.message);
+                                console.warn(data);
                             } else if (data.status === 1) {
-                                
                                 $('.order_now')
                                     .off()
                                     .addClass('next-mercury')
@@ -175,7 +173,7 @@ $(function() {
                                 });
 
 
-                                console.info(data.message);
+                                //console.info(data.message);
                             } else if (data.status === 2) {
                                 $('.order_now')
                                     .off()
@@ -193,7 +191,7 @@ $(function() {
 
                                 alert('go to Diginos!');
                             } else {
-                                console.log(data);
+                                console.error(data);
                             }
                         })
                         .error(function() {
