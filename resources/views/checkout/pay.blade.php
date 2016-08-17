@@ -261,7 +261,9 @@
       <div class="modal-body">
         the minimum order is $<span id="min-value">{{number_format($minValue, 2)}}</span>
       </div>
+
       <div class="modal-footer">
+      	<a href="{{url('menu')}}" class="btn btn-primary">go to Menu</a>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>

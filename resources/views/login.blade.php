@@ -71,7 +71,7 @@
 						<div class="col-xs-12">
 							<input class="btn btn-primary" type="submit" value="Login">
 							<a href="{{url('register')}}" class="btn btn-success">Register</a>
-							<a href="{{url('choose')}}" class="btn btn-warning">Skip</a>
+							<a href="{{url('menu')}}" class="btn btn-warning">Skip</a>
 						</div>
 					</div>
 					{!!Form::token()!!}

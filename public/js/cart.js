@@ -9,7 +9,7 @@ $(function() {
         var id = $(this).attr('id-item');
         var price = $(this).attr('price');
 
-        element_box_delete.remove()
+        element_box_delete.remove();
         var total = parseFloat($(".total-in_cart").html()) - parseFloat(price);
         $(".total-in_cart").html(total.toFixed(2));
         $('.total_cart_price').html(total.toFixed(2));

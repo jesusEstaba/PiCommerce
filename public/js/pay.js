@@ -186,7 +186,7 @@ $(function() {
                                     .html('Go Home');
 
                                 $('.go-home').on('click', function() {
-                                    window.location.href = "/choose";
+                                    window.location.href = "/menu";
                                 });
 
                                 alert('go to Diginos!');
