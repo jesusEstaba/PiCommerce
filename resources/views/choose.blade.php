@@ -1,6 +1,6 @@
 @extends('sections.main')
 
-@section('title', 'Choose')
+@section('title', 'Menu')
 @section('content')
 
 

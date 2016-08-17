@@ -61,7 +61,7 @@ class LoginCTRL extends Controller
                 return Redirect::to('cart');
             }
 
-            return Redirect::to('choose');
+            return Redirect::to('menu');
         }
 
         Session::flash('message-error','User or Password is Incorrect!');

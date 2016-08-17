@@ -26,7 +26,7 @@ Route::group(['middleware' => 'force_https_url_scheme'], function () {
 
     Route::group(['middleware'=>'hora'], function () {
         Route::get('/logout', 'LoginCTRL@logout');
-        Route::get('/choose', 'ChooseCTRL@index');
+        Route::get('/menu', 'ChooseCTRL@index');
         Route::get('/category/{name_category}', 'CategoryCTRL@category');
         Route::get('/product/{cat}/{id}/{sub?}', 'ProductCTRL@index');
 

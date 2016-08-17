@@ -53,7 +53,7 @@
 
 				<ul class="dropdown-menu" aria-labelledby="dLabel">
 					<li role="presentation">
-						<a role="menuitem" tabindex="-1" href="{{url('/choose')}}">Home</a>
+						<a role="menuitem" tabindex="-1" href="{{url('/menu')}}">Home</a>
 					</li>
 
 					@if(Auth::check())
@@ -81,10 +81,10 @@
 
 				</ul>
 
-			<a href="{{url('/choose')}}" class="btn btn-infosite btn-info hidden-xs"><span class="glyphicon glyphicon-home"></span> Home</a>
+			<a href="{{url('/menu')}}" class="btn btn-infosite btn-info hidden-xs"><span class="glyphicon glyphicon-home"></span> Home</a>
 
 
-			<a href="{{url('choose')}}">
+			<a href="{{url('menu')}}">
 				@if($logo = HelperWebInfo::logo())
 					<img src="{{asset('images/logos/'.$logo)}}" alt="logo" class="logo">
 				@endif

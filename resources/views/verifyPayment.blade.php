@@ -15,7 +15,7 @@
 					{{csrf_field()}}
 				</form>
 
-				<a href="{{url('choose')}}" class="btn btn-primary">Back to Home</a>
+				<a href="{{url('menu')}}" class="btn btn-primary">Back to Home</a>
 			</div>
 		</div>
 	</div>

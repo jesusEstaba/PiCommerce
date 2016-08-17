@@ -12,7 +12,7 @@
 	<nav>
 		<div class="container">
 			@if($logo = HelperWebInfo::logo())
-				<a href="{{url('choose')}}">
+				<a href="{{url('menu')}}">
 					<img src="{{asset('images/logos/'.$logo)}}" alt="logo" class="logo">
 				</a>
 			@endif

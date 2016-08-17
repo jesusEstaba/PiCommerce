@@ -15,7 +15,7 @@
 			<p>
 				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis rhoncus erat et sagittis finibus. Phasellus condimentum quam sem, ac finibus dolor aliquam ut. Duis convallis arcu commodo justo egestas accumsan.
 			</p>
-			<a href="{{url('choose')}}" class="btn btn-primary">Go to Home</a>
+			<a href="{{url('menu')}}" class="btn btn-primary">Go to Home</a>
 		</div>
 		<br>
 		<br>

@@ -23,7 +23,7 @@
 								<a href="{{url('category/'.$category->url)}}"><li>{{$category->name}}</li></a>
 							@endforeach
 						@else
-							<li><a href="{{url('choose')}}">No Categories</a></li>
+							<li><a href="{{url('menu')}}">No Categories</a></li>
 						@endif
 					</ul>
 				</div>
