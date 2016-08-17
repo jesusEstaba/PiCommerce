@@ -77,5 +77,6 @@ footer img {
   }
   .login-box {
     background: none;
+    top: 0;
   }
 }

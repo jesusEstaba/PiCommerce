@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Selection</title>
+	<title>Checkout</title>
 
 	@include('sections.headersCommon')
 

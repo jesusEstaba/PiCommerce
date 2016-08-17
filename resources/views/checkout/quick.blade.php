@@ -1,19 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Quick</title>
-	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-
-	{!!Html::style('assets/bootstrap/css/bootstrap.min.css')!!}
+    <title>Quick</title>
+	@include('sections.headersCommon')
 	{!!Html::style('css/login.css')!!}
-{{--
-	<style type="text/css">
-	body{
-		background: url("{{asset('images/backgrounds/'.$config->background)}}") center center no-repeat fixed !important;
-  		background-size: cover !important;
-	}
-	</style>--}}
+
 </head>
 <body>
 

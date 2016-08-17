@@ -26,7 +26,8 @@
 				margin-top: 65px;
 			}
 		}
-
+		
+		
 		@media (min-width: 768px){
 			.sticky {
 				left: 0;
@@ -35,10 +36,8 @@
 				width: 100%;
 				z-index: 99;
 			}
-			.sticky+.container{
-				margin-top: 63px;
-			}
 		}
+		
 	</style>
 
 </head>
@@ -81,7 +80,7 @@
 
 				</ul>
 
-			<a href="{{url('/menu')}}" class="btn btn-infosite btn-info hidden-xs"><span class="glyphicon glyphicon-home"></span> Home</a>
+			<a href="{{url('/menu')}}" class="btn btn-infosite btn-info hidden-xs"><span class="glyphicon glyphicon-book"></span> Menu</a>
 
 
 			<a href="{{url('menu')}}">
@@ -116,6 +115,14 @@
 	<script type="text/javascript">
 
 		$(document).ready(function() {
+			var cssSticky = "<style type='text/css'>@media (min-width: 768px){" +
+				".sticky+.container{" +
+					"margin-top: " + $('.nav').css('height') + ";" +
+				"}" +
+			"}</style>";
+
+			$('body').append(cssSticky);
+
 			if ($('.nav').length) {
 				var stickyNavTop = $('.nav').offset().top;
 
