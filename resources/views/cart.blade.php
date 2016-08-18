@@ -33,9 +33,13 @@
 						@foreach($campo->toppings_list as $tab => $val)
 							<?php $total_price_top += $val->price;?>
 						@endforeach
-					@else
-						@foreach($campo->subItems as $tab => $val)
-							<?php $total_price_top += $val->Sz_Price;?>
+					@elseif(isset($campo->is_combo)==1)
+						@foreach($campo->subItems as $subKy => $subItem)
+							@eval($total_price_top += $subItem->Sz_Price)
+							
+							@foreach($subItem->toppings_list as $tab => $val)
+								@eval($total_price_top += $val->price)
+							@endforeach
 						@endforeach
 					@endif
 
@@ -45,10 +49,24 @@
 						<spam total-price-product="{{($campo->Sz_Price+$total_price_top)*$campo->quantity}}" class="glyphicon glyphicon-remove delete-element"></spam>
 					</td>
 					<td>
-						<h4 class="title-product">
-							<b>{{$campo->It_Descrip}}</b>
-							{{$campo->Sz_Abrev}}
-						</h4>
+						@if($campo->is_combo==1)
+							<h4 class="title-product">
+								<b>{{$campo->Sz_Abrev}}</b>
+								
+							</h4>
+							<div class="subItems">
+								<ul>
+									@foreach($campo->subItems as $subKy => $subItem)
+										<li>{{$subItem->Sz_Descrip}}</li>
+									@endforeach
+								</ul>
+							</div>
+						@else
+							<h4 class="title-product">
+								<b>{{$campo->It_Descrip}}</b>
+								{{$campo->Sz_Abrev}}
+							</h4>
+						@endif
 					</td>
 					<td>
 						<span class="quantity">{{$campo->quantity}}</span>
@@ -77,7 +95,7 @@
 								<li>
 									<b>{{strtolower($val->Tp_Descrip).$size_topping}}</b>
 									@if($val->price > 0)
-									<span><b>:</b> ${{$val->price}}</span>
+										<span><b>:</b> ${{$val->price}}</span>
 									@endif
 								</li>
 								@endforeach

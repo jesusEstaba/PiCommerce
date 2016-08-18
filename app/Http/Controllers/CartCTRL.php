@@ -178,7 +178,7 @@ class CartCTRL extends Controller
             $orderByCart = 'desc';
         }
 
-        if ($idCart == '') {
+        if ($idCart == '' || $asc === 'recursive') {
             $idUserTemp = Auth::user()->id;
         } else {
             $idUserTemp = 314;
@@ -188,7 +188,6 @@ class CartCTRL extends Controller
             ->join('size', 'size.Sz_Id', '=', 'cart.product_id')
             ->join('items', 'items.It_Id', '=', 'size.Sz_Item')
             ->where('cart.id_user', $idUserTemp)
-            //->where('is_combo', 0)
             ->where(
                 function ($query) use ($idCart, $asc) {
                     if ($idCart) {
@@ -222,31 +221,41 @@ class CartCTRL extends Controller
 
             if ($asc==='comboSubItems' && $value->is_combo==1) {
                 $subItemsCombo = DB::table('cart')
-                    ->join('size', 'size.Sz_Id', '=', 'cart.product_id')
-                    ->join('items', 'items.It_Id', '=', 'size.Sz_Item')
                     ->where('combo', $value->id)
                     ->get();
 
-                $value->subItems = $subItemsCombo;
+                $value->subItems = [];
+
+                foreach ($subItemsCombo as $subKey => $subItem) {
+                    $item = static::searchCartItems('recursive', $subItem->id);
+                    $value->subItems = array_merge($item, $value->subItems);
+                }
+
             } else {
-                $toppingsList = DB::table('cart_top')
-                    ->join('toppings', 'toppings.Tp_Id', '=', 'cart_top.id_topping')
-                    ->where('id_cart', $value->id)
-                    ->orderBy('id_cart')
-                    ->select(
-                        'toppings.Tp_Id',
-                        'toppings.Tp_Descrip',
-                        'cart_top.price',
-                        'cart_top.size'
-                    )
-                    ->get();
-
-                $value->toppings_list = $toppingsList;
-
+                $value->toppings_list = static::loadToppings($value->id);
             }
         }
 
         return $cart;
+    }
+
+
+    /**
+     * 
+     */
+    protected static function loadToppings($idItemCart)
+    {
+        return DB::table('cart_top')
+            ->join('toppings', 'toppings.Tp_Id', '=', 'cart_top.id_topping')
+            ->where('id_cart', $idItemCart)
+            ->orderBy('id_cart')
+            ->select(
+            'toppings.Tp_Id',
+            'toppings.Tp_Descrip',
+            'cart_top.price',
+            'cart_top.size'
+            )
+            ->get();
     }
 
 
@@ -322,7 +331,7 @@ class CartCTRL extends Controller
      *
      * @return [int] [Solo si $quick es True]
      */
-    public static function loadItemToCart(
+    protected static function loadItemToCart(
         $size,
         $toppings,
         $topSize,
@@ -379,7 +388,7 @@ class CartCTRL extends Controller
      * @param [string] $cookingNotes
      * @param [String || Integer] $quantity
      */
-    public function loadComboToCart(
+    protected function loadComboToCart(
         $comboId,
         $sizeId,
         $toppingsId,
@@ -435,7 +444,7 @@ class CartCTRL extends Controller
      * @param [String || Array] $toppings
      * @param [String || Array] $topSize
      */
-    public static function addToppingToCartTop(
+    protected static function addToppingToCartTop(
         $idCart,
         $sizeId,
         $toppings,
