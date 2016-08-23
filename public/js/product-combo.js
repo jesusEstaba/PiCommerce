@@ -369,33 +369,39 @@ $(function() {
         }
     });
 
-    $('.go-checkout-cart').click(function() {
-        var minimumOrderPrice = Number($('.total-price').attr('data-min')),
-            nowInCombo = Number($('.total-price').html());
+    $('.counter-price').on('click', '.ready', function(e) {
+        console.log("BTN");
 
-        if(minimumOrderPrice<nowInCombo) {
-            if ($(this).hasClass('btn-success')) {
-                //apara agregarlo por ajax
-                // recuerda que simpre se sube por ajax con esta funcion
-                sendCombo();
-                
-                $(this)
-                    .toggleClass('active')
-                    .removeClass('btn-success')
-                    .addClass('btn-primary')
-                    .children('span.text-cart')
-                    .text('Go to Cart');
+        if ($('.text-cart').text()=='Add Combo to Cart' ||
+            $('.text-cart').text()=='Go to Cart'
+        ) {
+            var minimumOrderPrice = Number($('.total-price').attr('data-min')),
+                nowInCombo = Number($('.total-price').html());
+
+            if(minimumOrderPrice<nowInCombo) {
+                if ($(this).hasClass('btn-success')) {
+                    //apara agregarlo por ajax
+                    // recuerda que simpre se sube por ajax con esta funcion
+                    sendCombo();
+                    
+                    $(this)
+                        .toggleClass('active')
+                        .removeClass('btn-success')
+                        .addClass('btn-primary')
+                        .children('span.text-cart')
+                        .text('Go to Cart');
+                } else {
+                    if ($(this).hasClass('redirect-cart-now'))
+                        window.location.href = '/cart';
+                }
             } else {
-                if ($(this).hasClass('redirect-cart-now'))
-                    window.location.href = '/cart';
+               alert('minimum order is $' + minimumOrderPrice.toFixed(2)); 
             }
-        } else {
-           alert('minimum order is $' + minimumOrderPrice.toFixed(2)); 
+
+            //$('.btn-checkout').click(function(){});
+
+            //$('.send-to-cart').click();
         }
-
-        //$('.btn-checkout').click(function(){});
-
-        //$('.send-to-cart').click();
     });
 
 
@@ -459,6 +465,41 @@ $(function() {
     });
 
     $(".size")[0].click();
-    $(".tab-items")[0].click(); 
+    $(".tab-items")[0].click();
+    $('.tab-items').not(':first').addClass('disabled');
+
+    $('.next-item').on('click', function(e) {
+        
+
+        var indexSize = 1 + $(".tab-items").index($(".tab-items.active")),
+            lenItems = $('.tab-items').length;
+        
+        //console.log(indexSize + ' ' + lenItems);
+
+        if (indexSize!=lenItems) {
+            $(".tab-items")
+                .addClass('disabled')
+                .removeClass('active');
+            
+            if (indexSize<lenItems) {
+
+                $(".tab-items:eq("+ indexSize + ")")
+                    .removeClass('disabled')
+                    .addClass('active');
+
+                $(".tab-items").get(indexSize).click();
+            }
+
+            if (indexSize==(lenItems)-1) {
+                e.stopPropagation();
+                $('.go-checkout-cart')
+                    .addClass('btn-success ready')
+                    .removeClass('btn-primary')
+                    .children('span.text-cart')
+                    .text('Add Combo to Cart');
+
+            }
+        } 
+    });
     
 });

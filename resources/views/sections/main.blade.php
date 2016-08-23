@@ -52,7 +52,7 @@
 
 				<ul class="dropdown-menu" aria-labelledby="dLabel">
 					<li role="presentation">
-						<a role="menuitem" tabindex="-1" href="{{url('/menu')}}">Home</a>
+						<a role="menuitem" tabindex="-1" href="{{url('/menu')}}">Menu</a>
 					</li>
 
 					@if(Auth::check())
