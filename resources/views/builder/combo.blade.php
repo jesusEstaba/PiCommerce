@@ -319,9 +319,17 @@
 					<h4>Tax: <span class="pull-right">$<span data-tax={{HelperWebInfo::tax()}} class="tax">0.00</span></span></h4>
 					<h3>Total: <span class="pull-right">$<span class="total-cart">0.00</span></span></h3>
 				</div>
-				<a class="btn btn-success go-checkout-cart has-spinner">
+				
+				@if(count($items)==1)
+					<a class="btn btn-success go-checkout-cart ready has-spinner">
 					<span class="spinner"><i class="icon-spin icon-refresh"></i></span>
 					<span class="text-cart">Add Combo to Cart</span>
+				@else
+					<a class="btn btn-primary go-checkout-cart next-item has-spinner">
+					<span class="spinner"><i class="icon-spin icon-refresh"></i></span>
+					<span class="text-cart">Next</span>
+				@endif
+					
 				</a>
 				
 				<a class="btn btn-checkout off-check">Checkout</a>
