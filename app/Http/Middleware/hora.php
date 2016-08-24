@@ -16,9 +16,12 @@ class hora
      */
     public function handle($request, Closure $next)
     {
-        if( CloseCTRL::hora() )
+        $hora = CloseCTRL::hora();
+
+        if ($hora[0]) {
             return $next($request);
+        }
         
-        return redirect()->to('/closed');    
+        return redirect()->to('/closed/' . $hora[1]); 
     }
 }

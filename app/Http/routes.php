@@ -21,8 +21,8 @@ Route::group(['middleware' => 'force_https_url_scheme'], function () {
         return redirect()->to('login');
     });
 
-    Route::get('/now', 'CloseCTRL@now');
-    Route::get('/closed', 'CloseCTRL@index');
+    //Route::get('/now', 'CloseCTRL@now');
+    Route::get('/closed/{type}', 'CloseCTRL@index');
 
     Route::group(['middleware'=>'hora'], function () {
         Route::get('/logout', 'LoginCTRL@logout');

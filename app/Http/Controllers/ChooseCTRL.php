@@ -26,6 +26,12 @@ class ChooseCTRL extends Controller
 
         $combos = DB::table('combo')
             ->where('Cb_Status', 0)
+            ->where('Cb_Lunch', 0)
+            ->get();
+
+        $lunchs = DB::table('combo')
+            ->where('Cb_Status', 0)
+            ->where('Cb_Lunch', 1)
             ->get();
 
         $items = DB::table('products_features')
@@ -61,6 +67,7 @@ class ChooseCTRL extends Controller
             'categories' => $categories,
             'items' => $items,
             'combos' => $combos,
+            'lunchs' => $lunchs,
         ]);
     }
 }

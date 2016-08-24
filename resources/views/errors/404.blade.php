@@ -15,7 +15,7 @@
                 padding: 0;
                 width: 100%;
                 color: #B0BEC5;
-                background: black;
+                background: #fff;
                 display: table;
                 font-weight: 100;
                 font-family: 'Lato';
