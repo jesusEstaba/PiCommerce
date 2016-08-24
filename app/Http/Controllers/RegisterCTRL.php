@@ -74,24 +74,46 @@ class RegisterCTRL extends Controller
                     ->get();
 
                 $datos_phone = DB::table('customers')
-                    ->where('Cs_Phone', (int)$request['phone'])
+                    ->where('Cs_Phone', $request['phone'])
                     ->select('Cs_Phone')
                     ->get();
 
                 if (!$datos && !$datos_phone) {
+                    
+                    $distance = $this->distance(
+                        $request['latitude'], 
+                        $request['longitude']
+                    );
+
+                    $distance = ($distance['calc']) ? $distance['val'] : '';
+
+                    $rangeDelivery = DB::table('config')
+                        ->where('Cfg_Descript', 'Maximum Range Delivery')
+                        ->first();
+
+                    if ($rangeDelivery) {
+                        if ($distance>$rangeDelivery->Cfg_Value1) {
+                            $extra = [
+                                'warning' => $rangeDelivery->Cfg_Message,
+                            ];
+                        } else {
+                            $extra = [];
+                        }
+                    }
+
                     $errorToSend = ResetPasswordCTRL::sendEmailToNewUser(
                         $request['email'],
                         $request['name'],
-                        $request['password']
+                        $request['password'],
+                        $extra
                     );
 
                     if ($errorToSend===0) {
 
-
                         DB::table('users')->insert([
                             'password' => bcrypt($request['password']),
                             'email' => $request['email'],
-                            'phone'=> (int)$request['phone'],
+                            'phone'=> $request['phone'],
                         ]);
 
                         if (!empty($request['day_birthday']) &&
@@ -111,13 +133,9 @@ class RegisterCTRL extends Controller
                             $birthdayCustomer = '.';
                         }
 
-                        $distance = $this->distance($request['latitude'], $request['longitude']);
-
-                        $distance = ($distance['calc']) ? $distance['val'] : '';
-
                         DB::table('customers')->insert([
                             'Cs_Email1' => $request['email'],
-                            'Cs_Phone'=> (int)$request['phone'],
+                            'Cs_Phone'=> $request['phone'],
                             'Cs_Name' => $request['name'],
                             'Cs_Company' => $request['company'],
                             'Cs_Number' => $request['street_number'],

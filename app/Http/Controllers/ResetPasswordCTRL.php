@@ -109,28 +109,28 @@ class ResetPasswordCTRL extends Controller
         return response()->json($response);
     }
 
-    public static function sendEmailToNewUser($userMail, $name, $pass)
+    public static function sendEmailToNewUser($userMail, $name, $pass, $extras=[])
     {
-        $logo = DB::table('config')
-            ->where('Cfg_Descript', 'logo')
-            ->first()
-            ->Cfg_Message;
-
-        $footer = DB::table('config')
-            ->where('Cfg_Descript', 'footer')
-            ->first()
-            ->Cfg_Message;
+        $logo = static::dataConfig('logo');
+        $footer = static::dataConfig('footer');
+        $messageRegister = static::dataConfig('Register Message');
 
         $day = Carbon::now();
+        
         $token_active = md5($userMail . $day . rand());
 
         $variables_correo = [
+            'messageRegister' => $messageRegister,
             'logo' => $logo,
             'footer'=> $footer,
             'title'=>'Active Your Account',
             'name' => $name,
             'pass' => $pass,
         ];
+
+        if (count($extras)) {
+            $variables_correo = array_merge($variables_correo, $extras);
+        }        
 
         $isErrorEmail = SendMailCTRL::sendNow(
             'mail_template.new_user',
@@ -140,6 +140,19 @@ class ResetPasswordCTRL extends Controller
         );
 
         return $isErrorEmail;
+    }
+
+    protected static function dataConfig($value)
+    {
+        $data = DB::table('config')
+            ->where('Cfg_Descript', $value)
+            ->first();
+        
+        if ($data) {
+            return $data->Cfg_Message;
+        }
+
+        return '';
     }
 
     public function reactivate($email)

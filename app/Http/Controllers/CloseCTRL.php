@@ -18,54 +18,66 @@ class CloseCTRL extends Controller
     * [index description]
     * @return [type] [description]
     */
-    public function index()
+    public function index($type)
     {
-        if ($this->hora()) {
-            return redirect()->to('/choose');
+        if (static::hora()[0]) {
+            return redirect()->to('/menu');
         }
-        /*
-        $config_data = DB::table('config')
-            ->select()
-            ->first();
-        */
+
         $logo = DB::table('config')
             ->where('Cfg_Descript', 'logo')
             ->first()
             ->Cfg_Message;
 
-        $mon = '';
-        $tue = '';
-        $wed = '';
-        $thu = '';
-        $fri = '';
-        $sat = '';
-        $sun = '';
-        $message = '';
-        /*
-        if ($config_data->closed) {
-            $message = $config_data->message_close;
-        } else {
-            $mon = $config_data->mon_open.'-'.$config_data->mon_close;
-            $tue = $config_data->tue_open.'-'.$config_data->tue_close;
-            $wed = $config_data->wed_open.'-'.$config_data->wed_close;
-            $thu = $config_data->thu_open.'-'.$config_data->thu_close;
-            $fri = $config_data->fri_open.'-'.$config_data->fri_close;
-            $sat = $config_data->sat_open.'-'.$config_data->sat_close;
-            $sun = $config_data->sun_open.'-'.$config_data->sun_close;
-        }
-        */
+        if ($type == 'hour') {
+            $mon = '';
+            $tue = '';
+            $wed = '';
+            $thu = '';
+            $fri = '';
+            $sat = '';
+            $sun = '';
 
-        return view('closed')->with([
-            'message' => $message,
-            'logo' => $logo,
-            'mon'=> $mon,
-            'tue'=> $tue,
-            'wed'=> $wed,
-            'thu'=> $thu,
-            'fri'=> $fri,
-            'sat'=> $sat,
-            'sun'=> $sun
-        ]);
+            $data = [
+                'logo' => $logo,
+                'mon'=> $mon,
+                'tue'=> $tue,
+                'wed'=> $wed,
+                'thu'=> $thu,
+                'fri'=> $fri,
+                'sat'=> $sat,
+                'sun'=> $sun,
+            ];
+
+        } elseif ($type == 'mantenice') {
+            $message = DB::table('config')
+                ->where('Cfg_Descript', 'Message Close')
+                ->first();
+
+            $message = ($message) ? $message->Cfg_Message : '';
+            
+            $data = [
+                'message' => $message,
+                'logo' => $logo,
+            ]; 
+
+        } elseif ($type == 'holiday') {
+            $date = Carbon::now()->format('Y-m-d');
+
+            $holidayNow = DB::table('holiday_schedule')
+                ->where('HS_Date', $date)
+                ->first();
+
+            $data = [
+                'message' => $holidayNow->HS_Message,
+                'logo' => $logo,
+                'background' => $holidayNow->HS_Background,
+                'title' => $holidayNow->HS_Title,
+            ]; 
+
+        }
+
+        return view('closed')->with($data);
     }
 
 
@@ -75,64 +87,102 @@ class CloseCTRL extends Controller
     */
     public static function hora()
     {
+        $resp = true;
+        $message = '';
+
         $close = DB::table('config')
             ->where('Cfg_Descript', 'Close Store')
             ->first();
 
-        if (!$close->Cfg_Status) {
-            $times = Carbon::now();
-            $hora = $times->toTimeString();
-            $dia = $times->format('l');
+        if ($close->Cfg_Status) {
+            $resp = false;
+            $message = 'mantenice';
+        } elseif(static::holiday()) {
+            $resp = false;
+            $message = 'holiday';
+        } elseif(static::days()) {
+            $resp = false;
+            $message = 'hour';
+        }
 
-            $mon = DB::table('config')
-                ->where('Cfg_Descript', 'Monday')
-                ->first();
-            $tue = DB::table('config')
-                ->where('Cfg_Descript', 'Tuesday')
-                ->first();
-            $wed = DB::table('config')
-                ->where('Cfg_Descript', 'Wednesday')
-                ->first();
-            $thu = DB::table('config')
-                ->where('Cfg_Descript', 'Thursday')
-                ->first();
-            $fri = DB::table('config')
-                ->where('Cfg_Descript', 'Friday')
-                ->first();
-            $sat = DB::table('config')
-                ->where('Cfg_Descript', 'Saturday')
-                ->first();
-            $sun = DB::table('config')
-                ->where('Cfg_Descript', 'Sunday')
-                ->first();
+        return [
+            $resp,
+            $message,
+        ];
+    }
 
-            if ($dia=="Monday" && $hora>=$mon->Cfg_Open && $hora<=$mon->Cfg_Close) {
-                return true;
-            } elseif ($dia=="Tuesday" && $hora>=$tue->Cfg_Open && $hora<=$tue->Cfg_Close) {
-                return true;
-            } elseif ($dia=="Wednesday" && $hora>=$wed->Cfg_Open && $hora<=$wed->Cfg_Close) {
-                return true;
-            } elseif ($dia=="Thursday" && $hora>=$thu->Cfg_Open && $hora<=$thu->Cfg_Close) {
-                return true;
-            } elseif ($dia=="Friday" && $hora>=$fri->Cfg_Open && $hora<=$fri->Cfg_Close) {
-                return true;
-            } elseif ($dia=="Saturday" && $hora>=$sat->Cfg_Open && $hora<=$sat->Cfg_Close) {
-                return true;
-            } elseif ($dia=="Sunday" && $hora>=$sun->Cfg_Open && $hora<=$sun->Cfg_Close) {
-                return true;
-            }
+
+    protected static function holiday()
+    {
+        $date = Carbon::now()->format('Y-m-d');
+
+        $holidays = DB::table('holiday_schedule')
+            ->where('HS_Date', $date)
+            ->where('HS_Status', 0)
+            ->first();
+
+        if ($holidays) {
+            return true;
         }
 
         return false;
     }
 
 
-    public function now()
+    protected static function dbDay($day)
+    {
+        return DB::table('config')
+            ->where('Cfg_Descript', $day)
+            ->select('Cfg_Open as open', 'Cfg_Close as close')
+            ->first();
+    }
+
+
+    protected static function days()
     {
         $times = Carbon::now();
+        
+        $hora = $times->toTimeString();
+        $dia = $times->format('l');
+
+        $mon = static::dbDay('Monday');
+        $tue = static::dbDay('Tuesday');
+        $wed = static::dbDay('Wednesday');
+        $thu = static::dbDay('Thursday');
+        $fri = static::dbDay('Friday');
+        $sat = static::dbDay('Saturday');
+        $sun = static::dbDay('Sunday');
+
+        if ($dia=="Monday" && $hora>=$mon->open && $hora<=$mon->close) {
+            return false;
+        } elseif ($dia=="Tuesday" && $hora>=$tue->open && $hora<=$tue->close) {
+            return false;
+        } elseif ($dia=="Wednesday" && $hora>=$wed->open && $hora<=$wed->close) {
+            return false;
+        } elseif ($dia=="Thursday" && $hora>=$thu->open && $hora<=$thu->close) {
+            return false;
+        } elseif ($dia=="Friday" && $hora>=$fri->open && $hora<=$fri->close) {
+            return false;
+        } elseif ($dia=="Saturday" && $hora>=$sat->open && $hora<=$sat->close) {
+            return false;
+        } elseif ($dia=="Sunday" && $hora>=$sun->open && $hora<=$sun->close) {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    public function now()
+    {
+        $times = Carbon::now()->format('Y-m-d');
+        /*
+        
         $hora = $times->toTimeString();
         $dia = $times->format('l');
 
         return 'Dia:'.$dia.'<br> Hora: '.$hora;
+        */
+        return var_dump($times);
     }
 }

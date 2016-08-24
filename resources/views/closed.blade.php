@@ -1,34 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
 	<title>Closed</title>
-	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-
-	{!!Html::style('assets/bootstrap/css/bootstrap.min.css')!!}
+	@include('sections.headersCommon')
 	{!!Html::style('css/login.css')!!}
-	<style type="text/css">
-	.text-cerrado h2{
-		color:white;
-		text-align: center;
-		margin-bottom: 1em;
-	}
-	.text-cerrado{
-		color:#bbb;
-	}
-	.text-cerrado p{
-		margin: 0;
-	}
-	.login-box{
-		top:-150px;
-	}
 
-	@media (max-width: 991px) {
-		.login-box{
-			top:0;
+	<style type="text/css">
+		.text-cerrado h2{
+			color:white;
+			text-align: center;
+			margin-bottom: 1em;
 		}
-	}
+		.text-cerrado{
+			color:#bbb;
+		}
+		.text-cerrado p{
+			margin: 0;
+		}
+		
+		@media (max-width: 991px) {
+			.text-cerrado {
+				padding: 1em;
+				background: rgba(0,0,0,.2);
+				border-radius: 3px;
+			}
+		}
+
 	</style>
+	
+	@if(isset($background))
+		<style type="text/css">
+			body{
+			background: url("{{asset('images/backgrounds/'.$background)}}") center center no-repeat fixed !important;
+			background-size: cover !important;
+			}
+		</style>		
+	@endif
+
 </head>
 <body>
 
@@ -46,12 +54,17 @@
 				<div class="text-cerrado">
 					<div class="row">
 						<div class="col-xs-12">
-							<h2>Closed</h2>
+							@if(isset($title))
+								<h2>{{$title}}</h2>
+							@else
+								<h2>Closed</h2>
+							@endif
+							
 						</div>
 						<div class="col-xs-12">
-							@if($message)
+							@if(isset($message))
 								<p>{{$message}}</p>
-							@else
+							@elseif(isset($mon))
 								<table class="table">
 									<tr>
 										<td><b>Monday</b></td>

@@ -79,11 +79,20 @@
 				<section>
 					<h1>Welcome {{$name}}!</h1>
 					<p>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque malesuada cursus turpis non rhoncus. Donec non libero tortor. Donec convallis felis sagittis erat eleifend accumsan. Duis lobortis dignissim justo, vel sollicitudin purus ornare at. Nunc metus purus, placerat a semper at, euismod ut nunc
+						{{$messageRegister}}
 					</p>
 					<p>
 						<b>Your Password: </b>{{$pass}}
 					</p>
+
+					@if(isset($warning))
+						<div style="background: #fdfdcd;
+                                    border: 2px solid orange;
+                                    padding: 1em;
+                                    color: black;">
+							{{$warning}}
+						</div>
+					@endif
 
 					<div>
 						<a style="display: inline-block;
