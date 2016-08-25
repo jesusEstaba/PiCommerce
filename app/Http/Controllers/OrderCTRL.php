@@ -137,8 +137,8 @@ class OrderCTRL extends Controller
                 $cart,
                 [
                     'Hd_Sell' => $hd_sell,
-                    'Hd_Date' => $mytime,
-                    'Hd_Time' => $mytime,
+                    'Hd_Date' => $mytime->format('Y-m-d'),
+                    'Hd_Time' => $mytime->format('H:i:s'),
                     'Hd_Customers' => $hdOrderUser,
                     
                     'Hd_User' => 96,#CAMBIAR//REGISTRO NO. 81 DE LA TABLA PASSWORD1//cambiarlo por el nombre del campo para "parametrizarlo"
