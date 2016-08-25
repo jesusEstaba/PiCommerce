@@ -87,7 +87,8 @@ class PayCTRL extends Controller
                             'Cs_Notes',
                             'Cs_Name',
                             'Cs_Phone',
-                            'email'
+                            'email',
+                            'Cs_Distance'
                         )
                         ->first();
                 }
@@ -124,10 +125,24 @@ class PayCTRL extends Controller
                     ->first();
 
                 $delivery = false;
+                $messageDelivery = '';
+
+                $rangeDelivery = DB::table('config')
+                        ->where('Cfg_Descript', 'Maximum Range Delivery')
+                        ->first();
 
                 if ($valid_zip_code) {
                     $delivery = true;
                 }
+
+                if ($rangeDelivery && isset($user->Cs_Distance)) {
+                    if ($user->Cs_Distance > $rangeDelivery->Cfg_Value1) {
+                        $delivery = false;
+                        $messageDelivery = $rangeDelivery->Cfg_Message;
+                    }
+                }
+
+                
 
                 $ip_user = $_SERVER['REMOTE_ADDR'];
                 $query = @unserialize(file_get_contents('http://ip-api.com/php/'.$ip_user));
@@ -179,6 +194,7 @@ class PayCTRL extends Controller
                 $delivery_date = Carbon::now()->format('m-d-Y');
 
                 return view('checkout.pay')->with([
+                    'messageDelivery' => $messageDelivery,
                     'cart' => $cart,
                     'size' => $size,
                     'select'=> $select,
