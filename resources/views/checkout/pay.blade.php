@@ -7,6 +7,13 @@
 	<div class="">
 		<div class="row">
 			<div class="col-xs-12">
+				@if($messageDelivery)
+					<br>
+				    <div class="alert alert-warning alert-dismissable">
+				        <button type="button" class="close" data-dismiss="alert">&times;</button>
+				        <strong>Warning: </strong> {{$messageDelivery}}
+				    </div>
+			    @endif
 				<h2>Pay Order</h2>
 			</div>
 			<div class="col-xs-12">

@@ -30,23 +30,15 @@ class CloseCTRL extends Controller
             ->Cfg_Message;
 
         if ($type == 'hour') {
-            $mon = '';
-            $tue = '';
-            $wed = '';
-            $thu = '';
-            $fri = '';
-            $sat = '';
-            $sun = '';
-
             $data = [
                 'logo' => $logo,
-                'mon'=> $mon,
-                'tue'=> $tue,
-                'wed'=> $wed,
-                'thu'=> $thu,
-                'fri'=> $fri,
-                'sat'=> $sat,
-                'sun'=> $sun,
+                'mon'=> static::hourFormat('Monday'),
+                'tue'=> static::hourFormat('Tuesday'),
+                'wed'=> static::hourFormat('Wednesday'),
+                'thu'=> static::hourFormat('Thursday'),
+                'fri'=> static::hourFormat('Friday'),
+                'sat'=> static::hourFormat('Saturday'),
+                'sun'=> static::hourFormat('Sunday'),
             ];
 
         } elseif ($type == 'mantenice') {
@@ -66,6 +58,7 @@ class CloseCTRL extends Controller
 
             $holidayNow = DB::table('holiday_schedule')
                 ->where('HS_Date', $date)
+                ->where('HS_Status', 0)
                 ->first();
 
             $data = [
@@ -111,6 +104,20 @@ class CloseCTRL extends Controller
         ];
     }
 
+    /*
+    public function now()
+    {
+        $times = Carbon::now()->format('Y-m-d');
+        
+        //$hora = $times->toTimeString();
+        //$dia = $times->format('l');
+
+        //return 'Dia:'.$dia.'<br> Hora: '.$hora;
+        
+        return var_dump($times);
+    }
+    */
+
 
     protected static function holiday()
     {
@@ -137,6 +144,11 @@ class CloseCTRL extends Controller
             ->first();
     }
 
+    protected static function hourFormat($day) {
+        $date = static::dbDay($day);
+
+        return Carbon::parse($date->open)->format('H:i') . ' - ' .  Carbon::parse($date->close)->format('H:i');
+    }
 
     protected static function days()
     {
@@ -170,19 +182,5 @@ class CloseCTRL extends Controller
         }
 
         return true;
-    }
-
-
-    public function now()
-    {
-        $times = Carbon::now()->format('Y-m-d');
-        /*
-        
-        $hora = $times->toTimeString();
-        $dia = $times->format('l');
-
-        return 'Dia:'.$dia.'<br> Hora: '.$hora;
-        */
-        return var_dump($times);
     }
 }
