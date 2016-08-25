@@ -136,7 +136,7 @@ class PayCTRL extends Controller
                 }
 
                 if ($rangeDelivery && isset($user->Cs_Distance)) {
-                    if ($user->Cs_Distance > $rangeDelivery->Cfg_Value1) {
+                    if ($user->Cs_Distance > $rangeDelivery->Cfg_Value1 || $user->Cs_Distance<=0) {
                         $delivery = false;
                         $messageDelivery = $rangeDelivery->Cfg_Message;
                     }
