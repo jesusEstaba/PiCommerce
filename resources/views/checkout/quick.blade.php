@@ -24,12 +24,15 @@
 					<div class="row">
 						<div class="col-xs-12">
 							<div class="form-group">
-								<input name="name" type="text" class="form-control" placeholder="First Name">
+                                <label>Full Name:</label>
+								<input name="name" type="text" class="form-control" placeholder="Full Name">
 							</div>
 							<div class="form-group">
+                                <label>Phone Number:</label>
 								<input name="phone" type="text" class="form-control" placeholder="Phone Number">
 							</div>
 							<div class="form-group">
+                                <label>Email:</label>
 								<input name="email" type="text" class="form-control" placeholder="Email">
 							</div>
 							<div class="form-group">

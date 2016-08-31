@@ -331,7 +331,7 @@ class CartCTRL extends Controller
      *
      * @return [int] [Solo si $quick es True]
      */
-    protected static function loadItemToCart(
+    public static function loadItemToCart(
         $size,
         $toppings,
         $topSize,

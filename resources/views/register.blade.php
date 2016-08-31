@@ -25,8 +25,8 @@
                 <div class="col-md-6">
                     <h3 class="title-register">Your Personal or Business Contact Information</h3>
                     <div class="input-form">
-                        <label>Name:</label>
-                        <input type="text" class="form-control" value="{{Input::old('name')}}" name="name" placeholder="Name" />
+                        <label>Full Name:</label>
+                        <input type="text" class="form-control" value="{{Input::old('name')}}" name="name" placeholder="Full Name" />
                     </div>
                     <div class="input-form">
                         <label>Email:</label>
