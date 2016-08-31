@@ -284,7 +284,9 @@
 <script type="text/javascript">
     function getPositionFields() {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(getDistance);
+            navigator.geolocation.getCurrentPosition(getDistance, function(){
+              $('.sending').click();  
+            });
         } else {
             $('.sending').click();
         }
