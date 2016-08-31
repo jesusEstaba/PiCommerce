@@ -91,13 +91,13 @@ class RegisterCTRL extends Controller
                         ->where('Cfg_Descript', 'Maximum Range Delivery')
                         ->first();
 
+                    $extra = [];
+
                     if ($rangeDelivery) {
                         if ($distance>$rangeDelivery->Cfg_Value1) {
                             $extra = [
                                 'warning' => $rangeDelivery->Cfg_Message,
                             ];
-                        } else {
-                            $extra = [];
                         }
                     }
 
