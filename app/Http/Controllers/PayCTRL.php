@@ -48,6 +48,11 @@ class PayCTRL extends Controller
 
         //ver si hay errores con la session
         if (Auth::check() || (Session::has('id_cart') && Session::has('email'))) {
+            
+            if ($select == 'delivery'  && Session::has('id_cart') && !Auth::check()) {
+                return redirect()->to('checkout/quick');
+            }
+
             $cart = '';
             if (Auth::check()) {
                 Session::forget('cart');
@@ -214,7 +219,7 @@ class PayCTRL extends Controller
             }
         }
 
-        if ($select=='quick') {
+        if ($select=='quick' || $select=='delivery' && !Auth::check()) {
             return redirect()->to('checkout/quick');
         }
 
