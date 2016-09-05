@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Pizza\Http\Requests;
 use Pizza\Http\Controllers\Controller;
 use DB;
+use Pizza\Config;
 
 class CategoryCTRL extends Controller
 {
@@ -19,6 +20,12 @@ class CategoryCTRL extends Controller
      */
     public function category($name_category)
     {
+        $defaultBanner = Config::message('Default Banner Group');
+        $items = '';
+        $name_cat = '';
+        $submenu_cat = 0;
+        
+
         $name_category = strtolower($name_category);
         $consulta = DB::table('groups')
             ->where('Gr_Url', $name_category)
@@ -32,7 +39,7 @@ class CategoryCTRL extends Controller
             ->first();
 
         if ($consulta) {
-            $banner = $consulta->image_cat;
+            $banner = ($consulta->image_cat) ? $consulta->image_cat : $defaultBanner;
             $group_id = $consulta->group_id;
             $submenu_cat = $consulta->submenu_cat;
             $name_cat = $consulta->name;
@@ -72,36 +79,16 @@ class CategoryCTRL extends Controller
                 }
             }
         } else {
-            $banner = '7838a2f8-fb2d-48e8-abc9-f7db942d3ede.jpg';
-            //donde no esta en la lista
+            $banner = $defaultBanner;
         }
 
-        if (!isset($items)) {
-            $items = '';
-        }
-
-        if (!isset($submenu_cat)) {
-            $submenu_cat = 0;
-        }
-
-        if (!isset($name_cat)) {
-            $name_cat = "";
-        }
-
-        /*
-        $categorys = DB::table('category')
-            ->where('Status', 0)
-            ->select('name', 'name_cat')
-            ->get();
-        */
-        $categorys = $consulta;
         return view('category')->with([
-            'categorys'=>$categorys,
-            'name_category'=>$name_cat,
-            'name_cat_url'=>$name_category,
-            'banner'=>$banner,
-            'items'=>$items,
-            'sub'=>$submenu_cat
+            'categorys' => $consulta,
+            'name_category' => $name_cat,
+            'name_cat_url' => $name_category,
+            'banner' => $banner,
+            'items' => $items,
+            'sub' => $submenu_cat
         ]);
     }
 }
