@@ -14,16 +14,6 @@ class ChooseCTRL extends Controller
 {
     public function index()
     {
-        $categories = DB::table('choose_category')
-            ->join('groups', 'groups.Gr_ID', '=', 'choose_category.cat_id')
-            ->where('Gr_Status', 0)
-            ->select(
-                'Gr_Url AS name_cat',
-                'Gr_Image AS image',
-                'Gr_Descrip AS name'
-            )
-            ->get();
-
         $combos = DB::table('combo')
             ->where('Cb_Status', 0)
             ->where('Cb_Lunch', 0)
@@ -64,7 +54,6 @@ class ChooseCTRL extends Controller
         }
 
         return view('choose')->with([
-            'categories' => $categories,
             'items' => $items,
             'combos' => $combos,
             'lunchs' => $lunchs,
