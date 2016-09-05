@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Pizza\Http\Requests;
 use Pizza\Http\Controllers\Controller;
 
+use Pizza\Config;
 use Carbon\Carbon;
 use DB;
 
@@ -24,10 +25,7 @@ class CloseCTRL extends Controller
             return redirect()->to('/menu');
         }
 
-        $logo = DB::table('config')
-            ->where('Cfg_Descript', 'logo')
-            ->first()
-            ->Cfg_Message;
+        $logo = Config::message('logo');
 
         if ($type == 'hour') {
             $data = [
@@ -42,11 +40,7 @@ class CloseCTRL extends Controller
             ];
 
         } elseif ($type == 'mantenice') {
-            $message = DB::table('config')
-                ->where('Cfg_Descript', 'Message Close')
-                ->first();
-
-            $message = ($message) ? $message->Cfg_Message : '';
+            $message = Config::message('Message Close');
             
             $data = [
                 'message' => $message,

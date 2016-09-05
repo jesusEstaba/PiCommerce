@@ -11,46 +11,16 @@ use Pizza\Http\Controllers\Controller;
 use Auth;
 use DB;
 use Carbon\Carbon;
-use Mail;
 use Session;
 use Input;
+use Pizza\Config;
 
 class ResetPasswordCTRL extends Controller
 {
-    public function changePass()
-    {
-        if (Session::has('token_reset_password') && Session::has('email_reset')) {
-            DB::table('users')
-                ->where('email', Session::get('email_reset'))
-                ->update(['password'=>bcrypt(Input::get('pass'))]);
-
-            DB::table('password_resets')
-                ->where('token', Session::get('token_reset_password'))
-                ->delete();
-
-            return response()->json('Password Changed!');
-        }
-        return response()->json('Error Access');
-    }
-
-
-    public function tokenPass($token_pass = '')
-    {
-
-        $data = DB::table('password_resets')
-            ->where('token', $token_pass)
-            ->first();
-
-        if ($data) {
-            Session::put('email_reset', $data->email);
-            Session::put('token_reset_password', $token_pass);
-
-            return view('new_password');
-        }
-
-        return 'invalid token';
-    }
-
+    /**
+     * @param  [type]
+     * @return [type]
+     */
     public function index($userMail)
     {
         $isEmailExist = DB::table('users')->where('email', $userMail)->first();
@@ -69,12 +39,8 @@ class ResetPasswordCTRL extends Controller
                 'created_at' => $day,
             ]);
 
-            $config = DB::table('config')->first();
 
-            $logo = DB::table('config')
-                    ->where('Cfg_Descript', 'logo')
-                    ->first()
-                    ->Cfg_Message;
+            $logo = Config::message('logo');
 
             $variables_correo = [
                 'logo' => $logo,
@@ -109,120 +75,43 @@ class ResetPasswordCTRL extends Controller
         return response()->json($response);
     }
 
-    public static function sendEmailToNewUser($userMail, $name, $pass, $extras=[])
+
+    /**
+     * @return [type]
+     */
+    public function changePass()
     {
-        $logo = static::dataConfig('logo');
-        $footer = static::dataConfig('footer');
-        $messageRegister = static::dataConfig('Register Message');
+        if (Session::has('token_reset_password') && Session::has('email_reset')) {
+            DB::table('users')
+                ->where('email', Session::get('email_reset'))
+                ->update(['password'=>bcrypt(Input::get('pass'))]);
 
-        $day = Carbon::now();
-        
-        $token_active = md5($userMail . $day . rand());
-
-        $variables_correo = [
-            'messageRegister' => $messageRegister,
-            'logo' => $logo,
-            'footer'=> $footer,
-            'title'=>'Active Your Account',
-            'name' => $name,
-            'pass' => $pass,
-        ];
-
-        if (count($extras)) {
-            $variables_correo = array_merge($variables_correo, $extras);
-        }        
-
-        $isErrorEmail = SendMailCTRL::sendNow(
-            'mail_template.new_user',
-            $variables_correo,
-            $userMail,
-            'Reset Password'
-        );
-
-        return $isErrorEmail;
-    }
-
-    protected static function dataConfig($value)
-    {
-        $data = DB::table('config')
-            ->where('Cfg_Descript', $value)
-            ->first();
-        
-        if ($data) {
-            return $data->Cfg_Message;
-        }
-
-        return '';
-    }
-
-    public function reactivate($email)
-    {
-
-        $userExist = DB::table('users')
-            ->where('email', $email)
-            ->where('account_verify', 0)
-            ->get();
-
-        if ($userExist) {
-            $config = DB::table('config')->first();
-
-            $day = Carbon::now();
-            $token_active = md5($email . $day . rand());
-
-            $variables_correo = [
-                'logo' => $config->logo,
-                'footer'=> $config->footer,
-                'title'=>'Active Your Account',
-                'token_active'=> $token_active,
-            ];
-
-            $isErrorEmail = SendMailCTRL::sendNow(
-                'mail_template.new_user',
-                $variables_correo,
-                $email,
-                'Reset Password'
-            );
-
-            if ($isErrorEmail===0) {
-                DB::table('verified_accounts')
-                    ->where('email', $email)
-                    ->delete();
-
-                DB::table('verified_accounts')->insert([
-                    'email'=>$email,
-                    'remember_token'=> $token_active,
-                    'created_at' => $day,
-                ]);
-
-                return redirect()->to('active-your-acount');
-            }
-
-            Session::flash('message-error', 'Email not valid');
-
-            return redirect()->to('login');
-        }
-
-        Session::flash('message-error', 'User does not exist');
-
-        return redirect()->to('login');
-    }
-
-    public function activeAccount($token)
-    {
-        $data = DB::table('verified_accounts')
-            ->where('remember_token', $token)
-            ->first();
-
-        if ($data) {
-            DB::table('verified_accounts')
-                ->where('remember_token', $token)
+            DB::table('password_resets')
+                ->where('token', Session::get('token_reset_password'))
                 ->delete();
 
-            DB::table('users')
-                ->where('email', $data->email)
-                ->update(['account_verify'=>1]);
+            return response()->json('Password Changed!');
+        }
+        return response()->json('Error Access');
+    }
 
-            return view('account_activated');
+
+    /**
+     * @param  string
+     * @return [type]
+     */
+    public function tokenPass($token_pass = '')
+    {
+
+        $data = DB::table('password_resets')
+            ->where('token', $token_pass)
+            ->first();
+
+        if ($data) {
+            Session::put('email_reset', $data->email);
+            Session::put('token_reset_password', $token_pass);
+
+            return view('new_password');
         }
 
         return 'invalid token';

@@ -15,6 +15,7 @@ use Auth;
 use Session;
 use Redirect;
 use DB;
+use Pizza\Config;
 
 class LoginCTRL extends Controller
 {
@@ -26,16 +27,12 @@ class LoginCTRL extends Controller
     {
         if (!Auth::check()) {
 
-            $logo = DB::table('config')
-                ->where('Cfg_Descript', 'logo')
-                ->first();
-            $background = DB::table('config')
-                ->where('Cfg_Descript', 'Background Login')
-                ->first();
+            $logo = Config::message('logo');
+            $background = Config::message('Background Login');
 
             return view('login')->with([
-                'logo'=> $logo->Cfg_Message,
-                'background'=> $background->Cfg_Message,
+                'logo'=> $logo,
+                'background'=> $background,
             ]);
         }
 

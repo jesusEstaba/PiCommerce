@@ -10,6 +10,7 @@ use Pizza\Http\Requests;
 use Pizza\Http\Controllers\Controller;
 use DB;
 use Auth;
+use Pizza\Config;
 
 class ProductCTRL extends Controller
 {
@@ -153,16 +154,16 @@ class ProductCTRL extends Controller
                 $banner = $builder_data->banner;
 
                 if (!$image) {
-                    $image = "recipe-no-photo.jpg";
+                    $image = Config::message('Default Photo Group Item');
                 }
 
                 if (!$banner) {
-                    $banner = "7838a2f8-fb2d-48e8-abc9-f7db942d3ede.jpg";
+                    $banner = Config::message('Default Banner Group');
                 }
             } else {
                 $id_builder = 0;
                 $image = "";
-                $banner = "7838a2f8-fb2d-48e8-abc9-f7db942d3ede.jpg";
+                $banner = Config::message('Default Banner Group');
             }
 /***************************************************************************/
             $allToppings = [];
