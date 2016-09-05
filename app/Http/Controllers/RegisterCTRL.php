@@ -14,9 +14,14 @@ use DB;
 use Validator;
 use Carbon\Carbon;
 use Input;
+use Pizza\Config;
+
 
 class RegisterCTRL extends Controller
 {
+    /**
+     * @return [type]
+     */
     public function index()
     {
         $codes = DB::table('street')
@@ -42,30 +47,20 @@ class RegisterCTRL extends Controller
             'codes' => $codes,
             'streets' => $streets,
             'termsAndServices' => $termsAndServices,
-            ]);
+        ]);
     }
 
+
+    /**
+     * @param  Request
+     * @return [type]
+     */
     public function register(Request $request)
     {
-        $secretKey = env('API_GOOGLE_RECAPTCHA', '');
-        $gReCaptcha = $request['g-recaptcha-response'];
-
-        $url = 'https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$gReCaptcha;
-        $jsonObj = file_get_contents($url);
-        $json = json_decode($jsonObj, true);
+        $json = $this->reCaptcha($request['g-recaptcha-response']);
 
         if ($json['success'] || env('APP_ENV')=='local') {
-            $rules = [
-                'password' => 'required|min:6',
-                'email' => 'required|email',
-                'phone' => 'required|numeric|digits:10',
-                'name' => 'required',
-                'street_number' => 'required',
-                'zip_code' => 'required|numeric|integer',
-                'street_name' => 'required',
-            ];
-
-            $validator = Validator::make($request->all(), $rules);
+            $validator = $this->validatorRules($request);
 
             if ($validator->fails()==0) {
                 $datos = DB::table('users')
@@ -73,12 +68,12 @@ class RegisterCTRL extends Controller
                     ->select('users.id')
                     ->get();
 
-                $datos_phone = DB::table('customers')
+                $datosPhone = DB::table('customers')
                     ->where('Cs_Phone', $request['phone'])
                     ->select('Cs_Phone')
                     ->get();
 
-                if (!$datos && !$datos_phone) {
+                if (!$datos && !$datosPhone) {
                     
                     $distance = $this->distance(
                         $request['latitude'], 
@@ -87,21 +82,19 @@ class RegisterCTRL extends Controller
 
                     $distance = ($distance['calc']) ? $distance['val'] : '';
 
-                    $rangeDelivery = DB::table('config')
-                        ->where('Cfg_Descript', 'Maximum Range Delivery')
-                        ->first();
+                    $rangeDelivery = Config::value1('Maximum Range Delivery');
 
                     $extra = [];
 
                     if ($rangeDelivery) {
-                        if ($distance>$rangeDelivery->Cfg_Value1) {
+                        if ($distance > $rangeDelivery) {
                             $extra = [
                                 'warning' => $rangeDelivery->Cfg_Message,
                             ];
                         }
                     }
 
-                    $errorToSend = ResetPasswordCTRL::sendEmailToNewUser(
+                    $errorToSend = $this->sendEmailToNewUser(
                         $request['email'],
                         $request['name'],
                         $request['password'],
@@ -166,9 +159,9 @@ class RegisterCTRL extends Controller
                         Session::flash('message-error', 'Failed to create user.');
                     }
                 } else {
-                    if ($datos_phone && $datos) {
+                    if ($datosPhone && $datos) {
                         $messageUsedData = 'This email and phone has already been used';
-                    } elseif ($datos_phone) {
+                    } elseif ($datosPhone) {
                         $messageUsedData = 'This phone has already been used.';
                     } else {
                         $messageUsedData = 'This email has already been used.';
@@ -201,18 +194,16 @@ class RegisterCTRL extends Controller
      *  
      *  @return array [calc true => devuelve ['value'] que tiene la distancia, false => no se pudo calcular]
      */
-    public function distance($latilude, $longitude)
+    protected function distance($latilude, $longitude)
     {
         $response = ['calc' => false];
 
         if ($latilude && $longitude) {
             $origen = $latilude . ',' . $longitude;
             
-            $coord = DB::table('config')
-                ->where('Cfg_Descript', 'Coordinates')
-                ->first();
+            $coord = Config::message('Coordinates');
 
-            $destino = ($coord) ? $coord->Cfg_Message : '9.779808,-63.196956';
+            $destino = ($coord) ? $coord : '9.779808,-63.196956';
 
 
             $url = 'https://maps.googleapis.com/maps/api/distancematrix/json?'
@@ -220,9 +211,7 @@ class RegisterCTRL extends Controller
             .'&destinations=' . $destino
             .'&key=' . env('API_GOOGLE_MAPS_DISTANCE', '');
 
-            $jsonObj = file_get_contents($url);
-            $respJson = json_decode($jsonObj, true);
-
+            $respJson = jsonCallOuter($url);
 
             if ($respJson['status'] == "OK") {
                 $respuesta = $respJson['rows'][0]['elements'][0];
@@ -242,4 +231,91 @@ class RegisterCTRL extends Controller
         return $response;
     }
 
+
+    /**
+     * @param  [type]
+     * @return [type]
+     */
+    protected function reCaptcha ($reCaptchaResponse)
+    {
+        $secretKey = env('API_GOOGLE_RECAPTCHA', '');
+        $gReCaptcha = $reCaptchaResponse;
+
+        $url = 'https://www.google.com/recaptcha/api/siteverify'.
+        '?secret=' . $secretKey .
+        '&response=' . $gReCaptcha;
+
+        return $this->jsonCallOuter($url);
+    }
+
+
+    /**
+     * @param  [type]
+     * @return [type]
+     */
+    protected function jsonCallOuter ($url)
+    {
+        $jsonObj = file_get_contents($url);
+        return json_decode($jsonObj, true);
+    }
+
+
+    /**
+     * @param  [type]
+     * @return [type]
+     */
+    protected function validatorRules ($request)
+    {
+        $rules = [
+                'password' => 'required|min:6',
+                'email' => 'required|email',
+                'phone' => 'required|numeric|digits:10',
+                'name' => 'required',
+                'street_number' => 'required',
+                'zip_code' => 'required|numeric|integer',
+                'street_name' => 'required',
+            ];
+
+        return Validator::make($request->all(), $rules);
+    }
+
+    /**
+     * @param  [type]
+     * @param  [type]
+     * @param  [type]
+     * @param  array
+     * @return [type]
+     */
+    protected static function sendEmailToNewUser($userMail, $name, $pass, $extras=[])
+    {
+        $logo = Config::message('logo');
+        $footer = Config::message('footer');
+        $messageRegister = Config::message('Register Message');
+
+        $day = Carbon::now();
+        
+        $token_active = md5($userMail . $day . rand());
+
+        $variables_correo = [
+            'messageRegister' => $messageRegister,
+            'logo' => $logo,
+            'footer'=> $footer,
+            'title'=>'Active Your Account',
+            'name' => $name,
+            'pass' => $pass,
+        ];
+
+        if (count($extras)) {
+            $variables_correo = array_merge($variables_correo, $extras);
+        }        
+
+        $isErrorEmail = SendMailCTRL::sendNow(
+            'mail_template.new_user',
+            $variables_correo,
+            $userMail,
+            'Reset Password'
+        );
+
+        return $isErrorEmail;
+    }
 }

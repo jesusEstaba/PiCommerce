@@ -11,13 +11,12 @@ use Auth;
 use Carbon\Carbon;
 use Mail;
 use Session;
-//use Input;
+use Pizza\Config;
 
 class OrderCTRL extends Controller
 {
     /**
      * @author Jesus estaba <jeec.estaba@gmail.com>
-     *
      */
 
 
@@ -321,12 +320,6 @@ class OrderCTRL extends Controller
 
         }
         
-        
-
-        
-
-        
-        
         return response()->json([
             'code' => $mercuryResp->ResponseCode,
             'status' => $mercuryResp->Status,
@@ -462,15 +455,8 @@ class OrderCTRL extends Controller
 
         $correos = DB::table('emails_admin')->get();
 
-        $logo = DB::table('config')
-            ->where('Cfg_Descript', 'logo')
-            ->first()
-            ->Cfg_Message;
-        
-        $footer = DB::table('config')
-            ->where('Cfg_Descript', 'footer')
-            ->first()
-            ->Cfg_Message;
+        $logo = Config::message('logo');
+        $footer = Config::message('footer');
         
         $order = DB::table('hd_tticket')->where('Hd_Ticket', $orderId)->first();
         

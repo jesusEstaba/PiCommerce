@@ -8,23 +8,23 @@ use Pizza\Http\Requests;
 use Pizza\Http\Controllers\Controller;
 use DB;
 use Input;
-use Mail;
 use Session;
 use Carbon\Carbon;
 use Auth;
+use Pizza\Config;
 
 class QuickPayCTRL extends Controller
 {
+    /**
+     * @return View
+     */
     public function index()
     {
         if (Auth::check()) {
             return redirect()->to('checkout/pickup');
         }
 
-        $logo = DB::table('config')
-            ->where('Cfg_Descript', 'logo')
-            ->first()
-            ->Cfg_Message;
+        $logo = Config::message('logo');
 
         $termsAndServices = DB::table('terms_service')
             ->where('section', 2)
@@ -42,10 +42,18 @@ class QuickPayCTRL extends Controller
         ]);
     }
 
-    public function createOrderQuick(){
-        $id_order_for_temp_user = 0;
-        $day_now = Carbon::now()->format('d-m-Y');
 
+    /**
+     * Carga el producto al carrito y mantiene le Id del item del
+     * carrrito en Session, y si existe un producto en Sesion lo
+     * elimina.
+     * 
+     * Session::get('id_cart') mantiene el Id del item del carrito
+     * 
+     * @return json
+     */
+    public function loadCartQuick()
+    {
         if (Session::has('size') &&
             Input::has('name') &&
             Input::has('phone') &&
@@ -57,7 +65,7 @@ class QuickPayCTRL extends Controller
             Session::put('email', Input::get('email'));
 
             //funcion que carga el producto a la db
-            $id_cart_go = CartCTRL::loadItemToCart(
+            $cartId = CartCTRL::loadItemToCart(
                 Session::get('size'),
                 Session::get('topping'),
                 Session::get('topping_size'),
@@ -66,20 +74,20 @@ class QuickPayCTRL extends Controller
                 true
             );
 
-            if ($id_cart_go>0) {
+            if ($cartId>0) {
                 if (Session::has('id_cart')) {
-                    $idCartSession = (int)Session::get('id_cart');
+                    $cartIdSession = (int)Session::get('id_cart');
 
-                    DB::table('cart')->delete($idCartSession);
+                    DB::table('cart')->delete($cartIdSession);
 
                     DB::table('cart_top')
-                        ->where('id_cart', $idCartSession)
+                        ->where('id_cart', $cartIdSession)
                         ->delete();
 
                     Session::forget('id_cart');
                 }
 
-                Session::put('id_cart', $id_cart_go);
+                Session::put('id_cart', $cartId);
 
                 Session::forget('size');
                 Session::forget('toppings');

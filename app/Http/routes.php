@@ -44,7 +44,7 @@ Route::group(['middleware' => 'force_https_url_scheme'], function () {
             Route::post('/mercuryVerify', 'OrderCTRL@verify');
             
             Route::get('/quick', 'QuickPayCTRL@index');
-            Route::post('/quick/order', 'QuickPayCTRL@createOrderQuick');
+            Route::post('/quick/order', 'QuickPayCTRL@loadCartQuick');
         });
 
 

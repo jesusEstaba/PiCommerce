@@ -11,6 +11,7 @@ use Pizza\Http\Controllers\Controller;
 use DB;
 use Auth;
 
+
 class LogCTRL extends Controller
 {
     /**
