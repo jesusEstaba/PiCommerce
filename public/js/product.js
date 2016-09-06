@@ -203,7 +203,7 @@ $(function() {
 	//$(".checkbox input:checked")
 
 	$(".checkbox input").click(function(){
-		if( $(".checkbox input:checked").length==5 )
+		if( $(".checkbox input:checked").length==$('.cooks').attr('data-max-cook'))
 		{
 			$("[type=checkbox]").not('input:checked').attr('disabled',true);
 		}

@@ -4,18 +4,24 @@
 @section('content')
 
 <div class="container space">
-    @if( Session::has('message') )
-    <div class="alert alert-success alert-dismissable">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong>Success!</strong> {{Session::get('message')}}.
-    </div>
+    @if(Session::has('message') || Session::has('message-error'))
+        <div class="row">
+            <div class="col-xs-12">
+                @if( Session::has('message') )
+                    <div class="alert alert-success alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>Success!</strong> {{Session::get('message')}}.
+                    </div>
+                @elseif( Session::has('message-error') )
+                    <div class="alert alert-warning alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>Error!</strong> {!!Session::get('message-error')!!}
+                    </div>
+                @endif
+            </div>
+        </div>
     @endif
-    @if( Session::has('message-error') )
-    <div class="alert alert-warning alert-dismissable">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong>Error!</strong> {!!Session::get('message-error')!!}
-    </div>
-    @endif
+
     <div class="row bg-white">
         <div class="col-xs-12">
             <h2>Register</h2>
@@ -40,7 +46,7 @@
                         <label>Birthdate: <span class="optional">Optional</span></label>
                         <div style="width: auto;" class="form-group">
                             <select value="{{Input::old('month_birthday')}}" name="month_birthday" style="width: auto;display: inline-block;" class="form-control">
-                                <option>Month</option>
+                                <option value="0">Month</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -55,7 +61,7 @@
                                 <option value="12">12</option>
                             </select>
                             <select value="{{Input::old('day_birthday')}}" name="day_birthday" style="width: auto;display: inline-block;" class="form-control">
-                                <option>Day</option>
+                                <option value="0">Day</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -89,12 +95,8 @@
                                 <option value="31">31</option>
                             </select>
                             <select value="{{Input::old('year_birthday')}}" name="year_birthday" style="width: auto;display: inline-block;" class="form-control">
-                                <option>Year</option>
+                                <option value="0">Year</option>
                             </select>
-                        </div>
-                        <div class="hide input-group">
-                            <input placeholder="Birthdate(optional)" aria-describedby="basic-addon1" class="form-control" data-format="dd/MM/yyyy" type="text" name="birthday"></input>
-                            <span class="input-group-addon add-on" id="basic-addon1"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
                     </div>
                     <h3 class="title-register">Your Password</h3>
@@ -149,7 +151,7 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="reCAPTCHA">
-                            <div class="g-recaptcha" data-sitekey="6LdrFB0TAAAAADb9YOSXwEPmtpJHzK0qkytc5aP5"></div>
+                            <div class="g-recaptcha" data-sitekey="{{$publicApiKey}}"></div>
                         </div>
 
                     </div>
@@ -159,7 +161,7 @@
                         <div class="col-xs-12">
                             <p>
                                 Receive special offers & coupons by email:
-                                <input name="newsletter" type="checkbox">
+                                <input name="offers" type="checkbox">
                             </p>
                         </div>
                         <div class="col-xs-12">
@@ -334,7 +336,7 @@
     var fecha_act = new Date();
     var anno_actual = fecha_act.getFullYear();
     var anno_cien = anno_actual - 150;
-    var option_years;
+    var option_years='';
 
     for (var i = anno_actual; i > anno_cien; i--) {
         option_years += '<option value="'+ i +'">' + i + '</option>';

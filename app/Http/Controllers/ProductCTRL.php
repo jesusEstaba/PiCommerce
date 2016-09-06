@@ -48,11 +48,14 @@ class ProductCTRL extends Controller
             return $sizeTopping;
         };
         // END Cart Things
-
+        
+        $idTpKinds = Config::value1('Id Topping Cooking Instructions');
         $cooking_instructions = DB::table('toppings')
-                ->where('Tp_Kind', 4)
+                ->where('Tp_Kind', $idTpKinds)
                 ->orderBy('Tp_Special')
                 ->get();
+
+        $maxCooking = Config::value1('Max Cooking Instructions');
        
         $it_groups = false;
 
@@ -97,6 +100,7 @@ class ProductCTRL extends Controller
 
                 if ($combo) {
                     return view('builder.combo')->with([
+                        'maxCooking' => $maxCooking,
                         'cooking_instructions' => $cooking_instructions,
                         'combo' => $combo,
                         'items' => $comboItems,
@@ -165,27 +169,11 @@ class ProductCTRL extends Controller
                 $image = "";
                 $banner = Config::message('Default Banner Group');
             }
-/***************************************************************************/
+            
+            /******************/
+
             $allToppings = [];
             $pizzaBuilderSize = false;
-            
-            /*COPY
-            foreach ($size_Id as $sizeId) {
-                $tp_kind = DB::table('sizetopp')
-                    ->where('SzTp_Size', $sizeId)
-                    ->where('SzTp_Status', 0)
-                    ->first();
-
-                if ($tp_kind) {
-                    $tp_kind = $tp_kind->SzTp_GroupTP;
-
-                    
-                } else {
-                    $tp_kind = 0;
-                }
-
-                $allToppings[] = $this->toppings($tp_kind);
-            }*/
 
             foreach ($size_Id as $sizeId) {
                 $allToppings[] = $this->toppings($sizeId);
@@ -203,14 +191,8 @@ class ProductCTRL extends Controller
                 }
             }
 
+            /******************/
 
-            /***********************************************************/
-            /*
-            $cooking_instructions = DB::table('toppings')
-                ->where('Tp_Kind', 4)
-                ->orderBy('Tp_Special')
-                ->get();
-            */
             if ($id_builder == 1) {
                 $vista = 'builder.toppings';
             } elseif ($id_builder == 2) {
@@ -219,10 +201,10 @@ class ProductCTRL extends Controller
 
             if (isset($vista)) {
                 return view($vista)->with([
+                        'maxCooking' => $maxCooking,
                         'cooking_instructions' => $cooking_instructions,
                         'name'=>$name,
                         'size'=>$size_t,
-                        //'toppings'=>$toppings,
                         'allToppings' => $allToppings,
                         'item'=>$items,
                         'description'=>$description,

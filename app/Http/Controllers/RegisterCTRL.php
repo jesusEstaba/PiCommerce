@@ -22,7 +22,7 @@ class RegisterCTRL extends Controller
     /**
      * @return [type]
      */
-    public function index()
+    public function index ()
     {
         $codes = DB::table('street')
             ->select('St_Name')
@@ -44,6 +44,7 @@ class RegisterCTRL extends Controller
         }
 
         return view('register')->with([
+            'publicApiKey' => env('API_GOOGLE_RECAPTCHA_PUBLIC'),
             'codes' => $codes,
             'streets' => $streets,
             'termsAndServices' => $termsAndServices,
@@ -55,7 +56,7 @@ class RegisterCTRL extends Controller
      * @param  Request
      * @return [type]
      */
-    public function register(Request $request)
+    public function register (Request $request)
     {
         $json = $this->reCaptcha($request['g-recaptcha-response']);
 
@@ -89,7 +90,7 @@ class RegisterCTRL extends Controller
                     if ($rangeDelivery) {
                         if ($distance > $rangeDelivery) {
                             $extra = [
-                                'warning' => $rangeDelivery->Cfg_Message,
+                                'warning' => Config::message('Maximum Range Delivery'),
                             ];
                         }
                     }
@@ -102,29 +103,20 @@ class RegisterCTRL extends Controller
                     );
 
                     if ($errorToSend===0) {
+                        $receive = ($request['offers']) ? 1 : 0;
 
                         DB::table('users')->insert([
                             'password' => bcrypt($request['password']),
                             'email' => $request['email'],
                             'phone'=> $request['phone'],
+                            'receive_offers' => $receive,
                         ]);
-
-                        if (!empty($request['day_birthday']) &&
-                            !empty($request['month_birthday']) &&
-                            !empty($request['year_birthday'])
-                        ) {
-                            $yearBirthday = (int) $request['year_birthday'];
-                            $monthBirthday = (int) $request['month_birthday'];
-                            $dayBirthday = (int) $request['day_birthday'];
-
-                            $birthdayCustomer = Carbon::createFromDate(
-                                $yearBirthday,
-                                $monthBirthday,
-                                $dayBirthday
-                            );
-                        } else {
-                            $birthdayCustomer = '.';
-                        }
+                       
+                        $birthdayCustomer = $this->birthday($request->only([
+                            'month_birthday',
+                            'day_birthday',
+                            'year_birthday',
+                        ]));
 
                         DB::table('customers')->insert([
                             'Cs_Email1' => $request['email'],
@@ -211,7 +203,7 @@ class RegisterCTRL extends Controller
             .'&destinations=' . $destino
             .'&key=' . env('API_GOOGLE_MAPS_DISTANCE', '');
 
-            $respJson = jsonCallOuter($url);
+            $respJson = $this->jsonCallOuter($url);
 
             if ($respJson['status'] == "OK") {
                 $respuesta = $respJson['rows'][0]['elements'][0];
@@ -286,7 +278,7 @@ class RegisterCTRL extends Controller
      * @param  array
      * @return [type]
      */
-    protected static function sendEmailToNewUser($userMail, $name, $pass, $extras=[])
+    protected function sendEmailToNewUser($userMail, $name, $pass, $extras=[])
     {
         $logo = Config::message('logo');
         $footer = Config::message('footer');
@@ -317,5 +309,19 @@ class RegisterCTRL extends Controller
         );
 
         return $isErrorEmail;
+    }
+
+
+    protected function birthday ($request) 
+    {
+        $month = (int)$request['month_birthday'];
+        $day = (int)$request['day_birthday'];
+        $year = (int)$request['year_birthday'];
+
+        if ($month && $day && $year) {
+            return Carbon::createFromDate($year, $month, $day)->format('Y-m-d');
+        } else {
+            return '';
+        }
     }
 }
