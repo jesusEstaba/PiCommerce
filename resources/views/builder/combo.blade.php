@@ -164,7 +164,7 @@
 
 			<div class="col-xs-4">
 				<h4>Cooking Instructions</h4>
-				<div class="cooks" data-max-cook="2">
+				<div class="cooks" data-max-cook="{{$maxCooking}}">
 					@foreach($cooking_instructions as $array => $instruction)
 					<div class="checkbox" data-tab="{{$indice}}">
 						<label>

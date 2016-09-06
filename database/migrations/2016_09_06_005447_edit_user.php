@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddCloumnsOffertActiveInUsers extends Migration
+class EditUser extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class AddCloumnsOffertActiveInUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            //$table->boolean('account_verify')->default(0);
-            $table->boolean('receive_offers')->default(0);
+            $table->dropColumn('phone');
+        });
+        Schema::table('users', function (Blueprint $table) {
+            $table->double('phone');
         });
     }
 
@@ -25,7 +27,7 @@ class AddCloumnsOffertActiveInUsers extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('user', function (Blueprint $table) {
             //
         });
     }
