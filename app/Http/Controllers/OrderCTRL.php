@@ -157,6 +157,16 @@ class OrderCTRL extends Controller
                 ]
             );
 
+            if ($hdOrderUser===314 && $id) {
+                DB::table('temp_user_order')->insert([
+                    'phone' => Session::get('phone'),
+                    'email' => Session::get('email'),
+                    'order_id' => $id,
+                    'name' => Session::get('name'),
+                    'created_at' => $mytime,
+                ]);
+            }
+
             if (Session::has('coupon_id')) {
                 CouponsCTRL::useDiscountCoupon($id, Session::get('coupon_id'));
                 Session::forget('coupon_id');

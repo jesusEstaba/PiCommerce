@@ -94,10 +94,16 @@
 <script type="text/javascript">
 
 function message_alert(class_alert, text) {
-    $('.messages').children().remove();
+    $('.messages')
+        .hide()
+        .children()
+        .remove();
+    
     var mess = '<strong>' + text + '</strong>.';
     var alerta = '<div class="alert ' + class_alert + ' alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button>' + mess + '</div>';
-    $('.messages').append(alerta);
+    $('.messages')
+        .append(alerta)
+        .fadeIn('fast');;
 }
 $('.activate_terms').click(function(){
         $('#terms').modal('show');
@@ -109,8 +115,8 @@ $(function() {
             $('[name=phone]').val() &&
             $('[name=email]').val()
         ) {
-
-            $.ajax({
+            if ($('[name=terms]:checked').length) {
+                $.ajax({
                     url: '/checkout/quick/order',
                     type: 'POST',
                     dataType: 'json',
@@ -131,9 +137,11 @@ $(function() {
                 .error(function() {
                     message_alert('alert-danger', 'Error Conection, Refresh and try Again');
                 });
-
+            } else {
+                message_alert('alert-warning', 'Warning! Accept the Terms and Conditions');
+            }
         } else {
-            alert('Empty Field');
+            message_alert('alert-warning', 'Warning! Empty Field');
         }
 
     });
