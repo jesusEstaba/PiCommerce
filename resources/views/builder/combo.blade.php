@@ -37,7 +37,7 @@
 			<div class="head-product">
 				<div class="row">
 					<div class="col-md-12">
-						<h2 id="combo" data-id="{{$combo->Cb_Id}}">Combo {{$combo->Cb_Name}}:</h2>
+						<h2 id="combo" data-id="{{$combo->Cb_Id}}">{{$combo->Cb_Name}}:</h2>
 					</div>
 
 					@eval($num_tab = 1)

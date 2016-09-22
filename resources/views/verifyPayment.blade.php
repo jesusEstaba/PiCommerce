@@ -2,25 +2,45 @@
 
 @section('title', 'Verify Payment')
 @section('content')
+<style type="text/css">
+	.box{
+		box-shadow: 0 2px 5px rgba(0,0,0,.26);
+		padding: .5em;
+		border-radius: 3px;
+	} 
+	.bg-white{
+		background: #fff;
+	}
+</style>
 
 @if($ReturnCode==0)
 	<div class="container space">
 		<div class="row">
 			<div class="col-xs-12">
-				<br>
-				<br>
-				<h2 class="very">Verify...</h2>
-				<form>
-				 	<input type="hidden" name="payId" value="{{$PaymentID}}" />
-					{{csrf_field()}}
-				</form>
-
-				<a href="{{url('menu')}}" class="btn btn-primary">Back to Home</a>
+				<div class="space box bg-white">
+					<h2>
+						Your Card is {{$verifyResponse['status']}}.
+					</h2>
+					
+					@if($verifyResponse['status'] == 'Approved')
+						<h4>
+							We sent an email with your order.
+						</h4>
+					@else
+						<p>
+							{{$verifyResponse['message']}}
+						</p>
+					@endif
+					
+					<a href="{{url('menu')}}" class="btn btn-primary">Back to Menu</a>
+				</div>
+				
 			</div>
 		</div>
 	</div>
 
-	<script type="text/javascript" src="{{asset('js/verify.js')}}"></script>
+	
+
 @else
 	{{-- aca se deberia llamar a un helper para que guarde los errores --}}
 	<div class="container space">
@@ -28,8 +48,12 @@
 			<div class="col-xs-12">
 				<br>
 				<br>
-				<h2>{{$ReturnMessage}}</h2>
-				<a href="{{url('checkout')}}" class="btn btn-primary">Back to Checkout</a>
+				<h3>{{$ReturnMessage}}</h3>
+
+				@eval($select = (Auth::check()) ? '' : '/pickup'; )
+				
+				<a href="{{url('checkout' . $select)}}" class="btn btn-primary">
+				Back to Checkout</a>
 			</div>
 		</div>
 	</div>

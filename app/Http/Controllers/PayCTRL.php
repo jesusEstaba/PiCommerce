@@ -242,10 +242,13 @@ class PayCTRL extends Controller
      */
     public function verifyTransaction(Request $request)
     {
+        $verify = OrderCTRL::verify($request);
+
         return view('verifyPayment')->with([
             'PaymentID' => $request['PaymentID'],
             'ReturnCode' => $request['ReturnCode'],
             'ReturnMessage' => $request['ReturnMessage'],
+            'verifyResponse' => $verify,
         ]);
     }
 }

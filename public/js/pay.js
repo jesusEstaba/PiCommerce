@@ -94,14 +94,6 @@ $(function() {
             $('.frame-pay').fadeIn('fast');
 
             credit_card = true;
-            /*
-            if (good_card){
-                pay = true;
-            }
-            else{
-                pay = false;
-            }
-            */
 
             $('.fee-price').removeClass('text-muted');
             $('.ccfee').removeClass('hide');
@@ -160,14 +152,13 @@ $(function() {
                                     .html('Next');
 
                                 $('.next-mercury').on('click', function() {
-                                    var jForm = $(
-                                        '<form action="' + data.url + '" method="post">' +
+                                    var form = '<form action="' + data.url + '" method="post">' +
                                             '<input name="PaymentID" type="hidden" value="' + data.message + '"\>' +
-                                        '</form>'
-                                    );
+                                        '</form>';
                                     
-                                    // Submit the form.
-                                    jForm.submit();
+                                    $('#form').append(form);
+                                        
+                                    $('#form form').submit();
                                     
                                     
                                 });

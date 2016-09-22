@@ -277,6 +277,10 @@
   </div>
 </div>
 
+<div id="form" class="hide">
+	
+</div>
+
 <link rel="stylesheet" href="{{asset('css/pay.css')}}">
 
 <script src="{{asset('js/pay.js')}}" type="text/javascript"></script>
