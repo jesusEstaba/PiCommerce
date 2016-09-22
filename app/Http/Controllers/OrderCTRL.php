@@ -325,16 +325,16 @@ class OrderCTRL extends Controller
 
             //ENVIAR CORREOS
             if (static::sendMailOrder($mercuryResp->RefNo, $cart)) {
-                $errors = 'Failed to send email.';
+                $errors = 'Failed to send email.';//no se esta haciendo nada acá. ya que no se esta haciendo nada con la variable errors por ahora
             }
 
         }
         
-        return response()->json([
+        return [
             'code' => $mercuryResp->ResponseCode,
             'status' => $mercuryResp->Status,
             'message' => $mercuryResp->StatusMessage,
-        ]);
+        ];
     }
 
 
