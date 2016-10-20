@@ -12,65 +12,64 @@ class ConfigSeed extends Seeder
     public function run()
     {
 		//Days of the week
-        DB::table('config')->insert([
-            'Cfg_Descript' => 'Monday',
-			'Cfg_Close' => '24:00:00',
+        $this->hourCloseInsert([
+            'Monday' => '24:00:00',
+            'Tuesday' => '24:00:00',
+            'Wednesday' => '24:00:00',
+            'Thursday' => '24:00:00',
+            'Friday' => '24:00:00',
+            'Saturday' => '24:00:00',
+            'Sunday' => '24:00:00',
         ]);
-        DB::table('config')->insert([
-            'Cfg_Descript' => 'Tuesday',
-			'Cfg_Close' => '24:00:00',
-        ]);
-        DB::table('config')->insert([
-            'Cfg_Descript' => 'Wednesday',
-			'Cfg_Close' => '24:00:00',
-        ]);
-        DB::table('config')->insert([
-            'Cfg_Descript' => 'Thursday',
-			'Cfg_Close' => '24:00:00',
-        ]);
-        DB::table('config')->insert([
-            'Cfg_Descript' => 'Friday',
-			'Cfg_Close' => '24:00:00',
-        ]);
-        DB::table('config')->insert([
-            'Cfg_Descript' => 'Saturday',
-			'Cfg_Close' => '24:00:00',
-        ]);
-        DB::table('config')->insert([
-            'Cfg_Descript' => 'Sunday',
-			'Cfg_Close' => '24:00:00',
-        ]);
-        //General Config
 
-        DB::table('config')->insert([
-            'Cfg_Descript' => 'Close Store',
-			'Cfg_Message' => 'Status : 0 = open, 1 = Close',
+        //General Config
+        $this->descriptionInsert([
+            'logo' => '',
+            'footer' => '',
+            'Background Login' => '',
+            'Close Store' => 'Status : 0 = open, 1 = Close',
+            'Message Close' => 'Website Is closed... Will be back soon',
+            'facebook' => 'http://facebook.com',
+            'instagram' => 'http://instagram.com',
+            'twitter' => 'http://twitter.com',
+            'Coordinates' => '9.779808,-63.196956',
+            'Register Message' => 'welcome to diginos. We hope you like our site.',
+            'Default Photo Group Item' => 'ecipe-no-photo.jpg',
+            'Default Banner Group' => '7838a2f8-fb2d-48e8-abc9-f7db942d3ede.jpg',
+        ]);
+
+         DB::table('config')->insert([
+            'Cfg_Descript' => 'Maximum Range Delivery',
+            'Cfg_Message' => 'Sorry, you can not make deliveries it because it is not in our range',
+            'Cfg_Value1' => 3,
         ]);
         DB::table('config')->insert([
-            'Cfg_Descript' => 'Message Close
-',
-			'Cfg_Message' => 'Website Is closed... Will be back soon',
+            'Cfg_Descript' => 'Max Cooking Instructions',
+            'Cfg_Value1' => 1,
         ]);
         DB::table('config')->insert([
-            'Cfg_Descript' => 'facebook',
-			'Cfg_Message' => 'http://facebook.com',
+            'Cfg_Descript' => 'Id Topping Cooking Instructions',
+            'Cfg_Value1' => 4,
         ]);
-        DB::table('config')->insert([
-            'Cfg_Descript' => 'instagram',
-			'Cfg_Message' => 'http://instagram.com',
-        ]);
-        DB::table('config')->insert([
-            'Cfg_Descript' => 'twitter',
-			'Cfg_Message' => 'http://twitter.com',
-        ]);
-        DB::table('config')->insert([
-            'Cfg_Descript' => 'logo',
-        ]);
-        DB::table('config')->insert([
-            'Cfg_Descript' => 'footer',
-        ]);
-        DB::table('config')->insert([
-            'Cfg_Descript' => 'Background Login',
-        ]);
+    }
+
+    protected function descriptionInsert(array $values)
+    {
+        foreach ($values as $key => $value) {
+            DB::table('config')->insert([
+                'Cfg_Descript' => $key,
+                'Cfg_Message' => $value,
+            ]);
+        }
+    }
+
+    protected function hourCloseInsert(array $values)
+    {
+        foreach ($values as $key => $value) {
+            DB::table('config')->insert([
+                'Cfg_Descript' => $key,
+                'Cfg_Close' => $value,
+            ]);
+        }
     }
 }
