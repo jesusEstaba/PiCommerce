@@ -5,6 +5,18 @@
 
 	{!!Html::style('assets/bootstrap/css/bootstrap.min.css')!!}
 	{!!Html::style('css/style_techandall.css')!!}
+	
+
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-109070660-2"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+	
+	  gtag('config', 'UA-109070660-2');
+	</script>
+
+
 
 	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 
