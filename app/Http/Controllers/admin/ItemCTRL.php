@@ -2,7 +2,7 @@
 /**
  * Cumple el Estándar PSR-2
  */
-namespace Pizza\Http\Controllers;
+namespace Pizza\Http\Controllers\admin;
 
 use Illuminate\Http\Request;
 
@@ -270,7 +270,21 @@ class ItemCTRL extends Controller
 
         if (isset($request['item_feature'])) {
             $status  = (int)$request['status'];
-
+            
+            if ($status) {
+                DB::table('products_features')
+                    ->insert([
+                        'item_id' => $id,
+                        'size_id' => 0,
+                        'special_order' => 0,
+                    ]);
+                
+            } else {
+                DB::table('products_features')
+                    ->where('item_id', $id)
+                    ->delete();
+            }
+            
             DB::table('items')
                 ->where('It_Id', $id)
                 ->update(['It_Feature'=>$status]);

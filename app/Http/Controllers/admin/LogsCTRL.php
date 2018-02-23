@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Pizza\Http\Requests;
 use Pizza\Http\Controllers\Controller;
 
+use DB;
+
 class LogsCTRL extends Controller
 {
     /**

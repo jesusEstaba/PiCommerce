@@ -43,10 +43,10 @@
     <div class="login-box">
       <div class="login-logo">
         <?php
-        $config = DB::table('config')->select('logo')->first();
+        //$config->logo = null;
       ?>
         <a href="{{url('/')}}">
-          @if($config->logo)
+          @if(false)
             <img src="{{asset('images/logos/'.$config->logo)}}" alt="logo" class="logo">
           @endif
         </a>

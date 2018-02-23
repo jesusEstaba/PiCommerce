@@ -93,27 +93,27 @@ Route::group(['middleware' => 'force_https_url_scheme'], function () {
 
 
     #Admin Zone
-    /*
+    
     Route::group(['prefix'=>'kitchen'], function () {
-        Route::get('/logout', 'admin.AdminLoginCTRL@logout');
+        Route::get('/logout', 'admin\AdminLoginCTRL@logout');
 
-        Route::get('/login', 'admin.AdminLoginCTRL@index');
-        Route::post('/login', 'admin.AdminLoginCTRL@login');
+        Route::get('/login', 'admin\AdminLoginCTRL@index');
+        Route::post('/login', 'admin\AdminLoginCTRL@login');
 
         Route::group(['middleware'=>'admin_panel'], function () {
-            Route::resource('/', 'admin.DashboardCTRL');
-            Route::resource('items', 'admin.ItemCTRL');
-            Route::resource('users', 'admin.UserCTRL');
-            Route::resource('categories', 'admin.CategoriesCTRL');
-            Route::resource('groups', 'admin.GroupCTRL');
-            Route::resource('choose_category', 'admin.ChooseCatCTRL');
-            Route::resource('orders', 'admin.OrdersCTRL');
-            Route::resource('coupons', 'admin.CouponsCTRL');
-            Route::resource('config', 'admin.ConfigCTRL');
-            Route::resource('logs', 'admin.LogsCTRL');
-            Route::resource('emails', 'admin.EmailAdminCTRL');
+            Route::resource('/', 'admin\DashboardCTRL');
+            Route::resource('items', 'admin\ItemCTRL');
+            Route::resource('users', 'admin\UserCTRL');
+            Route::resource('categories', 'admin\CategoriesCTRL');
+            Route::resource('groups', 'admin\GroupCTRL');
+            Route::resource('choose_category', 'admin\ChooseCatCTRL');
+            Route::resource('orders', 'admin\OrdersCTRL');
+            Route::resource('coupons', 'admin\CouponsCTRL');
+            Route::resource('config', 'admin\ConfigCTRL');
+            Route::resource('logs', 'admin\LogsCTRL');
+            Route::resource('emails', 'admin\EmailAdminCTRL');
         });
     });
-    */
+   
 
 });

@@ -2,7 +2,7 @@
 /**
  * Cumple el Estándar PSR-2
  */
-namespace Pizza\Http\Controllers;
+namespace Pizza\Http\Controllers\admin;
 
 use Illuminate\Http\Request;
 
