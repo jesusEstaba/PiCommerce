@@ -248,9 +248,9 @@ class CategoriesCTRL extends Controller
             if ($id != 0) {
                 $status  = (int)$request['status'];
 
-                DB::table('category')
-                ->where('id', $id)
-                ->update(['Status'=>$status]);
+                DB::table('groups')
+                ->where('Gr_ID', $id)
+                ->update(['Gr_Status'=>$status]);
 
                 $respuesta = ['state'=>'Changed'];
             } else {
