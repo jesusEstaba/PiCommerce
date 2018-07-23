@@ -34,16 +34,16 @@ class CategoriesCTRL extends Controller
      */
     public function index()
     {
-        $categories = DB::table('category')
-            ->join('groups', 'groups.Gr_ID', '=', 'category.group_id')
+        $categories = DB::table('groups')
             ->select(
-                'category.id',
-                'category.name',
-                'category.name_cat',
-                'groups.Gr_Descrip',
-                'category.Status'
+                'Gr_Descrip AS name',#
+                'Gr_Descrip',#
+                'Gr_Url AS name_cat',#
+                'Gr_Status AS Status',
+                'Gr_ID AS id'
             )
-            ->paginate(15);
+            ->paginate(15);   
+        
 
         $groups = DB::table('groups')->get();
 
