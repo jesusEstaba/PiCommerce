@@ -13,6 +13,10 @@ class SendMailCTRL extends Controller
 {
     public static function sendNow($vista, $dataEmail, $userEmail, $subject)
     {
+        if (env("APP_ENV") == "development") {
+            return 0;
+        }
+        
         if (Swift_Validate::email($userEmail)) {
             Mail::send($vista, $dataEmail, function ($msj) use ($userEmail, $subject) {
                 $msj->subject($subject);
