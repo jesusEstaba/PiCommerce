@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\admin\CouponsCTRL;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;

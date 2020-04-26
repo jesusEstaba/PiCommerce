@@ -70,7 +70,7 @@ Route::group([], function () {
         Route::post('/login', 'LoginCTRL@login');
 
 
-        Route::get('/coupon/{coupon}', 'CouponsCTRL@return_discount');
+        Route::get('/coupon/{coupon}', 'admin\CouponsCTRL@returnDiscountCoupon');
 
         Route::get('/order_now', function () {
             return redirect()->back();
