@@ -128,7 +128,7 @@
 								<div class="form-group">
 									<input style="width:79%;display: inline-block;" name="code" placeholder="Code Here" class="form-control"></input>
 									<span id="code" class="btn btn-primary" style="width: 20%">Use</span>
-									<label style="font-size: .9em; font-weight: 100;" class="text-muted">if you have a code I put it here to receive a discount.</label>
+									<label style="font-size: .9em; font-weight: 100;" class="text-muted">If you have a code put it here to receive a discount.</label>
 								</div>
 							</div>
 							<div class="divisor">
