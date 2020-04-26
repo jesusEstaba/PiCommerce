@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use DB;
-use Input;
 
 class OrdersCTRL extends Controller
 {
@@ -18,9 +17,9 @@ class OrdersCTRL extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $num = Input::get('num');
+        $num = $request->get('num');
 
         $orders = DB::table('hd_tticket')
             ->leftJoin('customers', 'customers.Cs_Phone', '=', 'hd_tticket.Hd_Customers')

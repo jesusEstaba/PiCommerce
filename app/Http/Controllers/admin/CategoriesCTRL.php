@@ -11,8 +11,6 @@ use App\Http\Controllers\Controller;
 use DB;
 use Storage;
 use File;
-use Input;
-
 
 use Carbon\Carbon;
 
@@ -83,9 +81,9 @@ class CategoriesCTRL extends Controller
                 'Status' => 1
             ];
 
-            if (!empty(Input::file('imagen'))) {
+            if (!empty($request->file('imagen'))) {
                 $name = $this->uploadImageServer(
-                    Input::file('imagen'),
+                    $request->file('imagen'),
                     'public_images_category'
                 );
 
@@ -122,9 +120,9 @@ class CategoriesCTRL extends Controller
                 $update['name'] = $request['name_category'];
             }
 
-            if (!empty(Input::file('imagen'))) {
+            if (!empty($request->file('imagen'))) {
                 $image = $this->uploadImageServer(
-                    Input::file('imagen'),
+                    $request->file('imagen'),
                     'public_images_category'
                 );
 
@@ -134,9 +132,9 @@ class CategoriesCTRL extends Controller
                 //delete dthe old element #Storage::delete('file.jpg');
             }
 
-            if (!empty(Input::file('imagen_cat'))) {
+            if (!empty($request->file('imagen_cat'))) {
                 $image = $this->uploadImageServer(
-                    Input::file('imagen_cat'),
+                    $request->file('imagen_cat'),
                     'public_images_banner'
                 );
 

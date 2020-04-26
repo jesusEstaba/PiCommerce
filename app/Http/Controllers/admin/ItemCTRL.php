@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use DB;
-use Input;
 
 class ItemCTRL extends Controller
 {
@@ -18,10 +17,10 @@ class ItemCTRL extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $search = Input::get('search');
-        $category = Input::get('category');
+        $search = $request->get('search');
+        $category = $request->get('category');
 
         $items = DB::table('items')
             ->join('groups', 'items.It_Groups', '=', 'groups.Gr_Id')
@@ -137,8 +136,8 @@ class ItemCTRL extends Controller
                 $update['It_Groups'] = (int)$request['category'];
             }
 
-            if (!empty(Input::file('imagen'))) {
-                $name = CategoriesCTRL::uploadImageServer(Input::file('imagen'), 'public_images_item');
+            if (!empty($request->file('imagen'))) {
+                $name = CategoriesCTRL::uploadImageServer($request->file('imagen'), 'public_images_item');
 
                 if ($name) {
                     $update['It_ImagePre'] = $name;

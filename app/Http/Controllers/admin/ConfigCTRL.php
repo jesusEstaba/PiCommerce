@@ -2,7 +2,7 @@
 /**
  * Cumple el Estándar PSR-2
  */
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
 use Illuminate\Http\Request;
 
@@ -12,7 +12,6 @@ use DB;
 use Carbon\Carbon;
 use Storage;
 use File;
-use Input;
 
 class ConfigCTRL extends Controller
 {
@@ -46,12 +45,12 @@ class ConfigCTRL extends Controller
      */
     public function store(Request $request)
     {
-        if (!empty(Input::file('logo'))) {
+        if (!empty($request->file('logo'))) {
             $insert_to_db = [];
 
-            if (!empty(Input::file('logo'))) {
+            if (!empty($request->file('logo'))) {
                 $logo = CategoriesCTRL::uploadImageServer(
-                    Input::file('logo'),
+                    $request->file('logo'),
                     'public_logo'
                 );
 
@@ -65,12 +64,12 @@ class ConfigCTRL extends Controller
                 DB::table('config')->update($insert_to_db);
             }
         }
-        if (!empty(Input::file('background'))) {
+        if (!empty($request->file('background'))) {
             $insert_to_db = [];
 
-            if (!empty(Input::file('background'))) {
+            if (!empty($request->file('background'))) {
                 $background = CategoriesCTRL::uploadImageServer(
-                    Input::file('background'),
+                    $request->file('background'),
                     'public_background'
                 );
 

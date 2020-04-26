@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Input;
 use DB;
 use Carbon\Carbon;
 
@@ -30,7 +29,7 @@ class DashboardCTRL extends Controller
             ->sum('Hd_Total');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $times = Carbon::now();
         //$hora = $times->toTimeString();
@@ -55,7 +54,7 @@ class DashboardCTRL extends Controller
         $today = $times->format('l jS \of F Y');
         $date = $times->format('Y-m-d');
 
-        $num = Input::get('num');
+        $num = $request->get('num');
 
         if (!empty($num)) {
             $orders = DB::table('hd_tticket')

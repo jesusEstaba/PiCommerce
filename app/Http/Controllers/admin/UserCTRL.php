@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Input;
 use DB;
 
 class UserCTRL extends Controller
@@ -18,9 +17,9 @@ class UserCTRL extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $search = Input::get('search');
+        $search = $request->get('search');
 
         $users = DB::table('users')
             ->leftJoin('customers', 'customers.Cs_Phone', '=', 'users.phone')
