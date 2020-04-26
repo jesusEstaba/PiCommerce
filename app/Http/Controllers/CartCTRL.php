@@ -362,6 +362,7 @@ class CartCTRL extends Controller
             'cooking_instructions' => trim($cookingInstructions),
             'quantity' => $quantity,
             'combo' => $comboId,
+            'is_combo' => $comboId != 0
             ]
         );
 

@@ -137,7 +137,7 @@ class OrderCTRL extends Controller
                 [
                     'Hd_Sell' => $hd_sell,
                     'Hd_Date' => $mytime->format('Y-m-d'),
-                    'Hd_Time' => $mytime->format('H:i:s'),
+                    'Hd_Time' => $mytime,
                     'Hd_Customers' => $hdOrderUser,
                     
                     'Hd_User' => 96,#CAMBIAR//REGISTRO NO. 81 DE LA TABLA PASSWORD1//cambiarlo por el nombre del campo para "parametrizarlo"
@@ -154,6 +154,7 @@ class OrderCTRL extends Controller
                     'Hd_Observac' => 0,
                     'Hd_Observac1' => 0,
                     'Hd_StatusTip' => 0,
+                    'Hd_PaymentId' => 0
                 ]
             );
 
@@ -342,7 +343,7 @@ class OrderCTRL extends Controller
      * Crea los registros en las tablas de facturacion
      * se añaden las cabezeras de la factura, los productos y sus modificaiones
      */
-    protected static function createOrder(array $cart, array $dataHdTicket)
+    protected static function createOrder( $cart,  $dataHdTicket)
     {
         $id = DB::table('hd_tticket')->insertGetId($dataHdTicket);
 
@@ -516,14 +517,8 @@ class OrderCTRL extends Controller
             $mail_user,
             $titleMail
         );
-        
-        Mail::send('mail_template.order', $variables_correo, function ($msj) use ($correos, $titleMail) {
-            $msj->subject($titleMail);
-            $msj->from(env('MAIL_ADDRESS'), env('MAIL_NAME'));
-            foreach ($correos as $array => $admin) {
-                $msj->to($admin->email);
-            }
-        });
+
+        SendMailCTRL::sendToAdmins($correos, $titleMail, 'mail_template.order', $variables_correo);
 
         return $isErrorToSend;
     }

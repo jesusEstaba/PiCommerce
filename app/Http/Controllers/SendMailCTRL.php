@@ -13,7 +13,7 @@ class SendMailCTRL extends Controller
 {
     public static function sendNow($vista, $dataEmail, $userEmail, $subject)
     {
-        if (env("APP_ENV") == "development") {
+        if (in_array(env('APP_ENV', 'development'), ['development', 'local'])) {
             return 0;
         }
         
@@ -30,6 +30,20 @@ class SendMailCTRL extends Controller
         }
 
         return $error;
+    }
+
+    public static function sendToAdmins($emailList, $title, $template, $payload) {
+        if (in_array(env('APP_ENV', 'development'), ['development', 'local'])) {
+            return 0;
+        }
+
+        Mail::send($template, $payload, function ($msj) use ($emailList, $title) {
+            $msj->subject($title);
+            $msj->from(env('MAIL_ADDRESS'), env('MAIL_NAME'));
+            foreach ($emailList as $array => $admin) {
+                $msj->to($admin->email);
+            }
+        });
     }
 
     public function test($email)

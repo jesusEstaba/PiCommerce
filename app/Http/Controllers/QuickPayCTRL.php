@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use DB;
-use Input;
 use Session;
 use Carbon\Carbon;
 use Auth;
@@ -52,17 +51,17 @@ class QuickPayCTRL extends Controller
      * 
      * @return json
      */
-    public function loadCartQuick()
+    public function loadCartQuick(Request $request)
     {
         if (Session::has('size') &&
-            Input::has('name') &&
-            Input::has('phone') &&
-            Input::has('email')
+            $request->has('name') &&
+            $request->has('phone') &&
+            $request->has('email')
             ) {
 
-            Session::put('name', Input::get('name'));
-            Session::put('phone', Input::get('phone'));
-            Session::put('email', Input::get('email'));
+            Session::put('name', $request->get('name'));
+            Session::put('phone', $request->get('phone'));
+            Session::put('email', $request->get('email'));
 
             //funcion que carga el producto a la db
             $cartId = CartCTRL::loadItemToCart(
