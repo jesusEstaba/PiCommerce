@@ -50,7 +50,7 @@
 				<br>
 				<h3>{{$ReturnMessage}}</h3>
 
-				<?php ($select = (Auth::check()) ? '' : '/pickup'; ) ?>
+				<?php ($select = (Auth::check()) ? '' : '/pickup' ) ?>
 				
 				<a href="{{url('checkout' . $select)}}" class="btn btn-primary">
 				Back to Checkout</a>
