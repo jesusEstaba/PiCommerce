@@ -1,5 +1,0 @@
-suites:
-    main:
-        namespace: Pizza
-        psr4_prefix: Pizza
-        src_path: app
