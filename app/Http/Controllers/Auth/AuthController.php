@@ -1,10 +1,10 @@
 <?php
 
-namespace Pizza\Http\Controllers\Auth;
+namespace App\Http\Controllers\Auth;
 
-use Pizza\User;
+use App\User;
 use Validator;
-use Pizza\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 

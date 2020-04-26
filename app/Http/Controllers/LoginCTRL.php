@@ -2,20 +2,20 @@
 /**
  * Cumple el Estándar PSR-2
  */
-namespace Pizza\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use Pizza\Http\Requests;
-use Pizza\Http\Controllers\Controller;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
 
-use Pizza\Http\Requests\LoginRequest;
+use App\Http\Requests\LoginRequest;
 
 use Auth;
 use Session;
 use Redirect;
 use DB;
-use Pizza\Config;
+use App\Config;
 
 class LoginCTRL extends Controller
 {

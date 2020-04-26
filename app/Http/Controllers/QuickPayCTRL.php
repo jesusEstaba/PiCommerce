@@ -1,17 +1,17 @@
 <?php
 
-namespace Pizza\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use Pizza\Http\Requests;
-use Pizza\Http\Controllers\Controller;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
 use DB;
 use Input;
 use Session;
 use Carbon\Carbon;
 use Auth;
-use Pizza\Config;
+use App\Config;
 
 class QuickPayCTRL extends Controller
 {

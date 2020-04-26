@@ -1,6 +1,6 @@
 <?php
 
-namespace Pizza\Http\Requests;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

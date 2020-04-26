@@ -2,19 +2,19 @@
 /**
  * Cumple el Estándar PSR-2
  */
-namespace Pizza\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use Pizza\Http\Requests;
-use Pizza\Http\Controllers\Controller;
-use Pizza\User;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+use App\User;
 use Session;
 use DB;
 use Validator;
 use Carbon\Carbon;
 use Input;
-use Pizza\Config;
+use App\Config;
 
 
 class RegisterCTRL extends Controller

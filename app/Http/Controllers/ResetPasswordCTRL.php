@@ -2,18 +2,18 @@
 /**
  * Cumple el Estándar PSR-2
  */
-namespace Pizza\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use Pizza\Http\Requests;
-use Pizza\Http\Controllers\Controller;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
 use Auth;
 use DB;
 use Carbon\Carbon;
 use Session;
 use Input;
-use Pizza\Config;
+use App\Config;
 
 class ResetPasswordCTRL extends Controller
 {

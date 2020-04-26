@@ -1,8 +1,8 @@
 <?php
 
-namespace Pizza\Http\Requests;
+namespace App\Http\Requests;
 
-use Pizza\Http\Requests\Request;
+use App\Http\Requests\Request;
 
 class LoginRequest extends Request
 {

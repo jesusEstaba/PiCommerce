@@ -2,19 +2,19 @@
 /**
  * Cumple el Estándar PSR-2
  */
-namespace Pizza\Http\Controllers\admin;
+namespace App\Http\Controllers\admin;
 
 use Illuminate\Http\Request;
 
-use Pizza\Http\Requests;
-use Pizza\Http\Controllers\Controller;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
 
-use Pizza\Http\Requests\LoginRequest;
+use App\Http\Requests\LoginRequest;
 use Auth;
 use Redirect;
 use Session;
 
-use Pizza\Http\Controllers\LogCTRL;
+use App\Http\Controllers\LogCTRL;
 
 class AdminLoginCTRL extends Controller
 {

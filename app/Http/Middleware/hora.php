@@ -1,9 +1,9 @@
 <?php
 
-namespace Pizza\Http\Middleware;
+namespace App\Http\Middleware;
 
 use Closure;
-use Pizza\Http\Controllers\CloseCTRL;
+use App\Http\Controllers\CloseCTRL;
 
 class hora
 {

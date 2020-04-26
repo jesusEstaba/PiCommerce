@@ -1,6 +1,6 @@
 <?php
 
-namespace Pizza\Http\Middleware;
+namespace App\Http\Middleware;
 
 use Closure;
 
