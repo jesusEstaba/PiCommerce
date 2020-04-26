@@ -26,7 +26,7 @@ Route::group([], function () {
     //Route::get('/now', 'CloseCTRL@now');
     Route::get('/closed/{type}', 'CloseCTRL@index');
 
-    Route::group([], function () {
+    Route::group(['middleware'=>'hora'], function () {
         Route::get('/logout', 'LoginCTRL@logout');
         Route::get('/menu', 'ChooseCTRL@index');
         Route::get('/category/{name_category}', 'CategoryCTRL@category');
