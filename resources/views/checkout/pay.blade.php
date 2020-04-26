@@ -4,6 +4,12 @@
 @section('content')
 
 <div class="container space">
+	@if(! env('MERCURY_PRODUCTION'))
+		<div class="alert alert-danger alert-dismissable">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<strong>Warning: </strong> Payment gateway its in development mode. This transaction is not real, you cannot generate claims.
+		</div>
+	@endif
 	<div class="">
 		<div class="row">
 			<div class="col-xs-12">
@@ -97,7 +103,13 @@
 										</label>
 									@endif
 									
-									
+									@if(! env('MERCURY_PRODUCTION'))
+										<h3 class="text-danger">TEST MODE</h3>
+										<p>
+											Visa 4895281000000006 12/25 <b>CVV:</b> 123
+											<small> <br><b class="text-success">APPROVE</b> transactions requires amounts under $10.99 or between $60.00--$9,999.00</small>
+										</p>
+									@endif
 								</div>
 							</div>
 							<div class="hide divisor">
