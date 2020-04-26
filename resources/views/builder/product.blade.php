@@ -42,7 +42,7 @@
 				{{$size->Sz_Abrev}}
 			</a>
 		@elseif($size)
-			@eval($num_tab = 1)
+			<?php ($num_tab = 1) ?>
 			
 			@foreach($size as $table => $val)
 				<a class="btn btn-default size"
@@ -54,7 +54,7 @@
 				>
 					{{$val->Sz_Abrev}}
 				</a>
-				@eval($num_tab++)
+				<?php ($num_tab++) ?>
 			@endforeach
 		@else
 			<p>No Hay Tamaños</p>

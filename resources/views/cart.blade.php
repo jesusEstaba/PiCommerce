@@ -35,10 +35,10 @@
 						@endforeach
 					@elseif(isset($campo->is_combo)==1)
 						@foreach($campo->subItems as $subKy => $subItem)
-							@eval($total_price_top += $subItem->Sz_Price)
+							<?php ($total_price_top += $subItem->Sz_Price) ?>
 							
 							@foreach($subItem->toppings_list as $tab => $val)
-								@eval($total_price_top += $val->price)
+								<?php ($total_price_top += $val->price) ?>
 							@endforeach
 						@endforeach
 					@endif

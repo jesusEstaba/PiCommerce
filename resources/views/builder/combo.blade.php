@@ -40,7 +40,7 @@
 						<h2 id="combo" data-id="{{$combo->Cb_Id}}">{{$combo->Cb_Name}}:</h2>
 					</div>
 
-					@eval($num_tab = 1)
+					<?php ($num_tab = 1) ?>
 					@foreach($items as $array => $item)
 						<div class="col-md-3">
 							<div class="combo-item">
@@ -56,7 +56,7 @@
 								</a>
 							</div>
 						</div>
-						@eval($num_tab++)
+						<?php ($num_tab++) ?>
 					@endforeach
 
 				</div>
@@ -72,16 +72,16 @@
 
 
 <div class="tab-content">
-@eval($indice = 1)
-@eval($classActive = ' active')
+<?php ($indice = 1) ?>
+<?php ($classActive = ' active') ?>
 
 @foreach($items as $array => $item)
 	<div role="tabpanel" class="tab-pane{{$classActive}}" id="tabsize-{{$indice}}">
 		<h3>{{$item->It_Descrip}}</h3>
 			<div class="row">
 				<div class="col-md-12">
-					@eval($indiceInt = 1)
-					@eval($classActiveInt = ' active')
+					<?php ($indiceInt = 1) ?>
+					<?php ($classActiveInt = ' active') ?>
 					@foreach($item->sizes as $array => $size)
 							<a 	href="#tabsizetop-{{$indice}}-{{$indiceInt}}" 
 								aria-controls="tabsizetop-{{$indice}}-{{$indiceInt}}" 
@@ -96,8 +96,8 @@
 							>
 								{{$size->Sz_Abrev}}
 							</a>
-						@eval($indiceInt++)
-						@eval($classActiveInt = '')
+						<?php ($indiceInt++) ?>
+						<?php ($classActiveInt = '') ?>
 					@endforeach
 				</div>
 
@@ -138,8 +138,8 @@
 		<div class="row">
 			<div class="col-md-8">
 				<div class="tab-content">
-					@eval($indiceInt = 1)
-					@eval($classActiveInt = ' active')
+					<?php ($indiceInt = 1) ?>
+					<?php ($classActiveInt = ' active') ?>
 					@foreach($item->sizeToppings as $array => $toppings)
 						<div role="tabpanel" class="tab-pane{{$classActiveInt}}" id="tabsizetop-{{$indice}}-{{$indiceInt}}">
 								@if(count($toppings))
@@ -156,8 +156,8 @@
 									<b>No toppings for this size</b>
 								@endif
 						</div>
-						@eval($indiceInt++)
-						@eval($classActiveInt = '')
+						<?php ($indiceInt++) ?>
+						<?php ($classActiveInt = '') ?>
 					@endforeach
 				</div>
 			</div>
@@ -180,8 +180,8 @@
 		
 		
 
-		@eval($indice++)
-		@eval($classActive = '')
+		<?php ($indice++) ?>
+		<?php ($classActive = '') ?>
 	</div>
 @endforeach
 
@@ -279,7 +279,7 @@
 				</h4>
 				
 				
-				@eval($num_tab = 1)
+				<?php ($num_tab = 1) ?>
 				@foreach($items as $array => $item)
 						<ul class="items-toppings"
 							id="toppings-{{$num_tab}}"
@@ -290,7 +290,7 @@
 							data-size-top="1"
 						>
 						</ul>
-						@eval($num_tab++)
+						<?php ($num_tab++) ?>
 				@endforeach
 
 
