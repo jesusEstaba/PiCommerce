@@ -1,6 +1,6 @@
 <?php
 
-use Pizza\Http\Controllers\CartCTRL;
+use App\Http\Controllers\CartCTRL;
 
 class HelperMenu
 {
