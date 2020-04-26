@@ -1,3 +1,7 @@
+DB_HOST=mariadb
+DB_DATABASE=pi
+DB_USERNAME=root
+DB_PASSWORD=root
 # Release Notes
 
 ## [Unreleased](https://github.com/laravel/laravel/compare/v7.6.0...master)
