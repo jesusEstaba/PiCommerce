@@ -1,7 +1,7 @@
 FROM bitnami/laravel:7
 
 COPY . /app
-
+RUN chmod +w composer.lock
 RUN rm -f composer.lock
 RUN ls
 
