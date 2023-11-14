@@ -1,8 +1,12 @@
 FROM bitnami/laravel:7
 
-COPY . /app
+COPY composer.json /app
 
 RUN composer install --no-interaction
+
+FROM bitnami/laravel:7
+
+COPY . /app
 
 RUN php artisan key:generate
 
