@@ -2,7 +2,7 @@ FROM bitnami/laravel:7
 
 COPY . /app
 
-RUN rm composer.lock
+RUN rm -f composer.lock
 RUN ls
 
 RUN composer install --no-interaction
