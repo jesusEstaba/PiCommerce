@@ -1,11 +1,8 @@
 FROM bitnami/laravel:7
 
 COPY . /app
-RUN chmod +w composer.lock
-RUN rm -f composer.lock
-RUN ls
 
-RUN composer install --no-interaction
+RUN rm -f composer.lock && composer install --no-interaction
 
 RUN php artisan key:generate
 
